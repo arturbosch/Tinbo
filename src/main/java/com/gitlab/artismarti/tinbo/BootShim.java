@@ -42,9 +42,9 @@ public class BootShim {
 
 	}
 
-	private void configureApplicationContext(ConfigurableApplicationContext contex) {
-		this.createAndRegisterBeanDefinition(contex, JLineShellComponent.class, "shell");
-		contex.getBeanFactory().registerSingleton("commandLine", commandLine);
+	private void configureApplicationContext(ConfigurableApplicationContext context) {
+		this.createAndRegisterBeanDefinition(context, JLineShellComponent.class, "shell");
+//		context.getBeanFactory().registerSingleton("commandLine", commandLine);
 	}
 
 	private void createAndRegisterBeanDefinition(ConfigurableApplicationContext context, Class<?> clazz, String name) {

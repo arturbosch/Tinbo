@@ -1,19 +1,24 @@
 package com.gitlab.artismarti.tinbo.commands
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.CommandMarker
+import org.springframework.shell.core.JLineShellComponent
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
 import java.time.Duration
 import java.time.LocalDateTime
+import java.util.concurrent.CompletableFuture
+import java.util.logging.Level
 
 /**
  * @author artur
  */
 @Component
-class TimerCommands : CommandMarker {
+class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : CommandMarker {
 
-    private val currentTimer = Timer.INVALID
+    private var currentTimer = Timer.INVALID
+    private var running = false
 
     @CliCommand(value = "start", help = "Starts the timer and waits for you to type 'stop' to finish it if no arguments are specified. " +
             "Parameters '--minutes | --mins | --m' and '--seconds | --secs | --s' can be used to specify how long the timer should run.")
@@ -21,15 +26,33 @@ class TimerCommands : CommandMarker {
                    @CliOption(key = arrayOf("seconds", "s", "mins"), unspecifiedDefaultValue = "0", help = "Duration of timer in seconds.") seconds: Int) {
 
         if (currentTimer.isInvalid()) {
-            println("Start with $mins mins and $seconds secs")
-            startPrintingTime(Timer(mins, seconds))
+            running = true
+            CompletableFuture.runAsync { startPrintingTime(Timer(mins, seconds)) }
         } else {
-            println("Other timer already in process. Stop the timer before starting a new one.")
+            shell.flash(Level.FINE, "Other timer already in process. Stop the timer before starting a new one.", "id")
         }
     }
 
+    @CliCommand(value = "stop", help = "Stops the timer.")
+    fun stopTimer() {
+        if (!currentTimer.isInvalid()) {
+            running = false
+            saveAndResetCurrentTimer()
+        } else {
+            shell.flash(Level.FINE, "Other timer already in process. Stop the timer before starting a new one.", "id")
+        }
+    }
+
+    private fun saveAndResetCurrentTimer() {
+        currentTimer = Timer.INVALID
+    }
+
     private fun startPrintingTime(timer: Timer) {
-        println("Elapsed time: $timer")
+        currentTimer = timer
+        while(running) {
+            Thread.sleep(1000L)
+            shell.flash(Level.FINE, "Elapsed time: $timer\n", "time")
+        }
     }
 
     class Timer(val mins: Int = 0, val seconds: Int = 0, val startDateTime: LocalDateTime = LocalDateTime.now()) {
