@@ -1,5 +1,6 @@
 package com.gitlab.artismarti.tinbo.commands
 
+import org.fusesource.jansi.Ansi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.JLineShellComponent
@@ -35,6 +36,15 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
 
     @CliCommand(value = "stop", help = "Stops the timer.")
     fun stopTimer() {
+        internalStop()
+    }
+
+    @CliCommand(value = "q", help = "Stops the timer.")
+    fun stopTimerWithQ() {
+        internalStop()
+    }
+
+    private fun internalStop() {
         if (!currentTimer.isInvalid()) {
             running = false
             saveAndResetCurrentTimer()
@@ -50,8 +60,8 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
     private fun startPrintingTime(timer: Timer) {
         currentTimer = timer
         while(running) {
+            print(Ansi.ansi().eraseLine(Ansi.Erase.ALL).fg(Ansi.Color.BLACK).bg(Ansi.Color.WHITE).a("\rElapsed time: $timer").reset())
             Thread.sleep(1000L)
-            shell.flash(Level.FINE, "Elapsed time: $timer\n", "time")
         }
     }
 
