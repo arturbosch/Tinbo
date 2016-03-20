@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component
 class PromptProvider : DefaultPromptProvider() {
 
     override fun getProviderName(): String {
-        return "PromptProvider"
+        return "TinboPromptProvider"
     }
 
     override fun getPrompt(): String {
-        return "shell>"
+        return "tinbo>"
     }
 }

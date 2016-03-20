@@ -47,10 +47,10 @@ public class BootShim {
 		contex.getBeanFactory().registerSingleton("commandLine", commandLine);
 	}
 
-	private void createAndRegisterBeanDefinition(ConfigurableApplicationContext contex, Class<?> clazz, String name) {
+	private void createAndRegisterBeanDefinition(ConfigurableApplicationContext context, Class<?> clazz, String name) {
 		RootBeanDefinition rbd = new RootBeanDefinition();
 		rbd.setBeanClass(clazz);
-		DefaultListableBeanFactory bf = (DefaultListableBeanFactory) contex.getBeanFactory();
+		DefaultListableBeanFactory bf = (DefaultListableBeanFactory) context.getBeanFactory();
 		if (name != null) {
 			bf.registerBeanDefinition(name, rbd);
 		} else {

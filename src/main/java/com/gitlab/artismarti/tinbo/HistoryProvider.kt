@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component
 class HistoryProvider : DefaultHistoryFileNameProvider() {
 
     override fun getProviderName(): String? {
-        return "My History"
+        return "TinboHistory"
     }
 
     override fun getHistoryFileName(): String? {
-        return "history"
+        return "TinboShellHistory"
     }
 }

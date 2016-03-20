@@ -22,14 +22,14 @@ class BannerProvider : DefaultBannerProvider() {
     }
 
     override fun getVersion(): String {
-        return "0.1"
+        return "TiNBo v0.1"
     }
 
     override fun getWelcomeMessage(): String {
-        return "Welcome Message!"
+        return "Welcome to TiNBo. Use 'help' to view all commands!"
     }
 
     override fun getProviderName(): String {
-        return "My Banner"
+        return "TinboBanner"
     }
 }
