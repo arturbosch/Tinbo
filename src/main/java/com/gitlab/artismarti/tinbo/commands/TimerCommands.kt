@@ -1,5 +1,6 @@
 package com.gitlab.artismarti.tinbo.commands
 
+import com.gitlab.artismarti.tinbo.Notification
 import org.fusesource.jansi.Ansi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.CommandMarker
@@ -55,12 +56,17 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
 
     private fun saveAndResetCurrentTimer() {
         currentTimer = Timer.INVALID
+        notify()
+    }
+
+    private fun notify() {
+        Notification.info()
     }
 
     private fun startPrintingTime(timer: Timer) {
         currentTimer = timer
         while(running) {
-            print(Ansi.ansi().eraseLine(Ansi.Erase.ALL).fg(Ansi.Color.BLACK).bg(Ansi.Color.WHITE).a("\rElapsed time: $timer").reset())
+            print(Ansi.ansi().fg(Ansi.Color.BLACK).bg(Ansi.Color.WHITE).a("\rElapsed time: $timer").reset())
             Thread.sleep(1000L)
         }
     }
