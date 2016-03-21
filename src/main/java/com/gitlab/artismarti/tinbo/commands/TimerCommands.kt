@@ -65,7 +65,7 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
 
     private fun startPrintingTime(timer: Timer) {
         currentTimer = timer
-        while(running) {
+        while (running) {
             print(Ansi.ansi().fg(Ansi.Color.BLACK).bg(Ansi.Color.WHITE).a("\rElapsed time: $timer").reset())
             Thread.sleep(1000L)
         }
@@ -91,6 +91,10 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
     }
 }
 
-fun Number.toNumberString(): String {
-    return toString().apply { if (this.length == 1) return "0$this" }
+fun Long.toNumberString(): String {
+    return this.mod(60).toString().apply {
+        if (this.length == 1) {
+            return "0$this"
+        }
+    }
 }
