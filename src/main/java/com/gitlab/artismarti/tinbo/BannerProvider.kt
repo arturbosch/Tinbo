@@ -1,5 +1,6 @@
 package com.gitlab.artismarti.tinbo
 
+import com.google.common.io.Resources
 import org.springframework.core.annotation.Order
 import org.springframework.shell.plugin.support.DefaultBannerProvider
 import org.springframework.shell.support.util.OsUtils
@@ -13,12 +14,7 @@ import org.springframework.stereotype.Component
 class BannerProvider : DefaultBannerProvider() {
 
     override fun getBanner(): String {
-        return "=======================================" + OsUtils.LINE_SEPARATOR +
-                "*                                     *" + OsUtils.LINE_SEPARATOR +
-                "*            HelloWorld               *" + OsUtils.LINE_SEPARATOR +
-                "*                                     *" + OsUtils.LINE_SEPARATOR +
-                "=======================================" + OsUtils.LINE_SEPARATOR +
-                "Version:" + this.version
+        return Resources.readLines(Resources.getResource("banner.txt"), Charsets.UTF_8).joinToString(separator = OsUtils.LINE_SEPARATOR)
     }
 
     override fun getVersion(): String {
