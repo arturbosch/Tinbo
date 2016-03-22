@@ -26,7 +26,8 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
     @CliCommand(value = "start", help = "Starts the timer and waits for you to type 'stop' to finish it if no arguments are specified. " +
             "Parameters '--minutes | --mins | --m' and '--seconds | --secs | --s' can be used to specify how long the timer should run.")
     fun startTimer(@CliOption(key = arrayOf("minutes", "m", "mins"), unspecifiedDefaultValue = "0", help = "Duration of timer in minutes.") mins: Int,
-                   @CliOption(key = arrayOf("seconds", "s", "mins"), unspecifiedDefaultValue = "0", help = "Duration of timer in seconds.") seconds: Int) {
+                   @CliOption(key = arrayOf("seconds", "s", "mins"), unspecifiedDefaultValue = "0", help = "Duration of timer in seconds.") seconds: Int,
+                   @CliOption(key = arrayOf("bg", "background"), unspecifiedDefaultValue = "false", specifiedDefaultValue = "true") bg: Boolean) {
 
         if (inputsAreInvalid(mins, seconds)) {
             shell.flash(Level.WARNING, "Invalid parameters: minutes and seconds have to be positiv and seconds not bigger than 59.\n", "inputs")
@@ -35,10 +36,18 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
 
         if (currentTimer.isInvalid()) {
             running = true
-            CompletableFuture.runAsync { startPrintingTime(Timer(MODE.DEFAULT, stopDateTime = Timer.calcStopTime(mins, seconds))) }
+            val mode = getMode(bg)
+            CompletableFuture.runAsync {
+                startPrintingTime(Timer(mode, stopDateTime = Timer.calcStopTime(mins, seconds)))
+            }
         } else {
             shell.flash(Level.FINE, "Other timer already in process. Stop the timer before starting a new one.\n", "id")
         }
+    }
+
+    private fun getMode(bg: Boolean): MODE {
+        if (bg) return MODE.BACKGROUND
+        else return MODE.DEFAULT
     }
 
     private fun inputsAreInvalid(mins: Int, seconds: Int): Boolean {
@@ -78,10 +87,10 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
     private fun startPrintingTime(timer: Timer) {
         currentTimer = timer
         while (running) {
-            if (currentTimer.isFinished()) {
+            if (currentTimer.mode == MODE.DEFAULT)
+                printInfo("\rElapsed time: $timer")
+            if (currentTimer.isFinished())
                 internalStop()
-            }
-            printInfo("\rElapsed time: $timer")
             Thread.sleep(1000L)
         }
     }
@@ -100,7 +109,7 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
             this.stopDateTime = stopDateTime
         }
 
-        private val mode: MODE
+        val mode: MODE
         private val startDateTime: LocalDateTime
         private val stopDateTime: LocalDateTime?
 
