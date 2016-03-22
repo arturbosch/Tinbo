@@ -16,12 +16,12 @@ import java.util.logging.Logger
  * @author artur
  */
 @SpringBootApplication
-open class SpringBootShellApplication {
+open class Tinbo {
 
     companion object {
 
         @JvmStatic fun main(args: Array<String>) {
-            val ctx = SpringApplication.run(SpringBootShellApplication::class.java)
+            val ctx = SpringApplication.run(Tinbo::class.java)
 
             try {
                 val bootStrap = BootShim(args, ctx)
