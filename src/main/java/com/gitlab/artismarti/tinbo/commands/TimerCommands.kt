@@ -22,24 +22,36 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
     private var currentTimer = Timer.INVALID
     private var running = false
 
+    @Suppress("unused")
     @CliCommand(value = "start", help = "Starts the timer and waits for you to type 'stop' to finish it if no arguments are specified. " +
             "Parameters '--minutes | --mins | --m' and '--seconds | --secs | --s' can be used to specify how long the timer should run.")
     fun startTimer(@CliOption(key = arrayOf("minutes", "m", "mins"), unspecifiedDefaultValue = "0", help = "Duration of timer in minutes.") mins: Int,
                    @CliOption(key = arrayOf("seconds", "s", "mins"), unspecifiedDefaultValue = "0", help = "Duration of timer in seconds.") seconds: Int) {
 
+        if (inputsAreInvalid(mins, seconds)) {
+            shell.flash(Level.WARNING, "Invalid parameters: minutes and seconds have to be positiv and seconds not bigger than 59.\n", "inputs")
+            return;
+        }
+
         if (currentTimer.isInvalid()) {
             running = true
-            CompletableFuture.runAsync { startPrintingTime(Timer(mins, seconds)) }
+            CompletableFuture.runAsync { startPrintingTime(Timer(MODE.DEFAULT, stopDateTime = Timer.calcStopTime(mins, seconds))) }
         } else {
-            shell.flash(Level.FINE, "Other timer already in process. Stop the timer before starting a new one.", "id")
+            shell.flash(Level.FINE, "Other timer already in process. Stop the timer before starting a new one.\n", "id")
         }
     }
 
+    private fun inputsAreInvalid(mins: Int, seconds: Int): Boolean {
+        return !(mins >= 0 && seconds >= 0 && seconds < 60)
+    }
+
+    @Suppress("unused")
     @CliCommand(value = "stop", help = "Stops the timer.")
     fun stopTimer() {
         internalStop()
     }
 
+    @Suppress("unused")
     @CliCommand(value = "q", help = "Stops the timer.")
     fun stopTimerWithQ() {
         internalStop()
@@ -66,12 +78,31 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
     private fun startPrintingTime(timer: Timer) {
         currentTimer = timer
         while (running) {
-            print(Ansi.ansi().fg(Ansi.Color.BLACK).bg(Ansi.Color.WHITE).a("\rElapsed time: $timer").reset())
+            if (currentTimer.isFinished()) {
+                internalStop()
+            }
+            printInfo("\rElapsed time: $timer")
             Thread.sleep(1000L)
         }
     }
 
-    class Timer(val mins: Int = 0, val seconds: Int = 0, val startDateTime: LocalDateTime = LocalDateTime.now()) {
+    fun printInfo(message: String) {
+        print(Ansi.ansi().fg(Ansi.Color.BLACK).bg(Ansi.Color.WHITE).a(message).reset())
+    }
+
+    class Timer {
+
+        constructor(mode: MODE = MODE.INVALID,
+                    startDateTime: LocalDateTime = LocalDateTime.now(),
+                    stopDateTime: LocalDateTime? = null) {
+            this.mode = mode
+            this.startDateTime = startDateTime
+            this.stopDateTime = stopDateTime
+        }
+
+        private val mode: MODE
+        private val startDateTime: LocalDateTime
+        private val stopDateTime: LocalDateTime?
 
         override fun toString(): String {
             val now = LocalDateTime.now()
@@ -85,10 +116,32 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
             return this.equals(INVALID)
         }
 
+        fun isFinished(): Boolean {
+            if (stopDateTime == null) {
+                return false
+            }
+            return LocalDateTime.now().compareTo(stopDateTime) >= 0
+        }
+
         companion object {
-            val INVALID = Timer(-1, -1)
+
+            val INVALID = Timer(MODE.INVALID)
+            fun calcStopTime(mins: Int, seconds: Int): LocalDateTime? {
+                var stop: LocalDateTime? = null
+                if (mins >= 0 && seconds > 0) {
+                    stop = LocalDateTime.now()
+                            .plusMinutes(mins.toLong())
+                            .plusSeconds(seconds.toLong())
+                }
+                return stop
+            }
+
         }
     }
+}
+
+enum class MODE {
+    INVALID, DEFAULT, BACKGROUND
 }
 
 fun Long.toNumberString(): String {
