@@ -1,4 +1,4 @@
-package com.gitlab.artismarti.tinbo
+package com.gitlab.artismarti.tinbo.providers
 
 import com.google.common.io.Resources
 import org.springframework.core.annotation.Order

@@ -1,5 +1,6 @@
-package com.gitlab.artismarti.tinbo
+package com.gitlab.artismarti.tinbo.providers
 
+import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.shell.plugin.support.DefaultPromptProvider
 import org.springframework.stereotype.Component
