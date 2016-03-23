@@ -13,13 +13,16 @@ import java.time.LocalDateTime
 class Timer {
 
     constructor(timerMode: TimerMode = TimerMode.INVALID,
+                name: String,
                 startDateTime: LocalDateTime = LocalDateTime.now(),
                 stopDateTime: LocalDateTime? = null) {
         this.timerMode = timerMode
+        this.name = name
         this.startDateTime = startDateTime
         this.stopDateTime = stopDateTime
     }
 
+    val name: String
     val timerMode: TimerMode
     private val startDateTime: LocalDateTime
     private val stopDateTime: LocalDateTime?
@@ -45,7 +48,8 @@ class Timer {
 
     companion object {
 
-        val INVALID = Timer(TimerMode.INVALID)
+        val INVALID = Timer(TimerMode.INVALID, "INVALID")
+
         fun calcStopTime(mins: Int, seconds: Int): LocalDateTime? {
             var stop: LocalDateTime? = null
             if (mins >= 0 && seconds > 0) {

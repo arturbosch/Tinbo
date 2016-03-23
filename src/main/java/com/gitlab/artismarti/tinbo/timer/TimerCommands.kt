@@ -1,6 +1,7 @@
 package com.gitlab.artismarti.tinbo.timer
 
 import com.gitlab.artismarti.tinbo.Notification
+import com.gitlab.artismarti.tinbo.config.Default
 import org.fusesource.jansi.Ansi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.CommandMarker
@@ -27,7 +28,9 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
             "Parameters '--minutes | --mins | --m' and '--seconds | --secs | --s' can be used to specify how long the timer should run.")
     fun startTimer(@CliOption(key = arrayOf("minutes", "m", "mins"), unspecifiedDefaultValue = "0", help = "Duration of timer in minutes.") mins: Int,
                    @CliOption(key = arrayOf("seconds", "s", "mins"), unspecifiedDefaultValue = "0", help = "Duration of timer in seconds.") seconds: Int,
-                   @CliOption(key = arrayOf("bg", "background"), unspecifiedDefaultValue = "false", specifiedDefaultValue = "true") bg: Boolean) {
+                   @CliOption(key = arrayOf("bg", "background"), unspecifiedDefaultValue = "false", specifiedDefaultValue = "true") bg: Boolean,
+                   @CliOption(key = arrayOf("name", "n"), unspecifiedDefaultValue = Default.MAIN_CATEGORY_NAME,
+                           specifiedDefaultValue = Default.MAIN_CATEGORY_NAME) name: String) {
 
         if (inputsAreInvalid(mins, seconds)) {
             shell.flash(Level.WARNING, "Invalid parameters: minutes and seconds have to be positiv and seconds not bigger than 59.\n", "inputs")
@@ -38,7 +41,7 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
             running = true
             val mode = specifyTimerMode(bg)
             CompletableFuture.runAsync {
-                startPrintingTime(Timer(mode, stopDateTime = Timer.calcStopTime(mins, seconds)))
+                startPrintingTime(Timer(mode, name, stopDateTime = Timer.calcStopTime(mins, seconds)))
             }
         } else {
             shell.flash(Level.FINE, "Other timer already in process. Stop the timer before starting a new one.\n", "id")
