@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.shell.CommandLine
 import org.springframework.shell.core.JLineShellComponent
 import org.springframework.shell.support.logging.HandlerUtils
+import uy.kohesive.injekt.InjektMain
+import uy.kohesive.injekt.api.InjektRegistrar
 import java.util.logging.Logger
 
 /**
@@ -16,12 +18,16 @@ import java.util.logging.Logger
  * @author artur
  */
 @SpringBootApplication
-open class Tinbo {
+open class TiNBo {
 
-    companion object {
+    companion object : InjektMain() {
+
+        override fun InjektRegistrar.registerInjectables() {
+            
+        }
 
         @JvmStatic fun main(args: Array<String>) {
-            val ctx = SpringApplication.run(Tinbo::class.java)
+            val ctx = SpringApplication.run(TiNBo::class.java)
 
             try {
                 val bootStrap = BootShim(args, ctx)

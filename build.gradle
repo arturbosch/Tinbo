@@ -2,14 +2,14 @@ buildscript {
     ext {
         springBootVersion = '1.4.0.M1'
         kotlin_version = '1.0.1'
+
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
     repositories {
         mavenCentral()
         jcenter()
         maven { url "https://repo.spring.io/milestone" }
-        maven {
-            url 'https://repo.spring.io/libs-snapshot'
-        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -26,22 +26,22 @@ jar {
     baseName = 'TiNBo'
     version = '0.1'
 }
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    maven { url "https://repo.spring.io/snapshot" }
     maven { url "https://repo.spring.io/milestone" }
     maven { url 'https://repo.spring.io/libs-milestone' }
 }
 
 
 dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "uy.kohesive.injekt:injekt-core:1.14.+"
+
     compile('org.springframework.boot:spring-boot-starter')
     compile 'org.springframework.shell:spring-shell:1.2.0.M1'
+
     testCompile('org.springframework.boot:spring-boot-starter-test')
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
 }
 
