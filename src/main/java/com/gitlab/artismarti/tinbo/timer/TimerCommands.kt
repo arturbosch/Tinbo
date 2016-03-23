@@ -79,12 +79,12 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
     }
 
     private fun saveAndResetCurrentTimer() {
-        currentTimer = Timer.INVALID
         notify()
+        currentTimer = Timer.INVALID
     }
 
     private fun notify() {
-        Notification.info()
+        Notification.finished(currentTimer.toString())
     }
 
     private fun startPrintingTime(timer: Timer) {

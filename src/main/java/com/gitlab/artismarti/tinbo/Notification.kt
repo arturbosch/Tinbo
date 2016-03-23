@@ -5,11 +5,11 @@ package com.gitlab.artismarti.tinbo
  */
 object Notification {
 
-    fun info() {
+    fun finished(message: String) {
         try {
-            ProcessBuilder("notify-send", "hello world", "THIS IS NOTIFICATION!", "--icon=dialog-information").start();
+            ProcessBuilder("notify-send", "Finished", message, "--icon=dialog-information").start();
         } catch (e: Exception ) {
-            println("Could not execute 'notify-send', install it to get notifications about running out timers.")
+            println("Could not execute 'notify-send', install it to get notifications about finished timers.")
         }
 
     }

@@ -32,7 +32,7 @@ class Timer {
         val diffSecs = Duration.between(startDateTime, now).seconds.toNumberString()
         val diffMins = Duration.between(startDateTime, now).toMinutes().toNumberString()
         val diffHours = Duration.between(startDateTime, now).toHours().toNumberString()
-        return "$diffHours:$diffMins:$diffSecs"
+        return "$diffHours:$diffMins:$diffSecs ($name)"
     }
 
     fun isInvalid(): Boolean {
