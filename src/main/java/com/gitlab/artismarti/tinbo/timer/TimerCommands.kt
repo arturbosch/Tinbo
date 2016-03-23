@@ -1,4 +1,4 @@
-package com.gitlab.artismarti.tinbo.commands
+package com.gitlab.artismarti.tinbo.timer
 
 import com.gitlab.artismarti.tinbo.Notification
 import org.fusesource.jansi.Ansi
@@ -8,12 +8,12 @@ import org.springframework.shell.core.JLineShellComponent
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
-import java.time.Duration
-import java.time.LocalDateTime
 import java.util.concurrent.CompletableFuture
 import java.util.logging.Level
 
 /**
+ * Commands with that users can interact in timer mode.
+ *
  * @author artur
  */
 @Component
@@ -36,7 +36,7 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
 
         if (currentTimer.isInvalid()) {
             running = true
-            val mode = getMode(bg)
+            val mode = specifyTimerMode(bg)
             CompletableFuture.runAsync {
                 startPrintingTime(Timer(mode, stopDateTime = Timer.calcStopTime(mins, seconds)))
             }
@@ -45,9 +45,9 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
         }
     }
 
-    private fun getMode(bg: Boolean): MODE {
-        if (bg) return MODE.BACKGROUND
-        else return MODE.DEFAULT
+    private fun specifyTimerMode(bg: Boolean): TimerMode {
+        if (bg) return TimerMode.BACKGROUND
+        else return TimerMode.DEFAULT
     }
 
     private fun inputsAreInvalid(mins: Int, seconds: Int): Boolean {
@@ -87,7 +87,7 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
     private fun startPrintingTime(timer: Timer) {
         currentTimer = timer
         while (running) {
-            if (currentTimer.mode == MODE.DEFAULT)
+            if (currentTimer.timerMode == TimerMode.DEFAULT)
                 printInfo("\rElapsed time: $timer")
             if (currentTimer.isFinished())
                 internalStop()
@@ -99,64 +99,6 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
         print(Ansi.ansi().fg(Ansi.Color.BLACK).bg(Ansi.Color.WHITE).a(message).reset())
     }
 
-    class Timer {
 
-        constructor(mode: MODE = MODE.INVALID,
-                    startDateTime: LocalDateTime = LocalDateTime.now(),
-                    stopDateTime: LocalDateTime? = null) {
-            this.mode = mode
-            this.startDateTime = startDateTime
-            this.stopDateTime = stopDateTime
-        }
-
-        val mode: MODE
-        private val startDateTime: LocalDateTime
-        private val stopDateTime: LocalDateTime?
-
-        override fun toString(): String {
-            val now = LocalDateTime.now()
-            val diffSecs = Duration.between(startDateTime, now).seconds.toNumberString()
-            val diffMins = Duration.between(startDateTime, now).toMinutes().toNumberString()
-            val diffHours = Duration.between(startDateTime, now).toHours().toNumberString()
-            return "$diffHours:$diffMins:$diffSecs"
-        }
-
-        fun isInvalid(): Boolean {
-            return this.equals(INVALID)
-        }
-
-        fun isFinished(): Boolean {
-            if (stopDateTime == null) {
-                return false
-            }
-            return LocalDateTime.now().compareTo(stopDateTime) >= 0
-        }
-
-        companion object {
-
-            val INVALID = Timer(MODE.INVALID)
-            fun calcStopTime(mins: Int, seconds: Int): LocalDateTime? {
-                var stop: LocalDateTime? = null
-                if (mins >= 0 && seconds > 0) {
-                    stop = LocalDateTime.now()
-                            .plusMinutes(mins.toLong())
-                            .plusSeconds(seconds.toLong())
-                }
-                return stop
-            }
-
-        }
-    }
 }
 
-enum class MODE {
-    INVALID, DEFAULT, BACKGROUND
-}
-
-fun Long.toNumberString(): String {
-    return this.mod(60).toString().apply {
-        if (this.length == 1) {
-            return "0$this"
-        }
-    }
-}
