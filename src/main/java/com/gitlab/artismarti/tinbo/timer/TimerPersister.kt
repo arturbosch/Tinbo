@@ -9,10 +9,10 @@ import com.gitlab.artismarti.tinbo.persistence.Data
 class TimerPersister : BasePersister() {
 
     override fun store(data: Data): Boolean {
-        throw UnsupportedOperationException()
+        return true
     }
 
     override fun restore(name: String): String {
-        throw UnsupportedOperationException()
+        return "Main"
     }
 }

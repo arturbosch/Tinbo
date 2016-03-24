@@ -9,6 +9,10 @@ abstract class Data(val name: String) {
 
     private var categories = listOf<Category>()
 
+    fun getCategories(): List<Category> {
+        return categories
+    }
+
     private fun addCategory(category: Category) {
         categories = categories.plus(category)
     }

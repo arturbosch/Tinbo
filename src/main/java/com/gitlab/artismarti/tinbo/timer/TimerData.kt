@@ -5,4 +5,4 @@ import com.gitlab.artismarti.tinbo.persistence.Data
 /**
  * @author artur
  */
-class TimerData(name: String) : Data(name)
+class TimerData(name: String = "") : Data(name)
