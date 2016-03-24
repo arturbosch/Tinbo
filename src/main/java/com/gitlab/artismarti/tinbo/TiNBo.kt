@@ -15,10 +15,6 @@ import uy.kohesive.injekt.api.fullType
 import java.util.logging.Logger
 
 /**
- * Full spring shell demo using spring boot for auto-configuration,
- * a custom bootstrap class to work properly with spring boot and
- * written with kotlin language.
- *
  * @author artur
  */
 @SpringBootApplication
