@@ -3,14 +3,13 @@ package com.gitlab.artismarti.tinbo.timer
 import com.gitlab.artismarti.tinbo.Notification
 import com.gitlab.artismarti.tinbo.config.Default
 import org.fusesource.jansi.Ansi
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.CommandMarker
-import org.springframework.shell.core.JLineShellComponent
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
+import uy.kohesive.injekt.Injekt
+import uy.kohesive.injekt.api.get
 import java.util.concurrent.CompletableFuture
-import java.util.logging.Level
 
 /**
  * Commands with that users can interact in timer mode.
@@ -18,10 +17,15 @@ import java.util.logging.Level
  * @author artur
  */
 @Component
-class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : CommandMarker {
+class TimerCommands(val timerDataHolder: TimerDataHolder = Injekt.get()) : CommandMarker {
 
     private var currentTimer = Timer.INVALID
     private var running = false
+
+    @CliCommand(value = "list")
+    fun listData(): String {
+        return timerDataHolder.data.toString()
+    }
 
     @Suppress("unused")
     @CliCommand(value = "start", help = "Starts the timer and waits for you to type 'stop' to finish it if no arguments are specified. " +
@@ -33,7 +37,7 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
                            specifiedDefaultValue = Default.MAIN_CATEGORY_NAME) name: String) {
 
         if (inputsAreInvalid(mins, seconds)) {
-            shell.flash(Level.WARNING, "Invalid parameters: minutes and seconds have to be positiv and seconds not bigger than 59.\n", "inputs")
+            printlnInfo("Invalid parameters: minutes and seconds have to be positiv and seconds not bigger than 59.")
             return;
         }
 
@@ -44,7 +48,7 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
                 startPrintingTime(Timer(mode, name, stopDateTime = Timer.calcStopTime(mins, seconds)))
             }
         } else {
-            shell.flash(Level.FINE, "Other timer already in process. Stop the timer before starting a new one.\n", "id")
+            printlnInfo("Other timer already in process. Stop the timer before starting a new one.")
         }
     }
 
@@ -74,12 +78,13 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
             running = false
             saveAndResetCurrentTimer()
         } else {
-            shell.flash(Level.FINE, "Other timer already in process. Stop the timer before starting a new one.", "id")
+            printlnInfo("Other timer already in process. Stop the timer before starting a new one.")
         }
     }
 
     private fun saveAndResetCurrentTimer() {
         notify()
+        timerDataHolder.persistEntry(currentTimer.name, TimerEntry())
         currentTimer = Timer.INVALID
     }
 
@@ -102,6 +107,8 @@ class TimerCommands @Autowired constructor(val shell: JLineShellComponent) : Com
         print(Ansi.ansi().fg(Ansi.Color.BLACK).bg(Ansi.Color.WHITE).a(message).reset())
     }
 
-
+    fun printlnInfo(message: String) {
+        printInfo(message + "\n")
+    }
 }
 
