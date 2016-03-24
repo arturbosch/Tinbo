@@ -23,7 +23,7 @@ open class TiNBo {
     companion object : InjektMain() {
 
         override fun InjektRegistrar.registerInjectables() {
-            
+
         }
 
         @JvmStatic fun main(args: Array<String>) {

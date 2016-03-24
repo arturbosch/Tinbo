@@ -1,7 +1,9 @@
 buildscript {
     ext {
         springBootVersion = '1.4.0.M1'
-        kotlin_version = '1.0.1'
+        springShellVersion = '1.2.0.M1'
+        gsonVersion =  '2.6.2'
+        kotlinVersion = '1.0.1'
 
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
@@ -13,7 +15,7 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
 
@@ -35,14 +37,14 @@ repositories {
 
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     compile "uy.kohesive.injekt:injekt-core:1.14.+"
 
-    compile('org.springframework.boot:spring-boot-starter')
-    compile 'org.springframework.shell:spring-shell:1.2.0.M1'
+    compile 'org.springframework.boot:spring-boot-starter'
+    compile "org.springframework.shell:spring-shell:$springShellVersion"
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
 
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-
+    compile "com.google.code.gson:gson:$gsonVersion"
 }
 
 eclipse {
@@ -53,7 +55,7 @@ eclipse {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.9'
+    gradleVersion = '2.11'
 }
 sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
