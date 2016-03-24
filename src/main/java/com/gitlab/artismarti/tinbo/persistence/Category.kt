@@ -3,13 +3,15 @@ package com.gitlab.artismarti.tinbo.persistence
 /**
  * @author artur
  */
-abstract class Category {
-    val name = ""
-    private var entries = listOf<Entry>()
+abstract class Category(val name: String,
+                        private var entries: List<Entry> = listOf<Entry>()) {
 
     fun addEntry(entry: Entry) {
         entries = entries.plus(entry)
     }
 
-    fun getEntries() = entries
+    override fun toString(): String{
+        return "Category(name='$name', entries=$entries)"
+    }
+
 }

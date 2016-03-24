@@ -9,11 +9,7 @@ abstract class BasePersister : Persister {
 
     private val gson = Gson()
 
-    override fun store(data: Data): Boolean {
-        throw UnsupportedOperationException()
-    }
+    abstract override fun store(data: Data): Boolean
 
-    override fun restore(name: String): String {
-        throw UnsupportedOperationException()
-    }
+    abstract override fun restore(name: String): String
 }

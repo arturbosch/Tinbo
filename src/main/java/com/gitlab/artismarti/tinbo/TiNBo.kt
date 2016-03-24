@@ -1,5 +1,8 @@
 package com.gitlab.artismarti.tinbo
 
+import com.gitlab.artismarti.tinbo.timer.TimerData
+import com.gitlab.artismarti.tinbo.timer.TimerDataHolder
+import com.gitlab.artismarti.tinbo.timer.TimerPersister
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
@@ -8,6 +11,7 @@ import org.springframework.shell.core.JLineShellComponent
 import org.springframework.shell.support.logging.HandlerUtils
 import uy.kohesive.injekt.InjektMain
 import uy.kohesive.injekt.api.InjektRegistrar
+import uy.kohesive.injekt.api.fullType
 import java.util.logging.Logger
 
 /**
@@ -23,7 +27,9 @@ open class TiNBo {
     companion object : InjektMain() {
 
         override fun InjektRegistrar.registerInjectables() {
-
+            addSingleton(fullType(), TimerData())
+            addSingleton(fullType(), TimerPersister())
+            addSingleton(fullType(), TimerDataHolder())
         }
 
         @JvmStatic fun main(args: Array<String>) {
