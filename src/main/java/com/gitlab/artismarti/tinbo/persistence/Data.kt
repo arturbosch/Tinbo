@@ -1,12 +1,23 @@
 package com.gitlab.artismarti.tinbo.persistence
 
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.gitlab.artismarti.tinbo.timer.TimerCategory
+import com.gitlab.artismarti.tinbo.timer.TimerData
 
 /**
  * @author artur
  */
-abstract class Data(var name: String,
-                    var categories: List<Category>) {
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes(
+        JsonSubTypes.Type(value = TimerData::class, name = "timerData")
+)
+abstract class Data(@JsonProperty("name") var name: String,
+                    @JsonProperty("categories") var categories: List<Category>) {
 
     private fun addCategory(category: Category) {
         categories = categories.plus(category)

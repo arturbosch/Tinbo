@@ -6,8 +6,12 @@ import uy.kohesive.injekt.api.get
 /**
  * @author artur
  */
-class TimerDataHolder(val data: TimerData = Injekt.get(),
+class TimerDataHolder(var data: TimerData = Injekt.get(),
                       val persister: TimerPersister = Injekt.get()) {
+
+    fun loadData(forCategory: String) {
+        data = persister.restore(forCategory)
+    }
 
     fun persistEntry(forCategory: String, entry: TimerEntry) {
         data.addForCategory(forCategory, entry)

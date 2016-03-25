@@ -43,8 +43,11 @@ dependencies {
     compile "org.springframework.shell:spring-shell:$springShellVersion"
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.7.1-1'
-    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.7.1'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.7.3'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.7.3'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.7.3'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.7.3'
+
 }
 
 eclipse {

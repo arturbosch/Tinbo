@@ -55,3 +55,10 @@ q
 list
 // TinboBanner 1.2.0.M1 log opened at 2016-03-25 16:34:01
 start --name Test --s 10
+// TinboBanner 1.2.0.M1 log opened at 2016-03-25 21:38:53
+start --s 10
+list
+// TinboBanner 1.2.0.M1 log opened at 2016-03-25 21:47:06
+start
+q
+list
