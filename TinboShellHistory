@@ -1,0 +1,57 @@
+// TinboBanner 1.2.0.M1 log opened at 2016-03-22 22:47:41
+start
+q
+start --bg true
+q
+start --bg --s 5
+// TinboBanner 1.2.0.M1 log opened at 2016-03-22 22:49:47
+start --bg --s 4
+start --s 4
+// TinboBanner 1.2.0.M1 log opened at 2016-03-23 23:41:23
+start --name tinbo --s 10
+// TinboBanner 1.2.0.M1 log opened at 2016-03-23 23:43:33
+start
+// TinboBanner 1.2.0.M1 log opened at 2016-03-23 23:45:56
+start --n joo --s 10
+// TinboBanner 1.2.0.M1 log opened at 2016-03-23 23:47:25
+start --n joo --s 10
+// TinboBanner 1.2.0.M1 log opened at 2016-03-23 23:49:27
+start --s 5
+// TinboBanner 1.2.0.M1 log opened at 2016-03-24 00:11:08
+// TinboBanner 1.2.0.M1 log opened at 2016-03-24 01:34:58
+start
+q
+// TinboBanner 1.2.0.M1 log opened at 2016-03-24 02:00:56
+// TinboBanner 1.2.0.M1 log opened at 2016-03-24 02:14:22
+start
+q
+list
+// TinboBanner 1.2.0.M1 log opened at 2016-03-24 02:20:05
+start
+q
+list
+start
+q
+list
+start --name Test
+q
+list
+list
+// TinboBanner 1.2.0.M1 log opened at 2016-03-24 02:44:29
+start
+q
+list
+start --name test
+q
+list
+// TinboBanner 1.2.0.M1 log opened at 2016-03-25 13:29:58
+start
+q
+list
+start
+q
+start --name JOOOO
+q
+list
+// TinboBanner 1.2.0.M1 log opened at 2016-03-25 16:34:01
+start --name Test --s 10

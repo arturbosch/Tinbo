@@ -5,13 +5,8 @@ import com.gitlab.artismarti.tinbo.timer.TimerCategory
 /**
  * @author artur
  */
-abstract class Data(val name: String) {
-
-    private var categories = listOf<Category>()
-
-    fun getCategories(): List<Category> {
-        return categories
-    }
+abstract class Data(var name: String,
+                    var categories: List<Category>) {
 
     private fun addCategory(category: Category) {
         categories = categories.plus(category)
@@ -22,7 +17,7 @@ abstract class Data(val name: String) {
         category?.addEntry(entry) ?: addCategory(TimerCategory(categoryName).apply { addEntry(entry) })
     }
 
-    override fun toString(): String{
+    override fun toString(): String {
         return "Data(name='$name', categories=$categories)"
     }
 

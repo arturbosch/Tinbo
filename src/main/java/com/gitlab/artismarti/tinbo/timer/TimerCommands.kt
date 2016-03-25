@@ -2,7 +2,8 @@ package com.gitlab.artismarti.tinbo.timer
 
 import com.gitlab.artismarti.tinbo.Notification
 import com.gitlab.artismarti.tinbo.config.Default
-import org.fusesource.jansi.Ansi
+import com.gitlab.artismarti.tinbo.printInfo
+import com.gitlab.artismarti.tinbo.printlnInfo
 import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
@@ -22,6 +23,7 @@ class TimerCommands(val timerDataHolder: TimerDataHolder = Injekt.get()) : Comma
     private var currentTimer = Timer.INVALID
     private var running = false
 
+    @Suppress("unused")
     @CliCommand(value = "list")
     fun listData(): String {
         return timerDataHolder.data.toString()
@@ -61,6 +63,17 @@ class TimerCommands(val timerDataHolder: TimerDataHolder = Injekt.get()) : Comma
         return !(mins >= 0 && seconds >= 0 && seconds < 60)
     }
 
+    private fun startPrintingTime(timer: Timer) {
+        currentTimer = timer
+        while (running) {
+            if (currentTimer.timerMode == TimerMode.DEFAULT)
+                printInfo("\rElapsed time: $timer")
+            if (currentTimer.isFinished())
+                internalStop()
+            Thread.sleep(1000L)
+        }
+    }
+
     @Suppress("unused")
     @CliCommand(value = "stop", help = "Stops the timer.")
     fun stopTimer() {
@@ -92,23 +105,4 @@ class TimerCommands(val timerDataHolder: TimerDataHolder = Injekt.get()) : Comma
         Notification.finished(currentTimer.toString())
     }
 
-    private fun startPrintingTime(timer: Timer) {
-        currentTimer = timer
-        while (running) {
-            if (currentTimer.timerMode == TimerMode.DEFAULT)
-                printInfo("\rElapsed time: $timer")
-            if (currentTimer.isFinished())
-                internalStop()
-            Thread.sleep(1000L)
-        }
-    }
-
-    fun printInfo(message: String) {
-        print(Ansi.ansi().fg(Ansi.Color.BLACK).bg(Ansi.Color.WHITE).a(message).reset())
-    }
-
-    fun printlnInfo(message: String) {
-        printInfo(message + "\n")
-    }
 }
-

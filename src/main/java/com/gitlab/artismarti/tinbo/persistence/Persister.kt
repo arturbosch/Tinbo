@@ -7,5 +7,5 @@ interface Persister {
 
     fun store(data: Data): Boolean
 
-    fun restore(name: String): String
+    fun restore(name: String): Data
 }

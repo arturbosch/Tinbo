@@ -10,8 +10,8 @@ import java.nio.file.Paths
  */
 object HomeFolder {
 
-    private val notesDir = "TiNBo"
-    private val homeDir = System.getProperty("user.home") + File.separator + notesDir
+    private val mainDir = "TiNBo"
+    private val homeDir = System.getProperty("user.home") + File.separator + mainDir
     private val homePath = Paths.get(homeDir)
 
     fun get(): Path {
@@ -20,13 +20,20 @@ object HomeFolder {
         return homePath
     }
 
-    fun newOrGetFile(subPathInKNotesDir: String): Path {
-        var newFile = homePath.resolve(subPathInKNotesDir)
-        if (Files.notExists(newFile))
-            newFile = Files.createFile(newFile)
-        return newFile
+    fun getFile(subPathInTinboDir: Path): Path {
+        return checkAndCreate(subPathInTinboDir, { newFile -> Files.createFile(newFile) })
     }
 
-    fun fileExists(fileName: String): Boolean = Files.exists(homePath.resolve(fileName))
+    private fun checkAndCreate(path: Path, createFile: (Path) -> Path): Path {
+        if (Files.notExists(path))
+            createFile.invoke(path)
+        return path
+    }
+
+    fun getDirectory(subPathInTinboDir: String): Path {
+        var newDir = homePath.resolve(subPathInTinboDir)
+        return checkAndCreate(newDir, { newDir -> Files.createDirectories(newDir) })
+    }
+
 }
 
