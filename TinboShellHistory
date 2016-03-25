@@ -75,3 +75,9 @@ list
 changeSet --name Main
 list
 start --s 4
+// TinboBanner 1.2.0.M1 log opened at 2016-03-25 22:31:23
+start --s 10
+list
+// TinboBanner 1.2.0.M1 log opened at 2016-03-25 22:33:06
+start --m 1 --s 10
+list

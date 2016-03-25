@@ -24,15 +24,20 @@ class Timer {
 
     val name: String
     val timerMode: TimerMode
-    private val startDateTime: LocalDateTime
-    private val stopDateTime: LocalDateTime?
+    val startDateTime: LocalDateTime
+    val stopDateTime: LocalDateTime?
 
     override fun toString(): String {
+        val (diffSecs, diffMins, diffHours) = getTimeTriple()
+        return "${diffHours.toNumberString()}:${diffMins.toNumberString()}:${diffSecs.toNumberString()} ($name)"
+    }
+
+    fun getTimeTriple(): Triple<Long, Long, Long> {
         val now = LocalDateTime.now()
-        val diffSecs = Duration.between(startDateTime, now).seconds.toNumberString()
-        val diffMins = Duration.between(startDateTime, now).toMinutes().toNumberString()
-        val diffHours = Duration.between(startDateTime, now).toHours().toNumberString()
-        return "$diffHours:$diffMins:$diffSecs ($name)"
+        val diffSecs = Duration.between(startDateTime, now).seconds.mod(60)
+        val diffMins = Duration.between(startDateTime, now).toMinutes().mod(60)
+        val diffHours = Duration.between(startDateTime, now).toHours().mod(60)
+        return Triple(diffSecs, diffMins, diffHours)
     }
 
     fun isInvalid(): Boolean {

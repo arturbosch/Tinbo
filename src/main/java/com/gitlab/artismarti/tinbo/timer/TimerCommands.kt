@@ -101,8 +101,13 @@ class TimerCommands(val timerDataHolder: TimerDataHolder = Injekt.get()) : Comma
 
     private fun saveAndResetCurrentTimer() {
         notify()
-        timerDataHolder.persistEntry(currentTimer.name, TimerEntry())
+        timerDataHolder.persistEntry(currentTimer.name, createTimeEntry())
         currentTimer = Timer.INVALID
+    }
+
+    private fun createTimeEntry(): TimerEntry {
+        val (secs, mins, hours) = currentTimer.getTimeTriple()
+        return TimerEntry("", hours, mins, secs, currentTimer.startDateTime.toLocalDate())
     }
 
     private fun notify() {

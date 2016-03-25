@@ -9,8 +9,8 @@ package com.gitlab.artismarti.tinbo.timer
  * by the format 'xx' where xx can't be higher than 59.
  */
 fun Long.toNumberString(): String {
-    return this.mod(60).toString().apply {
-        if (this.length == 1) {
+    return toString().apply {
+        if (length == 1) {
             return "0$this"
         }
     }
