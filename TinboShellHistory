@@ -62,3 +62,16 @@ list
 start
 q
 list
+// TinboBanner 1.2.0.M1 log opened at 2016-03-25 21:56:12
+start --name Test --s 10
+list
+// TinboBanner 1.2.0.M1 log opened at 2016-03-25 22:03:38
+list
+changeSet --name Main
+list
+// TinboBanner 1.2.0.M1 log opened at 2016-03-25 22:05:17
+// TinboBanner 1.2.0.M1 log opened at 2016-03-25 22:06:09
+list
+changeSet --name Main
+list
+start --s 4

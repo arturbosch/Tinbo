@@ -20,6 +20,10 @@ import java.util.concurrent.CompletableFuture
 @Component
 class TimerCommands(val timerDataHolder: TimerDataHolder = Injekt.get()) : CommandMarker {
 
+    init {
+        timerDataHolder.loadData(Default.DATA_NAME)
+    }
+
     private var currentTimer = Timer.INVALID
     private var running = false
 
@@ -103,6 +107,14 @@ class TimerCommands(val timerDataHolder: TimerDataHolder = Injekt.get()) : Comma
 
     private fun notify() {
         Notification.finished(currentTimer.toString())
+    }
+
+    @Suppress("unused")
+    @CliCommand(value = "changeSet", help = "Changes the complete data set of timers and categories.")
+    fun loadData(@CliOption(key = arrayOf("name"), help = "name of the data set to load",
+            unspecifiedDefaultValue = Default.DATA_NAME,
+            specifiedDefaultValue = Default.DATA_NAME) name: String) {
+        timerDataHolder.loadData(name)
     }
 
 }

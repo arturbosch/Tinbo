@@ -29,10 +29,11 @@ class TimerPersister(private val TIMER_PATH: Path = HomeFolder.getDirectory("tim
 
     override fun restore(name: String): TimerData {
         val path = TIMER_PATH.resolve(name)
-        if (Files.notExists(path)) {
-            return TimerData()
+        var data = TimerData(name)
+        if (Files.exists(path)) {
+            val toJson = Files.readAllLines(path).joinToString(separator = "")
+            data = objectMapper.readValue(toJson, TimerData::class.java)
         }
-        val toJson = Files.readAllLines(path).joinToString(separator = "")
-        return objectMapper.readValue(toJson, TimerData::class.java)
+        return data
     }
 }
