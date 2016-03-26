@@ -60,7 +60,7 @@ class TimerExecutor(val timerDataHolder: TimerDataHolder = Injekt.get()) {
 
     private fun createTimeEntry(): TimerEntry {
         val (secs, mins, hours) = currentTimer.getTimeTriple()
-        return TimerEntry("", hours, mins, secs, currentTimer.startDateTime.toLocalDate())
+        return TimerEntry(currentTimer.message, hours, mins, secs, currentTimer.startDateTime.toLocalDate())
     }
 
     private fun notify() {

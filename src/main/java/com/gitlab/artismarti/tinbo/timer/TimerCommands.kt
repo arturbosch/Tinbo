@@ -27,21 +27,26 @@ class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker 
     @Suppress("unused")
     @CliCommand(value = "start", help = "Starts the timer and waits for you to type 'stop' to finish it if no arguments are specified. " +
             "Parameters '--minutes | --mins | --m' and '--seconds | --secs | --s' can be used to specify how long the timer should run.")
-    fun startTimer(@CliOption(key = arrayOf("minutes", "m", "mins"), unspecifiedDefaultValue = "0", help = "Duration of timer in minutes.") mins: Int,
-                   @CliOption(key = arrayOf("seconds", "s", "mins"), unspecifiedDefaultValue = "0", help = "Duration of timer in seconds.") seconds: Int,
-                   @CliOption(key = arrayOf("bg", "background"), unspecifiedDefaultValue = "false", specifiedDefaultValue = "true") bg: Boolean,
+    fun startTimer(@CliOption(key = arrayOf("minutes", "m", "mins"), specifiedDefaultValue = "0",
+            unspecifiedDefaultValue = "0", help = "Duration of timer in minutes.") mins: Int,
+                   @CliOption(key = arrayOf("seconds", "s", "mins"), specifiedDefaultValue = "0",
+                           unspecifiedDefaultValue = "0", help = "Duration of timer in seconds.") seconds: Int,
+                   @CliOption(key = arrayOf("bg", "background"), unspecifiedDefaultValue = "false",
+                           specifiedDefaultValue = "true", help = "If the timer should be started in background.") bg: Boolean,
                    @CliOption(key = arrayOf("name", "n"), unspecifiedDefaultValue = Default.MAIN_CATEGORY_NAME,
-                           specifiedDefaultValue = Default.MAIN_CATEGORY_NAME) name: String) {
+                           specifiedDefaultValue = Default.MAIN_CATEGORY_NAME, help = "Category in which the time should be saved.") name: String,
+                   @CliOption(key = arrayOf("message", "msg"), unspecifiedDefaultValue = "",
+                           specifiedDefaultValue = "", help = "Note for this tracking.") message: String) {
 
         if (inputsAreInvalid(mins, seconds)) {
-            printlnInfo("Invalid parameters: minutes and seconds have to be positiv and seconds not bigger than 59.")
+            printlnInfo("Invalid parameters: minutes and seconds have to be positive and seconds not bigger than 59.")
             return;
         }
 
         if (!executor.inProgress()) {
             val mode = specifyTimerMode(bg)
             CompletableFuture.runAsync {
-                executor.startPrintingTime(Timer(mode, name, stopDateTime = Timer.calcStopTime(mins, seconds)))
+                executor.startPrintingTime(Timer(mode, name, message, stopDateTime = Timer.calcStopTime(mins, seconds)))
             }
         } else {
             printlnInfo("Other timer already in process. Stop the timer before starting a new one.")

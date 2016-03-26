@@ -81,3 +81,21 @@ list
 // TinboBanner 1.2.0.M1 log opened at 2016-03-25 22:33:06
 start --m 1 --s 10
 list
+// TinboBanner 1.2.0.M1 log opened at 2016-03-26 20:39:40
+list
+start --s 30
+list
+start
+start
+q
+list
+// TinboBanner 1.2.0.M1 log opened at 2016-03-26 20:55:04
+list
+// TinboBanner 1.2.0.M1 log opened at 2016-03-26 20:58:08
+list
+help start
+// TinboBanner 1.2.0.M1 log opened at 2016-03-26 21:13:49
+list
+help start
+start --name Test --msg "This is a test tracking." --m 1 --s 30
+list
