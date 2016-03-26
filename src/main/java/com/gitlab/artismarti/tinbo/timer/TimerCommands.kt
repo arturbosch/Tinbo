@@ -1,8 +1,6 @@
 package com.gitlab.artismarti.tinbo.timer
 
-import com.gitlab.artismarti.tinbo.Notification
 import com.gitlab.artismarti.tinbo.config.Default
-import com.gitlab.artismarti.tinbo.printInfo
 import com.gitlab.artismarti.tinbo.printlnInfo
 import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliCommand
@@ -18,19 +16,12 @@ import java.util.concurrent.CompletableFuture
  * @author artur
  */
 @Component
-class TimerCommands(val timerDataHolder: TimerDataHolder = Injekt.get()) : CommandMarker {
-
-    init {
-        timerDataHolder.loadData(Default.DATA_NAME)
-    }
-
-    private var currentTimer = Timer.INVALID
-    private var running = false
+class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker {
 
     @Suppress("unused")
     @CliCommand(value = "list")
     fun listData(): String {
-        return timerDataHolder.data.toString()
+        return executor.listData()
     }
 
     @Suppress("unused")
@@ -47,11 +38,10 @@ class TimerCommands(val timerDataHolder: TimerDataHolder = Injekt.get()) : Comma
             return;
         }
 
-        if (currentTimer.isInvalid()) {
-            running = true
+        if (!executor.inProgress()) {
             val mode = specifyTimerMode(bg)
             CompletableFuture.runAsync {
-                startPrintingTime(Timer(mode, name, stopDateTime = Timer.calcStopTime(mins, seconds)))
+                executor.startPrintingTime(Timer(mode, name, stopDateTime = Timer.calcStopTime(mins, seconds)))
             }
         } else {
             printlnInfo("Other timer already in process. Stop the timer before starting a new one.")
@@ -67,51 +57,16 @@ class TimerCommands(val timerDataHolder: TimerDataHolder = Injekt.get()) : Comma
         return !(mins >= 0 && seconds >= 0 && seconds < 60)
     }
 
-    private fun startPrintingTime(timer: Timer) {
-        currentTimer = timer
-        while (running) {
-            if (currentTimer.timerMode == TimerMode.DEFAULT)
-                printInfo("\rElapsed time: $timer")
-            if (currentTimer.isFinished())
-                internalStop()
-            Thread.sleep(1000L)
-        }
-    }
-
     @Suppress("unused")
     @CliCommand(value = "stop", help = "Stops the timer.")
     fun stopTimer() {
-        internalStop()
+        executor.stop()
     }
 
     @Suppress("unused")
     @CliCommand(value = "q", help = "Stops the timer.")
     fun stopTimerWithQ() {
-        internalStop()
-    }
-
-    private fun internalStop() {
-        if (!currentTimer.isInvalid()) {
-            running = false
-            saveAndResetCurrentTimer()
-        } else {
-            printlnInfo("Other timer already in process. Stop the timer before starting a new one.")
-        }
-    }
-
-    private fun saveAndResetCurrentTimer() {
-        notify()
-        timerDataHolder.persistEntry(currentTimer.name, createTimeEntry())
-        currentTimer = Timer.INVALID
-    }
-
-    private fun createTimeEntry(): TimerEntry {
-        val (secs, mins, hours) = currentTimer.getTimeTriple()
-        return TimerEntry("", hours, mins, secs, currentTimer.startDateTime.toLocalDate())
-    }
-
-    private fun notify() {
-        Notification.finished(currentTimer.toString())
+        executor.stop()
     }
 
     @Suppress("unused")
@@ -119,7 +74,7 @@ class TimerCommands(val timerDataHolder: TimerDataHolder = Injekt.get()) : Comma
     fun loadData(@CliOption(key = arrayOf("name"), help = "name of the data set to load",
             unspecifiedDefaultValue = Default.DATA_NAME,
             specifiedDefaultValue = Default.DATA_NAME) name: String) {
-        timerDataHolder.loadData(name)
+        executor.loadData(name)
     }
 
 }

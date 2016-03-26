@@ -2,6 +2,7 @@ package com.gitlab.artismarti.tinbo
 
 import com.gitlab.artismarti.tinbo.timer.TimerData
 import com.gitlab.artismarti.tinbo.timer.TimerDataHolder
+import com.gitlab.artismarti.tinbo.timer.TimerExecutor
 import com.gitlab.artismarti.tinbo.timer.TimerPersister
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -26,6 +27,7 @@ open class TiNBo {
             addSingleton(fullType(), TimerData())
             addSingleton(fullType(), TimerPersister())
             addSingleton(fullType(), TimerDataHolder())
+            addSingleton(fullType(), TimerExecutor())
         }
 
         @JvmStatic fun main(args: Array<String>) {
