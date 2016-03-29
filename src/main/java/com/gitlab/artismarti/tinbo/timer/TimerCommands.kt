@@ -2,7 +2,9 @@ package com.gitlab.artismarti.tinbo.timer
 
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.printer.printlnInfo
+import com.gitlab.artismarti.tinbo.start.ModeAdvicer
 import org.springframework.shell.core.CommandMarker
+import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
@@ -17,6 +19,12 @@ import java.util.concurrent.CompletableFuture
  */
 @Component
 class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker {
+
+    @Suppress("unused")
+    @CliAvailabilityIndicator("list", "start", "stop", "q", "changeSet")
+    fun isAvailable(): Boolean {
+        return ModeAdvicer.isTimerMode()
+    }
 
     @Suppress("unused")
     @CliCommand(value = "list", help = "Lists whole timer data sorted by date. Can be filtered by category name.")
