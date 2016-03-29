@@ -1,9 +1,9 @@
 package com.gitlab.artismarti.tinbo.timer
 
 import com.gitlab.artismarti.tinbo.Notification
-import com.gitlab.artismarti.tinbo.printer.CSVTablePrinter
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.persistence.Category
+import com.gitlab.artismarti.tinbo.printer.CSVTablePrinter
 import com.gitlab.artismarti.tinbo.printer.printInfo
 import com.gitlab.artismarti.tinbo.printer.printlnInfo
 import uy.kohesive.injekt.Injekt
@@ -25,14 +25,22 @@ class TimerExecutor(val timerDataHolder: TimerDataHolder = Injekt.get()) {
         return !currentTimer.isInvalid()
     }
 
-    fun listData(): List<String> {
+    private fun listData(data: List<String>): List<String> {
         val csv = CSVTablePrinter()
-
-        val data = timerDataHolder.data
-        val table = data.categories.flatMap { extractEntriesAsString(it) }.toMutableList()
+        val table = data.toMutableList()
         table.add(0, "Category;Date;H;M;S;Notice")
-
         return csv.asTable(table)
+    }
+
+    fun listDataFilterForCategory(categoryName: String): List<String> {
+        return listData(timerDataHolder.data.categories
+                .filter { it.name == categoryName }
+                .flatMap { extractEntriesAsString(it) })
+    }
+
+    fun listDataNoFiltering(): List<String> {
+        return listData(timerDataHolder.data.categories
+                .flatMap { extractEntriesAsString(it) })
     }
 
     private fun extractEntriesAsString(category: Category): List<String> = category.entries.sorted().map { "${category.name};${it.toString()}" }

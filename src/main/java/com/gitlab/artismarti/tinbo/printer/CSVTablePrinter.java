@@ -7,12 +7,15 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
+ * Formats a given list with csv strings to a table stored also in a list.
+ * This class doesn't check for valid csv strings all with same length, this is up to the user.
+ *
  * @author artur
  */
 public class CSVTablePrinter {
 
 	public List<String> asTable(List<String> lines) {
-		if (lines.isEmpty() || lines.size() < 2)
+		if (lines.isEmpty())
 			throw new IllegalArgumentException("No csv data.");
 
 		List<String> table = new ArrayList<>();

@@ -19,9 +19,14 @@ import java.util.concurrent.CompletableFuture
 class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker {
 
     @Suppress("unused")
-    @CliCommand(value = "list")
-    fun listData(): String {
-        return executor.listData().joinToString("\n")
+    @CliCommand(value = "list", help = "Lists whole timer data sorted by date. Can be filtered by category name.")
+    fun listData(@CliOption(key = arrayOf("category", "cat"), unspecifiedDefaultValue = "", specifiedDefaultValue = "",
+            help = "Name to filter only for this specific category.") categoryName: String): String {
+        val data = when(categoryName) {
+            "" -> executor.listDataNoFiltering()
+            else -> executor.listDataFilterForCategory(categoryName)
+        }
+        return data.joinToString("\n")
     }
 
     @Suppress("unused")
