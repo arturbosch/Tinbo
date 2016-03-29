@@ -1,9 +1,11 @@
 package com.gitlab.artismarti.tinbo.timer
 
 import com.gitlab.artismarti.tinbo.Notification
+import com.gitlab.artismarti.tinbo.printer.CSVTablePrinter
 import com.gitlab.artismarti.tinbo.config.Default
-import com.gitlab.artismarti.tinbo.printInfo
-import com.gitlab.artismarti.tinbo.printlnInfo
+import com.gitlab.artismarti.tinbo.persistence.Category
+import com.gitlab.artismarti.tinbo.printer.printInfo
+import com.gitlab.artismarti.tinbo.printer.printlnInfo
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 
@@ -23,9 +25,17 @@ class TimerExecutor(val timerDataHolder: TimerDataHolder = Injekt.get()) {
         return !currentTimer.isInvalid()
     }
 
-    fun listData(): String {
-        return timerDataHolder.data.toString()
+    fun listData(): List<String> {
+        val csv = CSVTablePrinter()
+
+        val data = timerDataHolder.data
+        val table = data.categories.flatMap { extractEntriesAsString(it) }.toMutableList()
+        table.add(0, "Category;Date;H;M;S;Notice")
+
+        return csv.asTable(table)
     }
+
+    private fun extractEntriesAsString(category: Category): List<String> = category.entries.sorted().map { "${category.name};${it.toString()}" }
 
     fun loadData(name: String) {
         timerDataHolder.loadData(name)

@@ -1,7 +1,7 @@
 package com.gitlab.artismarti.tinbo.timer
 
 import com.gitlab.artismarti.tinbo.config.Default
-import com.gitlab.artismarti.tinbo.printlnInfo
+import com.gitlab.artismarti.tinbo.printer.printlnInfo
 import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
@@ -11,7 +11,7 @@ import uy.kohesive.injekt.api.get
 import java.util.concurrent.CompletableFuture
 
 /**
- * Commands with that users can interact in timer mode.
+ * Commands users can write to interact in timer mode.
  *
  * @author artur
  */
@@ -21,7 +21,7 @@ class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker 
     @Suppress("unused")
     @CliCommand(value = "list")
     fun listData(): String {
-        return executor.listData()
+        return executor.listData().joinToString("\n")
     }
 
     @Suppress("unused")

@@ -14,4 +14,6 @@ import com.gitlab.artismarti.tinbo.timer.TimerEntry
 @JsonSubTypes(
         JsonSubTypes.Type(value = TimerEntry::class, name = "timerEntry")
 )
-abstract class Entry() {}
+abstract class Entry() : Comparable<Entry> {
+
+}
