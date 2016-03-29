@@ -20,13 +20,11 @@ import java.util.concurrent.CompletableFuture
 @Component
 class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker {
 
-    @Suppress("unused")
     @CliAvailabilityIndicator("list", "start", "stop", "q", "changeSet")
     fun isAvailable(): Boolean {
         return ModeAdvicer.isTimerMode()
     }
 
-    @Suppress("unused")
     @CliCommand(value = "list", help = "Lists whole timer data sorted by date. Can be filtered by category name.")
     fun listData(@CliOption(key = arrayOf("category", "cat"), unspecifiedDefaultValue = "", specifiedDefaultValue = "",
             help = "Name to filter only for this specific category.") categoryName: String): String {
@@ -37,7 +35,6 @@ class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker 
         return data.joinToString("\n")
     }
 
-    @Suppress("unused")
     @CliCommand(value = "start", help = "Starts the timer and waits for you to type 'stop' to finish it if no arguments are specified. " +
             "Parameters '--minutes | --mins | --m' and '--seconds | --secs | --s' can be used to specify how long the timer should run.")
     fun startTimer(@CliOption(key = arrayOf("minutes", "m", "mins"), specifiedDefaultValue = "0",
@@ -75,19 +72,16 @@ class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker 
         return !(mins >= 0 && seconds >= 0 && seconds < 60)
     }
 
-    @Suppress("unused")
     @CliCommand(value = "stop", help = "Stops the timer.")
     fun stopTimer() {
         executor.stop()
     }
 
-    @Suppress("unused")
     @CliCommand(value = "q", help = "Stops the timer.")
     fun stopTimerWithQ() {
         executor.stop()
     }
 
-    @Suppress("unused")
     @CliCommand(value = "changeSet", help = "Changes the complete data set of timers and categories.")
     fun loadData(@CliOption(key = arrayOf("name"), help = "name of the data set to load",
             unspecifiedDefaultValue = Default.DATA_NAME,
