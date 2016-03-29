@@ -11,5 +11,6 @@ fun printInfo(message: String) {
 }
 
 fun printlnInfo(message: String) {
-    printInfo(message + "\n")
+    printInfo(message)
+    println()
 }
