@@ -66,7 +66,7 @@ class TimerExecutor(val timerDataHolder: TimerDataHolder = Injekt.get()) {
             running = false
             saveAndResetCurrentTimer()
         } else {
-            printlnInfo("Other timer already in process. Stop the timer before starting a new one.")
+            printlnInfo("There is no current timer to stop.")
         }
     }
 
