@@ -90,4 +90,9 @@ class TimerExecutor(val timerDataHolder: TimerDataHolder = Injekt.get()) {
         Notification.finished(currentTimer.toString())
     }
 
+    fun showTimer(): String {
+        if(inProgress()) return "Elapsed time: " + currentTimer.toString()
+        else return "No current timer is running"
+    }
+
 }

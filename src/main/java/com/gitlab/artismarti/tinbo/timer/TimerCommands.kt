@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture
 @Component
 class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker {
 
-    @CliAvailabilityIndicator("list", "start", "stop", "q", "changeSet")
+    @CliAvailabilityIndicator("list", "start", "stop", "q", "changeSet", "show")
     fun isAvailable(): Boolean {
         return ModeAdvisor.isTimerMode()
     }
@@ -96,4 +96,8 @@ class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker 
         executor.loadData(name)
     }
 
+    @CliCommand(value = "show", help = "Shows the current running timer. Useful when in background mode.")
+    fun showCurrentTimer(): String {
+        return executor.showTimer()
+    }
 }
