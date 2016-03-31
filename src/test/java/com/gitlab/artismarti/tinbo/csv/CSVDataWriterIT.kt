@@ -1,6 +1,5 @@
 package com.gitlab.artismarti.tinbo.csv
 
-import com.gitlab.artismarti.tinbo.csv.CSVDataExchange
 import com.gitlab.artismarti.tinbo.timer.TimerEntry
 import org.junit.After
 import org.junit.Before
@@ -42,11 +41,11 @@ class CSVDataWriterIT {
     }
 
     private fun testPersist1() {
-        writer.persist(list)
+        writer.toCSV(list)
     }
 
     private fun testPersist2() {
-        writer.persist2(list)
+        writer.toCSV2(list)
     }
 
 }

@@ -13,7 +13,7 @@ class CSVDataExchange {
 
     private val separator = ";"
 
-    fun persist(entries: List<Entry>): List<String> {
+    fun toCSV(entries: List<Entry>): List<String> {
         return entries.map { entry ->
             entry.javaClass.declaredFields.asList()
                     .map {
@@ -25,11 +25,11 @@ class CSVDataExchange {
 
     }
 
-    fun persist2(entries: List<Entry>): List<String> {
+    fun toCSV2(entries: List<Entry>): List<String> {
         return entries.map { it.toString() }
     }
 
-    fun <T : Entry> transform(clazz: Class<T>, entriesAsString: List<String>): List<Entry> {
+    fun <T : Entry> fromCSV(clazz: Class<T>, entriesAsString: List<String>): List<Entry> {
         val result = ArrayList<Entry>()
         val fields = getAccessibleFields(clazz)
         for (entryString in entriesAsString) {

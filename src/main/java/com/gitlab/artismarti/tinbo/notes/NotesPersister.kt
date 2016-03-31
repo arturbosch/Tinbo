@@ -15,7 +15,7 @@ class NotesPersister(private val NOTES_PATH: Path = HomeFolder.getDirectory("not
     private val writer = CSVDataExchange()
 
     override fun store(data: Data): Boolean {
-        val persist = writer.persist(data.entries).joinToString("\n")
+        val persist = writer.toCSV(data.entries).joinToString("\n")
         val toSave = HomeFolder.getFile(NOTES_PATH.resolve(data.name))
         val saved = Files.write(toSave, persist.toByteArray())
         return Files.exists(saved)
@@ -26,7 +26,7 @@ class NotesPersister(private val NOTES_PATH: Path = HomeFolder.getDirectory("not
         var data = NotesData(name)
         if (Files.exists(path)) {
             val entriesAsString = Files.readAllLines(path)
-            val entries = writer.transform(NoteEntry::class.java, entriesAsString)
+            val entries = writer.fromCSV(NoteEntry::class.java, entriesAsString)
             data.entries = entries
         }
         return data

@@ -20,12 +20,12 @@ import java.util.concurrent.CompletableFuture
 @Component
 class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker {
 
-    @CliAvailabilityIndicator("list", "start", "stop", "q", "changeSet", "show")
+    @CliAvailabilityIndicator("listt", "start", "stop", "q", "loadt", "show")
     fun isAvailable(): Boolean {
         return ModeAdvisor.isTimerMode()
     }
 
-    @CliCommand(value = "list", help = "Lists whole timer data sorted by date. Can be filtered by category name.")
+    @CliCommand("listTimers", "listt", help = "Lists whole timer data sorted by date. Can be filtered by category name.")
     fun listData(@CliOption(key = arrayOf("category", "cat"), unspecifiedDefaultValue = "", specifiedDefaultValue = "",
             help = "Name to filter only for this specific category.") categoryName: String): String {
         val data = when (categoryName) {

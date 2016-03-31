@@ -22,7 +22,7 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
 
     private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
 
-    @CliAvailabilityIndicator("note", "task", "load", "all")
+    @CliAvailabilityIndicator("note", "task", "loadn", "listn")
     fun isAvailable(): Boolean {
         return ModeAdvisor.isNotesMode()
     }
@@ -83,7 +83,7 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
         }
     }
 
-    @CliCommand("all", help = "Lists all notes and tasks.")
+    @CliCommand("listNotes", "listn", help = "Lists all notes and tasks.")
     fun listNotes(): String {
         return executor.listData()
     }

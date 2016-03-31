@@ -15,7 +15,7 @@ class TimerPersister(private val TIMER_PATH: Path = HomeFolder.getDirectory("tim
     private val writer = CSVDataExchange()
 
     override fun store(data: Data): Boolean {
-        val persist = writer.persist(data.entries).joinToString("\n")
+        val persist = writer.toCSV(data.entries).joinToString("\n")
         val toSave = HomeFolder.getFile(TIMER_PATH.resolve(data.name))
         val saved = Files.write(toSave, persist.toByteArray())
         return Files.exists(saved)
@@ -26,7 +26,7 @@ class TimerPersister(private val TIMER_PATH: Path = HomeFolder.getDirectory("tim
         var data = TimerData(name)
         if (Files.exists(path)) {
             val entriesAsString = Files.readAllLines(path)
-            val entries = writer.transform(TimerEntry::class.java, entriesAsString)
+            val entries = writer.fromCSV(TimerEntry::class.java, entriesAsString)
             data.entries = entries
         }
         return data
