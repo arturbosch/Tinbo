@@ -55,13 +55,24 @@ class TimerExecutor(val timerDataHolder: TimerDataHolder = Injekt.get()) {
         }
     }
 
-    fun stop() {
+    fun stop(name: String = "", message: String = "") {
         if (inProgress()) {
             running = false
+            changeCategoryAndMessageIfNotEmpty(name, message)
             saveAndResetCurrentTimer()
         } else {
             printlnInfo("There is no current timer to stop.")
         }
+    }
+
+    private fun changeCategoryAndMessageIfNotEmpty(name: String, message: String) {
+        if (name.isEmpty() && message.isEmpty()) return
+        var newName = currentTimer.category
+        var newMessage = currentTimer.message
+        if (name.isNotEmpty()) newName = name
+        if (message.isNotEmpty()) newMessage = message
+        currentTimer = Timer(currentTimer.timerMode, newName, newMessage,
+                currentTimer.startDateTime, currentTimer.stopDateTime)
     }
 
     private fun saveAndResetCurrentTimer() {

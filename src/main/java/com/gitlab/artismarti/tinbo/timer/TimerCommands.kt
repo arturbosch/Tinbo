@@ -28,7 +28,7 @@ class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker 
     @CliCommand(value = "list", help = "Lists whole timer data sorted by date. Can be filtered by category name.")
     fun listData(@CliOption(key = arrayOf("category", "cat"), unspecifiedDefaultValue = "", specifiedDefaultValue = "",
             help = "Name to filter only for this specific category.") categoryName: String): String {
-        val data = when(categoryName) {
+        val data = when (categoryName) {
             "" -> executor.listDataNoFiltering()
             else -> executor.listDataFilterForCategory(categoryName)
         }
@@ -73,8 +73,15 @@ class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker 
     }
 
     @CliCommand(value = "stop", help = "Stops the timer.")
-    fun stopTimer() {
-        executor.stop()
+    fun stopTimer(@CliOption(key = arrayOf("name", "n"),
+            unspecifiedDefaultValue = "",
+            specifiedDefaultValue = "",
+            help = "Category in which the time should be saved.") name: String,
+                  @CliOption(key = arrayOf("message", "msg"),
+                          unspecifiedDefaultValue = "",
+                          specifiedDefaultValue = "",
+                          help = "Note for this tracking.") message: String) {
+        executor.stop(name, message)
     }
 
     @CliCommand(value = "q", help = "Stops the timer.")
