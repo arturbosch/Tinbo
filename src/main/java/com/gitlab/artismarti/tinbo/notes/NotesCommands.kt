@@ -51,7 +51,7 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
                 var formattedEndTime = pair.second
                 executor.addNote(NoteEntry(message, description, location, category, formattedStartTime, formattedEndTime))
             } catch(e: DateTimeParseException) {
-                printlnInfo("Could not parse dates, use format: yyyy-MM-dd HH:mm")
+                printlnInfo("Could not parse date, use format: yyyy-MM-dd HH:mm")
             }
         }
     }
@@ -63,7 +63,7 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
         return Pair(formattedStartTime, formattedEndTime)
     }
 
-    @CliCommand(value = "load", help = "Loads/Creates an other data set. Note data sets are stored under ~/tinbo/notes/*.")
+    @CliCommand("loadNotes", "loadn", help = "Loads/Creates an other data set. Note data sets are stored under ~/tinbo/notes/*.")
     fun loadNotes(@CliOption(key = arrayOf("name", "n"), mandatory = true,
             specifiedDefaultValue = Default.NOTES_NAME,
             unspecifiedDefaultValue = Default.NOTES_NAME) name: String) {

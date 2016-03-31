@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
 @Component
 class StartCommands @Autowired constructor(val promptProvider: PromptProvider) : CommandMarker {
 
-    @CliAvailabilityIndicator("timer", "notes")
+    @CliAvailabilityIndicator("time", "notes")
     fun onlyModeCommands(): Boolean {
         return ModeAdvisor.isStartMode()
     }
@@ -25,11 +25,11 @@ class StartCommands @Autowired constructor(val promptProvider: PromptProvider) :
         return !ModeAdvisor.isStartMode()
     }
 
-    @CliCommand("timer", help = "Switch to timer mode where you can start timers and list previous timings.")
+    @CliCommand("timer", help = "Switch to time mode where you can start timers and list previous timings.")
     fun timerMode() {
         ModeAdvisor.setTimerMode()
-        promptProvider.promptText = "timer"
-        printlnInfo("Entering timer mode...")
+        promptProvider.promptText = "time"
+        printlnInfo("Entering time mode...")
     }
 
     @CliCommand("back", "b", help = "Exits current mode and enters start mode where you have access to all other modes.")
