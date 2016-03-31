@@ -16,24 +16,24 @@ class StartCommands @Autowired constructor(val promptProvider: PromptProvider) :
 
     @CliAvailabilityIndicator("timer")
     fun onlyModeCommands(): Boolean {
-        return ModeAdvicer.isStartMode()
+        return ModeAdvisor.isStartMode()
     }
 
     @CliAvailabilityIndicator("back")
     fun noExitCommand(): Boolean {
-        return !ModeAdvicer.isStartMode()
+        return !ModeAdvisor.isStartMode()
     }
 
     @CliCommand("timer", help = "Switch to timer mode where you can start timers and list previous timings.")
     fun timerMode() {
-        ModeAdvicer.setTimerMode()
+        ModeAdvisor.setTimerMode()
         promptProvider.promptText = "timer"
         printlnInfo("Entering timer mode...")
     }
 
     @CliCommand("back", "b", help = "Exits current mode and enters start mode where you have access to all other modes.")
     fun startMode() {
-        ModeAdvicer.setStartMode()
+        ModeAdvisor.setStartMode()
         promptProvider.promptText = "tinbo"
         printlnInfo("Entering tinbo mode...")
     }

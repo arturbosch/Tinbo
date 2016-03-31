@@ -3,7 +3,7 @@ package com.gitlab.artismarti.tinbo.start
 /**
  * @author artur
  */
-object ModeAdvicer {
+object ModeAdvisor {
 
     private var mode = Mode.START
 
