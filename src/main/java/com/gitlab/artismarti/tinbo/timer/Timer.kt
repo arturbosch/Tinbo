@@ -19,13 +19,13 @@ class Timer {
                 stopDateTime: LocalDateTime? = null) {
 
         this.timerMode = timerMode
-        this.name = name
+        this.category = name
         this.message = message
         this.startDateTime = startDateTime
         this.stopDateTime = stopDateTime
     }
 
-    val name: String
+    val category: String
     val message: String
     val timerMode: TimerMode
     val startDateTime: LocalDateTime
@@ -33,7 +33,7 @@ class Timer {
 
     override fun toString(): String {
         val (diffSecs, diffMins, diffHours) = getTimeTriple()
-        return "${diffHours.toNumberString()}:${diffMins.toNumberString()}:${diffSecs.toNumberString()} ($name)"
+        return "${diffHours.toNumberString()}:${diffMins.toNumberString()}:${diffSecs.toNumberString()} ($category)"
     }
 
     fun getTimeTriple(): Triple<Long, Long, Long> {

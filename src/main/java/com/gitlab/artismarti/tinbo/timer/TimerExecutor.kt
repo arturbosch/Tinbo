@@ -2,7 +2,6 @@ package com.gitlab.artismarti.tinbo.timer
 
 import com.gitlab.artismarti.tinbo.Notification
 import com.gitlab.artismarti.tinbo.config.Default
-import com.gitlab.artismarti.tinbo.persistence.Category
 import com.gitlab.artismarti.tinbo.printer.CSVTablePrinter
 import com.gitlab.artismarti.tinbo.printer.printInfo
 import com.gitlab.artismarti.tinbo.printer.printlnInfo
@@ -29,21 +28,16 @@ class TimerExecutor(val timerDataHolder: TimerDataHolder = Injekt.get()) {
         val csv = CSVTablePrinter()
         val table = data.toMutableList()
         table.add(0, "Category;Date;H;M;S;Notice")
-        return csv.asTable(table)
+        return csv.asTable(table.toList())
     }
 
     fun listDataFilterForCategory(categoryName: String): List<String> {
-        return listData(timerDataHolder.data.categories
-                .filter { it.name == categoryName }
-                .flatMap { extractEntriesAsString(it) })
+        return listData(timerDataHolder.getEntriesFilteredByCategorySortedByDateAsString(categoryName))
     }
 
     fun listDataNoFiltering(): List<String> {
-        return listData(timerDataHolder.data.categories
-                .flatMap { extractEntriesAsString(it) })
+        return listData(timerDataHolder.getEntriesSortedByDateAsString())
     }
-
-    private fun extractEntriesAsString(category: Category): List<String> = category.entries.sorted().map { "${category.name};${it.toString()}" }
 
     fun loadData(name: String) {
         timerDataHolder.loadData(name)
@@ -72,13 +66,13 @@ class TimerExecutor(val timerDataHolder: TimerDataHolder = Injekt.get()) {
 
     private fun saveAndResetCurrentTimer() {
         notify()
-        timerDataHolder.persistEntry(currentTimer.name, createTimeEntry())
+        timerDataHolder.persistEntry(createTimeEntry())
         currentTimer = Timer.INVALID
     }
 
     private fun createTimeEntry(): TimerEntry {
         val (secs, mins, hours) = currentTimer.getTimeTriple()
-        return TimerEntry(currentTimer.message, hours, mins, secs, currentTimer.startDateTime.toLocalDate())
+        return TimerEntry(currentTimer.category, currentTimer.message, hours, mins, secs, currentTimer.startDateTime.toLocalDate())
     }
 
     private fun notify() {

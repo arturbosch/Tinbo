@@ -14,30 +14,28 @@ class TimerDomainTest {
 
     @Test
     fun domainObjectsTest() {
-        val beforeSize = getCategorySize(timerDataHolder)
+        val beforeSize = getEntriesSize()
         assert(beforeSize == 0)
 
-        timerDataHolder.persistEntry("Category", TimerEntry("TE1"))
-        val afterPersistSize = getCategorySize(timerDataHolder)
+        timerDataHolder.persistEntry(TimerEntry("TE1"))
+        val afterPersistSize = getEntriesSize()
         assert(afterPersistSize == 1)
 
-        timerDataHolder.persistEntry("Category", TimerEntry("TE2"))
-        val afterSecondPersistSize = getCategorySize(timerDataHolder)
-        assert(afterSecondPersistSize == 1)
-
-        val totalEntrySize = getFirstCategoryEntriesSize(timerData)
-        assert(totalEntrySize == 2)
+        timerDataHolder.persistEntry(TimerEntry("TE2"))
+        val afterSecondPersistSize = getEntriesSize()
+        assert(afterSecondPersistSize == 2)
 
         val isStored = timerPersister.store(timerData)
         assert(isStored)
 
         val loadedData = timerPersister.restore(timerData.name)
-        val totalEntrySizeAfterLoading = getFirstCategoryEntriesSize(loadedData)
+        val totalEntrySizeAfterLoading = loadedData.entries.size
         assert(totalEntrySizeAfterLoading == 2)
 
     }
 
-    private fun getFirstCategoryEntriesSize(data: TimerData) = data.categories[0].entries.size
+    private fun getEntriesSize(): Int {
+        return timerDataHolder.data.entries.size
+    }
 
-    private fun getCategorySize(timerDataHolder: TimerDataHolder) = timerDataHolder.data.categories.size
 }
