@@ -12,13 +12,6 @@ import kotlin.system.measureTimeMillis
  */
 class CSVDataWriterIT {
 
-    //    val file = HomeFolder.getFile(HomeFolder.get().resolve(name))
-    //    list.forEach {
-    //        Files.write(file, (it + "\n").toByteArray(), StandardOpenOption.APPEND, StandardOpenOption.CREATE)
-    //    }
-    //val file = HomeFolder.getFile(HomeFolder.get().resolve(name))
-    //    Files.write(file, (line + "\n").toByteArray(), StandardOpenOption.APPEND, StandardOpenOption.CREATE)
-
     private var list = ArrayList<TimerEntry>()
     private val writer = CSVDataExchange()
 

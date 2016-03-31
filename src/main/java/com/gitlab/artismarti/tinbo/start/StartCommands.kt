@@ -1,5 +1,6 @@
 package com.gitlab.artismarti.tinbo.start
 
+import com.gitlab.artismarti.tinbo.config.ModeAdvisor
 import com.gitlab.artismarti.tinbo.printer.printlnInfo
 import com.gitlab.artismarti.tinbo.providers.PromptProvider
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component
 @Component
 class StartCommands @Autowired constructor(val promptProvider: PromptProvider) : CommandMarker {
 
-    @CliAvailabilityIndicator("timer")
+    @CliAvailabilityIndicator("timer", "notes")
     fun onlyModeCommands(): Boolean {
         return ModeAdvisor.isStartMode()
     }
@@ -36,5 +37,12 @@ class StartCommands @Autowired constructor(val promptProvider: PromptProvider) :
         ModeAdvisor.setStartMode()
         promptProvider.promptText = "tinbo"
         printlnInfo("Entering tinbo mode...")
+    }
+
+    @CliCommand("notes", help = "Switch to timer mode where you can start timers and list previous timings.")
+    fun notesMode() {
+        ModeAdvisor.setNotesMode()
+        promptProvider.promptText = "notes"
+        printlnInfo("Entering notes mode...")
     }
 }

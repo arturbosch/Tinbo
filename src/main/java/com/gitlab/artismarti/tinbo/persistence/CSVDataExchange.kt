@@ -2,6 +2,7 @@ package com.gitlab.artismarti.tinbo.persistence
 
 import java.lang.reflect.Field
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.ArrayList
 
 /**
@@ -56,6 +57,7 @@ class CSVDataExchange {
                 Double::class.java -> data.toDouble()
                 Float::class.java -> data.toFloat()
                 LocalDate::class.java -> LocalDate.parse(data)
+                LocalDateTime::class.java -> LocalDateTime.parse(data)
                 else -> data
             }
 }

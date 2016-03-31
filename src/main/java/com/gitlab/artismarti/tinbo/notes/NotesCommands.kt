@@ -1,7 +1,14 @@
 package com.gitlab.artismarti.tinbo.notes
 
+import org.springframework.stereotype.Component
+import uy.kohesive.injekt.Injekt
+import uy.kohesive.injekt.api.get
+
 /**
  * @author artur
  */
-class NotesCommands {
+@Component
+class NotesCommands(val executor: NotesExecutor = Injekt.get()) {
+
+
 }

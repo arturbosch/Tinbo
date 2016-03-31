@@ -28,8 +28,8 @@ class TimerDomainTest {
         val isStored = timerPersister.store(timerData)
         assert(isStored)
 
-        val loadedData = timerPersister.restore(timerData.name)
-        val totalEntrySizeAfterLoading = loadedData.entries.size
+        timerDataHolder.loadData(timerData.name)
+        val totalEntrySizeAfterLoading = getEntriesSize()
         assert(totalEntrySizeAfterLoading == 2)
 
     }
