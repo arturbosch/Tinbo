@@ -1,9 +1,11 @@
 package com.gitlab.artismarti.tinbo.notes
 
+import com.gitlab.artismarti.tinbo.applyToString
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.csv.CSVTablePrinter
 import com.gitlab.artismarti.tinbo.persistence.Entry
 import com.gitlab.artismarti.tinbo.plusElementAtBeginning
+import com.gitlab.artismarti.tinbo.withIndexedColumn
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 
@@ -30,8 +32,9 @@ class NotesExecutor(val notesDataHolder: NotesDataHolder = Injekt.get()) {
     fun listData(): String {
         entriesInMemory = notesDataHolder.data.entries
 
-        val entryTableData = entriesInMemory.map { it.toString() }
-                .plusElementAtBeginning("Category;Message;Location;Start;End;Description")
+        val entryTableData = entriesInMemory.applyToString()
+                .withIndexedColumn()
+                .plusElementAtBeginning("No.;Category;Message;Location;Start;End;Description")
 
         return csv.asTable(entryTableData).joinToString("\n")
     }

@@ -5,6 +5,7 @@ import java.util.ArrayList
 /**
  * @author artur
  */
+
 fun String.spaceIfEmpty(): String =
         when (this) {
             "" -> " "
@@ -17,3 +18,7 @@ fun <E> List<E>.plusElementAtBeginning(element: E): List<E> {
     result.addAll(this)
     return result
 }
+
+fun List<String>.withIndexedColumn(): List<String> = this.withIndex().map { "${it.index + 1};${it.value}" }
+
+fun <E> List<E>.applyToString(): List<String> = this.map { it.toString() }
