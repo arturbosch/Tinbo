@@ -1,7 +1,7 @@
 package com.gitlab.artismarti.tinbo.timer
 
 import com.gitlab.artismarti.tinbo.config.HomeFolder
-import com.gitlab.artismarti.tinbo.persistence.CSVDataExchange
+import com.gitlab.artismarti.tinbo.csv.CSVDataExchange
 import com.gitlab.artismarti.tinbo.persistence.Data
 import com.gitlab.artismarti.tinbo.persistence.Persister
 import java.nio.file.Files

@@ -6,5 +6,4 @@ import com.gitlab.artismarti.tinbo.persistence.Data
 /**
  * @author artur
  */
-class NotesData(name: String = Default.NOTES_NAME, entries: List<NoteEntry> = listOf()) : Data(name, entries) {
-}
+class NotesData(name: String = Default.NOTES_NAME, entries: List<NoteEntry> = listOf()) : Data(name, entries)

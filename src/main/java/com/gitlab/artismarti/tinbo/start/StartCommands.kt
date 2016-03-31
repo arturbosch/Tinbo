@@ -39,7 +39,7 @@ class StartCommands @Autowired constructor(val promptProvider: PromptProvider) :
         printlnInfo("Entering tinbo mode...")
     }
 
-    @CliCommand("notes", help = "Switch to timer mode where you can start timers and list previous timings.")
+    @CliCommand("notes", help = "Switch to notes mode to write down notes or tasks.")
     fun notesMode() {
         ModeAdvisor.setNotesMode()
         promptProvider.promptText = "notes"

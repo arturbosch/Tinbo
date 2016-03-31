@@ -13,4 +13,16 @@ class NotesExecutor(val notesDataHolder: NotesDataHolder = Injekt.get()) {
         notesDataHolder.loadData(Default.NOTES_NAME)
     }
 
+    fun addNote(noteEntry: NoteEntry) {
+        notesDataHolder.persistEntry(noteEntry)
+    }
+
+    fun loadData(name: String) {
+        notesDataHolder.loadData(name)
+    }
+
+    fun listData(): String {
+        return notesDataHolder.data.toString()
+    }
+
 }
