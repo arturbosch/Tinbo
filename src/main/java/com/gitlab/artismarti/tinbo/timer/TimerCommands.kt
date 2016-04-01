@@ -1,8 +1,8 @@
 package com.gitlab.artismarti.tinbo.timer
 
 import com.gitlab.artismarti.tinbo.config.Default
+import com.gitlab.artismarti.tinbo.config.ModeAdvisor
 import com.gitlab.artismarti.tinbo.printer.printlnInfo
-import com.gitlab.artismarti.tinbo.start.ModeAdvisor
 import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
@@ -20,12 +20,12 @@ import java.util.concurrent.CompletableFuture
 @Component
 class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker {
 
-    @CliAvailabilityIndicator("list", "start", "stop", "q", "changeSet", "show")
+    @CliAvailabilityIndicator("listt", "start", "stop", "q", "loadt", "show")
     fun isAvailable(): Boolean {
         return ModeAdvisor.isTimerMode()
     }
 
-    @CliCommand(value = "list", help = "Lists whole timer data sorted by date. Can be filtered by category name.")
+    @CliCommand("listTimers", "listt", help = "Lists whole timer data sorted by date. Can be filtered by category name.")
     fun listData(@CliOption(key = arrayOf("category", "cat"), unspecifiedDefaultValue = "", specifiedDefaultValue = "",
             help = "Name to filter only for this specific category.") categoryName: String): String {
         val data = when (categoryName) {
@@ -35,13 +35,12 @@ class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker 
         return data.joinToString("\n")
     }
 
-    @CliCommand(value = "start", help = "Starts the timer and waits for you to type 'stop' to finish it if no arguments are specified. " +
-            "Parameters '--minutes | --mins | --m' and '--seconds | --secs | --s' can be used to specify how long the timer should run.")
+    @CliCommand(value = "start", help = "Starts the timer and waits for you to type 'stop' to finish it if no arguments are specified.")
     fun startTimer(@CliOption(key = arrayOf("minutes", "m", "mins"), specifiedDefaultValue = "0",
             unspecifiedDefaultValue = "0", help = "Duration of timer in minutes.") mins: Int,
                    @CliOption(key = arrayOf("seconds", "s", "mins"), specifiedDefaultValue = "0",
                            unspecifiedDefaultValue = "0", help = "Duration of timer in seconds.") seconds: Int,
-                   @CliOption(key = arrayOf("bg", "background"), unspecifiedDefaultValue = "false",
+                   @CliOption(key = arrayOf("background", "bg"), unspecifiedDefaultValue = "false",
                            specifiedDefaultValue = "true", help = "If the timer should be started in background.") bg: Boolean,
                    @CliOption(key = arrayOf("name", "n"), unspecifiedDefaultValue = Default.MAIN_CATEGORY_NAME,
                            specifiedDefaultValue = Default.MAIN_CATEGORY_NAME, help = "Category in which the time should be saved.") name: String,
@@ -89,7 +88,7 @@ class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker 
         executor.stop()
     }
 
-    @CliCommand(value = "changeSet", help = "Changes the complete data set of timers and categories.")
+    @CliCommand("loadTimers", "loadt", help = "Changes the complete data set of timers and categories.")
     fun loadData(@CliOption(key = arrayOf("name"), help = "name of the data set to load",
             unspecifiedDefaultValue = Default.DATA_NAME,
             specifiedDefaultValue = Default.DATA_NAME) name: String) {

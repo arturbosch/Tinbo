@@ -1,4 +1,4 @@
-package com.gitlab.artismarti.tinbo.persistence
+package com.gitlab.artismarti.tinbo.csv
 
 import com.gitlab.artismarti.tinbo.timer.TimerEntry
 import org.junit.After
@@ -11,13 +11,6 @@ import kotlin.system.measureTimeMillis
  * @author artur
  */
 class CSVDataWriterIT {
-
-    //    val file = HomeFolder.getFile(HomeFolder.get().resolve(name))
-    //    list.forEach {
-    //        Files.write(file, (it + "\n").toByteArray(), StandardOpenOption.APPEND, StandardOpenOption.CREATE)
-    //    }
-    //val file = HomeFolder.getFile(HomeFolder.get().resolve(name))
-    //    Files.write(file, (line + "\n").toByteArray(), StandardOpenOption.APPEND, StandardOpenOption.CREATE)
 
     private var list = ArrayList<TimerEntry>()
     private val writer = CSVDataExchange()
@@ -48,11 +41,11 @@ class CSVDataWriterIT {
     }
 
     private fun testPersist1() {
-        writer.persist(list)
+        writer.toCSV(list)
     }
 
     private fun testPersist2() {
-        writer.persist2(list)
+        writer.toCSV2(list)
     }
 
 }

@@ -1,4 +1,4 @@
-package com.gitlab.artismarti.tinbo.timer
+package com.gitlab.artismarti.tinbo.notes
 
 import com.gitlab.artismarti.tinbo.config.HomeFolder
 import org.junit.Test
@@ -6,36 +6,36 @@ import org.junit.Test
 /**
  * @author artur
  */
-class TimerDomainTest {
+class NotesDomainTest {
 
-    private val timerData = TimerData("Main")
-    private val timerPersister = TimerPersister(HomeFolder.getDirectory("test/timer"))
-    private val timerDataHolder = TimerDataHolder(timerData, timerPersister)
+    private val notesData = NotesData("Main")
+    private val notesPersister = NotesPersister(HomeFolder.getDirectory("test/notes"))
+    private val notesDataHolder = NotesDataHolder(notesData, notesPersister)
 
     @Test
     fun domainObjectsTest() {
         val beforeSize = getEntriesSize()
         assert(beforeSize == 0)
 
-        timerDataHolder.persistEntry(TimerEntry("TE1"))
+        notesDataHolder.persistEntry(NoteEntry("note2"))
         val afterPersistSize = getEntriesSize()
         assert(afterPersistSize == 1)
 
-        timerDataHolder.persistEntry(TimerEntry("TE2"))
+        notesDataHolder.persistEntry(NoteEntry("note2"))
         val afterSecondPersistSize = getEntriesSize()
         assert(afterSecondPersistSize == 2)
 
-        val isStored = timerPersister.store(timerData)
+        val isStored = notesPersister.store(notesData)
         assert(isStored)
 
-        timerDataHolder.loadData(timerData.name)
+        notesDataHolder.loadData(notesData.name)
         val totalEntrySizeAfterLoading = getEntriesSize()
         assert(totalEntrySizeAfterLoading == 2)
 
     }
 
     private fun getEntriesSize(): Int {
-        return timerDataHolder.data.entries.size
+        return notesDataHolder.data.entries.size
     }
 
 }

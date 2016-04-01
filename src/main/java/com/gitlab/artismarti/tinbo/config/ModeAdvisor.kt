@@ -1,4 +1,4 @@
-package com.gitlab.artismarti.tinbo.start
+package com.gitlab.artismarti.tinbo.config
 
 /**
  * @author artur
@@ -21,5 +21,13 @@ object ModeAdvisor {
 
     fun isStartMode(): Boolean {
         return mode == Mode.START
+    }
+
+    fun setNotesMode() {
+        mode = Mode.NOTES
+    }
+
+    fun isNotesMode(): Boolean {
+        return mode == Mode.NOTES
     }
 }

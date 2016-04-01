@@ -1,7 +1,9 @@
-package com.gitlab.artismarti.tinbo.persistence
+package com.gitlab.artismarti.tinbo.csv
 
+import com.gitlab.artismarti.tinbo.persistence.Entry
 import java.lang.reflect.Field
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.ArrayList
 
 /**
@@ -11,7 +13,7 @@ class CSVDataExchange {
 
     private val separator = ";"
 
-    fun persist(entries: List<Entry>): List<String> {
+    fun toCSV(entries: List<Entry>): List<String> {
         return entries.map { entry ->
             entry.javaClass.declaredFields.asList()
                     .map {
@@ -23,11 +25,11 @@ class CSVDataExchange {
 
     }
 
-    fun persist2(entries: List<Entry>): List<String> {
+    fun toCSV2(entries: List<Entry>): List<String> {
         return entries.map { it.toString() }
     }
 
-    fun <T : Entry> transform(clazz: Class<T>, entriesAsString: List<String>): List<Entry> {
+    fun <T : Entry> fromCSV(clazz: Class<T>, entriesAsString: List<String>): List<Entry> {
         val result = ArrayList<Entry>()
         val fields = getAccessibleFields(clazz)
         for (entryString in entriesAsString) {
@@ -56,6 +58,7 @@ class CSVDataExchange {
                 Double::class.java -> data.toDouble()
                 Float::class.java -> data.toFloat()
                 LocalDate::class.java -> LocalDate.parse(data)
+                LocalDateTime::class.java -> LocalDateTime.parse(data)
                 else -> data
             }
 }

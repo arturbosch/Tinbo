@@ -1,4 +1,4 @@
-package com.gitlab.artismarti.tinbo.printer;
+package com.gitlab.artismarti.tinbo.csv;
 
 import java.util.ArrayList;
 import java.util.Comparator;
