@@ -56,7 +56,7 @@ class NotesExecutor(val notesDataHolder: NotesDataHolder = Injekt.get()) {
                 dummy.endTime.orValue(realNote.endTime))
     }
 
-    fun deleteNotes(indices: List<Int>) {
+    fun deleteNotes(indices: Set<Int>) {
         entriesInMemory = entriesInMemory.filterIndexed { index, entry -> indices.contains(index).not() }
     }
 

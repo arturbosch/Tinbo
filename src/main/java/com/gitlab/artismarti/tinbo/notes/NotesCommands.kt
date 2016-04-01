@@ -12,6 +12,7 @@ import uy.kohesive.injekt.api.get
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
+import java.util.HashSet
 
 /**
  * @author artur
@@ -129,7 +130,7 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
     @CliCommand("saveNotes", "saven", help = "Saves current editing if list command was used.")
     fun saveNotes(@CliOption(key = arrayOf("name", "n"), help = "Saves notes under a new data set (also a new filename).",
             specifiedDefaultValue = "", unspecifiedDefaultValue = "") name: String): String {
-        if(isListMode && isEditMode) {
+        if (isListMode && isEditMode) {
             isListMode = false
             isEditMode = false
             return executor.save(name)
@@ -153,9 +154,9 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
                  @CliOption(key = arrayOf("end", "e"), help = "Specify a start time for this task. Format: yyyy-MM-dd HH:mm",
                          specifiedDefaultValue = "", unspecifiedDefaultValue = "") endTime: String): String {
         if (isListMode) {
-            isEditMode = true
             val i = index - 1
             if (executor.indexExists(i)) {
+                isEditMode = true
                 val pair = parseDateTimeOrDefault(endTime, startTime)
                 executor.editNote(i, DummyNote(message, category, location, description, pair.first, pair.second))
                 return "Successfully edited note."
@@ -163,7 +164,49 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
                 return "This index doesn't exist`"
             }
         } else {
-            return "Before editing notes/tasks you have to 'list' them to get indices to work on."
+            return "Before editing tasks you have to 'list' them to get indices to work on."
         }
+    }
+
+    @CliCommand("deleteNote", "deln", "removeNote", "rmn", help = "Deletes notes from storeage.")
+    fun deleteNote(@CliOption(key = arrayOf("indices", "index", "i"), mandatory = true,
+            help = "Indices pattern, allowed are numbers with space in between or intervals like 1-5 e.g. '1 2 3-5 6'.") indexPattern: String): String {
+
+        if (isListMode) {
+            try {
+                val indices = parseIndices(indexPattern)
+                isEditMode = true
+                executor.deleteNotes(indices)
+                return "Successfully deleted notes."
+            } catch(e: IllegalArgumentException) {
+                return "Could not parse the indices pattern. Use something like '1 2 3-5 6'."
+            }
+        } else {
+            return "Before deleting tasks you have to 'list' them to get indices to work on."
+        }
+    }
+
+    private fun parseIndices(indexPattern: String): Set<Int> {
+        val result = HashSet<Int>()
+        val indices = indexPattern.split(" ")
+        val regex = Regex("[1-9][0-9]*")
+        val regex2 = Regex("[1-9]+-[0-9]+")
+        for (index in indices) {
+            if (regex.matches(index)) {
+                result.add(index.toInt() - 1)
+            } else if (regex2.matches(index)) {
+                val interval = index.split("-")
+                if (interval.size == 2) {
+                    val (i1, i2) = Pair(interval[0].toInt(), interval[1].toInt())
+                    IntRange(i1 - 1, i2 - 1)
+                            .forEach { result.add(it) }
+                } else {
+                    throw IllegalAccessException()
+                }
+            } else {
+                throw IllegalArgumentException()
+            }
+        }
+        return result
     }
 }
