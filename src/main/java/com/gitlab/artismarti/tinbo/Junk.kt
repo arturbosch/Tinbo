@@ -22,3 +22,9 @@ fun <E> List<E>.plusElementAtBeginning(element: E): List<E> {
 fun List<String>.withIndexedColumn(): List<String> = this.withIndex().map { "${it.index + 1};${it.value}" }
 
 fun <E> List<E>.applyToString(): List<String> = this.map { it.toString() }
+
+fun <E> List<E>.replaceAt(index: Int, element: E): List<E> {
+    val list = this.toMutableList()
+    list[index] = element
+    return list.toList()
+}

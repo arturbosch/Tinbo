@@ -2,7 +2,6 @@ package com.gitlab.artismarti.tinbo.notes
 
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
-import com.gitlab.artismarti.tinbo.printer.printlnInfo
 import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
@@ -22,7 +21,12 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
 
     private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
 
-    @CliAvailabilityIndicator("note", "task", "loadn", "listn")
+    private val NEED_EDIT_MODE_TEXT = "Before adding new notes/tasks exit edit mode with save or cancel."
+    private val SUCCESS_MESSAGE = "Successfully added a note/task."
+    private var isListMode: Boolean = false
+    private var isEditMode: Boolean = false
+
+    @CliAvailabilityIndicator("note", "task", "loadn", "listn", "editn")
     fun isAvailable(): Boolean {
         return ModeAdvisor.isNotesMode()
     }
@@ -40,9 +44,13 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
                 @CliOption(key = arrayOf("start", "s"), help = "Specify a end time for this task. Format: yyyy-MM-dd HH:mm",
                         specifiedDefaultValue = "", unspecifiedDefaultValue = "") startTime: String,
                 @CliOption(key = arrayOf("end", "e"), help = "Specify a start time for this task. Format: yyyy-MM-dd HH:mm",
-                        specifiedDefaultValue = "", unspecifiedDefaultValue = "") endTime: String) {
+                        specifiedDefaultValue = "", unspecifiedDefaultValue = "") endTime: String): String {
 
-        if (startTime.isEmpty() && endTime.isEmpty()) {
+        var result = SUCCESS_MESSAGE
+
+        if (isEditMode) {
+            result = NEED_EDIT_MODE_TEXT
+        } else if (startTime.isEmpty() && endTime.isEmpty()) {
             executor.addNote(NoteEntry(message, description, location, category))
         } else if (startTime.isNotEmpty()) {
             try {
@@ -51,9 +59,11 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
                 var formattedEndTime = pair.second
                 executor.addNote(NoteEntry(message, description, location, category, formattedStartTime, formattedEndTime))
             } catch(e: DateTimeParseException) {
-                printlnInfo("Could not parse date, use format: yyyy-MM-dd HH:mm")
+                result = "Could not parse date, use format: yyyy-MM-dd HH:mm"
             }
         }
+
+        return result
     }
 
     private fun parseDateTime(endTime: String, startTime: String): Pair<LocalDateTime, LocalDateTime> {
@@ -76,16 +86,46 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
                 @CliOption(key = arrayOf("category", "cat", "c"), help = "Category for the task",
                         specifiedDefaultValue = Default.MAIN_CATEGORY_NAME,
                         unspecifiedDefaultValue = Default.MAIN_CATEGORY_NAME) category: String): String {
-        if (message.isEmpty()) return "You need to specify a message."
-        else {
+
+        var result = SUCCESS_MESSAGE
+
+        if (isEditMode) {
+            result = NEED_EDIT_MODE_TEXT
+        } else if (message.isEmpty()) {
+            result = "You need to specify a message."
+        } else {
             executor.addNote(NoteEntry(message, "", "", category))
-            return "Successfully added a note."
         }
+
+        return result
     }
 
     @CliCommand("listNotes", "listn", help = "Lists all notes and tasks.")
     fun listNotes(): String {
+        isListMode = true
         return executor.listData()
     }
 
+    @CliCommand("saveNotes", "saven", help = "Saves current editing if list command was used.")
+    fun saveNotes(@CliOption(key = arrayOf("name", "n"), help = "Saves notes under a new data set (also a new filename).",
+            specifiedDefaultValue = "", unspecifiedDefaultValue = "") name: String): String {
+        isListMode = false
+        isEditMode = false
+        return executor.save(name)
+    }
+
+    @CliCommand("editNote", "editn", help = "Edits the note entry with given index")
+    fun editNote(@CliOption(key = arrayOf("index", "i"), mandatory = true, help = "Index of the note to edit.") index: Int): String {
+        if (isListMode) {
+            isEditMode = true
+            if (executor.indexExists(index)) {
+
+                return "Successfully edited note."
+            } else {
+                return "This index doesn't exist`"
+            }
+        } else {
+            return "Before editing notes/tasks you have to 'list' them to get indices to work on."
+        }
+    }
 }

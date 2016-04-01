@@ -1,5 +1,6 @@
 package com.gitlab.artismarti.tinbo.notes
 
+import com.gitlab.artismarti.tinbo.persistence.Entry
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 
@@ -15,6 +16,11 @@ class NotesDataHolder(var data: NotesData = Injekt.get(),
 
     fun persistEntry(entry: NoteEntry) {
         data.addEntry(entry)
+        persister.store(data)
+    }
+
+    fun saveData(name: String, entriesInMemory: List<Entry>) {
+        data = NotesData(name, entriesInMemory)
         persister.store(data)
     }
 }
