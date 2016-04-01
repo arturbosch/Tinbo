@@ -1,5 +1,6 @@
 package com.gitlab.artismarti.tinbo
 
+import java.time.LocalDateTime
 import java.util.ArrayList
 
 /**
@@ -28,3 +29,8 @@ fun <E> List<E>.replaceAt(index: Int, element: E): List<E> {
     list[index] = element
     return list.toList()
 }
+
+fun LocalDateTime?.orValue(dateTime: LocalDateTime): LocalDateTime = if (this == null) dateTime else this
+
+fun String.orValue(value: String): String = if (this.isEmpty()) value else this
+

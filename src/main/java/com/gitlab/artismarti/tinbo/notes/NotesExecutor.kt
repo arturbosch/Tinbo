@@ -3,6 +3,7 @@ package com.gitlab.artismarti.tinbo.notes
 import com.gitlab.artismarti.tinbo.applyToString
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.csv.CSVTablePrinter
+import com.gitlab.artismarti.tinbo.orValue
 import com.gitlab.artismarti.tinbo.persistence.Entry
 import com.gitlab.artismarti.tinbo.plusElementAtBeginning
 import com.gitlab.artismarti.tinbo.replaceAt
@@ -40,12 +41,19 @@ class NotesExecutor(val notesDataHolder: NotesDataHolder = Injekt.get()) {
         return csv.asTable(entryTableData).joinToString("\n")
     }
 
-    fun getNote(index: Int): NoteEntry {
-        return entriesInMemory[index] as NoteEntry
+    fun editNote(index: Int, dummy: DummyNote) {
+        val editedNote = createEditedNote(index, dummy)
+        entriesInMemory = entriesInMemory.replaceAt(index, editedNote)
     }
 
-    fun editNote(index: Int, entry: NoteEntry) {
-        entriesInMemory = entriesInMemory.replaceAt(index, entry)
+    private fun createEditedNote(index: Int, dummy: DummyNote): NoteEntry {
+        val realNote = entriesInMemory[index] as NoteEntry
+        return NoteEntry(dummy.message.orValue(realNote.message),
+                dummy.description.orValue(realNote.description),
+                dummy.location.orValue(realNote.location),
+                dummy.category.orValue(realNote.category),
+                dummy.startTime.orValue(realNote.startTime),
+                dummy.endTime.orValue(realNote.endTime))
     }
 
     fun deleteNotes(indices: List<Int>) {
