@@ -33,6 +33,5 @@ object DateTimeFormatters {
     }
 }
 
-
 val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
 val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")

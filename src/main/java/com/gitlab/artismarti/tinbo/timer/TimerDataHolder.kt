@@ -1,6 +1,7 @@
 package com.gitlab.artismarti.tinbo.timer
 
 import com.gitlab.artismarti.tinbo.persistence.Entry
+import com.gitlab.artismarti.tinbo.toSortedWithIndexedColumnStrings
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 
@@ -22,11 +23,10 @@ class TimerDataHolder(var data: TimerData = Injekt.get(),
     fun getEntriesFilteredByCategorySortedByDateAsString(categoryName: String): List<String> {
         return data.entries.map { it as TimerEntry }
                 .filter { it.category == categoryName }
-                .sorted()
-                .map { "${it.toString()}" }
+                .toSortedWithIndexedColumnStrings()
     }
 
     fun getEntriesSortedByDateAsString(): List<String> {
-        return data.entries.sorted().map { "${it.toString()}" }
+        return data.entries.toSortedWithIndexedColumnStrings()
     }
 }
