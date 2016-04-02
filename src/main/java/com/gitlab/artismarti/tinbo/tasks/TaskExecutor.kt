@@ -1,4 +1,4 @@
-package com.gitlab.artismarti.tinbo.notes
+package com.gitlab.artismarti.tinbo.tasks
 
 import com.gitlab.artismarti.tinbo.applyToString
 import com.gitlab.artismarti.tinbo.config.Default
@@ -14,25 +14,25 @@ import uy.kohesive.injekt.api.get
 /**
  * @author artur
  */
-class NotesExecutor(val notesDataHolder: NotesDataHolder = Injekt.get()) {
+class TaskExecutor(val taskDataHolder: TaskDataHolder = Injekt.get()) {
 
     private val csv = CSVTablePrinter()
     private var entriesInMemory: List<Entry> = listOf()
 
     init {
-        notesDataHolder.loadData(Default.NOTES_NAME)
+        taskDataHolder.loadData(Default.TASKS_NAME)
     }
 
-    fun addNote(noteEntry: NoteEntry) {
-        notesDataHolder.persistEntry(noteEntry)
+    fun addNote(taskEntry: TaskEntry) {
+        taskDataHolder.persistEntry(taskEntry)
     }
 
     fun loadData(name: String) {
-        notesDataHolder.loadData(name)
+        taskDataHolder.loadData(name)
     }
 
     fun listData(): String {
-        entriesInMemory = notesDataHolder.data.entries
+        entriesInMemory = taskDataHolder.data.entries
 
         val entryTableData = entriesInMemory.applyToString()
                 .withIndexedColumn()
@@ -41,14 +41,14 @@ class NotesExecutor(val notesDataHolder: NotesDataHolder = Injekt.get()) {
         return csv.asTable(entryTableData).joinToString("\n")
     }
 
-    fun editNote(index: Int, dummy: DummyNote) {
+    fun editNote(index: Int, dummy: DummyTask) {
         val editedNote = createEditedNote(index, dummy)
         entriesInMemory = entriesInMemory.replaceAt(index, editedNote)
     }
 
-    private fun createEditedNote(index: Int, dummy: DummyNote): NoteEntry {
-        val realNote = entriesInMemory[index] as NoteEntry
-        return NoteEntry(dummy.message.orValue(realNote.message),
+    private fun createEditedNote(index: Int, dummy: DummyTask): TaskEntry {
+        val realNote = entriesInMemory[index] as TaskEntry
+        return TaskEntry(dummy.message.orValue(realNote.message),
                 dummy.description.orValue(realNote.description),
                 dummy.location.orValue(realNote.location),
                 dummy.category.orValue(realNote.category),
@@ -61,9 +61,9 @@ class NotesExecutor(val notesDataHolder: NotesDataHolder = Injekt.get()) {
     }
 
     fun save(newName: String = ""): String {
-        var name = notesDataHolder.data.name
+        var name = taskDataHolder.data.name
         if (newName.isNotEmpty()) name = newName
-        notesDataHolder.saveData(name, entriesInMemory)
+        taskDataHolder.saveData(name, entriesInMemory)
         entriesInMemory = listOf()
         return "Successfully saved edited data"
     }

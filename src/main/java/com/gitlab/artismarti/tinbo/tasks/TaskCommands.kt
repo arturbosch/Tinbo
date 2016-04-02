@@ -1,4 +1,4 @@
-package com.gitlab.artismarti.tinbo.notes
+package com.gitlab.artismarti.tinbo.tasks
 
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
@@ -17,14 +17,15 @@ import java.util.HashSet
  * @author artur
  */
 @Component
-class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker {
+class TaskCommands(val executor: TaskExecutor = Injekt.get()) : CommandMarker {
 
-    private val NEED_EDIT_MODE_TEXT = "Before adding or list notes/tasks exit edit mode with 'save' or 'cancel'."
-    private val SUCCESS_MESSAGE = "Successfully added a note/task."
+    private val NEED_EDIT_MODE_TEXT = "Before adding or list tasks exit edit mode with 'save' or 'cancel'."
+    private val SUCCESS_MESSAGE = "Successfully added a task."
+
     private var isListMode: Boolean = false
     private var isEditMode: Boolean = false
 
-    @CliAvailabilityIndicator("note", "task", "loadn", "listn", "editn")
+    @CliAvailabilityIndicator("task", "loadTasks", "editTasks", "listTasks", "deleteTask", "saveTasks")
     fun isAvailable(): Boolean {
         return ModeAdvisor.isNotesMode()
     }
@@ -49,13 +50,13 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
         if (isEditMode) {
             result = NEED_EDIT_MODE_TEXT
         } else if (startTime.isEmpty() && endTime.isEmpty()) {
-            executor.addNote(NoteEntry(message, description, location, category))
+            executor.addNote(TaskEntry(message, description, location, category))
         } else if (startTime.isNotEmpty()) {
             try {
                 val pair = DateTimeFormatters.parseDateTime(endTime, startTime)
                 val formattedStartTime = pair.first
                 var formattedEndTime = pair.second
-                executor.addNote(NoteEntry(message, description, location, category, formattedStartTime, formattedEndTime))
+                executor.addNote(TaskEntry(message, description, location, category, formattedStartTime, formattedEndTime))
             } catch(e: DateTimeParseException) {
                 result = "Could not parse date, use format: yyyy-MM-dd HH:mm"
             }
@@ -64,10 +65,10 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
         return result
     }
 
-    @CliCommand("loadNotes", "loadn", help = "Loads/Creates an other data set. Note data sets are stored under ~/tinbo/notes/*.")
-    fun loadNotes(@CliOption(key = arrayOf("name", "n"), mandatory = true,
-            specifiedDefaultValue = Default.NOTES_NAME,
-            unspecifiedDefaultValue = Default.NOTES_NAME) name: String) {
+    @CliCommand("loadTasks", help = "Loads/Creates an other data set. Task data sets are stored under ~/tinbo/tasks/*.")
+    fun loadTasks(@CliOption(key = arrayOf("name", "n"), mandatory = true,
+            specifiedDefaultValue = Default.TASKS_NAME,
+            unspecifiedDefaultValue = Default.TASKS_NAME) name: String) {
         executor.loadData(name)
     }
 
@@ -85,14 +86,14 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
         } else if (message.isEmpty()) {
             result = "You need to specify a message."
         } else {
-            executor.addNote(NoteEntry(message, "", "", category))
+            executor.addNote(TaskEntry(message, "", "", category))
         }
 
         return result
     }
 
-    @CliCommand("listNotes", "listn", help = "Lists all notes and tasks.")
-    fun listNotes(): String {
+    @CliCommand("listTasks", help = "Lists all tasks.")
+    fun listTasks(): String {
         if (isEditMode) {
             return NEED_EDIT_MODE_TEXT
         } else {
@@ -101,8 +102,8 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
         }
     }
 
-    @CliCommand("saveNotes", "saven", help = "Saves current editing if list command was used.")
-    fun saveNotes(@CliOption(key = arrayOf("name", "n"), help = "Saves notes under a new data set (also a new filename).",
+    @CliCommand("saveTasks", help = "Saves current editing if list command was used.")
+    fun saveTasks(@CliOption(key = arrayOf("name", "n"), help = "Saves notes under a new data set (also a new filename).",
             specifiedDefaultValue = "", unspecifiedDefaultValue = "") name: String): String {
         if (isListMode && isEditMode) {
             isListMode = false
@@ -113,8 +114,8 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
         }
     }
 
-    @CliCommand("editNote", "editn", help = "Edits the note entry with given index")
-    fun editNote(@CliOption(key = arrayOf("index", "i"), mandatory = true, help = "Index of the note to edit.") index: Int,
+    @CliCommand("editTask", help = "Edits the task entry with given index")
+    fun editTask(@CliOption(key = arrayOf("index", "i"), mandatory = true, help = "Index of the task to edit.") index: Int,
                  @CliOption(key = arrayOf("message", "msg", "m"), help = "Summary of the task.",
                          specifiedDefaultValue = "", unspecifiedDefaultValue = "") message: String,
                  @CliOption(key = arrayOf("category", "cat", "c"), help = "Category for the task",
@@ -132,8 +133,8 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
             if (executor.indexExists(i)) {
                 isEditMode = true
                 val pair = DateTimeFormatters.parseDateTimeOrDefault(endTime, startTime)
-                executor.editNote(i, DummyNote(message, category, location, description, pair.first, pair.second))
-                return "Successfully edited note."
+                executor.editNote(i, DummyTask(message, category, location, description, pair.first, pair.second))
+                return SUCCESS_MESSAGE
             } else {
                 return "This index doesn't exist"
             }
@@ -142,8 +143,8 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
         }
     }
 
-    @CliCommand("deleteNote", "deln", "removeNote", "rmn", help = "Deletes notes from storeage.")
-    fun deleteNote(@CliOption(key = arrayOf("indices", "index", "i"), mandatory = true,
+    @CliCommand("deleteTask", "removeTask", help = "Deletes tasks from storage.")
+    fun deleteTask(@CliOption(key = arrayOf("indices", "index", "i"), mandatory = true,
             help = "Indices pattern, allowed are numbers with space in between or intervals like 1-5 e.g. '1 2 3-5 6'.") indexPattern: String): String {
 
         if (isListMode) {
@@ -151,7 +152,7 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
                 val indices = parseIndices(indexPattern)
                 isEditMode = true
                 executor.deleteNotes(indices)
-                return "Successfully deleted notes."
+                return "Successfully deleted task(s)."
             } catch(e: IllegalArgumentException) {
                 return "Could not parse the indices pattern. Use something like '1 2 3-5 6'."
             }

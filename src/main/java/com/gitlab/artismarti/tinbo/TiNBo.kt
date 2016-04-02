@@ -1,9 +1,9 @@
 package com.gitlab.artismarti.tinbo
 
-import com.gitlab.artismarti.tinbo.notes.NotesData
-import com.gitlab.artismarti.tinbo.notes.NotesDataHolder
-import com.gitlab.artismarti.tinbo.notes.NotesExecutor
-import com.gitlab.artismarti.tinbo.notes.NotesPersister
+import com.gitlab.artismarti.tinbo.tasks.TaskData
+import com.gitlab.artismarti.tinbo.tasks.TaskDataHolder
+import com.gitlab.artismarti.tinbo.tasks.TaskExecutor
+import com.gitlab.artismarti.tinbo.tasks.TaskPersister
 import com.gitlab.artismarti.tinbo.timer.TimerData
 import com.gitlab.artismarti.tinbo.timer.TimerDataHolder
 import com.gitlab.artismarti.tinbo.timer.TimerExecutor
@@ -32,10 +32,10 @@ open class TiNBo {
             addSingleton(fullType(), TimerPersister())
             addSingleton(fullType(), TimerDataHolder())
             addSingleton(fullType(), TimerExecutor())
-            addSingleton(fullType(), NotesData())
-            addSingleton(fullType(), NotesPersister())
-            addSingleton(fullType(), NotesDataHolder())
-            addSingleton(fullType(), NotesExecutor())
+            addSingleton(fullType(), TaskData())
+            addSingleton(fullType(), TaskPersister())
+            addSingleton(fullType(), TaskDataHolder())
+            addSingleton(fullType(), TaskExecutor())
         }
 
         @JvmStatic fun main(args: Array<String>) {

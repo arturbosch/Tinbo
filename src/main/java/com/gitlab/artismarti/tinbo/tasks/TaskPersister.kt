@@ -1,4 +1,4 @@
-package com.gitlab.artismarti.tinbo.notes
+package com.gitlab.artismarti.tinbo.tasks
 
 import com.gitlab.artismarti.tinbo.config.HomeFolder
 import com.gitlab.artismarti.tinbo.csv.CSVDataExchange
@@ -10,7 +10,7 @@ import java.nio.file.Path
 /**
  * @author artur
  */
-class NotesPersister(private val NOTES_PATH: Path = HomeFolder.getDirectory("notes")) : Persister {
+class TaskPersister(private val NOTES_PATH: Path = HomeFolder.getDirectory("notes")) : Persister {
 
     private val writer = CSVDataExchange()
 
@@ -23,10 +23,10 @@ class NotesPersister(private val NOTES_PATH: Path = HomeFolder.getDirectory("not
 
     override fun restore(name: String): Data {
         val path = NOTES_PATH.resolve(name)
-        var data = NotesData(name)
+        var data = TaskData(name)
         if (Files.exists(path)) {
             val entriesAsString = Files.readAllLines(path)
-            val entries = writer.fromCSV(NoteEntry::class.java, entriesAsString)
+            val entries = writer.fromCSV(TaskEntry::class.java, entriesAsString)
             data.entries = entries
         }
         return data

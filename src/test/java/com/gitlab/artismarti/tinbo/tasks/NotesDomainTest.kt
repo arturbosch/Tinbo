@@ -1,4 +1,4 @@
-package com.gitlab.artismarti.tinbo.notes
+package com.gitlab.artismarti.tinbo.tasks
 
 import com.gitlab.artismarti.tinbo.config.HomeFolder
 import org.junit.Test
@@ -8,20 +8,20 @@ import org.junit.Test
  */
 class NotesDomainTest {
 
-    private val notesData = NotesData("Main")
-    private val notesPersister = NotesPersister(HomeFolder.getDirectory("test/notes"))
-    private val notesDataHolder = NotesDataHolder(notesData, notesPersister)
+    private val notesData = TaskData("Main")
+    private val notesPersister = TaskPersister(HomeFolder.getDirectory("test/notes"))
+    private val notesDataHolder = TaskDataHolder(notesData, notesPersister)
 
     @Test
     fun domainObjectsTest() {
         val beforeSize = getEntriesSize()
         assert(beforeSize == 0)
 
-        notesDataHolder.persistEntry(NoteEntry("note2"))
+        notesDataHolder.persistEntry(TaskEntry("note2"))
         val afterPersistSize = getEntriesSize()
         assert(afterPersistSize == 1)
 
-        notesDataHolder.persistEntry(NoteEntry("note2"))
+        notesDataHolder.persistEntry(TaskEntry("note2"))
         val afterSecondPersistSize = getEntriesSize()
         assert(afterSecondPersistSize == 2)
 

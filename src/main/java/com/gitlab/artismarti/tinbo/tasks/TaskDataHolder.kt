@@ -1,4 +1,4 @@
-package com.gitlab.artismarti.tinbo.notes
+package com.gitlab.artismarti.tinbo.tasks
 
 import com.gitlab.artismarti.tinbo.persistence.Entry
 import uy.kohesive.injekt.Injekt
@@ -7,20 +7,20 @@ import uy.kohesive.injekt.api.get
 /**
  * @author artur
  */
-class NotesDataHolder(var data: NotesData = Injekt.get(),
-                      val persister: NotesPersister = Injekt.get()) {
+class TaskDataHolder(var data: TaskData = Injekt.get(),
+                     val persister: TaskPersister = Injekt.get()) {
 
     fun loadData(name: String) {
-        data = persister.restore(name) as NotesData
+        data = persister.restore(name) as TaskData
     }
 
-    fun persistEntry(entry: NoteEntry) {
+    fun persistEntry(entry: TaskEntry) {
         data.addEntry(entry)
         persister.store(data)
     }
 
     fun saveData(name: String, entriesInMemory: List<Entry>) {
-        data = NotesData(name, entriesInMemory)
+        data = TaskData(name, entriesInMemory)
         persister.store(data)
     }
 }

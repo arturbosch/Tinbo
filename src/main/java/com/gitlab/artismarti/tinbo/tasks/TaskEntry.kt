@@ -1,4 +1,4 @@
-package com.gitlab.artismarti.tinbo.notes
+package com.gitlab.artismarti.tinbo.tasks
 
 import com.gitlab.artismarti.tinbo.persistence.Entry
 import com.gitlab.artismarti.tinbo.spaceIfEmpty
@@ -9,7 +9,7 @@ import java.util.Objects
 /**
  * @author artur
  */
-class NoteEntry(val message: String = "invalid",
+class TaskEntry(val message: String = "invalid",
                 val description: String = "invalid",
                 val location: String = "invalid",
                 val category: String = "invalid",
@@ -23,13 +23,13 @@ class NoteEntry(val message: String = "invalid",
     }
 
     override fun compareTo(other: Entry): Int {
-        if (other !is NoteEntry) return 1
+        if (other !is TaskEntry) return 1
         return this.startTime.compareTo(other.startTime)
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is NoteEntry) return false
+        if (other !is TaskEntry) return false
 
         if (message != other.message) return false
         if (description != other.description) return false
