@@ -37,7 +37,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-    compile "uy.kohesive.injekt:injekt-core:1.14.+"
+    compile "uy.kohesive.injekt:injekt-core:1.14.1"
 
     compile 'org.springframework.boot:spring-boot-starter'
     compile "org.springframework.shell:spring-shell:$springShellVersion"

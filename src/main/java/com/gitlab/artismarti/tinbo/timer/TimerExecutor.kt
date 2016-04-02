@@ -3,8 +3,8 @@ package com.gitlab.artismarti.tinbo.timer
 import com.gitlab.artismarti.tinbo.Notification
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.csv.CSVTablePrinter
-import com.gitlab.artismarti.tinbo.printer.printInfo
-import com.gitlab.artismarti.tinbo.printer.printlnInfo
+import com.gitlab.artismarti.tinbo.utils.printInfo
+import com.gitlab.artismarti.tinbo.utils.printlnInfo
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 

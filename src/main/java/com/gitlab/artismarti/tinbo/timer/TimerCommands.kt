@@ -2,7 +2,7 @@ package com.gitlab.artismarti.tinbo.timer
 
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
-import com.gitlab.artismarti.tinbo.printer.printlnInfo
+import com.gitlab.artismarti.tinbo.utils.printlnInfo
 import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand

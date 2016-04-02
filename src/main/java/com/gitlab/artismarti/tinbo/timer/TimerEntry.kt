@@ -2,6 +2,7 @@ package com.gitlab.artismarti.tinbo.timer
 
 import com.gitlab.artismarti.tinbo.persistence.Entry
 import com.gitlab.artismarti.tinbo.spaceIfEmpty
+import com.gitlab.artismarti.tinbo.utils.dateFormatter
 import java.time.LocalDate
 
 /**
@@ -15,7 +16,7 @@ class TimerEntry(var category: String = "Main",
                  var date: LocalDate = LocalDate.now()) : Entry() {
 
     override fun toString(): String {
-        return "$category;$date;$hours;$minutes;$seconds;${message.spaceIfEmpty()}"
+        return "$category;${date.format(dateFormatter)};$hours;$minutes;$seconds;${message.spaceIfEmpty()}"
     }
 
     override fun compareTo(other: Entry): Int {

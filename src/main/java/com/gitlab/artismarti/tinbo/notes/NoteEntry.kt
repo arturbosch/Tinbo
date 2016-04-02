@@ -2,6 +2,7 @@ package com.gitlab.artismarti.tinbo.notes
 
 import com.gitlab.artismarti.tinbo.persistence.Entry
 import com.gitlab.artismarti.tinbo.spaceIfEmpty
+import com.gitlab.artismarti.tinbo.utils.dateTimeFormatter
 import java.time.LocalDateTime
 import java.util.Objects
 
@@ -16,7 +17,9 @@ class NoteEntry(val message: String = "invalid",
                 val endTime: LocalDateTime = LocalDateTime.now()) : Entry() {
 
     override fun toString(): String {
-        return "${category.spaceIfEmpty()};${message.spaceIfEmpty()};${location.spaceIfEmpty()};$startTime;$endTime;${description.spaceIfEmpty()}"
+        return "${category.spaceIfEmpty()};${message.spaceIfEmpty()};${location.spaceIfEmpty()};" +
+                "${startTime.format(dateTimeFormatter)};${endTime.format(dateTimeFormatter)};" +
+                "${description.spaceIfEmpty()}"
     }
 
     override fun compareTo(other: Entry): Int {

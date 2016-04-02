@@ -2,6 +2,7 @@ package com.gitlab.artismarti.tinbo.notes
 
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
+import com.gitlab.artismarti.tinbo.utils.DateTimeFormatters
 import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
@@ -19,8 +20,6 @@ import java.util.HashSet
  */
 @Component
 class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker {
-
-    private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
 
     private val NEED_EDIT_MODE_TEXT = "Before adding or list notes/tasks exit edit mode with 'save' or 'cancel'."
     private val SUCCESS_MESSAGE = "Successfully added a note/task."
@@ -55,7 +54,7 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
             executor.addNote(NoteEntry(message, description, location, category))
         } else if (startTime.isNotEmpty()) {
             try {
-                val pair = parseDateTime(endTime, startTime)
+                val pair = DateTimeFormatters.parseDateTime(endTime, startTime)
                 val formattedStartTime = pair.first
                 var formattedEndTime = pair.second
                 executor.addNote(NoteEntry(message, description, location, category, formattedStartTime, formattedEndTime))
@@ -65,29 +64,6 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
         }
 
         return result
-    }
-
-    private fun parseDateTimeOrDefault(endTime: String, startTime: String): Pair<LocalDateTime?, LocalDateTime?> {
-        var formattedStartTime: LocalDateTime? = null
-        var formattedEndTime = formattedStartTime
-        try {
-            formattedStartTime = LocalDateTime.parse(startTime, formatter)
-        } catch(ignored: DateTimeParseException) {
-        }
-        if (endTime.isNotEmpty()) {
-            try {
-                formattedEndTime = LocalDateTime.parse(endTime, formatter)
-            } catch(ignored: DateTimeParseException) {
-            }
-        }
-        return Pair(formattedStartTime, formattedEndTime)
-    }
-
-    private fun parseDateTime(endTime: String, startTime: String): Pair<LocalDateTime, LocalDateTime> {
-        val formattedStartTime = LocalDateTime.parse(startTime, formatter)
-        var formattedEndTime = formattedStartTime
-        if (endTime.isNotEmpty()) formattedEndTime = LocalDateTime.parse(endTime, formatter)
-        return Pair(formattedStartTime, formattedEndTime)
     }
 
     @CliCommand("loadNotes", "loadn", help = "Loads/Creates an other data set. Note data sets are stored under ~/tinbo/notes/*.")
@@ -157,11 +133,11 @@ class NotesCommands(val executor: NotesExecutor = Injekt.get()) : CommandMarker 
             val i = index - 1
             if (executor.indexExists(i)) {
                 isEditMode = true
-                val pair = parseDateTimeOrDefault(endTime, startTime)
+                val pair = DateTimeFormatters.parseDateTimeOrDefault(endTime, startTime)
                 executor.editNote(i, DummyNote(message, category, location, description, pair.first, pair.second))
                 return "Successfully edited note."
             } else {
-                return "This index doesn't exist`"
+                return "This index doesn't exist"
             }
         } else {
             return "Before editing tasks you have to 'list' them to get indices to work on."

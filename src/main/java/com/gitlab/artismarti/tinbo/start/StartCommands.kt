@@ -1,7 +1,7 @@
 package com.gitlab.artismarti.tinbo.start
 
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
-import com.gitlab.artismarti.tinbo.printer.printlnInfo
+import com.gitlab.artismarti.tinbo.utils.printlnInfo
 import com.gitlab.artismarti.tinbo.providers.PromptProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.CommandMarker

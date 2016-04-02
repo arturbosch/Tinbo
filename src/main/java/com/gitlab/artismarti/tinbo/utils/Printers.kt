@@ -1,4 +1,4 @@
-package com.gitlab.artismarti.tinbo.printer
+package com.gitlab.artismarti.tinbo.utils
 
 import org.fusesource.jansi.Ansi
 
