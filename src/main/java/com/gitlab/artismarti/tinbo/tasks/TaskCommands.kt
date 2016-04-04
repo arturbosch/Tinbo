@@ -102,6 +102,17 @@ class TaskCommands(val executor: TaskExecutor = Injekt.get()) : CommandMarker {
         }
     }
 
+    @CliCommand("cancel", help = "Cancels edit mode.")
+    fun cancelTaskEditing(): String {
+        if(isEditMode) {
+            isEditMode = false
+            isListMode = false
+            return "Cancelled edit mode."
+        } else {
+            return "You need to be in edit mode to use cancel."
+        }
+    }
+
     @CliCommand("saveTasks", help = "Saves current editing if list command was used.")
     fun saveTasks(@CliOption(key = arrayOf("name", "n"), help = "Saves notes under a new data set (also a new filename).",
             specifiedDefaultValue = "", unspecifiedDefaultValue = "") name: String): String {
@@ -114,7 +125,7 @@ class TaskCommands(val executor: TaskExecutor = Injekt.get()) : CommandMarker {
         }
     }
 
-    @CliCommand("editTask", help = "Edits the task entry with given index")
+    @CliCommand("editTask", "editTasks", help = "Edits the task entry with given index")
     fun editTask(@CliOption(key = arrayOf("index", "i"), mandatory = true, help = "Index of the task to edit.") index: Int,
                  @CliOption(key = arrayOf("message", "msg", "m"), help = "Summary of the task.",
                          specifiedDefaultValue = "", unspecifiedDefaultValue = "") message: String,
@@ -143,7 +154,7 @@ class TaskCommands(val executor: TaskExecutor = Injekt.get()) : CommandMarker {
         }
     }
 
-    @CliCommand("deleteTask", "removeTask", help = "Deletes tasks from storage.")
+    @CliCommand("deleteTask", "deleteTasks", "removeTask", "removeTasks", help = "Deletes tasks from storage.")
     fun deleteTask(@CliOption(key = arrayOf("indices", "index", "i"), mandatory = true,
             help = "Indices pattern, allowed are numbers with space in between or intervals like 1-5 e.g. '1 2 3-5 6'.") indexPattern: String): String {
 

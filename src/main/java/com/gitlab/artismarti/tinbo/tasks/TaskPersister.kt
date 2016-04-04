@@ -10,7 +10,7 @@ import java.nio.file.Path
 /**
  * @author artur
  */
-class TaskPersister(private val NOTES_PATH: Path = HomeFolder.getDirectory("notes")) : Persister {
+class TaskPersister(private val NOTES_PATH: Path = HomeFolder.getDirectory("tasks")) : Persister {
 
     private val writer = CSVDataExchange()
 
