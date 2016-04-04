@@ -10,19 +10,19 @@ import java.nio.file.Path
 /**
  * @author artur
  */
-class TaskPersister(private val NOTES_PATH: Path = HomeFolder.getDirectory("tasks")) : Persister {
+class TaskPersister(private val TASKS_PATH: Path = HomeFolder.getDirectory("tasks")) : Persister {
 
     private val writer = CSVDataExchange()
 
     override fun store(data: Data): Boolean {
         val persist = writer.toCSV(data.entries).joinToString("\n")
-        val toSave = HomeFolder.getFile(NOTES_PATH.resolve(data.name))
+        val toSave = HomeFolder.getFile(TASKS_PATH.resolve(data.name))
         val saved = Files.write(toSave, persist.toByteArray())
         return Files.exists(saved)
     }
 
     override fun restore(name: String): Data {
-        val path = NOTES_PATH.resolve(name)
+        val path = TASKS_PATH.resolve(name)
         var data = TaskData(name)
         if (Files.exists(path)) {
             val entriesAsString = Files.readAllLines(path)
