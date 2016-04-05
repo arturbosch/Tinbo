@@ -8,18 +8,20 @@ import uy.kohesive.injekt.api.get
 /**
  * @author artur
  */
-class NoteDataHolder(val data: NoteData = Injekt.get(), val persister: NotePersister = Injekt.get()) : DataHolder {
+class NoteDataHolder(var data: NoteData = Injekt.get(), val persister: NotePersister = Injekt.get()) : DataHolder {
     
     override fun loadData(name: String) {
-        throw UnsupportedOperationException()
+        data = persister.restore(name) as NoteData
     }
 
     override fun persistEntry(entry: Entry) {
-        throw UnsupportedOperationException()
+        data.addEntry(entry)
+        persister.store(data)
     }
 
     override fun saveData(name: String, entriesInMemory: List<Entry>) {
-        throw UnsupportedOperationException()
+        data = NoteData(name, entriesInMemory)
+        persister.store(data)
     }
 
 }

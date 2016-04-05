@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
 @Component
 class StartCommands @Autowired constructor(val promptProvider: PromptProvider) : CommandMarker {
 
-    @CliAvailabilityIndicator("time", "tasks")
+    @CliAvailabilityIndicator("time", "tasks", "notes")
     fun onlyModeCommands(): Boolean {
         return ModeAdvisor.isStartMode()
     }
@@ -40,9 +40,16 @@ class StartCommands @Autowired constructor(val promptProvider: PromptProvider) :
     }
 
     @CliCommand("tasks", help = "Switch to tasks mode to write down tasks.")
-    fun notesMode() {
-        ModeAdvisor.setNotesMode()
+    fun tasksMode() {
+        ModeAdvisor.setTasksMode()
         promptProvider.promptText = "tasks"
         printlnInfo("Entering tasks mode...")
+    }
+
+    @CliCommand("notes", help = "Switch to notes mode to write down tasks.")
+    fun notesMode() {
+        ModeAdvisor.setNotesMode()
+        promptProvider.promptText = "notes"
+        printlnInfo("Entering notes mode...")
     }
 }

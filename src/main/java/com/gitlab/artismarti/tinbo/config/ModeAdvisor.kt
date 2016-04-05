@@ -30,4 +30,12 @@ object ModeAdvisor {
     fun isNotesMode(): Boolean {
         return mode == Mode.NOTES
     }
+
+    fun setTasksMode() {
+        mode = Mode.TASKS
+    }
+
+    fun isTasksMode(): Boolean {
+        return mode == Mode.TASKS
+    }
 }
