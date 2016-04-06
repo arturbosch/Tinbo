@@ -3,7 +3,6 @@ package com.gitlab.artismarti.tinbo.notes
 import com.gitlab.artismarti.tinbo.applyToString
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.csv.CSVTablePrinter
-import com.gitlab.artismarti.tinbo.persistence.Entry
 import com.gitlab.artismarti.tinbo.plusElementAtBeginning
 import com.gitlab.artismarti.tinbo.replaceAt
 import com.gitlab.artismarti.tinbo.withIndexedColumn
@@ -16,7 +15,7 @@ import uy.kohesive.injekt.api.get
 class NoteExecutor(val noteDataHolder: NoteDataHolder = Injekt.get()) {
 
     private val csv = CSVTablePrinter()
-    private var entriesInMemory: List<Entry> = listOf()
+    private var entriesInMemory: List<NoteEntry> = listOf()
 
     init {
         noteDataHolder.loadData(Default.TASKS_NAME)

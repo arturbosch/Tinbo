@@ -8,7 +8,7 @@ import java.nio.file.Path
 /**
  * @author artur
  */
-abstract class AbstractPersister<E : Entry, D : Data>(private val SAVE_DIR_PATH: Path) {
+abstract class AbstractPersister<E : Entry, D : Data<E>>(private val SAVE_DIR_PATH: Path) {
 
     private val writer = CSVDataExchange()
 

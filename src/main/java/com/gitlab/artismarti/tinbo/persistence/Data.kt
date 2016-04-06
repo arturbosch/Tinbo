@@ -3,10 +3,10 @@ package com.gitlab.artismarti.tinbo.persistence
 /**
  * @author artur
  */
-abstract class Data(var name: String,
-                    var entries: List<Entry>) {
+abstract class Data<E : Entry>(var name: String,
+                               var entries: List<E>) {
 
-    fun addEntry(entry: Entry) {
+    fun addEntry(entry: E) {
         entries = entries.plus(entry)
     }
 

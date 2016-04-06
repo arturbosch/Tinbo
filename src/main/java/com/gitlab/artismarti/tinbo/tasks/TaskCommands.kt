@@ -104,7 +104,7 @@ class TaskCommands(val executor: TaskExecutor = Injekt.get()) : CommandMarker {
 
     @CliCommand("cancel", help = "Cancels edit mode.")
     fun cancelTaskEditing(): String {
-        if(isEditMode) {
+        if (isEditMode) {
             isEditMode = false
             isListMode = false
             return "Cancelled edit mode.    "

@@ -4,7 +4,6 @@ import com.gitlab.artismarti.tinbo.applyToString
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.csv.CSVTablePrinter
 import com.gitlab.artismarti.tinbo.orValue
-import com.gitlab.artismarti.tinbo.persistence.Entry
 import com.gitlab.artismarti.tinbo.plusElementAtBeginning
 import com.gitlab.artismarti.tinbo.replaceAt
 import com.gitlab.artismarti.tinbo.withIndexedColumn
@@ -17,7 +16,7 @@ import uy.kohesive.injekt.api.get
 class TaskExecutor(val taskDataHolder: TaskDataHolder = Injekt.get()) {
 
     private val csv = CSVTablePrinter()
-    private var entriesInMemory: List<Entry> = listOf()
+    private var entriesInMemory: List<TaskEntry> = listOf()
 
     init {
         taskDataHolder.loadData(Default.TASKS_NAME)
@@ -47,7 +46,7 @@ class TaskExecutor(val taskDataHolder: TaskDataHolder = Injekt.get()) {
     }
 
     private fun createEditedNote(index: Int, dummy: DummyTask): TaskEntry {
-        val realNote = entriesInMemory[index] as TaskEntry
+        val realNote = entriesInMemory[index]
         return TaskEntry(dummy.message.orValue(realNote.message),
                 dummy.description.orValue(realNote.description),
                 dummy.location.orValue(realNote.location),

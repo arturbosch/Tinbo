@@ -1,26 +1,16 @@
 package com.gitlab.artismarti.tinbo.tasks
 
-import com.gitlab.artismarti.tinbo.persistence.Entry
+import com.gitlab.artismarti.tinbo.persistence.AbstractDataHolder
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 
 /**
  * @author artur
  */
-class TaskDataHolder(var data: TaskData = Injekt.get(),
-                     val persister: TaskPersister = Injekt.get()) {
+class TaskDataHolder(data: TaskData = Injekt.get(), persister: TaskPersister = Injekt.get()) :
+        AbstractDataHolder<TaskEntry, TaskData>(data, persister) {
 
-    fun loadData(name: String) {
-        data = persister.restore(name)
-    }
-
-    fun persistEntry(entry: TaskEntry) {
-        data.addEntry(entry)
-        persister.store(data)
-    }
-
-    fun saveData(name: String, entriesInMemory: List<Entry>) {
-        data = TaskData(name, entriesInMemory)
-        persister.store(data)
+    override fun newData(name: String, entriesInMemory: List<TaskEntry>): TaskData {
+        return TaskData(name, entriesInMemory)
     }
 }

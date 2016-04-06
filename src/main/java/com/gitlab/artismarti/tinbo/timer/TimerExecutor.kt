@@ -27,7 +27,7 @@ class TimerExecutor(val timerDataHolder: TimerDataHolder = Injekt.get()) {
     private fun listData(data: List<String>): List<String> {
         val csv = CSVTablePrinter()
         val table = data.toMutableList()
-        table.add(0, "No.;Category;Date;H;M;S;Notice")
+        table.add(0, "No.;Category;Date;Hr;Min;Sec;Notice")
         return csv.asTable(table.toList())
     }
 
