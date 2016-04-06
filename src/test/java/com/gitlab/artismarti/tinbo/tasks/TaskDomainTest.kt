@@ -6,36 +6,36 @@ import org.junit.Test
 /**
  * @author artur
  */
-class NotesDomainTest {
+class TaskDomainTest {
 
-    private val notesData = TaskData("Main")
-    private val notesPersister = TaskPersister(HomeFolder.getDirectory("test/notes"))
-    private val notesDataHolder = TaskDataHolder(notesData, notesPersister)
+    private val taskData = TaskData("Main")
+    private val taskPersister = TaskPersister(HomeFolder.getDirectory("test/tasks"))
+    private val taskDataHolder = TaskDataHolder(taskData, taskPersister)
 
     @Test
     fun domainObjectsTest() {
         val beforeSize = getEntriesSize()
         assert(beforeSize == 0)
 
-        notesDataHolder.persistEntry(TaskEntry("note2"))
+        taskDataHolder.persistEntry(TaskEntry("note2"))
         val afterPersistSize = getEntriesSize()
         assert(afterPersistSize == 1)
 
-        notesDataHolder.persistEntry(TaskEntry("note2"))
+        taskDataHolder.persistEntry(TaskEntry("note2"))
         val afterSecondPersistSize = getEntriesSize()
         assert(afterSecondPersistSize == 2)
 
-        val isStored = notesPersister.store(notesData)
+        val isStored = taskPersister.store(taskData)
         assert(isStored)
 
-        notesDataHolder.loadData(notesData.name)
+        taskDataHolder.loadData(taskData.name)
         val totalEntrySizeAfterLoading = getEntriesSize()
         assert(totalEntrySizeAfterLoading == 2)
 
     }
 
     private fun getEntriesSize(): Int {
-        return notesDataHolder.data.entries.size
+        return taskDataHolder.data.entries.size
     }
 
 }

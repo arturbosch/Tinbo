@@ -27,7 +27,7 @@ class TaskCommands(val executor: TaskExecutor = Injekt.get()) : CommandMarker {
 
     @CliAvailabilityIndicator("task", "loadTasks", "editTasks", "listTasks", "deleteTask", "saveTasks")
     fun isAvailable(): Boolean {
-        return ModeAdvisor.isNotesMode()
+        return ModeAdvisor.isTasksMode()
     }
 
     @CliCommand(value = "task", help = "Adds a new task.")
@@ -107,7 +107,7 @@ class TaskCommands(val executor: TaskExecutor = Injekt.get()) : CommandMarker {
         if(isEditMode) {
             isEditMode = false
             isListMode = false
-            return "Cancelled edit mode."
+            return "Cancelled edit mode.    "
         } else {
             return "You need to be in edit mode to use cancel."
         }

@@ -23,13 +23,13 @@ class NoteCommands(val executor: NoteExecutor = Injekt.get()) : CommandMarker {
     private var isListMode: Boolean = false
     private var isEditMode: Boolean = false
 
-    @CliAvailabilityIndicator("note", "loadNotes", "editNotes", "listNotes", "deleteNote", "saveNotes")
+    @CliAvailabilityIndicator("note", "loadNotes", "editNotes", "listNotes", "deleteNote", "saveNotes", "cancelNotes")
     fun isAvailable(): Boolean {
         return ModeAdvisor.isNotesMode()
     }
 
     @CliCommand(value = "note", help = "Adds a new note.")
-    fun newTask(@CliOption(key = arrayOf("message", "msg", "m"), mandatory = true, help = "Summary of the task.",
+    fun newNote(@CliOption(key = arrayOf("message", "msg", "m"), mandatory = true, help = "Summary of the task.",
             specifiedDefaultValue = "", unspecifiedDefaultValue = "") message: String): String {
 
         var result = SUCCESS_MESSAGE
@@ -46,14 +46,14 @@ class NoteCommands(val executor: NoteExecutor = Injekt.get()) : CommandMarker {
     }
 
     @CliCommand("loadNotes", help = "Loads/Creates an other data set. Note data sets are stored under ~/tinbo/notes/*.")
-    fun loadTasks(@CliOption(key = arrayOf("name", "n"), mandatory = true,
+    fun loadNotes(@CliOption(key = arrayOf("name", "n"), mandatory = true,
             specifiedDefaultValue = Default.TASKS_NAME,
             unspecifiedDefaultValue = Default.TASKS_NAME) name: String) {
         executor.loadData(name)
     }
 
     @CliCommand("listNotes", help = "Lists all notes.")
-    fun listTasks(): String {
+    fun listNotes(): String {
         if (isEditMode) {
             return NEED_EDIT_MODE_TEXT
         } else {
@@ -63,7 +63,7 @@ class NoteCommands(val executor: NoteExecutor = Injekt.get()) : CommandMarker {
     }
 
     @CliCommand("cancelNotes", help = "Cancels edit mode.")
-    fun cancelTaskEditing(): String {
+    fun cancelNoteEditing(): String {
         if (isEditMode) {
             isEditMode = false
             isListMode = false
@@ -74,7 +74,7 @@ class NoteCommands(val executor: NoteExecutor = Injekt.get()) : CommandMarker {
     }
 
     @CliCommand("saveNotes", help = "Saves current editing if list command was used.")
-    fun saveTasks(@CliOption(key = arrayOf("name", "n"), help = "Saves notes under a new data set (also a new filename).",
+    fun saveNotes(@CliOption(key = arrayOf("name", "n"), help = "Saves notes under a new data set (also a new filename).",
             specifiedDefaultValue = "", unspecifiedDefaultValue = "") name: String): String {
         if (isListMode && isEditMode) {
             isListMode = false
@@ -86,7 +86,7 @@ class NoteCommands(val executor: NoteExecutor = Injekt.get()) : CommandMarker {
     }
 
     @CliCommand("editNote", "editNotes", help = "Edits the note entry(/entries) with given index")
-    fun editTask(@CliOption(key = arrayOf("index", "i"), mandatory = true, help = "Index of the task to edit.") index: Int,
+    fun editNote(@CliOption(key = arrayOf("index", "i"), mandatory = true, help = "Index of the task to edit.") index: Int,
                  @CliOption(key = arrayOf("message", "msg", "m"), help = "Summary of the task.",
                          specifiedDefaultValue = "", unspecifiedDefaultValue = "") message: String): String {
         if (isListMode) {
@@ -104,7 +104,7 @@ class NoteCommands(val executor: NoteExecutor = Injekt.get()) : CommandMarker {
     }
 
     @CliCommand("deleteNote", "deleteNotes", "removeNote", "removeNotes", help = "Deletes notes from storage.")
-    fun deleteTask(@CliOption(key = arrayOf("indices", "index", "i"), mandatory = true,
+    fun deleteNote(@CliOption(key = arrayOf("indices", "index", "i"), mandatory = true,
             help = "Indices pattern, allowed are numbers with space in between or intervals like 1-5 e.g. '1 2 3-5 6'.") indexPattern: String): String {
 
         if (isListMode) {
