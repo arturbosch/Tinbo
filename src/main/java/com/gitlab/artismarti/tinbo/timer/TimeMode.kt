@@ -7,6 +7,6 @@ package com.gitlab.artismarti.tinbo.timer
  *
  * @author artur
  */
-enum class TimerMode {
+enum class TimeMode {
     INVALID, DEFAULT, BACKGROUND
 }

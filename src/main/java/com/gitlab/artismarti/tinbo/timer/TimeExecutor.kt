@@ -11,10 +11,10 @@ import uy.kohesive.injekt.api.get
 /**
  * @author artur
  */
-class TimerExecutor(val timerDataHolder: TimerDataHolder = Injekt.get()) {
+class TimeExecutor(val timeDataHolder: TimeDataHolder = Injekt.get()) {
 
     init {
-        timerDataHolder.loadData(Default.DATA_NAME)
+        timeDataHolder.loadData(Default.DATA_NAME)
     }
 
     private var currentTimer = Timer.INVALID
@@ -27,27 +27,27 @@ class TimerExecutor(val timerDataHolder: TimerDataHolder = Injekt.get()) {
     private fun listData(data: List<String>): List<String> {
         val csv = CSVTablePrinter()
         val table = data.toMutableList()
-        table.add(0, "No.;Category;Date;Hr;Min;Sec;Notice")
+        table.add(0, "No.;Category;Date;Hr.;Min;Sec;Notice")
         return csv.asTable(table.toList())
     }
 
     fun listDataFilterForCategory(categoryName: String): List<String> {
-        return listData(timerDataHolder.getEntriesFilteredByCategorySortedByDateAsString(categoryName))
+        return listData(timeDataHolder.getEntriesFilteredByCategorySortedByDateAsString(categoryName))
     }
 
     fun listDataNoFiltering(): List<String> {
-        return listData(timerDataHolder.getEntriesSortedByDateAsString())
+        return listData(timeDataHolder.getEntriesSortedByDateAsString())
     }
 
     fun loadData(name: String) {
-        timerDataHolder.loadData(name)
+        timeDataHolder.loadData(name)
     }
 
     fun startPrintingTime(timer: Timer) {
         currentTimer = timer
         running = true
         while (running) {
-            if (currentTimer.timerMode == TimerMode.DEFAULT)
+            if (currentTimer.timeMode == TimeMode.DEFAULT)
                 printInfo("\rElapsed time: $timer")
             if (currentTimer.isFinished())
                 stop()
@@ -71,19 +71,19 @@ class TimerExecutor(val timerDataHolder: TimerDataHolder = Injekt.get()) {
         var newMessage = currentTimer.message
         if (name.isNotEmpty()) newName = name
         if (message.isNotEmpty()) newMessage = message
-        currentTimer = Timer(currentTimer.timerMode, newName, newMessage,
+        currentTimer = Timer(currentTimer.timeMode, newName, newMessage,
                 currentTimer.startDateTime, currentTimer.stopDateTime)
     }
 
     private fun saveAndResetCurrentTimer() {
         notify()
-        timerDataHolder.persistEntry(createTimeEntry())
+        timeDataHolder.persistEntry(createTimeEntry())
         currentTimer = Timer.INVALID
     }
 
-    private fun createTimeEntry(): TimerEntry {
+    private fun createTimeEntry(): TimeEntry {
         val (secs, mins, hours) = currentTimer.getTimeTriple()
-        return TimerEntry(currentTimer.category, currentTimer.message, hours, mins, secs, currentTimer.startDateTime.toLocalDate())
+        return TimeEntry(currentTimer.category, currentTimer.message, hours, mins, secs, currentTimer.startDateTime.toLocalDate())
     }
 
     private fun notify() {

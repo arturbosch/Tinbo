@@ -1,7 +1,7 @@
 package com.gitlab.artismarti.tinbo.csv
 
 import com.gitlab.artismarti.tinbo.tasks.TaskEntry
-import com.gitlab.artismarti.tinbo.timer.TimerEntry
+import com.gitlab.artismarti.tinbo.timer.TimeEntry
 import org.junit.Test
 
 /**
@@ -14,8 +14,8 @@ class CSVDataExchangerTest {
         val exchange = CSVDataExchange()
 
         // Timers
-        val persist = exchange.toCSV(listOf(TimerEntry(), TimerEntry(), TimerEntry()))
-        val transform = exchange.fromCSV(TimerEntry::class.java, persist)
+        val persist = exchange.toCSV(listOf(TimeEntry(), TimeEntry(), TimeEntry()))
+        val transform = exchange.fromCSV(TimeEntry::class.java, persist)
         println(transform)
         assert(transform.size == 3)
 

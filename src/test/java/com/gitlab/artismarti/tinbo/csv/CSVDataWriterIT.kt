@@ -1,6 +1,6 @@
 package com.gitlab.artismarti.tinbo.csv
 
-import com.gitlab.artismarti.tinbo.timer.TimerEntry
+import com.gitlab.artismarti.tinbo.timer.TimeEntry
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -12,13 +12,13 @@ import kotlin.system.measureTimeMillis
  */
 class CSVDataWriterIT {
 
-    private var list = ArrayList<TimerEntry>()
+    private var list = ArrayList<TimeEntry>()
     private val writer = CSVDataExchange()
 
     @Before
     fun setUp() {
         for (i in 0..1000) {
-            list.add(TimerEntry())
+            list.add(TimeEntry())
         }
     }
 

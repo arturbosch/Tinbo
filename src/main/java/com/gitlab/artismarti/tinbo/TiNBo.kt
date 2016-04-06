@@ -8,10 +8,10 @@ import com.gitlab.artismarti.tinbo.tasks.TaskData
 import com.gitlab.artismarti.tinbo.tasks.TaskDataHolder
 import com.gitlab.artismarti.tinbo.tasks.TaskExecutor
 import com.gitlab.artismarti.tinbo.tasks.TaskPersister
-import com.gitlab.artismarti.tinbo.timer.TimerData
-import com.gitlab.artismarti.tinbo.timer.TimerDataHolder
-import com.gitlab.artismarti.tinbo.timer.TimerExecutor
-import com.gitlab.artismarti.tinbo.timer.TimerPersister
+import com.gitlab.artismarti.tinbo.timer.TimeData
+import com.gitlab.artismarti.tinbo.timer.TimeDataHolder
+import com.gitlab.artismarti.tinbo.timer.TimeExecutor
+import com.gitlab.artismarti.tinbo.timer.TimePersister
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
@@ -32,10 +32,10 @@ open class TiNBo {
     companion object : InjektMain() {
 
         override fun InjektRegistrar.registerInjectables() {
-            addSingleton(fullType(), TimerData())
-            addSingleton(fullType(), TimerPersister())
-            addSingleton(fullType(), TimerDataHolder())
-            addSingleton(fullType(), TimerExecutor())
+            addSingleton(fullType(), TimeData())
+            addSingleton(fullType(), TimePersister())
+            addSingleton(fullType(), TimeDataHolder())
+            addSingleton(fullType(), TimeExecutor())
             addSingleton(fullType(), TaskData())
             addSingleton(fullType(), TaskPersister())
             addSingleton(fullType(), TaskDataHolder())

@@ -7,5 +7,5 @@ import com.gitlab.artismarti.tinbo.persistence.Data
 /**
  * @author artur
  */
-class TimerData(name: String = Default.DATA_NAME,
-                entries: List<TimerEntry> = listOf()) : Data<TimerEntry>(name, entries)
+class TimeData(name: String = Default.DATA_NAME,
+               entries: List<TimeEntry> = listOf()) : Data<TimeEntry>(name, entries)

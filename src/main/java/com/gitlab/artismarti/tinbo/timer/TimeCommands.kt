@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture
  * @author artur
  */
 @Component
-class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker {
+class TimeCommands(val executor: TimeExecutor = Injekt.get()) : CommandMarker {
 
     @CliAvailabilityIndicator("listt", "start", "stop", "q", "loadt", "show")
     fun isAvailable(): Boolean {
@@ -62,9 +62,9 @@ class TimerCommands(val executor: TimerExecutor = Injekt.get()) : CommandMarker 
         }
     }
 
-    private fun specifyTimerMode(bg: Boolean): TimerMode {
-        if (bg) return TimerMode.BACKGROUND
-        else return TimerMode.DEFAULT
+    private fun specifyTimerMode(bg: Boolean): TimeMode {
+        if (bg) return TimeMode.BACKGROUND
+        else return TimeMode.DEFAULT
     }
 
     private fun inputsAreInvalid(mins: Int, seconds: Int): Boolean {

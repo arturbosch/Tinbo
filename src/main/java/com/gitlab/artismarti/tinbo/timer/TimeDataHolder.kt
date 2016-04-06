@@ -8,11 +8,11 @@ import uy.kohesive.injekt.api.get
 /**
  * @author artur
  */
-class TimerDataHolder(data: TimerData = Injekt.get(), persister: TimerPersister = Injekt.get()) :
-        AbstractDataHolder<TimerEntry, TimerData>(data, persister) {
+class TimeDataHolder(data: TimeData = Injekt.get(), persister: TimePersister = Injekt.get()) :
+        AbstractDataHolder<TimeEntry, TimeData>(data, persister) {
 
-    override fun newData(name: String, entriesInMemory: List<TimerEntry>): TimerData {
-        return TimerData(name, entriesInMemory)
+    override fun newData(name: String, entriesInMemory: List<TimeEntry>): TimeData {
+        return TimeData(name, entriesInMemory)
     }
 
     fun getEntriesFilteredByCategorySortedByDateAsString(categoryName: String): List<String> {

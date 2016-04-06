@@ -8,20 +8,20 @@ import org.junit.Test
  */
 class TimerDomainTest {
 
-    private val timerData = TimerData("Main")
-    private val timerPersister = TimerPersister(HomeFolder.getDirectory("test/timer"))
-    private val timerDataHolder = TimerDataHolder(timerData, timerPersister)
+    private val timerData = TimeData("Main")
+    private val timerPersister = TimePersister(HomeFolder.getDirectory("test/timer"))
+    private val timerDataHolder = TimeDataHolder(timerData, timerPersister)
 
     @Test
     fun domainObjectsTest() {
         val beforeSize = getEntriesSize()
         assert(beforeSize == 0)
 
-        timerDataHolder.persistEntry(TimerEntry("TE1"))
+        timerDataHolder.persistEntry(TimeEntry("TE1"))
         val afterPersistSize = getEntriesSize()
         assert(afterPersistSize == 1)
 
-        timerDataHolder.persistEntry(TimerEntry("TE2"))
+        timerDataHolder.persistEntry(TimeEntry("TE2"))
         val afterSecondPersistSize = getEntriesSize()
         assert(afterSecondPersistSize == 2)
 
