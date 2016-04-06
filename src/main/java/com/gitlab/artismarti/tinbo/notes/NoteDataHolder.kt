@@ -13,4 +13,8 @@ class NoteDataHolder(data: NoteData = Injekt.get(), persister: NotePersister = I
     override fun newData(name: String, entriesInMemory: List<NoteEntry>): NoteData {
         return NoteData(name, entriesInMemory)
     }
+
+    override fun getEntriesFilteredBy(filter: String): List<NoteEntry> {
+        throw UnsupportedOperationException()
+    }
 }

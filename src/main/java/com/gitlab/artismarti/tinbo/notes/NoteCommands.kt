@@ -39,7 +39,7 @@ class NoteCommands(val executor: NoteExecutor = Injekt.get()) : CommandMarker {
         } else if (message.isEmpty()) {
             result = "You need to specify a message."
         } else {
-            executor.addNote(NoteEntry(message))
+            executor.addEntry(NoteEntry(message))
         }
 
         return result
@@ -79,7 +79,7 @@ class NoteCommands(val executor: NoteExecutor = Injekt.get()) : CommandMarker {
         if (isListMode && isEditMode) {
             isListMode = false
             isEditMode = false
-            return executor.save(name)
+            return executor.saveEntries(name)
         } else {
             return "You need to be in edit mode to use save."
         }
@@ -93,7 +93,7 @@ class NoteCommands(val executor: NoteExecutor = Injekt.get()) : CommandMarker {
             val i = index - 1
             if (executor.indexExists(i)) {
                 isEditMode = true
-                executor.editNote(i, DummyNote(message))
+                executor.editEntry(i, DummyNote(message))
                 return SUCCESS_MESSAGE
             } else {
                 return "This index doesn't exist"
@@ -111,7 +111,7 @@ class NoteCommands(val executor: NoteExecutor = Injekt.get()) : CommandMarker {
             try {
                 val indices = parseIndices(indexPattern)
                 isEditMode = true
-                executor.deleteNotes(indices)
+                executor.deleteEntries(indices)
                 return "Successfully deleted task(s)."
             } catch(e: IllegalArgumentException) {
                 return "Could not parse the indices pattern. Use something like '1 2 3-5 6'."

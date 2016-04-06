@@ -13,4 +13,8 @@ class TaskDataHolder(data: TaskData = Injekt.get(), persister: TaskPersister = I
     override fun newData(name: String, entriesInMemory: List<TaskEntry>): TaskData {
         return TaskData(name, entriesInMemory)
     }
+
+    override fun getEntriesFilteredBy(filter: String): List<TaskEntry> {
+        return data.entries.filter { it.category == filter }
+    }
 }

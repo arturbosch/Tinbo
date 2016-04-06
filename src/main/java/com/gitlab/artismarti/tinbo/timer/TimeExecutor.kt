@@ -2,7 +2,7 @@ package com.gitlab.artismarti.tinbo.timer
 
 import com.gitlab.artismarti.tinbo.Notification
 import com.gitlab.artismarti.tinbo.config.Default
-import com.gitlab.artismarti.tinbo.csv.CSVTablePrinter
+import com.gitlab.artismarti.tinbo.persistence.AbstractExecutor
 import com.gitlab.artismarti.tinbo.utils.printInfo
 import com.gitlab.artismarti.tinbo.utils.printlnInfo
 import uy.kohesive.injekt.Injekt
@@ -11,7 +11,15 @@ import uy.kohesive.injekt.api.get
 /**
  * @author artur
  */
-class TimeExecutor(val timeDataHolder: TimeDataHolder = Injekt.get()) {
+class TimeExecutor(val timeDataHolder: TimeDataHolder = Injekt.get()) :
+        AbstractExecutor<TimeEntry, TimeData, DummyTime>(timeDataHolder) {
+
+    override val TABLE_HEADER: String
+        get() = "No.;Category;Date;Hr.;Min;Sec;Notice"
+
+    override fun newEntry(index: Int, dummy: DummyTime): TimeEntry {
+        throw UnsupportedOperationException()
+    }
 
     init {
         timeDataHolder.loadData(Default.DATA_NAME)
@@ -22,25 +30,6 @@ class TimeExecutor(val timeDataHolder: TimeDataHolder = Injekt.get()) {
 
     fun inProgress(): Boolean {
         return !currentTimer.isInvalid()
-    }
-
-    private fun listData(data: List<String>): List<String> {
-        val csv = CSVTablePrinter()
-        val table = data.toMutableList()
-        table.add(0, "No.;Category;Date;Hr.;Min;Sec;Notice")
-        return csv.asTable(table.toList())
-    }
-
-    fun listDataFilterForCategory(categoryName: String): List<String> {
-        return listData(timeDataHolder.getEntriesFilteredByCategorySortedByDateAsString(categoryName))
-    }
-
-    fun listDataNoFiltering(): List<String> {
-        return listData(timeDataHolder.getEntriesSortedByDateAsString())
-    }
-
-    fun loadData(name: String) {
-        timeDataHolder.loadData(name)
     }
 
     fun startPrintingTime(timer: Timer) {
@@ -77,13 +66,14 @@ class TimeExecutor(val timeDataHolder: TimeDataHolder = Injekt.get()) {
 
     private fun saveAndResetCurrentTimer() {
         notify()
-        timeDataHolder.persistEntry(createTimeEntry())
+        createTimeEntry()
         currentTimer = Timer.INVALID
     }
 
-    private fun createTimeEntry(): TimeEntry {
+    private fun createTimeEntry() {
         val (secs, mins, hours) = currentTimer.getTimeTriple()
-        return TimeEntry(currentTimer.category, currentTimer.message, hours, mins, secs, currentTimer.startDateTime.toLocalDate())
+        addEntry(TimeEntry(currentTimer.category, currentTimer.message, hours, mins, secs,
+                currentTimer.startDateTime.toLocalDate()))
     }
 
     private fun notify() {
@@ -91,7 +81,7 @@ class TimeExecutor(val timeDataHolder: TimeDataHolder = Injekt.get()) {
     }
 
     fun showTimer(): String {
-        if(inProgress()) return "Elapsed time: " + currentTimer.toString()
+        if (inProgress()) return "Elapsed time: " + currentTimer.toString()
         else return "No current timer is running"
     }
 

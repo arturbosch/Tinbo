@@ -29,10 +29,10 @@ class TimeCommands(val executor: TimeExecutor = Injekt.get()) : CommandMarker {
     fun listData(@CliOption(key = arrayOf("category", "cat"), unspecifiedDefaultValue = "", specifiedDefaultValue = "",
             help = "Name to filter only for this specific category.") categoryName: String): String {
         val data = when (categoryName) {
-            "" -> executor.listDataNoFiltering()
-            else -> executor.listDataFilterForCategory(categoryName)
+            "" -> executor.listData()
+            else -> executor.listDataFilteredBy(categoryName)
         }
-        return data.joinToString("\n")
+        return data
     }
 
     @CliCommand(value = "start", help = "Starts the timer and waits for you to type 'stop' to finish it if no arguments are specified.")

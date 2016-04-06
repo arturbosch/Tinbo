@@ -20,7 +20,7 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, T : DummyEntry>(
     private val NEW_LINE = "\n"
     private val SUCCESS_SAVE = "Successfully saved edited data"
 
-    fun addNote(entry: E) {
+    fun addEntry(entry: E) {
         dataHolder.persistEntry(entry)
     }
 
@@ -29,26 +29,38 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, T : DummyEntry>(
     }
 
     fun listData(): String {
-        entriesInMemory = dataHolder.data.entries
+        entriesInMemory = dataHolder.getEntries()
+        return listDataInternal()
+    }
 
-        val entryTableData = entriesInMemory.applyToString()
+    private fun listDataInternal(): String {
+
+        val entryTableData = entriesInMemory.sorted()
+                .applyToString()
                 .withIndexedColumn()
                 .plusElementAtBeginning(TABLE_HEADER)
 
         return csv.asTable(entryTableData).joinToString(NEW_LINE)
     }
 
-    fun editNote(index: Int, dummy: T) {
+    fun listDataFilteredBy(filter: String): String {
+        entriesInMemory = dataHolder.getEntriesFilteredBy(filter)
+        return listDataInternal()
+    }
+
+    fun editEntry(index: Int, dummy: T) {
         entriesInMemory = entriesInMemory.replaceAt(index, newEntry(index, dummy))
     }
 
     protected abstract fun newEntry(index: Int, dummy: T): E
 
-    fun deleteNotes(indices: Set<Int>) {
-        entriesInMemory = entriesInMemory.filterIndexed { index, entry -> indices.contains(index).not() }
+    fun deleteEntries(indices: Set<Int>) {
+        entriesInMemory = entriesInMemory.filterIndexed {
+            index, entry -> indices.contains(index).not()
+        }
     }
 
-    fun save(newName: String = ""): String {
+    fun saveEntries(newName: String = ""): String {
         var name = dataHolder.data.name
         if (newName.isNotEmpty()) name = newName
         dataHolder.saveData(name, entriesInMemory)

@@ -50,13 +50,13 @@ class TaskCommands(val executor: TaskExecutor = Injekt.get()) : CommandMarker {
         if (isEditMode) {
             result = NEED_EDIT_MODE_TEXT
         } else if (startTime.isEmpty() && endTime.isEmpty()) {
-            executor.addNote(TaskEntry(message, description, location, category))
+            executor.addEntry(TaskEntry(message, description, location, category))
         } else if (startTime.isNotEmpty()) {
             try {
                 val pair = DateTimeFormatters.parseDateTime(endTime, startTime)
                 val formattedStartTime = pair.first
                 var formattedEndTime = pair.second
-                executor.addNote(TaskEntry(message, description, location, category, formattedStartTime, formattedEndTime))
+                executor.addEntry(TaskEntry(message, description, location, category, formattedStartTime, formattedEndTime))
             } catch(e: DateTimeParseException) {
                 result = "Could not parse date, use format: yyyy-MM-dd HH:mm"
             }
@@ -99,7 +99,7 @@ class TaskCommands(val executor: TaskExecutor = Injekt.get()) : CommandMarker {
         if (isListMode && isEditMode) {
             isListMode = false
             isEditMode = false
-            return executor.save(name)
+            return executor.saveEntries(name)
         } else {
             return "You need to be in edit mode to use save."
         }
@@ -124,7 +124,7 @@ class TaskCommands(val executor: TaskExecutor = Injekt.get()) : CommandMarker {
             if (executor.indexExists(i)) {
                 isEditMode = true
                 val pair = DateTimeFormatters.parseDateTimeOrDefault(endTime, startTime)
-                executor.editNote(i, DummyTask(message, category, location, description, pair.first, pair.second))
+                executor.editEntry(i, DummyTask(message, category, location, description, pair.first, pair.second))
                 return SUCCESS_MESSAGE
             } else {
                 return "This index doesn't exist"
@@ -142,7 +142,7 @@ class TaskCommands(val executor: TaskExecutor = Injekt.get()) : CommandMarker {
             try {
                 val indices = parseIndices(indexPattern)
                 isEditMode = true
-                executor.deleteNotes(indices)
+                executor.deleteEntries(indices)
                 return "Successfully deleted task(s)."
             } catch(e: IllegalArgumentException) {
                 return "Could not parse the indices pattern. Use something like '1 2 3-5 6'."

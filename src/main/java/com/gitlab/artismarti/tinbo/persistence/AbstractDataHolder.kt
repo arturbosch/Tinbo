@@ -19,5 +19,9 @@ abstract class AbstractDataHolder<E : Entry, D : Data<E>>(var data: D, val persi
         persister.store(data)
     }
 
+    fun getEntries(): List<E> = data.entries
+
     abstract fun newData(name: String, entriesInMemory: List<E>): D
+
+    abstract fun getEntriesFilteredBy(filter: String): List<E>
 }
