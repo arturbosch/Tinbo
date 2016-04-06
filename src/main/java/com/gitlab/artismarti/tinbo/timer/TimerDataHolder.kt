@@ -12,7 +12,7 @@ class TimerDataHolder(var data: TimerData = Injekt.get(),
                       val persister: TimerPersister = Injekt.get()) {
 
     fun loadData(name: String) {
-        data = persister.restore(name) as TimerData
+        data = persister.restore(name)
     }
 
     fun persistEntry(entry: Entry) {

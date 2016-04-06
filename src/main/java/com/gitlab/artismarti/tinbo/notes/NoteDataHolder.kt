@@ -11,7 +11,7 @@ import uy.kohesive.injekt.api.get
 class NoteDataHolder(var data: NoteData = Injekt.get(), val persister: NotePersister = Injekt.get()) : DataHolder {
     
     override fun loadData(name: String) {
-        data = persister.restore(name) as NoteData
+        data = persister.restore(name)
     }
 
     override fun persistEntry(entry: Entry) {
