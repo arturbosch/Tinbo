@@ -72,26 +72,6 @@ class TaskCommands(val executor: TaskExecutor = Injekt.get()) : CommandMarker {
         executor.loadData(name)
     }
 
-    @CliCommand("note", "new", help = "Adds a new note.")
-    fun newNote(@CliOption(key = arrayOf("message", "msg", "m"), mandatory = true, help = "Summary of the task.",
-            specifiedDefaultValue = "", unspecifiedDefaultValue = "") message: String,
-                @CliOption(key = arrayOf("category", "cat", "c"), help = "Category for the task",
-                        specifiedDefaultValue = Default.MAIN_CATEGORY_NAME,
-                        unspecifiedDefaultValue = Default.MAIN_CATEGORY_NAME) category: String): String {
-
-        var result = SUCCESS_MESSAGE
-
-        if (isEditMode) {
-            result = NEED_EDIT_MODE_TEXT
-        } else if (message.isEmpty()) {
-            result = "You need to specify a message."
-        } else {
-            executor.addNote(TaskEntry(message, "", "", category))
-        }
-
-        return result
-    }
-
     @CliCommand("listTasks", help = "Lists all tasks.")
     fun listTasks(): String {
         if (isEditMode) {

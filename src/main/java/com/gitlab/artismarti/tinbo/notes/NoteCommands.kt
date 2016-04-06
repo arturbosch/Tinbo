@@ -93,7 +93,7 @@ class NoteCommands(val executor: NoteExecutor = Injekt.get()) : CommandMarker {
             val i = index - 1
             if (executor.indexExists(i)) {
                 isEditMode = true
-                executor.editNote(i, message)
+                executor.editNote(i, DummyNote(message))
                 return SUCCESS_MESSAGE
             } else {
                 return "This index doesn't exist"
