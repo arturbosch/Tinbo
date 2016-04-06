@@ -6,7 +6,7 @@ import org.junit.Test
 /**
  * @author artur
  */
-class TimerDomainTest {
+class TimeDomainTest {
 
     private val timerData = TimeData("Main")
     private val timerPersister = TimePersister(HomeFolder.getDirectory("test/timer"))
