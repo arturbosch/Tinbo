@@ -8,5 +8,5 @@ package com.gitlab.artismarti.tinbo.timer
  * @author artur
  */
 enum class TimeMode {
-    INVALID, DEFAULT, BACKGROUND
+	INVALID, DEFAULT, BACKGROUND
 }

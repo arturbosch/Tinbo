@@ -8,10 +8,10 @@ import java.nio.file.Path
  * @author artur
  */
 class TaskPersister(TASKS_PATH: Path = HomeFolder.getDirectory("tasks")) :
-        AbstractPersister<TaskEntry, TaskData>(TASKS_PATH) {
+		AbstractPersister<TaskEntry, TaskData>(TASKS_PATH) {
 
-    override fun restore(name: String): TaskData {
-        return save(name, TaskData(name), TaskEntry::class.java)
-    }
+	override fun restore(name: String): TaskData {
+		return save(name, TaskData(name), TaskEntry::class.java)
+	}
 
 }

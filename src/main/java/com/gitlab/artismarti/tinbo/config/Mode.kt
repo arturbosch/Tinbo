@@ -4,5 +4,5 @@ package com.gitlab.artismarti.tinbo.config
  * @author artur
  */
 enum class Mode {
-    START, TIMER, NOTES, TASKS
+	START, TIMER, NOTES, TASKS
 }

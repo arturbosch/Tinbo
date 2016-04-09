@@ -7,13 +7,13 @@ import com.gitlab.artismarti.tinbo.persistence.Entry
  */
 class NoteEntry(val message: String = "") : Entry() {
 
-    override fun compareTo(other: Entry): Int {
-        if (other !is NoteEntry) return 1
-        return message.compareTo(other.message)
-    }
+	override fun compareTo(other: Entry): Int {
+		if (other !is NoteEntry) return 1
+		return message.compareTo(other.message)
+	}
 
-    override fun toString(): String {
-        return "$message"
-    }
+	override fun toString(): String {
+		return "$message"
+	}
 
 }

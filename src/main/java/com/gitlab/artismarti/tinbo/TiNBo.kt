@@ -29,45 +29,45 @@ import java.util.logging.Logger
 @SpringBootApplication
 open class TiNBo {
 
-    companion object : InjektMain() {
+	companion object : InjektMain() {
 
-        override fun InjektRegistrar.registerInjectables() {
-            addSingleton(fullType(), TimeData())
-            addSingleton(fullType(), TimePersister())
-            addSingleton(fullType(), TimeDataHolder())
-            addSingleton(fullType(), TimeExecutor())
-            addSingleton(fullType(), TaskData())
-            addSingleton(fullType(), TaskPersister())
-            addSingleton(fullType(), TaskDataHolder())
-            addSingleton(fullType(), TaskExecutor())
-            addSingleton(fullType(), NoteData())
-            addSingleton(fullType(), NotePersister())
-            addSingleton(fullType(), NoteDataHolder())
-            addSingleton(fullType(), NoteExecutor())
-        }
+		override fun InjektRegistrar.registerInjectables() {
+			addSingleton(fullType(), TimeData())
+			addSingleton(fullType(), TimePersister())
+			addSingleton(fullType(), TimeDataHolder())
+			addSingleton(fullType(), TimeExecutor())
+			addSingleton(fullType(), TaskData())
+			addSingleton(fullType(), TaskPersister())
+			addSingleton(fullType(), TaskDataHolder())
+			addSingleton(fullType(), TaskExecutor())
+			addSingleton(fullType(), NoteData())
+			addSingleton(fullType(), NotePersister())
+			addSingleton(fullType(), NoteDataHolder())
+			addSingleton(fullType(), NoteExecutor())
+		}
 
-        @JvmStatic fun main(args: Array<String>) {
-            val ctx = SpringApplication.run(TiNBo::class.java)
+		@JvmStatic fun main(args: Array<String>) {
+			val ctx = SpringApplication.run(TiNBo::class.java)
 
-            try {
-                val bootStrap = BootShim(args, ctx)
-                bootStrap.run()
-            } catch (e: RuntimeException) {
-                throw e
-            } finally {
-                HandlerUtils.flushAllHandlers(Logger.getLogger(""))
-            }
-        }
+			try {
+				val bootStrap = BootShim(args, ctx)
+				bootStrap.run()
+			} catch (e: RuntimeException) {
+				throw e
+			} finally {
+				HandlerUtils.flushAllHandlers(Logger.getLogger(""))
+			}
+		}
 
-        @Bean
-        fun shell(): JLineShellComponent {
-            return JLineShellComponent()
-        }
+		@Bean
+		fun shell(): JLineShellComponent {
+			return JLineShellComponent()
+		}
 
-        @Bean
-        fun commandLine(): CommandLine {
-            return CommandLine(null, 3000, null)
-        }
-    }
+		@Bean
+		fun commandLine(): CommandLine {
+			return CommandLine(null, 3000, null)
+		}
+	}
 
 }

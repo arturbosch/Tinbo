@@ -7,4 +7,4 @@ import com.gitlab.artismarti.tinbo.persistence.Data
  * @author artur
  */
 class TaskData(name: String = Default.TASKS_NAME,
-               entries: List<TaskEntry> = listOf()) : Data<TaskEntry>(name, entries)
+			   entries: List<TaskEntry> = listOf()) : Data<TaskEntry>(name, entries)

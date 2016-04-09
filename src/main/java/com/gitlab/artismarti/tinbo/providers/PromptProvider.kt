@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component
 @Order(org.springframework.core.Ordered.HIGHEST_PRECEDENCE)
 class PromptProvider : DefaultPromptProvider() {
 
-    var promptText = "tinbo"
+	var promptText = "tinbo"
 
-    override fun getProviderName(): String {
-        return "TinboPromptProvider"
-    }
+	override fun getProviderName(): String {
+		return "TinboPromptProvider"
+	}
 
-    override fun getPrompt(): String {
-        return "$promptText>"
-    }
+	override fun getPrompt(): String {
+		return "$promptText>"
+	}
 
 }

@@ -13,19 +13,19 @@ import org.springframework.stereotype.Component
 @Order(org.springframework.core.Ordered.HIGHEST_PRECEDENCE)
 class BannerProvider : DefaultBannerProvider() {
 
-    override fun getBanner(): String {
-        return Resources.readLines(Resources.getResource("banner.txt"), Charsets.UTF_8).joinToString(separator = OsUtils.LINE_SEPARATOR)
-    }
+	override fun getBanner(): String {
+		return Resources.readLines(Resources.getResource("banner.txt"), Charsets.UTF_8).joinToString(separator = OsUtils.LINE_SEPARATOR)
+	}
 
-    override fun getVersion(): String {
-        return "TiNBo v0.1"
-    }
+	override fun getVersion(): String {
+		return "TiNBo v0.1"
+	}
 
-    override fun getWelcomeMessage(): String {
-        return "Welcome to TiNBo. Use 'help' to view all commands!"
-    }
+	override fun getWelcomeMessage(): String {
+		return "Welcome to TiNBo. Use 'help' to view all commands!"
+	}
 
-    override fun getProviderName(): String {
-        return "TinboBanner"
-    }
+	override fun getProviderName(): String {
+		return "TinboBanner"
+	}
 }

@@ -10,67 +10,68 @@ import com.gitlab.artismarti.tinbo.withIndexedColumn
  * @author artur
  */
 abstract class AbstractExecutor<E : Entry, D : Data<E>, T : DummyEntry>(
-        private val dataHolder: AbstractDataHolder<E, D>) {
+		private val dataHolder: AbstractDataHolder<E, D>) {
 
-    protected val csv = CSVTablePrinter()
-    protected var entriesInMemory: List<E> = listOf()
+	protected val csv = CSVTablePrinter()
+	protected var entriesInMemory: List<E> = listOf()
 
-    protected abstract val TABLE_HEADER: String
+	protected abstract val TABLE_HEADER: String
 
-    private val NEW_LINE = "\n"
-    private val SUCCESS_SAVE = "Successfully saved edited data"
+	private val NEW_LINE = "\n"
+	private val SUCCESS_SAVE = "Successfully saved edited data"
 
-    fun addEntry(entry: E) {
-        dataHolder.persistEntry(entry)
-    }
+	fun addEntry(entry: E) {
+		dataHolder.persistEntry(entry)
+	}
 
-    fun loadData(name: String) {
-        dataHolder.loadData(name)
-    }
+	fun loadData(name: String) {
+		dataHolder.loadData(name)
+	}
 
-    fun listData(): String {
-        entriesInMemory = dataHolder.getEntries()
-        return listDataInternal()
-    }
+	fun listData(): String {
+		entriesInMemory = dataHolder.getEntries()
+		return listDataInternal()
+	}
 
-    private fun listDataInternal(): String {
+	private fun listDataInternal(): String {
 
-        val entryTableData = entriesInMemory.sorted()
-                .applyToString()
-                .withIndexedColumn()
-                .plusElementAtBeginning(TABLE_HEADER)
+		val entryTableData = entriesInMemory.sorted()
+				.applyToString()
+				.withIndexedColumn()
+				.plusElementAtBeginning(TABLE_HEADER)
 
-        return csv.asTable(entryTableData).joinToString(NEW_LINE)
-    }
+		return csv.asTable(entryTableData).joinToString(NEW_LINE)
+	}
 
-    fun listDataFilteredBy(filter: String): String {
-        entriesInMemory = dataHolder.getEntriesFilteredBy(filter)
-        return listDataInternal()
-    }
+	fun listDataFilteredBy(filter: String): String {
+		entriesInMemory = dataHolder.getEntriesFilteredBy(filter)
+		return listDataInternal()
+	}
 
-    fun editEntry(index: Int, dummy: T) {
-        entriesInMemory = entriesInMemory.replaceAt(index, newEntry(index, dummy))
-    }
+	fun editEntry(index: Int, dummy: T) {
+		entriesInMemory = entriesInMemory.replaceAt(index, newEntry(index, dummy))
+	}
 
-    protected abstract fun newEntry(index: Int, dummy: T): E
+	protected abstract fun newEntry(index: Int, dummy: T): E
 
-    fun deleteEntries(indices: Set<Int>) {
-        entriesInMemory = entriesInMemory.filterIndexed {
-            index, entry -> indices.contains(index).not()
-        }
-    }
+	fun deleteEntries(indices: Set<Int>) {
+		entriesInMemory = entriesInMemory.filterIndexed {
+			index, entry ->
+			indices.contains(index).not()
+		}
+	}
 
-    fun saveEntries(newName: String = ""): String {
-        var name = dataHolder.data.name
-        if (newName.isNotEmpty()) name = newName
-        dataHolder.saveData(name, entriesInMemory)
-        entriesInMemory = listOf()
-        return SUCCESS_SAVE
-    }
+	fun saveEntries(newName: String = ""): String {
+		var name = dataHolder.data.name
+		if (newName.isNotEmpty()) name = newName
+		dataHolder.saveData(name, entriesInMemory)
+		entriesInMemory = listOf()
+		return SUCCESS_SAVE
+	}
 
-    fun indexExists(index: Int): Boolean {
-        return index >= 0 && index < entriesInMemory.size
-    }
+	fun indexExists(index: Int): Boolean {
+		return index >= 0 && index < entriesInMemory.size
+	}
 
 }
 

@@ -8,13 +8,13 @@ import uy.kohesive.injekt.api.get
  * @author artur
  */
 class NoteDataHolder(data: NoteData = Injekt.get(), persister: NotePersister = Injekt.get()) :
-        AbstractDataHolder<NoteEntry, NoteData>(data, persister) {
+		AbstractDataHolder<NoteEntry, NoteData>(data, persister) {
 
-    override fun newData(name: String, entriesInMemory: List<NoteEntry>): NoteData {
-        return NoteData(name, entriesInMemory)
-    }
+	override fun newData(name: String, entriesInMemory: List<NoteEntry>): NoteData {
+		return NoteData(name, entriesInMemory)
+	}
 
-    override fun getEntriesFilteredBy(filter: String): List<NoteEntry> {
-        throw UnsupportedOperationException()
-    }
+	override fun getEntriesFilteredBy(filter: String): List<NoteEntry> {
+		throw UnsupportedOperationException()
+	}
 }

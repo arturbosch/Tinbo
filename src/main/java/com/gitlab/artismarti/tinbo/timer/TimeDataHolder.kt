@@ -8,13 +8,13 @@ import uy.kohesive.injekt.api.get
  * @author artur
  */
 class TimeDataHolder(data: TimeData = Injekt.get(), persister: TimePersister = Injekt.get()) :
-        AbstractDataHolder<TimeEntry, TimeData>(data, persister) {
+		AbstractDataHolder<TimeEntry, TimeData>(data, persister) {
 
-    override fun newData(name: String, entriesInMemory: List<TimeEntry>): TimeData {
-        return TimeData(name, entriesInMemory)
-    }
+	override fun newData(name: String, entriesInMemory: List<TimeEntry>): TimeData {
+		return TimeData(name, entriesInMemory)
+	}
 
-    override fun getEntriesFilteredBy(filter: String): List<TimeEntry> {
-        return data.entries.filter { it.category == filter }
-    }
+	override fun getEntriesFilteredBy(filter: String): List<TimeEntry> {
+		return data.entries.filter { it.category == filter }
+	}
 }

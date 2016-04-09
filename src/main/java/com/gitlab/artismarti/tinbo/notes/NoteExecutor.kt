@@ -9,17 +9,17 @@ import uy.kohesive.injekt.api.get
  * @author artur
  */
 class NoteExecutor(val noteDataHolder: NoteDataHolder = Injekt.get()) :
-        AbstractExecutor<NoteEntry, NoteData, DummyNote>(noteDataHolder) {
+		AbstractExecutor<NoteEntry, NoteData, DummyNote>(noteDataHolder) {
 
-    override val TABLE_HEADER: String
-        get() = "No.;Message"
+	override val TABLE_HEADER: String
+		get() = "No.;Message"
 
-    init {
-        noteDataHolder.loadData(Default.TASKS_NAME)
-    }
+	init {
+		noteDataHolder.loadData(Default.TASKS_NAME)
+	}
 
-    override fun newEntry(index: Int, dummy: DummyNote): NoteEntry {
-        return NoteEntry(dummy.message)
-    }
+	override fun newEntry(index: Int, dummy: DummyNote): NoteEntry {
+		return NoteEntry(dummy.message)
+	}
 
 }
