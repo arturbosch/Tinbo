@@ -13,4 +13,20 @@ object Notification {
 		}
 
 	}
+
+	fun weather(city: String): String {
+		if (city.matches(Regex("[a-zA-Z]+"))) {
+			try {
+				val process = ProcessBuilder("curl", "-4", "http://wttr.in/$city").start()
+				return process.inputStream.buffered()
+						.bufferedReader()
+						.lines()
+						.reduce("", { s1, s2 -> "$s1\n$s2" })
+			} catch(e: Exception) {
+				return "Could not successfully run the weather command for unknown reasons."
+			}
+		} else {
+			return "The given city name must consist of only letters."
+		}
+	}
 }
