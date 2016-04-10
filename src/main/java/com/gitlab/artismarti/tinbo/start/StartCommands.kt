@@ -67,6 +67,10 @@ class StartCommands @Autowired constructor(val providerHelper: ProviderHelper) :
 			specifiedDefaultValue = "Bremen",
 			unspecifiedDefaultValue = "Bremen") city: String): String {
 
-		return Notification.weather(city)
+		if (city.matches(Regex("[a-zA-Z]+"))) {
+			return Notification.weather(city)
+		} else {
+			return "The given city name must consist of only letters."
+		}
 	}
 }
