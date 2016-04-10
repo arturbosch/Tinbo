@@ -1,6 +1,6 @@
 package com.gitlab.artismarti.tinbo.timer
 
-import com.gitlab.artismarti.tinbo.Notification
+import com.gitlab.artismarti.tinbo.config.Notification
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.persistence.AbstractExecutor
 import com.gitlab.artismarti.tinbo.utils.printInfo

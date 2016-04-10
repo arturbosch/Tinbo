@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${user.home}/TiNBo/tinbo.log</file>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <logger name="com.gitlab.artismarti.tinbo.config" level="debug"/>
+    <logger name="com.gitlab.artismarti.tinbo.start" level="debug"/>
+
+    <root level="error">
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

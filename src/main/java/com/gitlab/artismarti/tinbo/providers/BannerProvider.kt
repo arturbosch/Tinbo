@@ -26,6 +26,6 @@ class BannerProvider : DefaultBannerProvider() {
 	}
 
 	override fun getProviderName(): String {
-		return "TinboBanner"
+		return "Tinbo"
 	}
 }
