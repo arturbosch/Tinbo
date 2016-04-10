@@ -5,7 +5,7 @@ support many different kinds of trackings. From note and task taking to time
 tracking and finance checking, everything should work fast and easy through 
 a shell like experience.
 
-## Features
+# Features
 
 ### General
 
@@ -13,7 +13,19 @@ a shell like experience.
 - Developed with 'i3 power user' in mind
 - No database overhead, saves as csv, easy to modify out of tinbo
 
-## Todos
+### Time mode
+
+- start/stop timers
+- add categories and messages
+- list and filter time entries
+- choose between fore- and background
+
+### Notes/Tasks mode
+
+- add, edit, delete, list notes/tasks
+- filter tasks, specify categories, descriptions, start/end times and locations
+
+# Todos
 
 ### General
 
@@ -38,7 +50,7 @@ a shell like experience.
 
 - Support incomes and expenditure
 
-## Changelog
+# Changelog
 ### 1.0M1
 
 - initial release
