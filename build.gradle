@@ -1,21 +1,21 @@
 buildscript {
-    ext {
-        springBootVersion = '1.4.0.M1'
-        springShellVersion = '1.2.0.M1'
-        kotlinVersion = '1.0.1'
+	ext {
+		springBootVersion = '1.4.0.M1'
+		springShellVersion = '1.2.0.M1'
+		kotlinVersion = '1.0.1'
 
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
-    }
-    repositories {
-        mavenCentral()
-        jcenter()
-        maven { url "https://repo.spring.io/milestone" }
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    }
+		sourceCompatibility = 1.8
+		targetCompatibility = 1.8
+	}
+	repositories {
+		mavenCentral()
+		jcenter()
+		maven { url "https://repo.spring.io/milestone" }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+	}
 }
 
 apply plugin: 'kotlin'
@@ -24,36 +24,36 @@ apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 
 jar {
-    baseName = 'TiNBo'
-    version = '0.1'
+	baseName = 'TiNBo'
+	version = '1.0.M1'
 }
 
 repositories {
-    mavenCentral()
-    maven { url "https://repo.spring.io/milestone" }
-    maven { url 'https://repo.spring.io/libs-milestone' }
+	mavenCentral()
+	maven { url "https://repo.spring.io/milestone" }
+	maven { url 'https://repo.spring.io/libs-milestone' }
 }
 
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-    compile "uy.kohesive.injekt:injekt-core:1.14.1"
+	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+	compile "uy.kohesive.injekt:injekt-core:1.14.1"
 
-    compile 'org.springframework.boot:spring-boot-starter'
-    compile "org.springframework.shell:spring-shell:$springShellVersion"
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
+	compile 'org.springframework.boot:spring-boot-starter'
+	compile "org.springframework.shell:spring-shell:$springShellVersion"
+	testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
 
 eclipse {
-    classpath {
-        containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
-        containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
-    }
+	classpath {
+		containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+		containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
+	}
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.11'
+	gradleVersion = '2.11'
 }
 sourceSets {
-    main.java.srcDirs += 'src/main/kotlin'
+	main.java.srcDirs += 'src/main/kotlin'
 }
