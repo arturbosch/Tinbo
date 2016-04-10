@@ -11,14 +11,13 @@ object Notification {
 
 	private val NOTIFY_SEND_ERROR = "Could not execute 'notify-send', install it to get notifications about finished timers."
 
-	fun finished(message: String) {
+	fun notify(header: String, message: String) {
 		try {
-			ProcessBuilder("notify-send", "Finished", message, "--icon=dialog-information").start();
+			ProcessBuilder("notify-send", header, message, "--icon=dialog-information").start();
 		} catch (e: Exception) {
 			println(NOTIFY_SEND_ERROR)
 			logger.error(NOTIFY_SEND_ERROR, e)
 		}
-
 	}
 
 	private val WEATHER_COMMAND_ERROR = "Could not successfully run the weather command for unknown reasons."

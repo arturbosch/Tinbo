@@ -1,7 +1,7 @@
 package com.gitlab.artismarti.tinbo.timer
 
-import com.gitlab.artismarti.tinbo.config.Notification
 import com.gitlab.artismarti.tinbo.config.Default
+import com.gitlab.artismarti.tinbo.config.Notification
 import com.gitlab.artismarti.tinbo.persistence.AbstractExecutor
 import com.gitlab.artismarti.tinbo.utils.printInfo
 import com.gitlab.artismarti.tinbo.utils.printlnInfo
@@ -40,6 +40,8 @@ class TimeExecutor(val timeDataHolder: TimeDataHolder = Injekt.get()) :
 				printInfo("\rElapsed time: $timer")
 			if (currentTimer.isFinished())
 				stop()
+			if (currentTimer.isPauseTime(Default.INFO_NOTIFICATION_TIME))
+				notify("Info")
 			Thread.sleep(1000L)
 		}
 	}
@@ -65,7 +67,7 @@ class TimeExecutor(val timeDataHolder: TimeDataHolder = Injekt.get()) :
 	}
 
 	private fun saveAndResetCurrentTimer() {
-		notify()
+		notify("Finished")
 		createTimeEntry()
 		currentTimer = Timer.INVALID
 	}
@@ -76,8 +78,8 @@ class TimeExecutor(val timeDataHolder: TimeDataHolder = Injekt.get()) :
 				currentTimer.startDateTime.toLocalDate()))
 	}
 
-	private fun notify() {
-		Notification.finished(currentTimer.toString())
+	private fun notify(headMessage: String) {
+		Notification.notify(headMessage, currentTimer.toString())
 	}
 
 	fun showTimer(): String {

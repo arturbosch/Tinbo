@@ -32,6 +32,22 @@ class Timer {
 	val startDateTime: LocalDateTime
 	val stopDateTime: LocalDateTime?
 
+	companion object {
+
+		val INVALID = Timer(TimeMode.INVALID, "INVALID", "INVALID")
+
+		fun calcStopTime(mins: Int, seconds: Int): LocalDateTime? {
+			var stop: LocalDateTime? = null
+			if (mins >= 0 && seconds > 0) {
+				stop = LocalDateTime.now()
+						.plusMinutes(mins.toLong())
+						.plusSeconds(seconds.toLong())
+			}
+			return stop
+		}
+
+	}
+
 	override fun toString(): String {
 		val (diffSecs, diffMins, diffHours) = getTimeTriple()
 		return "${diffHours.toNumberString()}:${diffMins.toNumberString()}:${diffSecs.toNumberString()} ($category)"
@@ -56,19 +72,10 @@ class Timer {
 		return LocalDateTime.now().compareTo(stopDateTime) >= 0
 	}
 
-	companion object {
-
-		val INVALID = Timer(TimeMode.INVALID, "INVALID", "INVALID")
-
-		fun calcStopTime(mins: Int, seconds: Int): LocalDateTime? {
-			var stop: LocalDateTime? = null
-			if (mins >= 0 && seconds > 0) {
-				stop = LocalDateTime.now()
-						.plusMinutes(mins.toLong())
-						.plusSeconds(seconds.toLong())
-			}
-			return stop
-		}
-
+	fun isPauseTime(mins: Long): Boolean {
+		val now = LocalDateTime.now()
+		val diffSecs = Duration.between(startDateTime, now).seconds.mod(60)
+		val diffMins = Duration.between(startDateTime, now).toMinutes().mod(60)
+		return diffMins.mod(mins) == 0L && diffSecs == 0L && diffMins + diffSecs != 0L
 	}
 }
