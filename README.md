@@ -1,10 +1,5 @@
 # TiNBo
 
-Ti(me)N(otes)B(urndown)o(mni - lat. everything) is a tool with the aim to 
-support many different kinds of trackings. From note and task taking to time
-tracking and finance checking, everything should work fast and easy through 
-a shell like experience.
-
 ## Features
 
 ### General
