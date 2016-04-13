@@ -71,6 +71,22 @@ class TimeCommands(val executor: TimeExecutor = Injekt.get()) : CommandMarker {
 		return !(mins >= 0 && seconds >= 0 && seconds < 60)
 	}
 
+	@CliCommand(value = "bg", help = "Sends current timer to background")
+	fun sendToBackground() {
+		sendToMode(true)
+	}
+
+	@CliCommand(value = "fg", help = "Sends current timer to foreground")
+	fun sendToForeground() {
+		sendToMode(false)
+	}
+
+	private fun sendToMode(bg: Boolean) {
+		if (executor.inProgress()) {
+			executor.changeTimeMode(specifyTimerMode(bg))
+		}
+	}
+
 	@CliCommand(value = "stop", help = "Stops the timer.")
 	fun stopTimer(@CliOption(key = arrayOf("name", "n"),
 			unspecifiedDefaultValue = "",

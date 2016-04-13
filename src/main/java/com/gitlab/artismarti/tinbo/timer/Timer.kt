@@ -78,4 +78,5 @@ class Timer {
 		val diffMins = Duration.between(startDateTime, now).toMinutes().mod(60)
 		return diffMins.mod(mins) == 0L && diffSecs == 0L && diffMins + diffSecs != 0L
 	}
+
 }

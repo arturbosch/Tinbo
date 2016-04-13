@@ -87,4 +87,9 @@ class TimeExecutor(val timeDataHolder: TimeDataHolder = Injekt.get()) :
 		else return "No current timer is running"
 	}
 
+	fun changeTimeMode(mode: TimeMode) {
+		currentTimer = Timer(mode, currentTimer.category, currentTimer.message,
+				currentTimer.startDateTime, currentTimer.stopDateTime)
+	}
+
 }
