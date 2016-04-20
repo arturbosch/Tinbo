@@ -2,13 +2,14 @@ package com.gitlab.artismarti.tinbo.notes
 
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.persistence.AbstractExecutor
-import uy.kohesive.injekt.Injekt
-import uy.kohesive.injekt.api.get
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 
 /**
  * @author artur
  */
-class NoteExecutor(val noteDataHolder: NoteDataHolder = Injekt.get()) :
+@Component
+class NoteExecutor @Autowired constructor(val noteDataHolder: NoteDataHolder) :
 		AbstractExecutor<NoteEntry, NoteData, DummyNote>(noteDataHolder) {
 
 	override val TABLE_HEADER: String

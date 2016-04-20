@@ -1,13 +1,14 @@
 package com.gitlab.artismarti.tinbo.tasks
 
 import com.gitlab.artismarti.tinbo.persistence.AbstractDataHolder
-import uy.kohesive.injekt.Injekt
-import uy.kohesive.injekt.api.get
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 
 /**
  * @author artur
  */
-class TaskDataHolder(data: TaskData = Injekt.get(), persister: TaskPersister = Injekt.get()) :
+@Component
+class TaskDataHolder @Autowired constructor(data: TaskData, persister: TaskPersister) :
 		AbstractDataHolder<TaskEntry, TaskData>(data, persister) {
 
 	override fun newData(name: String, entriesInMemory: List<TaskEntry>): TaskData {

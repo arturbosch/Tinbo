@@ -3,13 +3,14 @@ package com.gitlab.artismarti.tinbo.tasks
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.orValue
 import com.gitlab.artismarti.tinbo.persistence.AbstractExecutor
-import uy.kohesive.injekt.Injekt
-import uy.kohesive.injekt.api.get
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 
 /**
  * @author artur
  */
-class TaskExecutor(val taskDataHolder: TaskDataHolder = Injekt.get()) :
+@Component
+class TaskExecutor @Autowired constructor(val taskDataHolder: TaskDataHolder) :
 		AbstractExecutor<TaskEntry, TaskData, DummyTask>(taskDataHolder) {
 
 	override val TABLE_HEADER: String

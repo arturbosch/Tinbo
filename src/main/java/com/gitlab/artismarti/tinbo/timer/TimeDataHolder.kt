@@ -2,13 +2,14 @@ package com.gitlab.artismarti.tinbo.timer
 
 import com.gitlab.artismarti.tinbo.persistence.AbstractDataHolder
 import com.gitlab.artismarti.tinbo.toNumberString
-import uy.kohesive.injekt.Injekt
-import uy.kohesive.injekt.api.get
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 
 /**
  * @author artur
  */
-class TimeDataHolder(data: TimeData = Injekt.get(), persister: TimePersister = Injekt.get()) :
+@Component
+class TimeDataHolder @Autowired constructor(data: TimeData, persister: TimePersister) :
 		AbstractDataHolder<TimeEntry, TimeData>(data, persister) {
 
 	override fun newData(name: String, entriesInMemory: List<TimeEntry>): TimeData {

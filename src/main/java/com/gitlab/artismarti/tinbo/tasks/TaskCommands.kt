@@ -3,13 +3,12 @@ package com.gitlab.artismarti.tinbo.tasks
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
 import com.gitlab.artismarti.tinbo.utils.DateTimeFormatters
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
-import uy.kohesive.injekt.Injekt
-import uy.kohesive.injekt.api.get
 import java.time.format.DateTimeParseException
 import java.util.HashSet
 
@@ -17,7 +16,7 @@ import java.util.HashSet
  * @author artur
  */
 @Component
-class TaskCommands(val executor: TaskExecutor = Injekt.get()) : CommandMarker {
+class TaskCommands @Autowired constructor(val executor: TaskExecutor) : CommandMarker {
 
 	private val NEED_EDIT_MODE_TEXT = "Before adding or list tasks exit edit mode with 'save' or 'cancel'."
 	private val SUCCESS_MESSAGE = "Successfully added a task."

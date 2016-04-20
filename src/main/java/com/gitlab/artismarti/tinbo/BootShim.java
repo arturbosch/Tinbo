@@ -15,7 +15,7 @@ import org.springframework.util.StopWatch;
 import java.io.IOException;
 
 /**
- * Copied and a bit refactored from "https://github.com/jeffellin/springshellwithboot".
+ * Copied and refactored from "https://github.com/jeffellin/springshellwithboot".
  */
 public class BootShim {
 

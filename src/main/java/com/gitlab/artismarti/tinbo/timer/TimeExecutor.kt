@@ -7,13 +7,14 @@ import com.gitlab.artismarti.tinbo.plusElementAtBeginning
 import com.gitlab.artismarti.tinbo.utils.printInfo
 import com.gitlab.artismarti.tinbo.utils.printlnInfo
 import com.gitlab.artismarti.tinbo.withIndexedColumn
-import uy.kohesive.injekt.Injekt
-import uy.kohesive.injekt.api.get
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 
 /**
  * @author artur
  */
-class TimeExecutor(val timeDataHolder: TimeDataHolder = Injekt.get()) :
+@Component
+class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolder) :
 		AbstractExecutor<TimeEntry, TimeData, DummyTime>(timeDataHolder) {
 
 	override val TABLE_HEADER: String

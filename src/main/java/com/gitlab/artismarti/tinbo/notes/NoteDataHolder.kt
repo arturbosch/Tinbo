@@ -1,13 +1,14 @@
 package com.gitlab.artismarti.tinbo.notes
 
 import com.gitlab.artismarti.tinbo.persistence.AbstractDataHolder
-import uy.kohesive.injekt.Injekt
-import uy.kohesive.injekt.api.get
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 
 /**
  * @author artur
  */
-class NoteDataHolder(data: NoteData = Injekt.get(), persister: NotePersister = Injekt.get()) :
+@Component
+class NoteDataHolder @Autowired constructor(data: NoteData, persister: NotePersister) :
 		AbstractDataHolder<NoteEntry, NoteData>(data, persister) {
 
 	override fun newData(name: String, entriesInMemory: List<NoteEntry>): NoteData {
