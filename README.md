@@ -34,7 +34,7 @@ a shell like experience.
 ### Timer
 - <s>Provide Categories and messages</s>
 - <s>list all finished timings</s>
-- sum timings per category
+- <s>sum timings per category</s>
 - <s>show notifications after specific amount of time</s>
 
 ### Notes
@@ -57,3 +57,7 @@ a shell like experience.
 - list, add, edit, delete notes/tasks
 - start/stop timers
 - csv data storage
+
+### 1.0M2 (WIP)
+
+- sum time entries by categories
