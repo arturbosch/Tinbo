@@ -115,4 +115,15 @@ class TimeCommands(val executor: TimeExecutor = Injekt.get()) : CommandMarker {
 	fun showCurrentTimer(): String {
 		return executor.showTimer()
 	}
+
+	@CliCommand(value = "sum", help = "Sums up times of all or specified categories.")
+	fun sumCategories(@CliOption(key = arrayOf("categories", "cat", "c"), help = "Specify categories to show sum for. Default: for all.",
+			unspecifiedDefaultValue = "", specifiedDefaultValue = "") categories: String): String {
+
+		if (categories.isEmpty()) {
+			return executor.sumAllCategories()
+		} else {
+			return executor.sumForCategories(categories)
+		}
+	}
 }

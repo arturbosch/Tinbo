@@ -3,8 +3,10 @@ package com.gitlab.artismarti.tinbo.timer
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.config.Notification
 import com.gitlab.artismarti.tinbo.persistence.AbstractExecutor
+import com.gitlab.artismarti.tinbo.plusElementAtBeginning
 import com.gitlab.artismarti.tinbo.utils.printInfo
 import com.gitlab.artismarti.tinbo.utils.printlnInfo
+import com.gitlab.artismarti.tinbo.withIndexedColumn
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 
@@ -90,6 +92,22 @@ class TimeExecutor(val timeDataHolder: TimeDataHolder = Injekt.get()) :
 	fun changeTimeMode(mode: TimeMode) {
 		currentTimer = Timer(mode, currentTimer.category, currentTimer.message,
 				currentTimer.startDateTime, currentTimer.stopDateTime)
+	}
+
+	fun sumAllCategories(): String {
+		val summaries = timeDataHolder.createSummaries()
+		return tableAsString(summaries)
+	}
+
+	private fun tableAsString(summaries: List<String>) = csv.asTable(
+			summaries.withIndexedColumn()
+					.plusElementAtBeginning("Nr.;Category;Spent")
+	).joinToString(separator = "\n")
+
+	fun sumForCategories(categories: String): String {
+		val filters = categories.split(Regex(",")).map { it.trim() }
+		val summaries = timeDataHolder.createFilteredSummaries(filters)
+		return tableAsString(summaries)
 	}
 
 }
