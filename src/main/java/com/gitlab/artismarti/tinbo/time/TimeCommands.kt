@@ -2,6 +2,7 @@ package com.gitlab.artismarti.tinbo.time
 
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
+import com.gitlab.artismarti.tinbo.utils.dateFormatter
 import com.gitlab.artismarti.tinbo.utils.printlnInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.CommandMarker
@@ -9,6 +10,8 @@ import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
+import java.time.LocalDate
+import java.time.format.DateTimeParseException
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -19,7 +22,7 @@ import java.util.concurrent.CompletableFuture
 @Component
 class TimeCommands @Autowired constructor(val executor: TimeExecutor) : CommandMarker {
 
-	@CliAvailabilityIndicator("listt", "start", "stop", "q", "loadt", "show", "sum")
+	@CliAvailabilityIndicator("listt", "start", "stop", "q", "loadt", "show", "sum", "newTime")
 	fun isAvailable(): Boolean {
 		return ModeAdvisor.isTimerMode()
 	}
@@ -29,27 +32,17 @@ class TimeCommands @Autowired constructor(val executor: TimeExecutor) : CommandM
 		return ModeAdvisor.isTimerMode() && executor.inProgress()
 	}
 
-	@CliCommand("listTimers", "listt", help = "Lists whole timer data sorted by date. Can be filtered by category name.")
-	fun listData(@CliOption(key = arrayOf("category", "cat"), unspecifiedDefaultValue = "", specifiedDefaultValue = "",
-			help = "Name to filter only for this specific category.") categoryName: String): String {
-		val data = when (categoryName) {
-			"" -> executor.listData()
-			else -> executor.listDataFilteredBy(categoryName)
-		}
-		return data
-	}
-
 	@CliCommand(value = "start", help = "Starts the timer and waits for you to type 'stop' to finish it if no arguments are specified.")
 	fun startTimer(@CliOption(key = arrayOf("minutes", "m", "mins"), specifiedDefaultValue = "0",
 			unspecifiedDefaultValue = "0", help = "Duration of timer in minutes.") mins: Int,
-				   @CliOption(key = arrayOf("seconds", "s", "mins"), specifiedDefaultValue = "0",
-						   unspecifiedDefaultValue = "0", help = "Duration of timer in seconds.") seconds: Int,
-				   @CliOption(key = arrayOf("background", "bg"), unspecifiedDefaultValue = "false",
-						   specifiedDefaultValue = "true", help = "If the timer should be started in background.") bg: Boolean,
-				   @CliOption(key = arrayOf("category", "cat", "c"), unspecifiedDefaultValue = Default.MAIN_CATEGORY_NAME,
-						   specifiedDefaultValue = Default.MAIN_CATEGORY_NAME, help = "Category in which the time should be saved.") name: String,
-				   @CliOption(key = arrayOf("message", "msg"), unspecifiedDefaultValue = "",
-						   specifiedDefaultValue = "", help = "Note for this tracking.") message: String) {
+	               @CliOption(key = arrayOf("seconds", "s", "mins"), specifiedDefaultValue = "0",
+			               unspecifiedDefaultValue = "0", help = "Duration of timer in seconds.") seconds: Int,
+	               @CliOption(key = arrayOf("background", "bg"), unspecifiedDefaultValue = "false",
+			               specifiedDefaultValue = "true", help = "If the timer should be started in background.") bg: Boolean,
+	               @CliOption(key = arrayOf("category", "cat", "c"), unspecifiedDefaultValue = Default.MAIN_CATEGORY_NAME,
+			               specifiedDefaultValue = Default.MAIN_CATEGORY_NAME, help = "Category in which the time should be saved.") name: String,
+	               @CliOption(key = arrayOf("message", "msg"), unspecifiedDefaultValue = "",
+			               specifiedDefaultValue = "", help = "Note for this tracking.") message: String) {
 
 		if (inputsAreInvalid(mins, seconds)) {
 			printlnInfo("Invalid parameters: minutes and seconds have to be positive and seconds not bigger than 59.")
@@ -96,16 +89,21 @@ class TimeCommands @Autowired constructor(val executor: TimeExecutor) : CommandM
 			unspecifiedDefaultValue = "",
 			specifiedDefaultValue = "",
 			help = "Category in which the time should be saved.") name: String,
-				  @CliOption(key = arrayOf("message", "msg"),
-						  unspecifiedDefaultValue = "",
-						  specifiedDefaultValue = "",
-						  help = "Note for this tracking.") message: String) {
+	              @CliOption(key = arrayOf("message", "msg"),
+			              unspecifiedDefaultValue = "",
+			              specifiedDefaultValue = "",
+			              help = "Note for this tracking.") message: String) {
 		executor.stop(name, message)
 	}
 
 	@CliCommand(value = "q", help = "Stops the timer.")
 	fun stopTimerWithQ() {
 		executor.stop()
+	}
+
+	@CliCommand(value = "show", help = "Shows the current running timer. Useful when in background mode.")
+	fun showCurrentTimer(): String {
+		return executor.showTimer()
 	}
 
 	@CliCommand("loadTimers", "loadt", help = "Changes the complete data set of timers and categories.")
@@ -115,9 +113,37 @@ class TimeCommands @Autowired constructor(val executor: TimeExecutor) : CommandM
 		executor.loadData(name)
 	}
 
-	@CliCommand(value = "show", help = "Shows the current running timer. Useful when in background mode.")
-	fun showCurrentTimer(): String {
-		return executor.showTimer()
+	@CliCommand("listTimers", "listt", help = "Lists whole timer data sorted by date. Can be filtered by category name.")
+	fun listData(@CliOption(key = arrayOf("category", "cat"), unspecifiedDefaultValue = "", specifiedDefaultValue = "",
+			help = "Name to filter only for this specific category.") categoryName: String): String {
+		val data = when (categoryName) {
+			"" -> executor.listData()
+			else -> executor.listDataFilteredBy(categoryName)
+		}
+		return data
+	}
+
+	@CliCommand("newTime", "addTime", help = "Adds a new time entry without executing a timer.")
+	fun addTime(@CliOption(key = arrayOf("hours", "h"), specifiedDefaultValue = "0",
+			unspecifiedDefaultValue = "0", help = "Duration in hours.") hours: Long,
+	            @CliOption(key = arrayOf("minutes", "m", "mins"), specifiedDefaultValue = "0",
+			            unspecifiedDefaultValue = "0", help = "Duration in minutes.") mins: Long,
+	            @CliOption(key = arrayOf("seconds", "s", "mins"), specifiedDefaultValue = "0",
+			            unspecifiedDefaultValue = "0", help = "Duration in seconds.") seconds: Long,
+	            @CliOption(key = arrayOf("category", "cat", "c"), unspecifiedDefaultValue = Default.MAIN_CATEGORY_NAME,
+			            specifiedDefaultValue = Default.MAIN_CATEGORY_NAME, help = "Category of the time entry.") name: String,
+	            @CliOption(key = arrayOf("message", "msg"), unspecifiedDefaultValue = "",
+			            specifiedDefaultValue = "", help = "Note for this tracking.", mandatory = true) message: String,
+	            @CliOption(key = arrayOf("date"), help = "Specify a date for this time entry. Format: yyyy-MM-dd",
+			            specifiedDefaultValue = "", unspecifiedDefaultValue = "", mandatory = true) startTime: String): String {
+
+		val date = try {
+			LocalDate.parse(startTime, dateFormatter)
+		} catch(e: DateTimeParseException) {
+			return "Could not parse given date."
+		}
+		executor.addEntry(TimeEntry(name, message, hours, mins, seconds, date))
+		return "Successfully added a new time entry."
 	}
 
 	@CliCommand(value = "sum", help = "Sums up times of all or specified categories.")
