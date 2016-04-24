@@ -24,8 +24,8 @@ class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolder) :
 	override fun newEntry(index: Int, dummy: DummyTime): TimeEntry {
 		val realTime = entriesInMemory[index]
 		return TimeEntry(
-				dummy.message.orValue(realTime.message),
 				dummy.category.orValue(realTime.category),
+				dummy.message.orValue(realTime.message),
 				dummy.hours.orValue(realTime.hours),
 				dummy.minutes.orValue(realTime.minutes),
 				dummy.seconds.orValue(realTime.seconds),

@@ -47,5 +47,5 @@ fun LocalDateTime?.orValue(dateTime: LocalDateTime): LocalDateTime = if (this ==
 fun LocalDate?.orValue(dateTime: LocalDate): LocalDate = if (this == null) dateTime else this
 
 fun String.orValue(value: String): String = if (this.isEmpty()) value else this
-fun Long.orValue(hours: Long): Long = if (this.equals(-1)) hours else this
+fun Long.orValue(hours: Long): Long = if (this.equals(-1L)) hours else this
 

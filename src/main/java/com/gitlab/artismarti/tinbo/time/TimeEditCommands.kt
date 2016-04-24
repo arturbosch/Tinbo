@@ -67,7 +67,7 @@ class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 			try {
 				val date = LocalDate.parse(startTime, dateFormatter)
 				executor.addEntry(TimeEntry(name, message, hours, mins, seconds, date))
-				"Successfully added a new time entry."
+				SUCCESS_MESSAGE
 			} catch(e: DateTimeParseException) {
 				"Could not parse given date."
 			}
@@ -101,14 +101,14 @@ class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 	             @CliOption(key = arrayOf("date"),
 			             help = "Specify a date for this time entry. Format: yyyy-MM-dd",
 			             specifiedDefaultValue = "",
-			             unspecifiedDefaultValue = "") startTime: String): String {
+			             unspecifiedDefaultValue = "") dateFormat: String): String {
 
 		return withinListMode {
 			val i = index - 1
 			enterEditModeWithIndex(i) {
-				val date: LocalDate? = DateTimeFormatters.parseDateOrNull(startTime)
+				val date: LocalDate? = DateTimeFormatters.parseDateOrNull(dateFormat)
 				executor.editEntry(i, DummyTime(name, message, hours, mins, seconds, date))
-				"Successfully edited a time entry."
+				SUCCESS_MESSAGE
 			}
 		}
 	}

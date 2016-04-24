@@ -1,5 +1,6 @@
 package com.gitlab.artismarti.tinbo.common
 
+import com.gitlab.artismarti.tinbo.utils.printlnInfo
 import java.util.*
 
 /**
@@ -37,12 +38,8 @@ abstract class EditableCommands<E : Entry, D : Data<E>, T : DummyEntry>(val exec
 	}
 
 	protected fun withListMode(body: () -> String): String {
-		if (isEditMode) {
-			return NEED_EDIT_MODE_TEXT
-		} else {
-			isListMode = true
-			return body.invoke()
-		}
+		isListMode = true
+		return body.invoke()
 	}
 
 	protected fun withinListMode(body: () -> String): String {
@@ -82,15 +79,22 @@ abstract class EditableCommands<E : Entry, D : Data<E>, T : DummyEntry>(val exec
 
 	fun list(categoryName: String): String {
 		return withListMode {
-			when (categoryName) {
-				"" -> executor.listData()
-				else -> executor.listDataFilteredBy(categoryName)
+			if (isEditMode) {
+				if (categoryName.isNotEmpty())
+					printlnInfo("While in edit mode filtering is ignored.")
+				executor.listInMemoryEntries()
+			} else {
+				when (categoryName) {
+					"" -> executor.listData()
+					else -> executor.listDataFilteredBy(categoryName)
+				}
 			}
 		}
 	}
 
 	fun cancel(): String {
 		return withinEditMode("cancel") {
+			executor.cancel()
 			"Cancelled edit mode."
 		}
 	}
@@ -98,6 +102,7 @@ abstract class EditableCommands<E : Entry, D : Data<E>, T : DummyEntry>(val exec
 	fun save(name: String): String {
 		return withinEditMode("save") {
 			executor.saveEntries(name)
+			"Successfully saved edited data"
 		}
 	}
 
