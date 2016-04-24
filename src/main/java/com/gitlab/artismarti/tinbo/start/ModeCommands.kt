@@ -1,23 +1,19 @@
 package com.gitlab.artismarti.tinbo.start
 
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
-import com.gitlab.artismarti.tinbo.config.Notification
-import com.gitlab.artismarti.tinbo.providers.BannerProvider
 import com.gitlab.artismarti.tinbo.providers.PromptProvider
 import com.gitlab.artismarti.tinbo.utils.printlnInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
-import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
 
 /**
  * @author artur
  */
 @Component
-class StartCommands @Autowired constructor(val bannerProvider: BannerProvider,
-										   val promptProvider: PromptProvider) : CommandMarker {
+class ModeCommands @Autowired constructor(val promptProvider: PromptProvider) : CommandMarker {
 
 	@CliAvailabilityIndicator("time", "tasks", "notes")
 	fun onlyModeCommands(): Boolean {
@@ -57,22 +53,4 @@ class StartCommands @Autowired constructor(val bannerProvider: BannerProvider,
 		printlnInfo("Entering notes mode...")
 	}
 
-	@CliCommand("welcome", help = "Shows the banner and welcome message.")
-	fun welcome(): String {
-		return "\n${bannerProvider.banner}\n${bannerProvider.welcomeMessage}"
-	}
-
-	@CliCommand("weather", help = "Shows the weather for following three days inclusive today's.")
-	fun weather(@CliOption(
-			key = arrayOf("city", "c"),
-			help = "Provide a existing city name.",
-			specifiedDefaultValue = "Bremen",
-			unspecifiedDefaultValue = "Bremen") city: String): String {
-
-		if (city.matches(Regex("[a-zA-Z]+"))) {
-			return Notification.weather(city)
-		} else {
-			return "The given city name must consist of only letters."
-		}
-	}
 }
