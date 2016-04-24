@@ -5,37 +5,39 @@ package com.gitlab.artismarti.tinbo.config
  */
 object ModeAdvisor {
 
-    private var mode = Mode.START
+	private var mode = Mode.START
 
-    fun setTimerMode() {
-        mode = Mode.TIMER
-    }
+	fun getMode() = mode
 
-    fun isTimerMode(): Boolean {
-        return mode == Mode.TIMER
-    }
+	fun setTimerMode() {
+		mode = Mode.TIMER
+	}
 
-    fun setStartMode() {
-        mode = Mode.START
-    }
+	fun isTimerMode(): Boolean {
+		return mode == Mode.TIMER
+	}
 
-    fun isStartMode(): Boolean {
-        return mode == Mode.START
-    }
+	fun setStartMode() {
+		mode = Mode.START
+	}
 
-    fun setNotesMode() {
-        mode = Mode.NOTES
-    }
+	fun isStartMode(): Boolean {
+		return mode == Mode.START
+	}
 
-    fun isNotesMode(): Boolean {
-        return mode == Mode.NOTES
-    }
+	fun setNotesMode() {
+		mode = Mode.NOTES
+	}
 
-    fun setTasksMode() {
-        mode = Mode.TASKS
-    }
+	fun isNotesMode(): Boolean {
+		return mode == Mode.NOTES
+	}
 
-    fun isTasksMode(): Boolean {
-        return mode == Mode.TASKS
-    }
+	fun setTasksMode() {
+		mode = Mode.TASKS
+	}
+
+	fun isTasksMode(): Boolean {
+		return mode == Mode.TASKS
+	}
 }

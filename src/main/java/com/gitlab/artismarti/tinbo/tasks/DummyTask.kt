@@ -1,6 +1,6 @@
 package com.gitlab.artismarti.tinbo.tasks
 
-import com.gitlab.artismarti.tinbo.persistence.DummyEntry
+import com.gitlab.artismarti.tinbo.common.DummyEntry
 import java.time.LocalDateTime
 
 /**

@@ -1,8 +1,8 @@
 package com.gitlab.artismarti.tinbo.tasks
 
+import com.gitlab.artismarti.tinbo.common.AbstractExecutor
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.orValue
-import com.gitlab.artismarti.tinbo.persistence.AbstractExecutor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

@@ -1,5 +1,6 @@
 package com.gitlab.artismarti.tinbo.utils
 
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -31,7 +32,17 @@ object DateTimeFormatters {
 		if (endTime.isNotEmpty()) formattedEndTime = LocalDateTime.parse(endTime, dateTimeFormatter)
 		return Pair(formattedStartTime, formattedEndTime)
 	}
+
+	fun parseDateOrNull(startTime: String): LocalDate? {
+		return try {
+			LocalDate.parse(startTime, dateFormatter)
+		} catch(e: DateTimeParseException) {
+			null
+		}
+	}
+
 }
 
 val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
 val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+

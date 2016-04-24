@@ -1,4 +1,4 @@
-package com.gitlab.artismarti.tinbo.persistence
+package com.gitlab.artismarti.tinbo.common
 
 import com.gitlab.artismarti.tinbo.applyToString
 import com.gitlab.artismarti.tinbo.csv.CSVTablePrinter

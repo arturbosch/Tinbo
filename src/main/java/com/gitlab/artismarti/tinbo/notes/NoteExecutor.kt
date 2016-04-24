@@ -1,7 +1,7 @@
 package com.gitlab.artismarti.tinbo.notes
 
+import com.gitlab.artismarti.tinbo.common.AbstractExecutor
 import com.gitlab.artismarti.tinbo.config.Default
-import com.gitlab.artismarti.tinbo.persistence.AbstractExecutor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

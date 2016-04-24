@@ -1,6 +1,6 @@
 package com.gitlab.artismarti.tinbo.csv
 
-import com.gitlab.artismarti.tinbo.persistence.Entry
+import com.gitlab.artismarti.tinbo.common.Entry
 import java.lang.reflect.Field
 import java.time.LocalDate
 import java.time.LocalDateTime

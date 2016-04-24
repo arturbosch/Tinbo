@@ -1,7 +1,7 @@
 package com.gitlab.artismarti.tinbo.tasks
 
 import com.gitlab.artismarti.tinbo.config.Default
-import com.gitlab.artismarti.tinbo.persistence.Data
+import com.gitlab.artismarti.tinbo.common.Data
 import org.springframework.stereotype.Component
 
 /**

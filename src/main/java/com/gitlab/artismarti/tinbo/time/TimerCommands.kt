@@ -2,7 +2,6 @@ package com.gitlab.artismarti.tinbo.time
 
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
-import com.gitlab.artismarti.tinbo.utils.dateFormatter
 import com.gitlab.artismarti.tinbo.utils.printlnInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.CommandMarker
@@ -10,8 +9,6 @@ import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
-import java.time.LocalDate
-import java.time.format.DateTimeParseException
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -20,9 +17,9 @@ import java.util.concurrent.CompletableFuture
  * @author artur
  */
 @Component
-class TimeCommands @Autowired constructor(val executor: TimeExecutor) : CommandMarker {
+class TimerCommands @Autowired constructor(val executor: TimeExecutor) : CommandMarker {
 
-	@CliAvailabilityIndicator("listt", "start", "stop", "q", "loadt", "show", "sum", "newTime")
+	@CliAvailabilityIndicator("show", "start", "stop", "q")
 	fun isAvailable(): Boolean {
 		return ModeAdvisor.isTimerMode()
 	}
@@ -106,54 +103,4 @@ class TimeCommands @Autowired constructor(val executor: TimeExecutor) : CommandM
 		return executor.showTimer()
 	}
 
-	@CliCommand("loadTimers", "loadt", help = "Changes the complete data set of timers and categories.")
-	fun loadData(@CliOption(key = arrayOf("name"), help = "name of the data set to load",
-			unspecifiedDefaultValue = Default.DATA_NAME,
-			specifiedDefaultValue = Default.DATA_NAME) name: String) {
-		executor.loadData(name)
-	}
-
-	@CliCommand("listTimers", "listt", help = "Lists whole timer data sorted by date. Can be filtered by category name.")
-	fun listData(@CliOption(key = arrayOf("category", "cat"), unspecifiedDefaultValue = "", specifiedDefaultValue = "",
-			help = "Name to filter only for this specific category.") categoryName: String): String {
-		val data = when (categoryName) {
-			"" -> executor.listData()
-			else -> executor.listDataFilteredBy(categoryName)
-		}
-		return data
-	}
-
-	@CliCommand("newTime", "addTime", help = "Adds a new time entry without executing a timer.")
-	fun addTime(@CliOption(key = arrayOf("hours", "h"), specifiedDefaultValue = "0",
-			unspecifiedDefaultValue = "0", help = "Duration in hours.") hours: Long,
-	            @CliOption(key = arrayOf("minutes", "m", "mins"), specifiedDefaultValue = "0",
-			            unspecifiedDefaultValue = "0", help = "Duration in minutes.") mins: Long,
-	            @CliOption(key = arrayOf("seconds", "s", "mins"), specifiedDefaultValue = "0",
-			            unspecifiedDefaultValue = "0", help = "Duration in seconds.") seconds: Long,
-	            @CliOption(key = arrayOf("category", "cat", "c"), unspecifiedDefaultValue = Default.MAIN_CATEGORY_NAME,
-			            specifiedDefaultValue = Default.MAIN_CATEGORY_NAME, help = "Category of the time entry.") name: String,
-	            @CliOption(key = arrayOf("message", "msg"), unspecifiedDefaultValue = "",
-			            specifiedDefaultValue = "", help = "Note for this tracking.", mandatory = true) message: String,
-	            @CliOption(key = arrayOf("date"), help = "Specify a date for this time entry. Format: yyyy-MM-dd",
-			            specifiedDefaultValue = "", unspecifiedDefaultValue = "", mandatory = true) startTime: String): String {
-
-		val date = try {
-			LocalDate.parse(startTime, dateFormatter)
-		} catch(e: DateTimeParseException) {
-			return "Could not parse given date."
-		}
-		executor.addEntry(TimeEntry(name, message, hours, mins, seconds, date))
-		return "Successfully added a new time entry."
-	}
-
-	@CliCommand(value = "sum", help = "Sums up times of all or specified categories.")
-	fun sumCategories(@CliOption(key = arrayOf("categories", "cat", "c"), help = "Specify categories to show sum for. Default: for all.",
-			unspecifiedDefaultValue = "", specifiedDefaultValue = "") categories: String): String {
-
-		if (categories.isEmpty()) {
-			return executor.sumAllCategories()
-		} else {
-			return executor.sumForCategories(categories)
-		}
-	}
 }

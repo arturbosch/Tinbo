@@ -1,6 +1,6 @@
 package com.gitlab.artismarti.tinbo.tasks
 
-import com.gitlab.artismarti.tinbo.persistence.AbstractDataHolder
+import com.gitlab.artismarti.tinbo.common.AbstractDataHolder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

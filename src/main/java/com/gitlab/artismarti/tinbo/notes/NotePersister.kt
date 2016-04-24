@@ -1,7 +1,7 @@
 package com.gitlab.artismarti.tinbo.notes
 
 import com.gitlab.artismarti.tinbo.config.HomeFolder
-import com.gitlab.artismarti.tinbo.persistence.AbstractPersister
+import com.gitlab.artismarti.tinbo.common.AbstractPersister
 import org.springframework.stereotype.Component
 import java.nio.file.Path
 

@@ -1,6 +1,6 @@
 package com.gitlab.artismarti.tinbo.time
 
-import com.gitlab.artismarti.tinbo.persistence.Entry
+import com.gitlab.artismarti.tinbo.common.Entry
 import com.gitlab.artismarti.tinbo.spaceIfEmpty
 import com.gitlab.artismarti.tinbo.utils.dateFormatter
 import java.time.LocalDate

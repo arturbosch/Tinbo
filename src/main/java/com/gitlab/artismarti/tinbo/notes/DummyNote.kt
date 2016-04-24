@@ -1,6 +1,6 @@
 package com.gitlab.artismarti.tinbo.notes
 
-import com.gitlab.artismarti.tinbo.persistence.DummyEntry
+import com.gitlab.artismarti.tinbo.common.DummyEntry
 
 /**
  * @author artur

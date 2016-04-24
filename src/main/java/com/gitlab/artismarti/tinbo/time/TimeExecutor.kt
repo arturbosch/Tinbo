@@ -1,8 +1,9 @@
 package com.gitlab.artismarti.tinbo.time
 
+import com.gitlab.artismarti.tinbo.common.AbstractExecutor
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.config.Notification
-import com.gitlab.artismarti.tinbo.persistence.AbstractExecutor
+import com.gitlab.artismarti.tinbo.orValue
 import com.gitlab.artismarti.tinbo.plusElementAtBeginning
 import com.gitlab.artismarti.tinbo.utils.printInfo
 import com.gitlab.artismarti.tinbo.utils.printlnInfo
@@ -21,7 +22,14 @@ class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolder) :
 		get() = "No.;Category;Date;Hr.;Min;Sec;Notice"
 
 	override fun newEntry(index: Int, dummy: DummyTime): TimeEntry {
-		throw UnsupportedOperationException()
+		val realTime = entriesInMemory[index]
+		return TimeEntry(
+				dummy.message.orValue(realTime.message),
+				dummy.category.orValue(realTime.category),
+				dummy.hours.orValue(realTime.hours),
+				dummy.minutes.orValue(realTime.minutes),
+				dummy.seconds.orValue(realTime.seconds),
+				dummy.date.orValue(realTime.date))
 	}
 
 	init {
@@ -112,3 +120,4 @@ class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolder) :
 	}
 
 }
+
