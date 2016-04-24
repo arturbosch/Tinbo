@@ -40,7 +40,7 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, T : DummyEntry>(
 
 	private fun listDataInternal(): String {
 
-		val entryTableData = entriesInMemory.sorted()
+		val entryTableData = entriesInMemory
 				.applyToString()
 				.withIndexedColumn()
 				.plusElementAtBeginning(TABLE_HEADER)

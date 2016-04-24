@@ -16,6 +16,6 @@ class TaskDataHolder @Autowired constructor(data: TaskData, persister: TaskPersi
 	}
 
 	override fun getEntriesFilteredBy(filter: String): List<TaskEntry> {
-		return data.entries.filter { it.category == filter }
+		return getEntries().filter { it.category == filter }
 	}
 }

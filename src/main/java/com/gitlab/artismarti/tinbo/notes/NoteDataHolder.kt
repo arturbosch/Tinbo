@@ -16,6 +16,6 @@ class NoteDataHolder @Autowired constructor(data: NoteData, persister: NotePersi
 	}
 
 	override fun getEntriesFilteredBy(filter: String): List<NoteEntry> {
-		throw UnsupportedOperationException()
+		return getEntries()
 	}
 }
