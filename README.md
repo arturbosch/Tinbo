@@ -17,7 +17,7 @@ a shell like experience.
 
 - start/stop timers
 - add categories and messages
-- list and filter time entries
+- list, filter and sum time entries
 - choose between fore- and background
 
 ### Notes/Tasks mode
@@ -58,6 +58,14 @@ a shell like experience.
 - start/stop timers
 - csv data storage
 
-### 1.0M2 (WIP)
+### 1.0M2
 
+#### New features
 - sum time entries by categories
+- allow altering timers after stopping them via console input
+- plus nine more enhancements/fixes, see https://gitlab.com/ArtiSmarti/Tinbo/milestones/2
+
+### 1.0M3 (WIP)
+
+- defaults and configurations
+- startup performance
