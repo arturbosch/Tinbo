@@ -8,7 +8,6 @@ import com.gitlab.artismarti.tinbo.plusElementAtBeginning
 import com.gitlab.artismarti.tinbo.utils.printInfo
 import com.gitlab.artismarti.tinbo.utils.printlnInfo
 import com.gitlab.artismarti.tinbo.withIndexedColumn
-import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -62,13 +61,6 @@ class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolder) :
 		if (inProgress()) {
 			running = false
 			changeCategoryAndMessageIfNotEmpty(name, message)
-			if (currentTimer.category.isEmpty()) {
-				val consoleReader = ConsoleReader()
-				val category = consoleReader.readLine("Enter a category name: ").orValue(Default.MAIN_CATEGORY_NAME)
-				val description = consoleReader.readLine("Enter a description: ").orValue("")
-				currentTimer = Timer(currentTimer.timeMode, category, description,
-						currentTimer.startDateTime, currentTimer.stopDateTime)
-			}
 			saveAndResetCurrentTimer()
 		} else {
 			printlnInfo("There is no current timer to stop.")
@@ -116,12 +108,10 @@ class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolder) :
 		return tableAsString(summaries)
 	}
 
-	private fun tableAsString(summaries: List<String>): String {
-		return csv.asTable(
-				summaries.withIndexedColumn()
-						.plusElementAtBeginning("Nr.;Category;Spent")
-		).joinToString(separator = "\n")
-	}
+	private fun tableAsString(summaries: List<String>) = csv.asTable(
+			summaries.withIndexedColumn()
+					.plusElementAtBeginning("Nr.;Category;Spent")
+	).joinToString(separator = "\n")
 
 	fun sumForCategories(categories: String): String {
 		val filters = categories.split(Regex("[,;. ]+")).map { it.trim().toLowerCase() }
