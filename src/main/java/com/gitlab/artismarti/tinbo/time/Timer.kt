@@ -1,6 +1,5 @@
 package com.gitlab.artismarti.tinbo.time
 
-import com.gitlab.artismarti.tinbo.orValue
 import com.gitlab.artismarti.tinbo.toNumberString
 import java.time.Duration
 import java.time.LocalDateTime
@@ -51,7 +50,7 @@ class Timer {
 
 	override fun toString(): String {
 		val (diffSecs, diffMins, diffHours) = getTimeTriple()
-		return "${diffHours.toNumberString()}:${diffMins.toNumberString()}:${diffSecs.toNumberString()} (${category.orValue("Main")})"
+		return "${diffHours.toNumberString()}:${diffMins.toNumberString()}:${diffSecs.toNumberString()} ($category)"
 	}
 
 	fun getTimeTriple(): Triple<Long, Long, Long> {
