@@ -1,6 +1,6 @@
 package com.gitlab.artismarti.tinbo.csv
 
-import com.gitlab.artismarti.tinbo.timer.TimeEntry
+import com.gitlab.artismarti.tinbo.time.TimeEntry
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

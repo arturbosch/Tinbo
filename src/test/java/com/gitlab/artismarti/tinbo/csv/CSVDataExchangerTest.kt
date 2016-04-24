@@ -1,7 +1,7 @@
 package com.gitlab.artismarti.tinbo.csv
 
 import com.gitlab.artismarti.tinbo.tasks.TaskEntry
-import com.gitlab.artismarti.tinbo.timer.TimeEntry
+import com.gitlab.artismarti.tinbo.time.TimeEntry
 import org.junit.Test
 
 /**

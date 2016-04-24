@@ -1,4 +1,4 @@
-package com.gitlab.artismarti.tinbo.timer
+package com.gitlab.artismarti.tinbo.time
 
 /**
  * Different timer modes: Invalid just tells the timer command that no timing is running.

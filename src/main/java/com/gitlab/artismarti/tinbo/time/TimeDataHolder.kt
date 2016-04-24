@@ -1,4 +1,4 @@
-package com.gitlab.artismarti.tinbo.timer
+package com.gitlab.artismarti.tinbo.time
 
 import com.gitlab.artismarti.tinbo.persistence.AbstractDataHolder
 import com.gitlab.artismarti.tinbo.toNumberString
