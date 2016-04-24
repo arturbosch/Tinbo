@@ -124,7 +124,7 @@ class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolder) :
 	}
 
 	fun sumForCategories(categories: String): String {
-		val filters = categories.split(Regex(",")).map { it.trim() }
+		val filters = categories.split(Regex("[,;. ]+")).map { it.trim().toLowerCase() }
 		val summaries = timeDataHolder.createFilteredSummaries(filters)
 		return tableAsString(summaries)
 	}

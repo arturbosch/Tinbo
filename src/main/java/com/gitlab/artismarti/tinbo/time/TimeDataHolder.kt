@@ -42,7 +42,7 @@ class TimeDataHolder @Autowired constructor(data: TimeData, persister: TimePersi
 	private fun divAndMod(value: Long) = value.div(60) to value.mod(60)
 
 	fun createFilteredSummaries(by: List<String>): List<String> {
-		val entries = getEntries().filter { by.contains(it.category) }
+		val entries = getEntries().filter { by.contains(it.category.toLowerCase()) }
 		return summariesInternal(entries)
 	}
 }
