@@ -20,7 +20,7 @@ class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolder) :
 		AbstractExecutor<TimeEntry, TimeData, DummyTime>(timeDataHolder) {
 
 	override val TABLE_HEADER: String
-		get() = "No.;Category;Date;Hr.;Min;Sec;Notice"
+		get() = "No.;Category;Date;HH:MM:SS;Notice"
 
 	override fun newEntry(index: Int, dummy: DummyTime): TimeEntry {
 		val realTime = entriesInMemory[index]
