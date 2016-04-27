@@ -6,7 +6,7 @@ import java.util.*
 /**
  * @author artur
  */
-abstract class EditableCommands<E : Entry, D : Data<E>, T : DummyEntry>(val executor: AbstractExecutor<E, D, T>) {
+abstract class EditableCommands<E : Entry, D : Data<E>, T : DummyEntry>(val executor: AbstractExecutor<E, D, T>) : Editable {
 
 	private val NEED_EDIT_MODE_TEXT = "Before adding or list entries exit edit mode with 'save' or 'cancel'."
 
@@ -77,7 +77,7 @@ abstract class EditableCommands<E : Entry, D : Data<E>, T : DummyEntry>(val exec
 		}
 	}
 
-	fun list(categoryName: String): String {
+	override fun list(categoryName: String): String {
 		return withListMode {
 			if (isEditMode) {
 				if (categoryName.isNotEmpty())
@@ -92,21 +92,21 @@ abstract class EditableCommands<E : Entry, D : Data<E>, T : DummyEntry>(val exec
 		}
 	}
 
-	fun cancel(): String {
+	override fun cancel(): String {
 		return withinEditMode("cancel") {
 			executor.cancel()
 			"Cancelled edit mode."
 		}
 	}
 
-	fun save(name: String): String {
+	override fun save(name: String): String {
 		return withinEditMode("save") {
 			executor.saveEntries(name)
 			"Successfully saved edited data"
 		}
 	}
 
-	fun delete(indexPattern: String): String {
+	override fun delete(indexPattern: String): String {
 		return withinListMode {
 			try {
 				val indices = parseIndices(indexPattern)

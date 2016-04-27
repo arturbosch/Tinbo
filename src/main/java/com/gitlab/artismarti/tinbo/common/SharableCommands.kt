@@ -18,11 +18,21 @@ import org.springframework.stereotype.Component
 @Component
 class SharableCommands @Autowired constructor(val timeEditCommands: TimeEditCommands,
                                               val noteCommands: NoteCommands,
-                                              val taskCommands: TaskCommands) : CommandMarker {
+                                              val taskCommands: TaskCommands,
+                                              val noopCommands: NoopCommands) : CommandMarker {
 
 	@CliAvailabilityIndicator("ls", "save", "cancel", "remove")
 	fun basicsAvailable(): Boolean {
 		return ModeAdvisor.isTimerMode() || ModeAdvisor.isNotesMode() || ModeAdvisor.isTasksMode()
+	}
+
+	private fun getCommandsForCurrentMode(): Editable {
+		return when (ModeAdvisor.getMode()) {
+			Mode.NOTES -> noteCommands
+			Mode.TASKS -> taskCommands
+			Mode.TIMER -> timeEditCommands
+			else -> noopCommands
+		}
 	}
 
 	@CliCommand("ls", "list", help = "Lists all entries.")
@@ -32,35 +42,19 @@ class SharableCommands @Autowired constructor(val timeEditCommands: TimeEditComm
 			specifiedDefaultValue = "",
 			help = "Name to filter only for this specific category.") categoryName: String): String {
 
-		return when (ModeAdvisor.getMode()) {
-			Mode.NOTES -> noteCommands.list(categoryName)
-			Mode.TASKS -> taskCommands.list(categoryName)
-			Mode.TIMER -> timeEditCommands.list(categoryName)
-			else -> "Wrong mode"
-		}
+		return getCommandsForCurrentMode().list(categoryName)
 	}
 
 	@CliCommand("cancel", help = "Cancels edit mode.")
 	fun cancel(): String {
-
-		return when (ModeAdvisor.getMode()) {
-			Mode.NOTES -> noteCommands.cancel()
-			Mode.TASKS -> taskCommands.cancel()
-			Mode.TIMER -> timeEditCommands.cancel()
-			else -> "Wrong mode"
-		}
+		return getCommandsForCurrentMode().cancel()
 	}
 
 	@CliCommand("save", help = "Saves current editing if list command was used.")
 	fun save(@CliOption(key = arrayOf("name", "n"), help = "Saves notes under a new data set (also a new filename).",
 			specifiedDefaultValue = "", unspecifiedDefaultValue = "") name: String): String {
 
-		return when (ModeAdvisor.getMode()) {
-			Mode.NOTES -> noteCommands.save(name)
-			Mode.TASKS -> taskCommands.save(name)
-			Mode.TIMER -> timeEditCommands.save(name)
-			else -> "Wrong mode"
-		}
+		return getCommandsForCurrentMode().save(name)
 	}
 
 	@CliCommand("remove", "delete", help = "Deletes entries from storage.")
@@ -68,12 +62,7 @@ class SharableCommands @Autowired constructor(val timeEditCommands: TimeEditComm
 			help = "Indices pattern, allowed are numbers with space in between or intervals like 1-5 e.g. '1 2 3-5 6'.")
 	           indexPattern: String): String {
 
-		return when (ModeAdvisor.getMode()) {
-			Mode.NOTES -> noteCommands.delete(indexPattern)
-			Mode.TASKS -> taskCommands.delete(indexPattern)
-			Mode.TIMER -> timeEditCommands.delete(indexPattern)
-			else -> "Wrong mode"
-		}
+		return getCommandsForCurrentMode().delete(indexPattern)
 	}
 
 }
