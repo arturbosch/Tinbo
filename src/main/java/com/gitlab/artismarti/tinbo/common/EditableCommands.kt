@@ -119,4 +119,10 @@ abstract class EditableCommands<E : Entry, D : Data<E>, T : DummyEntry>(val exec
 		}
 	}
 
+	override fun changeCategory(oldName: String, newName: String): String {
+		return whileNotInEditMode {
+			executor.changeCategory(oldName, newName)
+			"Updated entries of category $oldName to have new category $newName"
+		}
+	}
 }

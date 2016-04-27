@@ -18,4 +18,15 @@ class TaskDataHolder @Autowired constructor(data: TaskData, persister: TaskPersi
 	override fun getEntriesFilteredBy(filter: String): List<TaskEntry> {
 		return getEntries().filter { it.category == filter }
 	}
+
+	override fun changeCategory(oldName: String, newName: String) {
+		val updatedEntries = getEntries().map {
+			if (it.category.equals(oldName, ignoreCase = true)) {
+				TaskEntry(it.message, it.description, it.location, newName, it.startTime, it.endTime)
+			} else {
+				it
+			}
+		}
+		saveData(data.name, updatedEntries)
+	}
 }

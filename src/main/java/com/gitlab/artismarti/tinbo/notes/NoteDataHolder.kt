@@ -18,4 +18,8 @@ class NoteDataHolder @Autowired constructor(data: NoteData, persister: NotePersi
 	override fun getEntriesFilteredBy(filter: String): List<NoteEntry> {
 		return getEntries()
 	}
+
+	override fun changeCategory(oldName: String, newName: String) {
+		throw UnsupportedOperationException()
+	}
 }

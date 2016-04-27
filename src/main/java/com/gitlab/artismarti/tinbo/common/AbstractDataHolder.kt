@@ -24,4 +24,6 @@ abstract class AbstractDataHolder<E : Entry, D : Data<E>>(var data: D, val persi
 	abstract fun newData(name: String, entriesInMemory: List<E>): D
 
 	abstract fun getEntriesFilteredBy(filter: String): List<E>
+
+	abstract fun changeCategory(oldName: String, newName: String)
 }

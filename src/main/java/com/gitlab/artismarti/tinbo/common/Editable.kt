@@ -8,4 +8,5 @@ interface Editable {
 	fun cancel(): String
 	fun save(name: String): String
 	fun delete(indexPattern: String): String
+	fun changeCategory(oldName: String, newName: String): String
 }

@@ -86,5 +86,9 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, T : DummyEntry>(
 		entriesInMemory = listOf()
 	}
 
+	fun changeCategory(oldName: String, newName: String) {
+		dataHolder.changeCategory(oldName, newName)
+	}
+
 }
 

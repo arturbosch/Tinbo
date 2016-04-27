@@ -16,7 +16,8 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolder) :
+class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolder,
+                                          val consoleReader: ConsoleReader) :
 		AbstractExecutor<TimeEntry, TimeData, DummyTime>(timeDataHolder) {
 
 	override val TABLE_HEADER: String
@@ -63,7 +64,6 @@ class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolder) :
 			running = false
 			changeCategoryAndMessageIfNotEmpty(name, message)
 			if (currentTimer.category.isEmpty()) {
-				val consoleReader = ConsoleReader()
 				val category = consoleReader.readLine("Enter a category name: ").orValue(Default.MAIN_CATEGORY_NAME)
 				val description = consoleReader.readLine("Enter a description: ").orValue("")
 				currentTimer = Timer(currentTimer.timeMode, category, description,

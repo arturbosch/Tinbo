@@ -22,4 +22,8 @@ class NoopCommands : Editable {
 	override fun delete(indexPattern: String): String {
 		return ""
 	}
+
+	override fun changeCategory(oldName: String, newName: String): String {
+		return ""
+	}
 }

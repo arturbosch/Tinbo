@@ -45,4 +45,15 @@ class TimeDataHolder @Autowired constructor(data: TimeData, persister: TimePersi
 		val entries = getEntries().filter { by.contains(it.category.toLowerCase()) }
 		return summariesInternal(entries)
 	}
+
+	override fun changeCategory(oldName: String, newName: String) {
+		val updatedEntries = getEntries().map {
+			if (it.category.equals(oldName, ignoreCase = true)) {
+				TimeEntry(newName, it.message, it.hours, it.minutes, it.seconds, it.date)
+			} else {
+				it
+			}
+		}
+		saveData(data.name, updatedEntries)
+	}
 }

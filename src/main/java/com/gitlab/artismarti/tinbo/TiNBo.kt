@@ -1,5 +1,6 @@
 package com.gitlab.artismarti.tinbo
 
+import jline.console.ConsoleReader
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
@@ -37,6 +38,11 @@ open class TiNBo {
 		@Bean
 		fun commandLine(): CommandLine {
 			return CommandLine(null, 3000, null)
+		}
+
+		@Bean
+		fun console(): ConsoleReader {
+			return ConsoleReader()
 		}
 	}
 
