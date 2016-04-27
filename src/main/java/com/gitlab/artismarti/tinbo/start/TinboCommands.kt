@@ -1,8 +1,10 @@
 package com.gitlab.artismarti.tinbo.start
 
+import com.gitlab.artismarti.tinbo.config.ModeAdvisor
 import com.gitlab.artismarti.tinbo.config.Notification
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.CommandMarker
+import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.shell.plugin.BannerProvider
@@ -13,6 +15,11 @@ import org.springframework.stereotype.Component
  */
 @Component
 class TinboCommands @Autowired constructor(val bannerProvider: BannerProvider) : CommandMarker {
+
+	@CliAvailabilityIndicator("welcome", "weather")
+	fun isAvailable(): Boolean {
+		return ModeAdvisor.isStartMode()
+	}
 
 	@CliCommand("welcome", help = "Shows the banner and welcome message.")
 	fun welcome(): String {
