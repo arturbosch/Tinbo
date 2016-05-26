@@ -39,7 +39,7 @@ open class SharableCommands @Autowired constructor(val timeEditCommands: TimeEdi
 
 	@CliCommand("ls", "list", help = "Lists all entries.")
 	fun list(@CliOption(
-			key = arrayOf("category", "cat"),
+			key = arrayOf("category", "cat", "c"),
 			unspecifiedDefaultValue = "",
 			specifiedDefaultValue = "",
 			help = "Name to filter only for this specific category.") categoryName: String): String {
