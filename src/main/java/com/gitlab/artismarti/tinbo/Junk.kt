@@ -26,6 +26,11 @@ fun String.spaceIfEmpty(): String =
 			else -> this
 		}
 
+
+fun String.orThrow(): String = if (this.isEmpty())
+	throw IllegalArgumentException("Empty value not allowed!") else this
+
+
 fun <E> List<E>.plusElementAtBeginning(element: E): List<E> {
 	val result = ArrayList<E>(size + 1)
 	result.add(element)

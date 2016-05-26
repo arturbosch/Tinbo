@@ -3,6 +3,7 @@ package com.gitlab.artismarti.tinbo.tasks
 import com.gitlab.artismarti.tinbo.common.EditableCommands
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
+import com.gitlab.artismarti.tinbo.orThrow
 import com.gitlab.artismarti.tinbo.utils.DateTimeFormatters
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.CommandMarker
@@ -31,6 +32,18 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor) :
 			specifiedDefaultValue = Default.TASKS_NAME,
 			unspecifiedDefaultValue = Default.TASKS_NAME) name: String) {
 		executor.loadData(name)
+	}
+
+	override fun add(): String {
+		return whileNotInEditMode {
+			val category = console.readLine("Enter a category: ").orThrow()
+			val message = console.readLine("Enter a message: ")
+			val location = console.readLine("Enter a location: ")
+			val description = console.readLine("Enter a description: ")
+			val startTime = console.readLine("Enter a start time (yyyy-MM-dd HH:mm): ").orThrow()
+			val endTime = console.readLine("Enter a end time (yyyy-MM-dd HH:mm): ").orThrow()
+			addTask(message, category, location, description, startTime, endTime)
+		}
 	}
 
 	@CliCommand(value = "task", help = "Adds a new task.")

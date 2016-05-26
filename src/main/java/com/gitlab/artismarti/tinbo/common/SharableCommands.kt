@@ -23,7 +23,7 @@ open class SharableCommands @Autowired constructor(val timeEditCommands: TimeEdi
                                                    val noopCommands: NoopCommands,
                                                    val consoleReader: ConsoleReader) : CommandMarker {
 
-	@CliAvailabilityIndicator("ls", "save", "cancel", "remove", "changeCategory")
+	@CliAvailabilityIndicator("add", "ls", "save", "cancel", "remove", "changeCategory")
 	fun basicsAvailable(): Boolean {
 		return ModeAdvisor.isTimerMode() || ModeAdvisor.isNotesMode() || ModeAdvisor.isTasksMode()
 	}
@@ -35,6 +35,11 @@ open class SharableCommands @Autowired constructor(val timeEditCommands: TimeEdi
 			Mode.TIMER -> timeEditCommands
 			else -> noopCommands
 		}
+	}
+
+	@CliCommand("add", help = "Adds a new entry")
+	fun add(): String {
+		return getCommandsForCurrentMode().add()
 	}
 
 	@CliCommand("ls", "list", help = "Lists all entries.")
@@ -87,7 +92,7 @@ open class SharableCommands @Autowired constructor(val timeEditCommands: TimeEdi
 			newName = consoleReader.readLine("Enter a new category name: ")
 		}
 
-		if(oldName.isEmpty() || newName.isEmpty()) {
+		if (oldName.isEmpty() || newName.isEmpty()) {
 			return "Specify old and new category name"
 		}
 

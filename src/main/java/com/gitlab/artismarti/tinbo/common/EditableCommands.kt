@@ -1,6 +1,8 @@
 package com.gitlab.artismarti.tinbo.common
 
 import com.gitlab.artismarti.tinbo.utils.printlnInfo
+import jline.console.ConsoleReader
+import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 
 /**
@@ -12,6 +14,9 @@ abstract class EditableCommands<E : Entry, D : Data<E>, T : DummyEntry>(val exec
 
 	protected var isListMode: Boolean = false
 	protected var isEditMode: Boolean = false
+
+	@Autowired
+	protected lateinit var console: ConsoleReader
 
 	protected fun parseIndices(indexPattern: String): Set<Int> {
 		val result = HashSet<Int>()

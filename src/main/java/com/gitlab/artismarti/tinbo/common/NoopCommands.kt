@@ -7,23 +7,12 @@ import org.springframework.stereotype.Component
  */
 @Component
 open class NoopCommands : Editable {
-	override fun list(categoryName: String): String {
-		return ""
-	}
 
-	override fun cancel(): String {
-		return ""
-	}
+	override fun add(): String = ""
+	override fun list(categoryName: String): String = ""
+	override fun cancel(): String = ""
+	override fun save(name: String): String = ""
+	override fun delete(indexPattern: String): String = ""
+	override fun changeCategory(oldName: String, newName: String): String = ""
 
-	override fun save(name: String): String {
-		return ""
-	}
-
-	override fun delete(indexPattern: String): String {
-		return ""
-	}
-
-	override fun changeCategory(oldName: String, newName: String): String {
-		return ""
-	}
 }

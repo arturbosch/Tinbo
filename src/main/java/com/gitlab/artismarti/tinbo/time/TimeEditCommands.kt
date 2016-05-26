@@ -3,6 +3,7 @@ package com.gitlab.artismarti.tinbo.time
 import com.gitlab.artismarti.tinbo.common.EditableCommands
 import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
+import com.gitlab.artismarti.tinbo.orThrow
 import com.gitlab.artismarti.tinbo.utils.DateTimeFormatters
 import com.gitlab.artismarti.tinbo.utils.dateFormatter
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,6 +37,18 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 		executor.loadData(name)
 	}
 
+	override fun add(): String {
+		return whileNotInEditMode {
+			val category = console.readLine("Enter a category: ").orThrow()
+			val message = console.readLine("Enter a message: ")
+			val date = console.readLine("Enter a date (yyyy-mm-dd): ").orThrow()
+			val hours = console.readLine("Enter amount of spent hours: ").toLong()
+			val mins = console.readLine("Enter amount of spent minutes: ").toLong()
+			val seconds = console.readLine("Enter amount of spent seconds: ").toLong()
+			addTime(hours, mins, seconds, category, message, date)
+		}
+	}
+
 	@CliCommand("newTime", "addTime", help = "Adds a new time entry without executing a timer.")
 	fun addTime(@CliOption(key = arrayOf("hours", "h"),
 			specifiedDefaultValue = "0",
@@ -61,12 +74,12 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 			            help = "Specify a date for this time entry. Format: yyyy-MM-dd",
 			            specifiedDefaultValue = "",
 			            unspecifiedDefaultValue = "",
-			            mandatory = true) startTime: String): String {
+			            mandatory = true) date: String): String {
 
 		return whileNotInEditMode {
 			try {
-				val date = LocalDate.parse(startTime, dateFormatter)
-				executor.addEntry(TimeEntry(name, message, hours, mins, seconds, date))
+				val localDate = LocalDate.parse(date, dateFormatter)
+				executor.addEntry(TimeEntry(name, message, hours, mins, seconds, localDate))
 				SUCCESS_MESSAGE
 			} catch(e: DateTimeParseException) {
 				"Could not parse given date."
