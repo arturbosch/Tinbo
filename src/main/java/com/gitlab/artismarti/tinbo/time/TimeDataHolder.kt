@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-open class TimeDataHolder @Autowired constructor(data: TimeData, persister: TimePersister) :
-		AbstractDataHolder<TimeEntry, TimeData>(data, persister) {
+open class TimeDataHolder @Autowired constructor(persister: TimePersister) :
+		AbstractDataHolder<TimeEntry, TimeData>(persister) {
 
 	override fun newData(name: String, entriesInMemory: List<TimeEntry>): TimeData {
 		return TimeData(name, entriesInMemory)

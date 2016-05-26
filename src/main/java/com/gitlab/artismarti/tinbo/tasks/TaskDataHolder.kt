@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-open class TaskDataHolder @Autowired constructor(data: TaskData, persister: TaskPersister) :
-		AbstractDataHolder<TaskEntry, TaskData>(data, persister) {
+open class TaskDataHolder @Autowired constructor(persister: TaskPersister) :
+		AbstractDataHolder<TaskEntry, TaskData>(persister) {
 
 	override fun newData(name: String, entriesInMemory: List<TaskEntry>): TaskData {
 		return TaskData(name, entriesInMemory)

@@ -1,9 +1,14 @@
 package com.gitlab.artismarti.tinbo.common
 
+import com.gitlab.artismarti.tinbo.config.Default
+import com.gitlab.artismarti.tinbo.utils.DelegateExt
+
 /**
  * @author artur
  */
-abstract class AbstractDataHolder<E : Entry, D : Data<E>>(var data: D, val persister: AbstractPersister<E, D>) {
+abstract class AbstractDataHolder<E : Entry, D : Data<E>>(val persister: AbstractPersister<E, D>) {
+
+	var data: D by DelegateExt.lazyData { persister.restore(Default.DATA_NAME) }
 
 	fun loadData(name: String) {
 		data = persister.restore(name)
