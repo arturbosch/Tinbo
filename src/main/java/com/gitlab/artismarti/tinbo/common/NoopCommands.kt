@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class NoopCommands : Editable {
+open class NoopCommands : Editable {
 	override fun list(categoryName: String): String {
 		return ""
 	}

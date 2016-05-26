@@ -9,7 +9,7 @@ import java.nio.file.Path
  * @author artur
  */
 @Component
-class TimePersister(TIMER_PATH: Path = HomeFolder.getDirectory("timer")) : AbstractPersister<TimeEntry, TimeData>(TIMER_PATH) {
+open class TimePersister(TIMER_PATH: Path = HomeFolder.getDirectory("timer")) : AbstractPersister<TimeEntry, TimeData>(TIMER_PATH) {
 
 	override fun restore(name: String): TimeData {
 		return save(name, TimeData(name), TimeEntry::class.java)

@@ -17,11 +17,11 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class SharableCommands @Autowired constructor(val timeEditCommands: TimeEditCommands,
-                                              val noteCommands: NoteCommands,
-                                              val taskCommands: TaskCommands,
-                                              val noopCommands: NoopCommands,
-                                              val consoleReader: ConsoleReader) : CommandMarker {
+open class SharableCommands @Autowired constructor(val timeEditCommands: TimeEditCommands,
+                                                   val noteCommands: NoteCommands,
+                                                   val taskCommands: TaskCommands,
+                                                   val noopCommands: NoopCommands,
+                                                   val consoleReader: ConsoleReader) : CommandMarker {
 
 	@CliAvailabilityIndicator("ls", "save", "cancel", "remove", "changeCategory")
 	fun basicsAvailable(): Boolean {

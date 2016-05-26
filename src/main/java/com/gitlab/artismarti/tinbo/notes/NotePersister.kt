@@ -9,7 +9,7 @@ import java.nio.file.Path
  * @author artur
  */
 @Component
-class NotePersister(NOTES_PATH: Path = HomeFolder.getDirectory("notes")) :
+open class NotePersister(NOTES_PATH: Path = HomeFolder.getDirectory("notes")) :
 		AbstractPersister<NoteEntry, NoteData>(NOTES_PATH) {
 
 	override fun restore(name: String): NoteData {

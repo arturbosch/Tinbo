@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolder,
-                                          val consoleReader: ConsoleReader) :
+open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolder,
+                                               val consoleReader: ConsoleReader) :
 		AbstractExecutor<TimeEntry, TimeData, DummyTime>(timeDataHolder) {
 
 	override val TABLE_HEADER: String

@@ -30,18 +30,15 @@ open class TiNBo {
 			}
 		}
 
-		@Bean
-		fun shell(): JLineShellComponent {
+		@Bean fun shell(): JLineShellComponent {
 			return JLineShellComponent()
 		}
 
-		@Bean
-		fun commandLine(): CommandLine {
+		@Bean fun commandLine(): CommandLine {
 			return CommandLine(null, 3000, null)
 		}
 
-		@Bean
-		fun console(): ConsoleReader {
+		@Bean fun console(): ConsoleReader {
 			return ConsoleReader()
 		}
 	}

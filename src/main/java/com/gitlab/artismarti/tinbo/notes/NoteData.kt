@@ -8,5 +8,5 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class NoteData(name: String = Default.NOTES_NAME,
-			   entries: List<NoteEntry> = listOf()) : Data<NoteEntry>(name, entries)
+open class NoteData(name: String = Default.NOTES_NAME,
+                    entries: List<NoteEntry> = listOf()) : Data<NoteEntry>(name, entries)

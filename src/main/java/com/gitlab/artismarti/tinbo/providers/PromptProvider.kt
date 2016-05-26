@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 @Order(org.springframework.core.Ordered.HIGHEST_PRECEDENCE)
-class PromptProvider : DefaultPromptProvider() {
+open class PromptProvider : DefaultPromptProvider() {
 
 	var promptText = "tinbo"
 

@@ -16,7 +16,7 @@ import java.time.format.DateTimeParseException
  * @author artur
  */
 @Component
-class TaskCommands @Autowired constructor(executor: TaskExecutor) :
+open class TaskCommands @Autowired constructor(executor: TaskExecutor) :
 		EditableCommands<TaskEntry, TaskData, DummyTask>(executor), CommandMarker {
 
 	private val SUCCESS_MESSAGE = "Successfully added a task."
@@ -54,7 +54,7 @@ class TaskCommands @Autowired constructor(executor: TaskExecutor) :
 				try {
 					val pair = DateTimeFormatters.parseDateTime(endTime, startTime)
 					val formattedStartTime = pair.first
-					var formattedEndTime = pair.second
+					val formattedEndTime = pair.second
 					executor.addEntry(TaskEntry(message, description, location, category, formattedStartTime, formattedEndTime))
 					SUCCESS_MESSAGE
 				} catch(e: DateTimeParseException) {

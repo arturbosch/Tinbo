@@ -9,7 +9,7 @@ import java.nio.file.Path
  * @author artur
  */
 @Component
-class TaskPersister(TASKS_PATH: Path = HomeFolder.getDirectory("tasks")) :
+open class TaskPersister(TASKS_PATH: Path = HomeFolder.getDirectory("tasks")) :
 		AbstractPersister<TaskEntry, TaskData>(TASKS_PATH) {
 
 	override fun restore(name: String): TaskData {

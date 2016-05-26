@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class TinboCommands @Autowired constructor(val bannerProvider: BannerProvider) : CommandMarker {
+open class TinboCommands @Autowired constructor(val bannerProvider: BannerProvider) : CommandMarker {
 
 	@CliAvailabilityIndicator("welcome", "weather")
 	fun isAvailable(): Boolean {

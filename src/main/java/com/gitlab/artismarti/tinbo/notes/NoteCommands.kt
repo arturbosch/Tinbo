@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class NoteCommands @Autowired constructor(executor: NoteExecutor) : EditableCommands<NoteEntry, NoteData, DummyNote>(executor), CommandMarker {
+open class NoteCommands @Autowired constructor(executor: NoteExecutor) : EditableCommands<NoteEntry, NoteData, DummyNote>(executor), CommandMarker {
 
 	private val SUCCESS_MESSAGE = "Successfully added a note."
 

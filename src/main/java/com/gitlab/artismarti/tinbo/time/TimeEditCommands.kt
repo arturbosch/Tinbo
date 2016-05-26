@@ -18,7 +18,7 @@ import java.time.format.DateTimeParseException
  * @author artur
  */
 @Component
-class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
+open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 		EditableCommands<TimeEntry, TimeData, DummyTime>(executor), CommandMarker {
 
 	private val SUCCESS_MESSAGE = "Successfully added a time entry."

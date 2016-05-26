@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class ModeCommands @Autowired constructor(val promptProvider: PromptProvider) : CommandMarker {
+open class ModeCommands @Autowired constructor(val promptProvider: PromptProvider) : CommandMarker {
 
 	@CliAvailabilityIndicator("time", "tasks", "notes")
 	fun onlyModeCommands(): Boolean {

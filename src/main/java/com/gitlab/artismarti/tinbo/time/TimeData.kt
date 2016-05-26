@@ -9,5 +9,5 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class TimeData(name: String = Default.DATA_NAME,
-			   entries: List<TimeEntry> = listOf()) : Data<TimeEntry>(name, entries)
+open class TimeData(name: String = Default.DATA_NAME,
+                    entries: List<TimeEntry> = listOf()) : Data<TimeEntry>(name, entries)

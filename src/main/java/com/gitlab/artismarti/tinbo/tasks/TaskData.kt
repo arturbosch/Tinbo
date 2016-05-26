@@ -8,5 +8,5 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class TaskData(name: String = Default.TASKS_NAME,
-			   entries: List<TaskEntry> = listOf()) : Data<TaskEntry>(name, entries)
+open class TaskData(name: String = Default.TASKS_NAME,
+                    entries: List<TaskEntry> = listOf()) : Data<TaskEntry>(name, entries)

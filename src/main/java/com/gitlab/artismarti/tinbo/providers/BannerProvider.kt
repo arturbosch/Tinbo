@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 @Order(org.springframework.core.Ordered.HIGHEST_PRECEDENCE)
-class BannerProvider : DefaultBannerProvider() {
+open class BannerProvider : DefaultBannerProvider() {
 
 	override fun getBanner(): String {
 		return Resources.readLines(Resources.getResource("banner.txt"), Charsets.UTF_8).joinToString(separator = OsUtils.LINE_SEPARATOR)

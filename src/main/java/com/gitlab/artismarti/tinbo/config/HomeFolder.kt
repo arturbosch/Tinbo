@@ -31,7 +31,7 @@ object HomeFolder {
 	}
 
 	fun getDirectory(subPathInTinboDir: String): Path {
-		var newDir = homePath.resolve(subPathInTinboDir)
+		val newDir = homePath.resolve(subPathInTinboDir)
 		return checkAndCreate(newDir, { newDir -> Files.createDirectories(newDir) })
 	}
 

@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture
  * @author artur
  */
 @Component
-class TimerCommands @Autowired constructor(val executor: TimeExecutor) : CommandMarker {
+open class TimerCommands @Autowired constructor(val executor: TimeExecutor) : CommandMarker {
 
 	@CliAvailabilityIndicator("show", "start", "stop", "q")
 	fun isAvailable(): Boolean {

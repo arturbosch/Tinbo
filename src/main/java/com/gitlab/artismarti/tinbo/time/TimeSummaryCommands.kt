@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class TimeSummaryCommands @Autowired constructor(val executor: TimeExecutor) : CommandMarker {
+open class TimeSummaryCommands @Autowired constructor(val executor: TimeExecutor) : CommandMarker {
 
 	@CliAvailabilityIndicator("sum")
 	fun isAvailable(): Boolean {

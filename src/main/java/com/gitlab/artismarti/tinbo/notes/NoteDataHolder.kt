@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class NoteDataHolder @Autowired constructor(data: NoteData, persister: NotePersister) :
+open class NoteDataHolder @Autowired constructor(data: NoteData, persister: NotePersister) :
 		AbstractDataHolder<NoteEntry, NoteData>(data, persister) {
 
 	override fun newData(name: String, entriesInMemory: List<NoteEntry>): NoteData {
