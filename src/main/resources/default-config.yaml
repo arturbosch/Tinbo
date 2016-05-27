@@ -1,0 +1,10 @@
+notifications:
+  timeinterval: '15'
+timers:
+  last-used: 'Data'
+notes:
+  last-used: 'Notes'
+tasks:
+  last-used: 'Tasks'
+defaults:
+  category-name: 'Main'

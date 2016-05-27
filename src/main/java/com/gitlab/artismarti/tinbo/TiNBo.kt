@@ -1,5 +1,7 @@
 package com.gitlab.artismarti.tinbo
 
+import com.gitlab.artismarti.tinbo.config.HomeFolder
+import com.gitlab.artismarti.tinbo.config.TinboConfig
 import jline.console.ConsoleReader
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -28,6 +30,10 @@ open class TiNBo {
 			} finally {
 				HandlerUtils.flushAllHandlers(Logger.getLogger(""))
 			}
+		}
+
+		@Bean fun config(): TinboConfig {
+			return TinboConfig.load(HomeFolder.getOrCreateDefaultConfig("config.yaml"))
 		}
 
 		@Bean fun shell(): JLineShellComponent {

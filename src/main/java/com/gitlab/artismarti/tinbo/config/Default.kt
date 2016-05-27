@@ -10,4 +10,5 @@ object Default {
 	const val NOTES_NAME = "Notes"
 	const val MAIN_CATEGORY_NAME = "Main"
 	const val INFO_NOTIFICATION_TIME = 15L
+
 }

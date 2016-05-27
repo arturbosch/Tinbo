@@ -1,5 +1,6 @@
 package com.gitlab.artismarti.tinbo.config
 
+import com.google.common.io.Resources
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -18,6 +19,12 @@ object HomeFolder {
 		if (Files.notExists(homePath))
 			Files.createDirectory(homePath)
 		return homePath
+	}
+
+	fun getOrCreateDefaultConfig(subPathToConfig: String): Path {
+		return checkAndCreate(homePath.resolve(subPathToConfig), { newFile ->
+			Files.copy(Paths.get(Resources.getResource("default-config.yaml").file), newFile)
+		})
 	}
 
 	fun getFile(subPathInTinboDir: Path): Path {
