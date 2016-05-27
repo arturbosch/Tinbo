@@ -35,7 +35,7 @@ open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolde
 	}
 
 	init {
-		timeDataHolder.loadData(Default.DATA_NAME)
+		timeDataHolder.loadData(Default.TIME_NAME)
 	}
 
 	private var currentTimer = Timer.INVALID

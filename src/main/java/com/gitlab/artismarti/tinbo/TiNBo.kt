@@ -3,6 +3,7 @@ package com.gitlab.artismarti.tinbo
 import com.gitlab.artismarti.tinbo.config.HomeFolder
 import com.gitlab.artismarti.tinbo.config.TinboConfig
 import jline.console.ConsoleReader
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
@@ -18,6 +19,9 @@ import java.util.logging.Logger
 open class TiNBo {
 
 	companion object {
+
+		@Autowired
+		val config = config()
 
 		@JvmStatic fun main(args: Array<String>) {
 			val ctx = SpringApplication.run(TiNBo::class.java)

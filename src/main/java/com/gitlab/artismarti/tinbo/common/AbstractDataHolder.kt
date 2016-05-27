@@ -8,7 +8,9 @@ import com.gitlab.artismarti.tinbo.utils.DelegateExt
  */
 abstract class AbstractDataHolder<E : Entry, D : Data<E>>(val persister: AbstractPersister<E, D>) {
 
-	var data: D by DelegateExt.lazyData { persister.restore(Default.DATA_NAME) }
+	protected abstract val last_used_data: String
+
+	var data: D by DelegateExt.lazyData { persister.restore(last_used_data) }
 
 	fun loadData(name: String) {
 		data = persister.restore(name)

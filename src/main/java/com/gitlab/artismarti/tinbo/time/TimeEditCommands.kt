@@ -32,8 +32,8 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 	@CliCommand("loadTime", help = "Changes the complete data set.")
 	fun loadData(@CliOption(key = arrayOf("name"),
 			help = "name of the data set to load",
-			unspecifiedDefaultValue = Default.DATA_NAME,
-			specifiedDefaultValue = Default.DATA_NAME) name: String) {
+			unspecifiedDefaultValue = Default.TIME_NAME,
+			specifiedDefaultValue = Default.TIME_NAME) name: String) {
 		executor.loadData(name)
 	}
 
