@@ -65,7 +65,12 @@ a shell like experience.
 - allow altering timers after stopping them via console input
 - plus nine more enhancements/fixes, see https://gitlab.com/ArtiSmarti/Tinbo/milestones/2
 
-### 1.0M3 (WIP)
+### 1.0M3
 
 - defaults and configurations
 - startup performance
+
+### 1.0M4
+
+- divided help
+- pause timers
