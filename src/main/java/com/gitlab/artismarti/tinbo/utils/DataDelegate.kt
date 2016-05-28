@@ -13,7 +13,10 @@ private class DataDelegate<T>(initializer: () -> T) : ReadWriteProperty<Any?, T>
 	private var value: T? = null
 
 	override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-		return value ?: initializer()
+		if (value == null) {
+			value = initializer()
+		}
+		return value!!
 	}
 
 	override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {

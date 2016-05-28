@@ -1,6 +1,5 @@
 package com.gitlab.artismarti.tinbo.common
 
-import com.gitlab.artismarti.tinbo.config.Default
 import com.gitlab.artismarti.tinbo.utils.DelegateExt
 
 /**

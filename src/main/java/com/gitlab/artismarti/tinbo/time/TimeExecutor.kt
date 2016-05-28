@@ -34,10 +34,6 @@ open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolde
 				dummy.date.orValue(realTime.date))
 	}
 
-	init {
-		timeDataHolder.loadData(Default.TIME_NAME)
-	}
-
 	private var currentTimer = Timer.INVALID
 	private var running = false
 
