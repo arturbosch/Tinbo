@@ -9,7 +9,7 @@ object Defaults {
 	const val TASKS_NAME = "Tasks"
 	const val NOTES_NAME = "Notes"
 	const val MAIN_CATEGORY_NAME = "Main"
-	const val INFO_NOTIFICATION_TIME = 15L
+	const val INFO_NOTIFICATION_TIME = 30L
 
 }
 

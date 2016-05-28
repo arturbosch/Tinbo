@@ -1,5 +1,5 @@
 notifications:
-  timeinterval: '15'
+  interval: '15'
 timers:
   last-used: Data
 notes:

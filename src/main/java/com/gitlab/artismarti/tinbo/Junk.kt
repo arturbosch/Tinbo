@@ -30,6 +30,13 @@ fun String.spaceIfEmpty(): String =
 fun String.orThrow(): String = if (this.isEmpty())
 	throw IllegalArgumentException("Empty value not allowed!") else this
 
+inline fun String.toLongOrDefault(long: () -> Long): Long {
+	return try {
+		this.toLong()
+	} catch (e: NumberFormatException) {
+		long.invoke()
+	}
+}
 
 fun <E> List<E>.plusElementAtBeginning(element: E): List<E> {
 	val result = ArrayList<E>(size + 1)
@@ -52,5 +59,6 @@ fun LocalDateTime?.orValue(dateTime: LocalDateTime): LocalDateTime = if (this ==
 fun LocalDate?.orValue(dateTime: LocalDate): LocalDate = if (this == null) dateTime else this
 
 fun String.orValue(value: String): String = if (this.isEmpty()) value else this
+fun String?.orDefault(value: String): String = if (this.isNullOrEmpty()) value else this!!
 fun Long.orValue(hours: Long): Long = if (this.equals(-1L)) hours else this
 

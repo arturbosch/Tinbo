@@ -1,8 +1,10 @@
 package com.gitlab.artismarti.tinbo.tasks
 
+import com.gitlab.artismarti.tinbo.TiNBo
 import com.gitlab.artismarti.tinbo.common.EditableCommands
 import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
+import com.gitlab.artismarti.tinbo.orDefault
 import com.gitlab.artismarti.tinbo.orThrow
 import com.gitlab.artismarti.tinbo.utils.DateTimeFormatters
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,12 +38,12 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor) :
 
 	override fun add(): String {
 		return whileNotInEditMode {
-			val category = console.readLine("Enter a category: ").orThrow()
+			val category = console.readLine("Enter a category: ").orDefault(TiNBo.config.getCategoryName())
 			val message = console.readLine("Enter a message: ")
 			val location = console.readLine("Enter a location: ")
 			val description = console.readLine("Enter a description: ")
 			val startTime = console.readLine("Enter a start time (yyyy-MM-dd HH:mm): ").orThrow()
-			val endTime = console.readLine("Enter a end time (yyyy-MM-dd HH:mm): ").orThrow()
+			val endTime = console.readLine("Enter a end time (yyyy-MM-dd HH:mm): ")
 			addTask(message, category, location, description, startTime, endTime)
 		}
 	}

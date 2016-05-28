@@ -13,6 +13,13 @@ class TinboConfigTest {
 
 	private val path = Paths.get("test")
 
+	private val config: TinboConfig
+		get() {
+			val tinboConfig = TinboConfig.load(
+					Paths.get(Resources.getResource("default-config.yaml").file))
+			return tinboConfig
+		}
+
 	@After
 	fun tearDown() {
 		if (Files.exists(path))
@@ -20,11 +27,20 @@ class TinboConfigTest {
 	}
 
 	@Test
-	fun test() {
-		val tinboConfig = TinboConfig.load(
-				Paths.get(Resources.getResource("default-config.yaml").file))
-		val write = TinboConfig.write(path, tinboConfig)
-
+	fun writeConfig() {
+		val write = TinboConfig.write(path, config)
 		assert(write)
+	}
+
+	@Test
+	fun timeInterval() {
+		val timeInterval = config.getTimeInterval()
+		assert(timeInterval == 15L)
+	}
+
+	@Test
+	fun getCategoryName() {
+		val name = config.getCategoryName()
+		assert(name == "Main")
 	}
 }

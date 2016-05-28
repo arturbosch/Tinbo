@@ -1,8 +1,10 @@
 package com.gitlab.artismarti.tinbo.time
 
+import com.gitlab.artismarti.tinbo.TiNBo
 import com.gitlab.artismarti.tinbo.common.EditableCommands
 import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
+import com.gitlab.artismarti.tinbo.orDefault
 import com.gitlab.artismarti.tinbo.orThrow
 import com.gitlab.artismarti.tinbo.utils.DateTimeFormatters
 import com.gitlab.artismarti.tinbo.utils.dateFormatter
@@ -39,7 +41,7 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 
 	override fun add(): String {
 		return whileNotInEditMode {
-			val category = console.readLine("Enter a category: ").orThrow()
+			val category = console.readLine("Enter a category: ").orDefault(TiNBo.config.getCategoryName())
 			val message = console.readLine("Enter a message: ")
 			val date = console.readLine("Enter a date (yyyy-mm-dd): ").orThrow()
 			val hours = console.readLine("Enter amount of spent hours: ").toLong()

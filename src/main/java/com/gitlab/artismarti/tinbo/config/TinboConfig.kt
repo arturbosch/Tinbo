@@ -1,5 +1,7 @@
 package com.gitlab.artismarti.tinbo.config
 
+import com.gitlab.artismarti.tinbo.orDefault
+import com.gitlab.artismarti.tinbo.toLongOrDefault
 import org.yaml.snakeyaml.Yaml
 import java.io.IOException
 import java.nio.file.Files
@@ -25,6 +27,16 @@ class TinboConfig private constructor(private var values: Map<String, Map<String
 				TinboConfig.write(HomeFolder.getOrCreateDefaultConfig(), this)
 			}
 		}
+	}
+
+	fun getTimeInterval(): Long {
+		val time = getKey(ConfigDefaults.NOTIFICATIONS)[ConfigDefaults.TIME_INTERVAL].orEmpty()
+		return time.toLongOrDefault({ Defaults.INFO_NOTIFICATION_TIME })
+	}
+
+	fun getCategoryName(): String {
+		return getKey(ConfigDefaults.DEFAULTS)[ConfigDefaults.MAIN_CATEGORY_NAME]
+				.orDefault(Defaults.MAIN_CATEGORY_NAME)
 	}
 
 	companion object {
