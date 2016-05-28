@@ -1,5 +1,6 @@
 package com.gitlab.artismarti.tinbo.common
 
+import com.gitlab.artismarti.tinbo.TiNBo
 import com.gitlab.artismarti.tinbo.config.HomeFolder
 import com.gitlab.artismarti.tinbo.csv.CSVDataExchange
 import java.nio.file.Files
@@ -24,13 +25,14 @@ abstract class AbstractPersister<E : Entry, D : Data<E>>(private val SAVE_DIR_PA
 	 */
 	abstract fun restore(name: String): D
 
-	protected fun save(name: String, data: D, entryClass: Class<E>): D {
+	protected fun load(name: String, data: D, entryClass: Class<E>): D {
 		val path = SAVE_DIR_PATH.resolve(name)
 		if (Files.exists(path)) {
 			val entriesAsString = Files.readAllLines(path)
 			val entries = writer.fromCSV(entryClass, entriesAsString)
 			data.entries = entries
 		}
+		TiNBo.config.writeLastUsed(SAVE_DIR_PATH.fileName.toString(), name)
 		return data
 	}
 }

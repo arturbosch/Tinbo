@@ -2,7 +2,8 @@ package com.gitlab.artismarti.tinbo.time
 
 import com.gitlab.artismarti.tinbo.TiNBo
 import com.gitlab.artismarti.tinbo.common.AbstractDataHolder
-import com.gitlab.artismarti.tinbo.config.Default
+import com.gitlab.artismarti.tinbo.config.ConfigDefaults
+import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.toNumberString
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -15,7 +16,8 @@ open class TimeDataHolder @Autowired constructor(persister: TimePersister) :
 		AbstractDataHolder<TimeEntry, TimeData>(persister) {
 
 	override val last_used_data: String
-		get() = TiNBo.config.getKey("timers").getOrElse("last-used", { Default.TIME_NAME })
+		get() = TiNBo.config.getKey(ConfigDefaults.TIMERS)
+				.getOrElse(ConfigDefaults.LAST_USED, { Defaults.TIME_NAME })
 
 
 	override fun newData(name: String, entriesInMemory: List<TimeEntry>): TimeData {

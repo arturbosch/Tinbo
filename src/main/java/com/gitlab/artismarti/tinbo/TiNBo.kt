@@ -37,7 +37,7 @@ open class TiNBo {
 		}
 
 		@Bean fun config(): TinboConfig {
-			return TinboConfig.load(HomeFolder.getOrCreateDefaultConfig("config.yaml"))
+			return TinboConfig.load(HomeFolder.getOrCreateDefaultConfig())
 		}
 
 		@Bean fun shell(): JLineShellComponent {

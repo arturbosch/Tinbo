@@ -1,7 +1,7 @@
 package com.gitlab.artismarti.tinbo.time
 
 import com.gitlab.artismarti.tinbo.common.EditableCommands
-import com.gitlab.artismarti.tinbo.config.Default
+import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
 import com.gitlab.artismarti.tinbo.orThrow
 import com.gitlab.artismarti.tinbo.utils.DateTimeFormatters
@@ -32,8 +32,8 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 	@CliCommand("loadTime", help = "Changes the complete data set.")
 	fun loadData(@CliOption(key = arrayOf("name"),
 			help = "name of the data set to load",
-			unspecifiedDefaultValue = Default.TIME_NAME,
-			specifiedDefaultValue = Default.TIME_NAME) name: String) {
+			unspecifiedDefaultValue = Defaults.TIME_NAME,
+			specifiedDefaultValue = Defaults.TIME_NAME) name: String) {
 		executor.loadData(name)
 	}
 
@@ -63,8 +63,8 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 			            unspecifiedDefaultValue = "0",
 			            help = "Duration in seconds.") seconds: Long,
 	            @CliOption(key = arrayOf("category", "cat", "c"),
-			            unspecifiedDefaultValue = Default.MAIN_CATEGORY_NAME,
-			            specifiedDefaultValue = Default.MAIN_CATEGORY_NAME,
+			            unspecifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME,
+			            specifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME,
 			            help = "Category of the time entry.") name: String,
 	            @CliOption(key = arrayOf("message", "msg"),
 			            unspecifiedDefaultValue = "",

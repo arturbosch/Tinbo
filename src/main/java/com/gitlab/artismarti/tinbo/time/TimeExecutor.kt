@@ -1,7 +1,7 @@
 package com.gitlab.artismarti.tinbo.time
 
 import com.gitlab.artismarti.tinbo.common.AbstractExecutor
-import com.gitlab.artismarti.tinbo.config.Default
+import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.config.Notification
 import com.gitlab.artismarti.tinbo.orValue
 import com.gitlab.artismarti.tinbo.plusElementAtBeginning
@@ -49,7 +49,7 @@ open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolde
 				printInfo("\rElapsed time: $timer")
 			if (currentTimer.isFinished())
 				stop()
-			if (currentTimer.isPauseTime(Default.INFO_NOTIFICATION_TIME))
+			if (currentTimer.isPauseTime(Defaults.INFO_NOTIFICATION_TIME))
 				notify("Info")
 			Thread.sleep(1000L)
 		}
@@ -60,7 +60,7 @@ open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolde
 			running = false
 			changeCategoryAndMessageIfNotEmpty(name, message)
 			if (currentTimer.category.isEmpty()) {
-				val category = consoleReader.readLine("Enter a category name: ").orValue(Default.MAIN_CATEGORY_NAME)
+				val category = consoleReader.readLine("Enter a category name: ").orValue(Defaults.MAIN_CATEGORY_NAME)
 				val description = consoleReader.readLine("Enter a description: ").orValue("")
 				currentTimer = Timer(currentTimer.timeMode, category, description,
 						currentTimer.startDateTime, currentTimer.stopDateTime)

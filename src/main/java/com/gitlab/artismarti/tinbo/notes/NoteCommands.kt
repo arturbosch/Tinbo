@@ -1,7 +1,7 @@
 package com.gitlab.artismarti.tinbo.notes
 
 import com.gitlab.artismarti.tinbo.common.EditableCommands
-import com.gitlab.artismarti.tinbo.config.Default
+import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.CommandMarker
@@ -26,8 +26,8 @@ open class NoteCommands @Autowired constructor(executor: NoteExecutor) :
 
 	@CliCommand("loadNotes", help = "Loads/Creates an other data set. Note data sets are stored under ~/tinbo/notes/*.")
 	fun loadNotes(@CliOption(key = arrayOf("name", "n"), mandatory = true,
-			specifiedDefaultValue = Default.NOTES_NAME,
-			unspecifiedDefaultValue = Default.NOTES_NAME) name: String) {
+			specifiedDefaultValue = Defaults.NOTES_NAME,
+			unspecifiedDefaultValue = Defaults.NOTES_NAME) name: String) {
 		executor.loadData(name)
 	}
 

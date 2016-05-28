@@ -1,7 +1,7 @@
 package com.gitlab.artismarti.tinbo.tasks
 
 import com.gitlab.artismarti.tinbo.common.EditableCommands
-import com.gitlab.artismarti.tinbo.config.Default
+import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
 import com.gitlab.artismarti.tinbo.orThrow
 import com.gitlab.artismarti.tinbo.utils.DateTimeFormatters
@@ -29,8 +29,8 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor) :
 
 	@CliCommand("loadTasks", help = "Loads/Creates an other data set. Task data sets are stored under ~/tinbo/tasks/*.")
 	fun loadTasks(@CliOption(key = arrayOf("name", "n"), mandatory = true,
-			specifiedDefaultValue = Default.TASKS_NAME,
-			unspecifiedDefaultValue = Default.TASKS_NAME) name: String) {
+			specifiedDefaultValue = Defaults.TASKS_NAME,
+			unspecifiedDefaultValue = Defaults.TASKS_NAME) name: String) {
 		executor.loadData(name)
 	}
 
@@ -50,8 +50,8 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor) :
 	fun addTask(@CliOption(key = arrayOf("message", "msg", "m"), mandatory = true, help = "Summary of the task.",
 			specifiedDefaultValue = "", unspecifiedDefaultValue = "") message: String,
 	            @CliOption(key = arrayOf("category", "cat", "c"), help = "Category for the task",
-			            specifiedDefaultValue = Default.MAIN_CATEGORY_NAME,
-			            unspecifiedDefaultValue = Default.MAIN_CATEGORY_NAME) category: String,
+			            specifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME,
+			            unspecifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME) category: String,
 	            @CliOption(key = arrayOf("location", "loc", "l"), help = "Specify a location for this task.",
 			            specifiedDefaultValue = "", unspecifiedDefaultValue = "") location: String,
 	            @CliOption(key = arrayOf("description", "des", "d"), help = "Specify a description for this task.",

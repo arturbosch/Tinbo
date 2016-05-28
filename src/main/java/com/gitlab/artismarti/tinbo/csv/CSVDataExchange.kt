@@ -4,7 +4,7 @@ import com.gitlab.artismarti.tinbo.common.Entry
 import java.lang.reflect.Field
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.ArrayList
+import java.util.*
 
 /**
  * @author artur

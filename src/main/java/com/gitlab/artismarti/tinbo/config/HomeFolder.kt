@@ -11,6 +11,8 @@ import java.nio.file.Paths
  */
 object HomeFolder {
 
+	const val CONFIG_NAME = "config.yaml"
+
 	private val mainDir = "TiNBo"
 	private val homeDir = System.getProperty("user.home") + File.separator + mainDir
 	private val homePath = Paths.get(homeDir)
@@ -21,8 +23,8 @@ object HomeFolder {
 		return homePath
 	}
 
-	fun getOrCreateDefaultConfig(subPathToConfig: String): Path {
-		return checkAndCreate(homePath.resolve(subPathToConfig), { newFile ->
+	fun getOrCreateDefaultConfig(): Path {
+		return checkAndCreate(homePath.resolve(CONFIG_NAME), { newFile ->
 			Files.copy(Paths.get(Resources.getResource("default-config.yaml").file), newFile)
 		})
 	}
