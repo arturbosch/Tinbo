@@ -11,6 +11,7 @@ import com.gitlab.artismarti.tinbo.withIndexedColumn
 import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.time.LocalDateTime
 
 /**
  * @author artur
@@ -46,7 +47,7 @@ open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolde
 		running = true
 		while (running) {
 			if (currentTimer.timeMode == TimeMode.DEFAULT)
-				printInfo("\rElapsed time: $timer")
+				printInfo("\r$timer")
 			if (currentTimer.isFinished())
 				stop()
 			if (currentTimer.isPauseTime(TiNBo.config.getTimeInterval()))
@@ -63,7 +64,8 @@ open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolde
 				val category = consoleReader.readLine("Enter a category name: ").orValue(TiNBo.config.getCategoryName())
 				val description = consoleReader.readLine("Enter a description: ").orValue("")
 				currentTimer = Timer(currentTimer.timeMode, category, description,
-						currentTimer.startDateTime, currentTimer.stopDateTime)
+						currentTimer.startDateTime, currentTimer.stopDateTime,
+						currentTimer.currentPauseTime, currentTimer.pauseTimes)
 			}
 			saveAndResetCurrentTimer()
 		} else {
@@ -83,12 +85,12 @@ open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolde
 
 	private fun saveAndResetCurrentTimer() {
 		notify("Finished")
-		createTimeEntry()
+		createNewTimeEntry()
 		currentTimer = Timer.INVALID
 	}
 
-	private fun createTimeEntry() {
-		val (secs, mins, hours) = currentTimer.getTimeTriple()
+	private fun createNewTimeEntry() {
+		val (secs, mins, hours) = currentTimer.getTimeTriple() - currentTimer.getPauseTriple()
 		addEntry(TimeEntry(currentTimer.category, currentTimer.message, hours, mins, secs,
 				currentTimer.startDateTime.toLocalDate()))
 	}
@@ -125,5 +127,19 @@ open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolde
 		return tableAsString(summaries)
 	}
 
-}
+	fun pauseTimer() {
+		currentTimer.currentPauseTime = LocalDateTime.now()
+	}
 
+	fun stopPauseTimer() {
+		if (isPause()) {
+			currentTimer.pauseTimes.add(currentTimer.currentPauseTime!! to Timer.calcPause(currentTimer))
+			currentTimer.currentPauseTime = null
+		}
+	}
+
+	fun isPause(): Boolean {
+		return currentTimer.currentPauseTime != null
+	}
+
+}

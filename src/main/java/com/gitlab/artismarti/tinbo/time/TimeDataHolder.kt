@@ -4,7 +4,7 @@ import com.gitlab.artismarti.tinbo.TiNBo
 import com.gitlab.artismarti.tinbo.common.AbstractDataHolder
 import com.gitlab.artismarti.tinbo.config.ConfigDefaults
 import com.gitlab.artismarti.tinbo.config.Defaults
-import com.gitlab.artismarti.tinbo.toNumberString
+import com.gitlab.artismarti.tinbo.toTimeString
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -44,7 +44,7 @@ open class TimeDataHolder @Autowired constructor(persister: TimePersister) :
 		val (extraHours, realMinutes) = divAndMod(minutes)
 		val hours = value.map { it.hours }.sum().plus(extraHours)
 
-		return "${hours.toNumberString()}:${realMinutes.toNumberString()}:${realSeconds.toNumberString()}"
+		return "${hours.toTimeString()}:${realMinutes.toTimeString()}:${realSeconds.toTimeString()}"
 	}
 
 	private fun divAndMod(value: Long) = value.div(60) to value.mod(60)

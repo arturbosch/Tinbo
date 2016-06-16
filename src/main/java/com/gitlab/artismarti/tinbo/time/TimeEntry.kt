@@ -2,7 +2,7 @@ package com.gitlab.artismarti.tinbo.time
 
 import com.gitlab.artismarti.tinbo.common.Entry
 import com.gitlab.artismarti.tinbo.spaceIfEmpty
-import com.gitlab.artismarti.tinbo.toNumberString
+import com.gitlab.artismarti.tinbo.toTimeString
 import com.gitlab.artismarti.tinbo.utils.dateFormatter
 import java.time.LocalDate
 
@@ -17,8 +17,8 @@ class TimeEntry(var category: String = "Main",
 				var date: LocalDate = LocalDate.now()) : Entry() {
 
 	override fun toString(): String {
-		return "$category;${date.format(dateFormatter)};${hours.toNumberString()}:${minutes.toNumberString()}" +
-				":${seconds.toNumberString()};${message.spaceIfEmpty()}"
+		return "$category;${date.format(dateFormatter)};${hours.toTimeString()}:${minutes.toTimeString()}" +
+				":${seconds.toTimeString()};${message.spaceIfEmpty()}"
 	}
 
 	override fun compareTo(other: Entry): Int {

@@ -1,9 +1,10 @@
 package com.gitlab.artismarti.tinbo.time
 
 import com.gitlab.artismarti.tinbo.orValue
-import com.gitlab.artismarti.tinbo.toNumberString
+import com.gitlab.artismarti.tinbo.toTimeString
 import java.time.Duration
 import java.time.LocalDateTime
+import java.util.*
 
 /**
  * Domain model for timers. Specifies by a mode, start and end time.
@@ -12,26 +13,13 @@ import java.time.LocalDateTime
  *
  * @author artur
  */
-class Timer {
-
-	constructor(timeMode: TimeMode = TimeMode.INVALID,
-				name: String,
-				message: String,
-				startDateTime: LocalDateTime = LocalDateTime.now(),
-				stopDateTime: LocalDateTime? = null) {
-
-		this.timeMode = timeMode
-		this.category = name
-		this.message = message
-		this.startDateTime = startDateTime
-		this.stopDateTime = stopDateTime
-	}
-
-	val category: String
-	val message: String
-	val timeMode: TimeMode
-	val startDateTime: LocalDateTime
-	val stopDateTime: LocalDateTime?
+class Timer(val timeMode: TimeMode = TimeMode.INVALID,
+            val category: String,
+            val message: String,
+            val startDateTime: LocalDateTime = LocalDateTime.now(),
+            val stopDateTime: LocalDateTime? = null,
+            var currentPauseTime: LocalDateTime? = null,
+            val pauseTimes: MutableList<Pair<LocalDateTime, Long>> = ArrayList()) {
 
 	companion object {
 
@@ -47,18 +35,41 @@ class Timer {
 			return stop
 		}
 
+		fun calcPause(timer: Timer): Long {
+			val endPause = LocalDateTime.now()
+			return Duration.between(timer.currentPauseTime ?: endPause, endPause).seconds
+		}
 	}
 
 	override fun toString(): String {
 		val (diffSecs, diffMins, diffHours) = getTimeTriple()
-		return "${diffHours.toNumberString()}:${diffMins.toNumberString()}:${diffSecs.toNumberString()} (${category.orValue("Main")})"
+		val (pauseSecs, pauseMins, pauseHours) = getPauseTriple()
+
+		val timeString =
+				"Elapsed time: ${(diffHours - pauseHours).toTimeString()}:${(diffMins - pauseMins).toTimeString()}:${(diffSecs - pauseSecs).toTimeString()} (${category.orValue("Main")})"
+
+		val returnString = when {
+			pauseSecs == 0L && pauseMins == 0L && pauseHours == 0L -> timeString
+			else -> timeString + " with pause time: ${pauseHours.toTimeString()}:${pauseMins.toTimeString()}:${pauseSecs.toTimeString()} "
+		}
+
+		return returnString
 	}
 
-	fun getTimeTriple(): Triple<Long, Long, Long> {
+	fun getPauseTriple(): Triple<Long, Long, Long> {
+		val pauseSeconds = pauseTimes.map { it.second }.sum()
+		val diffSeconds = pauseSeconds.mod(60)
+		val pauseMinutes = pauseSeconds.div(60)
+		val diffMinutes = pauseMinutes.mod(60)
+		val pauseHours = pauseMinutes.div(60)
+		return Triple(diffSeconds, diffMinutes, pauseHours) + getTimeTriple(currentPauseTime ?: LocalDateTime.now())
+	}
+
+	fun getTimeTriple(time: LocalDateTime = startDateTime): Triple<Long, Long, Long> {
 		val now = LocalDateTime.now()
-		val diffSecs = Duration.between(startDateTime, now).seconds.mod(60)
-		val diffMins = Duration.between(startDateTime, now).toMinutes().mod(60)
-		val diffHours = Duration.between(startDateTime, now).toHours().mod(60)
+		val diffSecs = Duration.between(time, now).seconds.mod(60)
+		val diffMins = Duration.between(time, now).toMinutes().mod(60)
+		val diffHours = Duration.between(time, now).toHours().mod(60)
 		return Triple(diffSecs, diffMins, diffHours)
 	}
 
@@ -81,3 +92,12 @@ class Timer {
 	}
 
 }
+
+infix operator fun Triple<Long, Long, Long>.plus(other: Triple<Long, Long, Long>): Triple<Long, Long, Long> {
+	return Triple(this.first + other.first, this.second + other.second, this.third + other.third)
+}
+
+infix operator fun Triple<Long, Long, Long>.minus(other: Triple<Long, Long, Long>): Triple<Long, Long, Long> {
+	return Triple(this.first - other.first, this.second - other.second, this.third - other.third)
+}
+

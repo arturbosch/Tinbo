@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture
 @Component
 open class TimerCommands @Autowired constructor(val executor: TimeExecutor) : CommandMarker {
 
-	@CliAvailabilityIndicator("show", "start", "stop", "q")
+	@CliAvailabilityIndicator("show", "start", "stop", "q", "pause")
 	fun isAvailable(): Boolean {
 		return ModeAdvisor.isTimerMode()
 	}
@@ -100,6 +100,17 @@ open class TimerCommands @Autowired constructor(val executor: TimeExecutor) : Co
 	@CliCommand(value = "show", help = "Shows the current running timer. Useful when in background mode.")
 	fun showCurrentTimer(): String {
 		return executor.showTimer()
+	}
+
+	@CliCommand("p", "pause", help = "Starts/Stops the pause timer.")
+	fun startPause() {
+		if (executor.inProgress()) {
+			if (executor.isPause()) {
+				executor.stopPauseTimer()
+			} else {
+				executor.pauseTimer()
+			}
+		} else println("No timer in progress!")
 	}
 
 }
