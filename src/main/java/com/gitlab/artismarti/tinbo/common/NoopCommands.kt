@@ -14,5 +14,6 @@ open class NoopCommands : Editable {
 	override fun save(name: String): String = ""
 	override fun delete(indexPattern: String): String = ""
 	override fun changeCategory(oldName: String, newName: String): String = ""
+	override fun data(): String = ""
 
 }

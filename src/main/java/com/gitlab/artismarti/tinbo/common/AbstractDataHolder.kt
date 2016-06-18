@@ -1,6 +1,8 @@
 package com.gitlab.artismarti.tinbo.common
 
 import com.gitlab.artismarti.tinbo.utils.DelegateExt
+import java.nio.file.Files
+import java.util.stream.Collectors
 
 /**
  * @author artur
@@ -13,6 +15,13 @@ abstract class AbstractDataHolder<E : Entry, D : Data<E>>(val persister: Abstrac
 
 	fun loadData(name: String) {
 		data = persister.restore(name)
+	}
+
+	fun getDataNames(): List<String> {
+		return Files.list(persister.SAVE_DIR_PATH)
+				.map { it.fileName.toString() }
+				.collect(Collectors.toList<String>())
+				.toList()
 	}
 
 	fun persistEntry(entry: E) {

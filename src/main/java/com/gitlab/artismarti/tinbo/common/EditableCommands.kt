@@ -130,4 +130,8 @@ abstract class EditableCommands<E : Entry, D : Data<E>, T : DummyEntry>(val exec
 			"Updated entries of category $oldName to have new category $newName"
 		}
 	}
+
+	override fun data(): String {
+		return "Available data sets: " + executor.getAllDataNames().joinToString()
+	}
 }

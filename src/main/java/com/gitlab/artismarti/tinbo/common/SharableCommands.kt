@@ -23,7 +23,7 @@ open class SharableCommands @Autowired constructor(val timeEditCommands: TimeEdi
                                                    val noopCommands: NoopCommands,
                                                    val consoleReader: ConsoleReader) : CommandMarker {
 
-	@CliAvailabilityIndicator("add", "ls", "save", "cancel", "remove", "changeCategory")
+	@CliAvailabilityIndicator("add", "ls", "save", "cancel", "remove", "changeCategory", "data")
 	fun basicsAvailable(): Boolean {
 		return ModeAdvisor.isTimerMode() || ModeAdvisor.isNotesMode() || ModeAdvisor.isTasksMode()
 	}
@@ -99,4 +99,8 @@ open class SharableCommands @Autowired constructor(val timeEditCommands: TimeEdi
 		return commandsForCurrentMode.changeCategory(oldName, newName)
 	}
 
+	@CliCommand("data", help = "prints all available data sets")
+	fun data(): String {
+		return getCommandsForCurrentMode().data();
+	}
 }
