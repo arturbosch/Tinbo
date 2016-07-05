@@ -1,10 +1,10 @@
 package com.gitlab.artismarti.tinbo.start
 
+import com.gitlab.artismarti.tinbo.common.Command
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
 import com.gitlab.artismarti.tinbo.providers.PromptProvider
 import com.gitlab.artismarti.tinbo.utils.printlnInfo
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.stereotype.Component
@@ -13,16 +13,13 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-open class ModeCommands @Autowired constructor(val promptProvider: PromptProvider) : CommandMarker {
+open class ModeCommands @Autowired constructor(val promptProvider: PromptProvider) : Command {
+
+	override val id: String = "start"
 
 	@CliAvailabilityIndicator("time", "tasks", "notes")
 	fun onlyModeCommands(): Boolean {
 		return ModeAdvisor.isStartMode()
-	}
-
-	@CliAvailabilityIndicator("back")
-	fun noExitCommand(): Boolean {
-		return !ModeAdvisor.isStartMode()
 	}
 
 	@CliCommand("time", "timer", help = "Switch to time mode where you can start timers and list previous timings.")
@@ -30,13 +27,6 @@ open class ModeCommands @Autowired constructor(val promptProvider: PromptProvide
 		ModeAdvisor.setTimerMode()
 		promptProvider.promptText = "time"
 		printlnInfo("Entering time mode...")
-	}
-
-	@CliCommand("back", "b", help = "Exits current mode and enters start mode where you have access to all other modes.")
-	fun startMode() {
-		ModeAdvisor.setStartMode()
-		promptProvider.promptText = "tinbo"
-		printlnInfo("Entering tinbo mode...")
 	}
 
 	@CliCommand("tasks", help = "Switch to tasks mode to write down tasks.")

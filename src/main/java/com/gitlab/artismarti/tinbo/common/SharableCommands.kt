@@ -1,13 +1,9 @@
 package com.gitlab.artismarti.tinbo.common
 
-import com.gitlab.artismarti.tinbo.config.Mode
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
 import com.gitlab.artismarti.tinbo.notes.NoteCommands
-import com.gitlab.artismarti.tinbo.tasks.TaskCommands
-import com.gitlab.artismarti.tinbo.time.TimeEditCommands
 import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
@@ -17,29 +13,19 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-open class SharableCommands @Autowired constructor(val timeEditCommands: TimeEditCommands,
-                                                   val noteCommands: NoteCommands,
-                                                   val taskCommands: TaskCommands,
-                                                   val noopCommands: NoopCommands,
-                                                   val consoleReader: ConsoleReader) : CommandMarker {
+open class SharableCommands @Autowired constructor(val commandChooser: CommandChooser,
+                                                   val consoleReader: ConsoleReader) : Command {
+
+	override val id: String = "edit"
 
 	@CliAvailabilityIndicator("add", "ls", "save", "cancel", "remove", "changeCategory", "data")
 	fun basicsAvailable(): Boolean {
 		return ModeAdvisor.isTimerMode() || ModeAdvisor.isNotesMode() || ModeAdvisor.isTasksMode()
 	}
 
-	private fun getCommandsForCurrentMode(): Editable {
-		return when (ModeAdvisor.getMode()) {
-			Mode.NOTES -> noteCommands
-			Mode.TASKS -> taskCommands
-			Mode.TIMER -> timeEditCommands
-			else -> noopCommands
-		}
-	}
-
 	@CliCommand("add", help = "Adds a new entry")
 	fun add(): String {
-		return getCommandsForCurrentMode().add()
+		return commandChooser.forCurrentMode().add()
 	}
 
 	@CliCommand("ls", "list", help = "Lists all entries.")
@@ -49,19 +35,19 @@ open class SharableCommands @Autowired constructor(val timeEditCommands: TimeEdi
 			specifiedDefaultValue = "",
 			help = "Name to filter only for this specific category.") categoryName: String): String {
 
-		return getCommandsForCurrentMode().list(categoryName)
+		return commandChooser.forCurrentMode().list(categoryName)
 	}
 
 	@CliCommand("cancel", help = "Cancels edit mode.")
 	fun cancel(): String {
-		return getCommandsForCurrentMode().cancel()
+		return commandChooser.forCurrentMode().cancel()
 	}
 
 	@CliCommand("save", help = "Saves current editing if list command was used.")
 	fun save(@CliOption(key = arrayOf("name", "n"), help = "Saves notes under a new data set (also a new filename).",
 			specifiedDefaultValue = "", unspecifiedDefaultValue = "") name: String): String {
 
-		return getCommandsForCurrentMode().save(name)
+		return commandChooser.forCurrentMode().save(name)
 	}
 
 	@CliCommand("remove", "delete", help = "Deletes entries from storage.")
@@ -69,7 +55,7 @@ open class SharableCommands @Autowired constructor(val timeEditCommands: TimeEdi
 			help = "Indices pattern, allowed are numbers with space in between or intervals like 1-5 e.g. '1 2 3-5 6'.")
 	           indexPattern: String): String {
 
-		return getCommandsForCurrentMode().delete(indexPattern)
+		return commandChooser.forCurrentMode().delete(indexPattern)
 	}
 
 	@CliCommand("changeCategory", help = "Changes a categories name with the side effect that all entries of this category get updated.")
@@ -78,7 +64,7 @@ open class SharableCommands @Autowired constructor(val timeEditCommands: TimeEdi
 	                   @CliOption(key = arrayOf("new"), help = "Old category name.",
 			                   unspecifiedDefaultValue = "", specifiedDefaultValue = "") new: String): String {
 
-		val commandsForCurrentMode = getCommandsForCurrentMode()
+		val commandsForCurrentMode = commandChooser.forCurrentMode()
 		if (commandsForCurrentMode is NoteCommands || commandsForCurrentMode is NoopCommands) {
 			return "Changing category is not yet supported for notes."
 		}
@@ -101,6 +87,6 @@ open class SharableCommands @Autowired constructor(val timeEditCommands: TimeEdi
 
 	@CliCommand("data", help = "prints all available data sets")
 	fun data(): String {
-		return getCommandsForCurrentMode().data();
+		return commandChooser.forCurrentMode().data()
 	}
 }

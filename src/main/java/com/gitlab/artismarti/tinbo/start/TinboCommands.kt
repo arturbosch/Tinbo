@@ -1,9 +1,9 @@
 package com.gitlab.artismarti.tinbo.start
 
+import com.gitlab.artismarti.tinbo.common.Command
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
 import com.gitlab.artismarti.tinbo.config.Notification
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
@@ -14,7 +14,9 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-open class TinboCommands @Autowired constructor(val bannerProvider: BannerProvider) : CommandMarker {
+open class TinboCommands @Autowired constructor(val bannerProvider: BannerProvider) : Command {
+
+	override val id: String = "start"
 
 	@CliAvailabilityIndicator("welcome", "weather")
 	fun isAvailable(): Boolean {

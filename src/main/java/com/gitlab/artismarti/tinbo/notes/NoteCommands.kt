@@ -1,10 +1,10 @@
 package com.gitlab.artismarti.tinbo.notes
 
+import com.gitlab.artismarti.tinbo.common.Command
 import com.gitlab.artismarti.tinbo.common.EditableCommands
 import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
@@ -15,7 +15,9 @@ import org.springframework.stereotype.Component
  */
 @Component
 open class NoteCommands @Autowired constructor(executor: NoteExecutor) :
-		EditableCommands<NoteEntry, NoteData, DummyNote>(executor), CommandMarker {
+		EditableCommands<NoteEntry, NoteData, DummyNote>(executor), Command {
+
+	override val id: String = "note"
 
 	private val SUCCESS_MESSAGE = "Successfully added a note."
 

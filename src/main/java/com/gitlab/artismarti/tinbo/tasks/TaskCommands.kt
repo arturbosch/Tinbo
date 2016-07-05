@@ -1,6 +1,7 @@
 package com.gitlab.artismarti.tinbo.tasks
 
 import com.gitlab.artismarti.tinbo.TiNBo
+import com.gitlab.artismarti.tinbo.common.Command
 import com.gitlab.artismarti.tinbo.common.EditableCommands
 import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
@@ -8,7 +9,6 @@ import com.gitlab.artismarti.tinbo.orDefault
 import com.gitlab.artismarti.tinbo.orThrow
 import com.gitlab.artismarti.tinbo.utils.DateTimeFormatters
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
@@ -20,7 +20,9 @@ import java.time.format.DateTimeParseException
  */
 @Component
 open class TaskCommands @Autowired constructor(executor: TaskExecutor) :
-		EditableCommands<TaskEntry, TaskData, DummyTask>(executor), CommandMarker {
+		EditableCommands<TaskEntry, TaskData, DummyTask>(executor), Command {
+
+	override val id: String = "task"
 
 	private val SUCCESS_MESSAGE = "Successfully added a task."
 

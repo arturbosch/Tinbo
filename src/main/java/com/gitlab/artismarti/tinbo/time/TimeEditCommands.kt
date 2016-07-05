@@ -1,6 +1,7 @@
 package com.gitlab.artismarti.tinbo.time
 
 import com.gitlab.artismarti.tinbo.TiNBo
+import com.gitlab.artismarti.tinbo.common.Command
 import com.gitlab.artismarti.tinbo.common.EditableCommands
 import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
@@ -22,7 +23,9 @@ import java.time.format.DateTimeParseException
  */
 @Component
 open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
-		EditableCommands<TimeEntry, TimeData, DummyTime>(executor), CommandMarker {
+		EditableCommands<TimeEntry, TimeData, DummyTime>(executor), Command {
+
+	override val id: String = "time"
 
 	private val SUCCESS_MESSAGE = "Successfully added a time entry."
 

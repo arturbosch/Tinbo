@@ -1,8 +1,11 @@
 package com.gitlab.artismarti.tinbo.config
 
+import org.springframework.stereotype.Component
+
 /**
  * @author artur
  */
+@Component
 object ModeAdvisor {
 
 	private var mode = Mode.START

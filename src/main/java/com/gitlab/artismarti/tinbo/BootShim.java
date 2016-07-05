@@ -34,11 +34,11 @@ public class BootShim {
 
 		this.configureApplicationContext(this.ctx);
 		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner((BeanDefinitionRegistry) this.ctx);
-		if (commandLine.getDisableInternalCommands()) {
+//		if (commandLine.getDisableInternalCommands()) {
 			scanner.scan("org.springframework.shell.converters", "org.springframework.shell.plugin.support");
-		} else {
-			scanner.scan("org.springframework.shell.commands", "org.springframework.shell.converters", "org.springframework.shell.plugin.support");
-		}
+//		} else {
+//			scanner.scan("org.springframework.shell.commands", "org.springframework.shell.converters", "org.springframework.shell.plugin.support");
+//		}
 
 	}
 
