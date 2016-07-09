@@ -41,12 +41,12 @@ class Timer(val timeMode: TimeMode = TimeMode.INVALID,
 		}
 	}
 
-	override fun toString(): String {
+	fun toTimeString(): String {
 		val (diffSecs, diffMins, diffHours) = getTimeTriple()
 		val (pauseSecs, pauseMins, pauseHours) = getPauseTriple()
 
 		val timeString =
-				"Elapsed time: ${(diffHours - pauseHours).toTimeString()}:${(diffMins - pauseMins).toTimeString()}:${(diffSecs - pauseSecs).toTimeString()} (${category.orValue("Main")})"
+				"Elapsed time: ${diffHours.toTimeString()}:${diffMins.toTimeString()}:${diffSecs.toTimeString()} (${category.orValue("Main")})"
 
 		val returnString = when {
 			pauseSecs == 0L && pauseMins == 0L && pauseHours == 0L -> timeString
@@ -89,6 +89,10 @@ class Timer(val timeMode: TimeMode = TimeMode.INVALID,
 		val diffSecs = Duration.between(startDateTime, now).seconds.mod(60)
 		val diffMins = Duration.between(startDateTime, now).toMinutes().mod(60)
 		return diffMins.mod(mins) == 0L && diffSecs == 0L && diffMins + diffSecs != 0L
+	}
+
+	override fun toString(): String{
+		return "Timer(timeMode=$timeMode, category='$category', message='$message', startDateTime=$startDateTime, stopDateTime=$stopDateTime, currentPauseTime=$currentPauseTime, pauseTimes=$pauseTimes)"
 	}
 
 }
