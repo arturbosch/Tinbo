@@ -6,9 +6,7 @@ import kotlin.reflect.KProperty
 /**
  * @author artur
  */
-private class DataDelegate<T>(initializer: () -> T) : ReadWriteProperty<Any?, T> {
-
-	private var initializer: (() -> T) = initializer
+private class DataDelegate<T>(private var initializer: () -> T) : ReadWriteProperty<Any?, T> {
 
 	private var value: T? = null
 

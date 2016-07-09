@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-open class TaskExecutor @Autowired constructor(val taskDataHolder: TaskDataHolder) :
+open class TaskExecutor @Autowired constructor(taskDataHolder: TaskDataHolder) :
 		AbstractExecutor<TaskEntry, TaskData, DummyTask>(taskDataHolder) {
 
 	override val TABLE_HEADER: String

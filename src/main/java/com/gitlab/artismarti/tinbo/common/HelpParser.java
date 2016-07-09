@@ -30,7 +30,7 @@ class HelpParser {
 
 	private static final Comparator<Object> COMPARATOR = new NaturalOrderComparator<>();
 
-	private List<CommandMarker> commands;
+	private final List<CommandMarker> commands;
 
 	public HelpParser(List<CommandMarker> commands) {
 		this.commands = commands;

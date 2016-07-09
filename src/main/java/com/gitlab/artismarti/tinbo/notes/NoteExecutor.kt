@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-open class NoteExecutor @Autowired constructor(val noteDataHolder: NoteDataHolder) :
+open class NoteExecutor @Autowired constructor(noteDataHolder: NoteDataHolder) :
 		AbstractExecutor<NoteEntry, NoteData, DummyNote>(noteDataHolder) {
 
 	override val TABLE_HEADER: String

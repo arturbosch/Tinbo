@@ -17,7 +17,7 @@ class CSVDataExchange {
 		return entries.map { entry ->
 			entry.javaClass.declaredFields.asList()
 					.map {
-						it.isAccessible = true;
+						it.isAccessible = true
 						it.get(entry)
 					}
 					.joinToString(separator)

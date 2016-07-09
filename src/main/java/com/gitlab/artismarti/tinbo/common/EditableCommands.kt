@@ -8,7 +8,7 @@ import java.util.*
 /**
  * @author artur
  */
-abstract class EditableCommands<E : Entry, D : Data<E>, T : DummyEntry>(val executor: AbstractExecutor<E, D, T>) : Editable {
+abstract class EditableCommands<E : Entry, D : Data<E>, in T : DummyEntry>(val executor: AbstractExecutor<E, D, T>) : Editable {
 
 	private val NEED_EDIT_MODE_TEXT = "Before adding or list entries exit edit mode with 'save' or 'cancel'."
 

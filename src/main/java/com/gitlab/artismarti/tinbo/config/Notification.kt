@@ -13,7 +13,7 @@ object Notification {
 
 	fun notify(header: String, message: String) {
 		try {
-			ProcessBuilder("notify-send", header, message, "--icon=dialog-information").start();
+			ProcessBuilder("notify-send", header, message, "--icon=dialog-information").start()
 		} catch (e: Exception) {
 			println(NOTIFY_SEND_ERROR)
 			logger.error(NOTIFY_SEND_ERROR, e)

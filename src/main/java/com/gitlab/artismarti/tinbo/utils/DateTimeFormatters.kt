@@ -43,6 +43,6 @@ object DateTimeFormatters {
 
 }
 
-val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
