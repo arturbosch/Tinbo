@@ -93,6 +93,18 @@ class Timer(val timeMode: TimeMode = TimeMode.INVALID,
 
 }
 
+fun Timer.copy(timeMode: TimeMode? = null,
+               category: String? = null,
+               message: String? = null,
+               startDateTime: LocalDateTime? = null,
+               stopDateTime: LocalDateTime? = null,
+               currentPauseTime: LocalDateTime? = null,
+               pauseTimes: MutableList<Pair<LocalDateTime, Long>>? = null): Timer {
+	return Timer(timeMode ?: this.timeMode, category ?: this.category, message ?: this.message,
+			startDateTime ?: this.startDateTime, stopDateTime ?: this.stopDateTime,
+			currentPauseTime ?: this.currentPauseTime, pauseTimes ?: this.pauseTimes)
+}
+
 infix operator fun Triple<Long, Long, Long>.plus(other: Triple<Long, Long, Long>): Triple<Long, Long, Long> {
 	return Triple(this.first + other.first, this.second + other.second, this.third + other.third)
 }

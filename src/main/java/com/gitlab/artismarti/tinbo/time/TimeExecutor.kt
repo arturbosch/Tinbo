@@ -63,9 +63,7 @@ open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolde
 			if (currentTimer.category.isEmpty()) {
 				val category = consoleReader.readLine("Enter a category name: ").orValue(TiNBo.config.getCategoryName())
 				val description = consoleReader.readLine("Enter a description: ").orValue("")
-				currentTimer = Timer(currentTimer.timeMode, category, description,
-						currentTimer.startDateTime, currentTimer.stopDateTime,
-						currentTimer.currentPauseTime, currentTimer.pauseTimes)
+				currentTimer = Timer(category = category, message = description)
 			}
 			saveAndResetCurrentTimer()
 		} else {
@@ -79,8 +77,7 @@ open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolde
 		var newMessage = currentTimer.message
 		if (name.isNotEmpty()) newName = name
 		if (message.isNotEmpty()) newMessage = message
-		currentTimer = Timer(currentTimer.timeMode, newName, newMessage,
-				currentTimer.startDateTime, currentTimer.stopDateTime)
+		currentTimer = currentTimer.copy(category = newName, message = newMessage)
 	}
 
 	private fun saveAndResetCurrentTimer() {
@@ -100,13 +97,12 @@ open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolde
 	}
 
 	fun showTimer(): String {
-		if (inProgress()) return "Elapsed time: " + currentTimer.toString()
+		if (inProgress()) return currentTimer.toString()
 		else return "No current timer is running"
 	}
 
 	fun changeTimeMode(mode: TimeMode) {
-		currentTimer = Timer(mode, currentTimer.category, currentTimer.message,
-				currentTimer.startDateTime, currentTimer.stopDateTime)
+		currentTimer = currentTimer.copy(timeMode = mode)
 	}
 
 	fun sumAllCategories(): String {
