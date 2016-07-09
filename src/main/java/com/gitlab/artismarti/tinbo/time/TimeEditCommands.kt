@@ -6,11 +6,9 @@ import com.gitlab.artismarti.tinbo.common.EditableCommands
 import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
 import com.gitlab.artismarti.tinbo.orDefault
-import com.gitlab.artismarti.tinbo.orThrow
 import com.gitlab.artismarti.tinbo.utils.DateTimeFormatters
 import com.gitlab.artismarti.tinbo.utils.dateFormatter
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
@@ -46,11 +44,15 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 		return whileNotInEditMode {
 			val category = console.readLine("Enter a category: ").orDefault(TiNBo.config.getCategoryName())
 			val message = console.readLine("Enter a message: ")
-			val date = console.readLine("Enter a date (yyyy-mm-dd): ").orThrow()
-			val hours = console.readLine("Enter amount of spent hours: ").toLong()
-			val mins = console.readLine("Enter amount of spent minutes: ").toLong()
-			val seconds = console.readLine("Enter amount of spent seconds: ").toLong()
-			addTime(hours, mins, seconds, category, message, date)
+			val date = console.readLine("Enter a date (yyyy-mm-dd), leave empty for today: ")
+			try {
+				val hours = console.readLine("Enter amount of spent hours: ").toLong()
+				val mins = console.readLine("Enter amount of spent minutes: ").toLong()
+				val seconds = console.readLine("Enter amount of spent seconds: ").toLong()
+				addTime(hours, mins, seconds, category, message, date)
+			} catch(e: NumberFormatException) {
+				"Could not parse given time values. Use numbers only!"
+			}
 		}
 	}
 
@@ -78,12 +80,11 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 	            @CliOption(key = arrayOf("date"),
 			            help = "Specify a date for this time entry. Format: yyyy-MM-dd",
 			            specifiedDefaultValue = "",
-			            unspecifiedDefaultValue = "",
-			            mandatory = true) date: String): String {
+			            unspecifiedDefaultValue = "") date: String): String {
 
 		return whileNotInEditMode {
 			try {
-				val localDate = LocalDate.parse(date, dateFormatter)
+				val localDate = if (date.isEmpty()) LocalDate.now() else LocalDate.parse(date, dateFormatter)
 				executor.addEntry(TimeEntry(name, message, hours, mins, seconds, localDate))
 				SUCCESS_MESSAGE
 			} catch(e: DateTimeParseException) {

@@ -22,7 +22,7 @@ open class ModeCommands @Autowired constructor(val promptProvider: PromptProvide
 		return ModeAdvisor.isStartMode()
 	}
 
-	@CliCommand("time", "timer", help = "Switch to time mode where you can start timers and list previous timings.")
+	@CliCommand("time", help = "Switch to time mode where you can start timers and list previous timings.")
 	fun timerMode() {
 		ModeAdvisor.setTimerMode()
 		promptProvider.promptText = "time"
