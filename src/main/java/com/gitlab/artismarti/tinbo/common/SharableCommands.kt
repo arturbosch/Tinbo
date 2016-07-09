@@ -18,7 +18,7 @@ open class SharableCommands @Autowired constructor(val commandChooser: CommandCh
 
 	override val id: String = "edit"
 
-	@CliAvailabilityIndicator("add", "ls", "save", "cancel", "remove", "changeCategory", "data")
+	@CliAvailabilityIndicator("add", "ls", "save", "cancel", "remove", "changeCategory", "data", "last")
 	fun basicsAvailable(): Boolean {
 		return ModeAdvisor.isTimerMode() || ModeAdvisor.isNotesMode() || ModeAdvisor.isTasksMode()
 	}
@@ -56,6 +56,11 @@ open class SharableCommands @Autowired constructor(val commandChooser: CommandCh
 	           indexPattern: String): String {
 
 		return commandChooser.forCurrentMode().delete(indexPattern)
+	}
+
+	@CliCommand("last", help = "Deletes the last entry from storage.")
+	fun delete(): String {
+		return commandChooser.forCurrentMode().delete("-1")
 	}
 
 	@CliCommand("changeCategory", help = "Changes a categories name with the side effect that all entries of this category get updated.")

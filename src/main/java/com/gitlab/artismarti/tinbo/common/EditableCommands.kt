@@ -114,7 +114,7 @@ abstract class EditableCommands<E : Entry, D : Data<E>, T : DummyEntry>(val exec
 	override fun delete(indexPattern: String): String {
 		return withinListMode {
 			try {
-				val indices = parseIndices(indexPattern)
+				val indices = if(indexPattern == "-1") setOf(-1) else parseIndices(indexPattern)
 				isEditMode = true
 				executor.deleteEntries(indices)
 				"Successfully deleted task(s)."

@@ -10,7 +10,7 @@ import com.gitlab.artismarti.tinbo.withIndexedColumn
 /**
  * @author artur
  */
-abstract class AbstractExecutor<E : Entry, D : Data<E>, T : DummyEntry>(
+abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
 		private val dataHolder: AbstractDataHolder<E, D>) {
 
 	protected val csv = CSVTablePrinter()
@@ -60,12 +60,17 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, T : DummyEntry>(
 	protected abstract fun newEntry(index: Int, dummy: T): E
 
 	fun deleteEntries(indices: Set<Int>) {
-		entriesInMemory = entriesInMemory.filterIndexed {
-			index, entry ->
-			indices.contains(index).not()
+		entriesInMemory = when {
+			isSpecialCaseToDeleteLast(indices) -> entriesInMemory.dropLast(1)
+			else -> entriesInMemory.filterIndexed {
+				index, entry ->
+				indices.contains(index).not()
+			}
 		}
 		if (entriesInMemory.isEmpty()) printlnInfo("")
 	}
+
+	private fun isSpecialCaseToDeleteLast(indices: Set<Int>) = indices.size == 1 && indices.first() == -1
 
 	fun saveEntries(newName: String = "") {
 		var name = dataHolder.data.name
