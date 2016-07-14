@@ -21,7 +21,7 @@ abstract class AbstractPersister<E : Entry, D : Data<E>>(val SAVE_DIR_PATH: Path
 	}
 
 	/**
-	 * Override this function and call save from abstract persister.
+	 * Override this function and call load from abstract persister.
 	 */
 	abstract fun restore(name: String): D
 

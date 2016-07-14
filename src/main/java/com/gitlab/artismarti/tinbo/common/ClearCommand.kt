@@ -13,7 +13,7 @@ class ClearCommand : Command {
 
 	override val id: String = "share"
 
-	@CliCommand(value = *arrayOf("cls", "clear"), help = "Clears the console")
+	@CliCommand(value = *arrayOf("clear"), help = "Clears the console")
 	fun clear() {
 		AnsiConsole.out().print(ansi().eraseScreen().cursor(0, 0))
 	}

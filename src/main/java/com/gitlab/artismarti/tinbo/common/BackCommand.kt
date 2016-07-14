@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
 @Component
 class BackCommand @Autowired constructor(val promptProvider: PromptProvider) : Command {
 
-	override val id: String = "share"
+	override val id: String = "mode"
 
 	@CliAvailabilityIndicator("back")
 	fun noExitCommand(): Boolean {

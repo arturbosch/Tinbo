@@ -6,5 +6,7 @@ notes:
   last-used: Notes
 tasks:
   last-used: Tasks
+finance:
+  last-used: Finance
 defaults:
   category-name: Main

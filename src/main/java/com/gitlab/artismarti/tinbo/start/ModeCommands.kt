@@ -17,7 +17,7 @@ open class ModeCommands @Autowired constructor(val promptProvider: PromptProvide
 
 	override val id: String = "start"
 
-	@CliAvailabilityIndicator("time", "tasks", "notes")
+	@CliAvailabilityIndicator("time", "tasks", "notes", "finance")
 	fun onlyModeCommands(): Boolean {
 		return ModeAdvisor.isStartMode()
 	}
@@ -27,6 +27,13 @@ open class ModeCommands @Autowired constructor(val promptProvider: PromptProvide
 		ModeAdvisor.setTimerMode()
 		promptProvider.promptText = "time"
 		printlnInfo("Entering time mode...")
+	}
+
+	@CliCommand("finance", help = "Switch to finance mode where you can manage your finances.")
+	fun financeMode() {
+		ModeAdvisor.setFinanceMode()
+		promptProvider.promptText = "finance"
+		printlnInfo("Entering finance mode...")
 	}
 
 	@CliCommand("tasks", help = "Switch to tasks mode to write down tasks.")

@@ -33,10 +33,11 @@ class HelpCommand : Command, ApplicationContextAware {
 				.toList()
 
 		val currentModeCommands = when (ModeAdvisor.getMode()) {
-			Mode.START -> commands.filter { it.id == "start" || it.id == "help" }
-			Mode.TIMER -> commands.filter { it.id == "time" || it.id == "edit" || it.id == "share" }
-			Mode.NOTES -> commands.filter { it.id == "note" || it.id == "edit" || it.id == "share" }
-			Mode.TASKS -> commands.filter { it.id == "task" || it.id == "edit" || it.id == "share" }
+			Mode.START -> commands.filter { it.id == "start" || it.id == "help" || it.id == "share" }
+			Mode.TIMER -> commands.filter { it.id == "time" || it.id == "edit" || it.id == "share" || it.id == "mode" }
+			Mode.NOTES -> commands.filter { it.id == "note" || it.id == "edit" || it.id == "share" || it.id == "mode" }
+			Mode.TASKS -> commands.filter { it.id == "task" || it.id == "edit" || it.id == "share" || it.id == "mode" }
+			Mode.FINANCE -> commands.filter { it.id == "finance" || it.id == "edit" || it.id == "share" || it.id == "mode" }
 			else -> emptyList()
 		}
 

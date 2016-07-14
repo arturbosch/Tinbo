@@ -43,4 +43,16 @@ object ModeAdvisor {
 	fun isTasksMode(): Boolean {
 		return mode == Mode.TASKS
 	}
+
+	fun setFinanceMode() {
+		mode = Mode.FINANCE
+	}
+
+	fun isFinanceMode(): Boolean {
+		return mode == Mode.FINANCE
+	}
+
+	fun isModeWhereEditIsAllowed(): Boolean {
+		return isFinanceMode() || isNotesMode() || isTasksMode() || isTimerMode()
+	}
 }

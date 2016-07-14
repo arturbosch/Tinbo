@@ -14,13 +14,13 @@ import org.springframework.stereotype.Component
  */
 @Component
 open class SharableCommands @Autowired constructor(val commandChooser: CommandChooser,
-                                                   val consoleReader: ConsoleReader) : Command {
+												   val consoleReader: ConsoleReader) : Command {
 
 	override val id: String = "edit"
 
 	@CliAvailabilityIndicator("add", "ls", "save", "cancel", "remove", "changeCategory", "data", "last")
 	fun basicsAvailable(): Boolean {
-		return ModeAdvisor.isTimerMode() || ModeAdvisor.isNotesMode() || ModeAdvisor.isTasksMode()
+		return ModeAdvisor.isModeWhereEditIsAllowed()
 	}
 
 	@CliCommand("add", help = "Adds a new entry")
@@ -53,7 +53,7 @@ open class SharableCommands @Autowired constructor(val commandChooser: CommandCh
 	@CliCommand("remove", "delete", help = "Deletes entries from storage.")
 	fun delete(@CliOption(key = arrayOf("indices", "index", "i"), mandatory = true,
 			help = "Indices pattern, allowed are numbers with space in between or intervals like 1-5 e.g. '1 2 3-5 6'.")
-	           indexPattern: String): String {
+			   indexPattern: String): String {
 
 		return commandChooser.forCurrentMode().delete(indexPattern)
 	}
@@ -66,8 +66,8 @@ open class SharableCommands @Autowired constructor(val commandChooser: CommandCh
 	@CliCommand("changeCategory", help = "Changes a categories name with the side effect that all entries of this category get updated.")
 	fun changeCategory(@CliOption(key = arrayOf("old"), help = "Old category name.",
 			unspecifiedDefaultValue = "", specifiedDefaultValue = "") old: String,
-	                   @CliOption(key = arrayOf("new"), help = "Old category name.",
-			                   unspecifiedDefaultValue = "", specifiedDefaultValue = "") new: String): String {
+					   @CliOption(key = arrayOf("new"), help = "Old category name.",
+							   unspecifiedDefaultValue = "", specifiedDefaultValue = "") new: String): String {
 
 		val commandsForCurrentMode = commandChooser.forCurrentMode()
 		if (commandsForCurrentMode is NoteCommands || commandsForCurrentMode is NoopCommands) {
