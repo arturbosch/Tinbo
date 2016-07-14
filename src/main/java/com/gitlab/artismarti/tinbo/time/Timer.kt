@@ -4,7 +4,7 @@ import com.gitlab.artismarti.tinbo.orValue
 import com.gitlab.artismarti.tinbo.toTimeString
 import java.time.Duration
 import java.time.LocalDateTime
-import java.util.*
+import java.util.ArrayList
 
 /**
  * Domain model for timers. Specifies by a mode, start and end time.
@@ -14,12 +14,12 @@ import java.util.*
  * @author artur
  */
 class Timer(val timeMode: TimeMode = TimeMode.INVALID,
-            val category: String,
-            val message: String,
-            val startDateTime: LocalDateTime = LocalDateTime.now(),
-            val stopDateTime: LocalDateTime? = null,
-            var currentPauseTime: LocalDateTime? = null,
-            val pauseTimes: MutableList<Pair<LocalDateTime, Long>> = ArrayList()) {
+			val category: String,
+			val message: String,
+			val startDateTime: LocalDateTime = LocalDateTime.now(),
+			val stopDateTime: LocalDateTime? = null,
+			var currentPauseTime: LocalDateTime? = null,
+			val pauseTimes: MutableList<Pair<LocalDateTime, Long>> = ArrayList()) {
 
 	companion object {
 
@@ -42,8 +42,8 @@ class Timer(val timeMode: TimeMode = TimeMode.INVALID,
 	}
 
 	fun toTimeString(): String {
-		val (diffSecs, diffMins, diffHours) = getTimeTriple()
-		val (pauseSecs, pauseMins, pauseHours) = getPauseTriple()
+		val (diffHours, diffMins, diffSecs) = getTimeTriple()
+		val (pauseHours, pauseMins, pauseSecs) = getPauseTriple()
 
 		val timeString =
 				"Elapsed time: ${diffHours.toTimeString()}:${diffMins.toTimeString()}:${diffSecs.toTimeString()} (${category.orValue("Main")})"
@@ -62,7 +62,7 @@ class Timer(val timeMode: TimeMode = TimeMode.INVALID,
 		val pauseMinutes = pauseSeconds.div(60)
 		val diffMinutes = pauseMinutes.mod(60)
 		val pauseHours = pauseMinutes.div(60)
-		return Triple(diffSeconds, diffMinutes, pauseHours) + getTimeTriple(currentPauseTime ?: LocalDateTime.now())
+		return Triple(pauseHours, diffMinutes, diffSeconds) + getTimeTriple(currentPauseTime ?: LocalDateTime.now())
 	}
 
 	fun getTimeTriple(time: LocalDateTime = startDateTime): Triple<Long, Long, Long> {
@@ -70,7 +70,7 @@ class Timer(val timeMode: TimeMode = TimeMode.INVALID,
 		val diffSecs = Duration.between(time, now).seconds.mod(60)
 		val diffMins = Duration.between(time, now).toMinutes().mod(60)
 		val diffHours = Duration.between(time, now).toHours().mod(60)
-		return Triple(diffSecs, diffMins, diffHours)
+		return Triple(diffHours, diffMins, diffSecs)
 	}
 
 	fun isInvalid(): Boolean {
@@ -91,19 +91,19 @@ class Timer(val timeMode: TimeMode = TimeMode.INVALID,
 		return diffMins.mod(mins) == 0L && diffSecs == 0L && diffMins + diffSecs != 0L
 	}
 
-	override fun toString(): String{
+	override fun toString(): String {
 		return "Timer(timeMode=$timeMode, category='$category', message='$message', startDateTime=$startDateTime, stopDateTime=$stopDateTime, currentPauseTime=$currentPauseTime, pauseTimes=$pauseTimes)"
 	}
 
 }
 
 fun Timer.copy(timeMode: TimeMode? = null,
-               category: String? = null,
-               message: String? = null,
-               startDateTime: LocalDateTime? = null,
-               stopDateTime: LocalDateTime? = null,
-               currentPauseTime: LocalDateTime? = null,
-               pauseTimes: MutableList<Pair<LocalDateTime, Long>>? = null): Timer {
+			   category: String? = null,
+			   message: String? = null,
+			   startDateTime: LocalDateTime? = null,
+			   stopDateTime: LocalDateTime? = null,
+			   currentPauseTime: LocalDateTime? = null,
+			   pauseTimes: MutableList<Pair<LocalDateTime, Long>>? = null): Timer {
 	return Timer(timeMode ?: this.timeMode, category ?: this.category, message ?: this.message,
 			startDateTime ?: this.startDateTime, stopDateTime ?: this.stopDateTime,
 			currentPauseTime ?: this.currentPauseTime, pauseTimes ?: this.pauseTimes)
@@ -114,6 +114,21 @@ infix operator fun Triple<Long, Long, Long>.plus(other: Triple<Long, Long, Long>
 }
 
 infix operator fun Triple<Long, Long, Long>.minus(other: Triple<Long, Long, Long>): Triple<Long, Long, Long> {
-	return Triple(this.first - other.first, this.second - other.second, this.third - other.third)
+	var carry = 0
+	var secs = this.third - other.third
+	if (secs < 0) {
+		secs += 60
+		carry = 1
+	}
+	val mins = this.second - other.second - carry
+	if (secs < 0) {
+		secs += 60
+		carry = 1
+	} else {
+		carry = 0
+	}
+	val hours = this.first - other.first - carry
+	if (hours < 0) throw IllegalStateException("Somehow the time calculation went wrong ...")
+	return Triple(hours, mins, secs)
 }
 

@@ -18,7 +18,7 @@ import java.time.LocalDateTime
  */
 @Component
 open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolder,
-                                               val consoleReader: ConsoleReader) :
+											   val consoleReader: ConsoleReader) :
 		AbstractExecutor<TimeEntry, TimeData, DummyTime>(timeDataHolder) {
 
 	override val TABLE_HEADER: String
@@ -87,7 +87,7 @@ open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolde
 	}
 
 	private fun createNewTimeEntry() {
-		val (secs, mins, hours) = currentTimer.getTimeTriple() - currentTimer.getPauseTriple()
+		val (hours, mins, secs) = currentTimer.getTimeTriple() - currentTimer.getPauseTriple()
 		addEntry(TimeEntry(currentTimer.category, currentTimer.message, hours, mins, secs,
 				currentTimer.startDateTime.toLocalDate()))
 	}
