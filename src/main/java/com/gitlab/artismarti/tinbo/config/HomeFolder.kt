@@ -24,9 +24,11 @@ object HomeFolder {
 	}
 
 	fun getOrCreateDefaultConfig(): Path {
-		return checkAndCreate(homePath.resolve(CONFIG_NAME), { newFile ->
-			Files.copy(Paths.get(Resources.getResource("default-config.yaml").file), newFile)
-		})
+		val path = homePath.resolve(CONFIG_NAME)
+		if (Files.notExists(path)) {
+			Files.copy(Resources.getResource("default-config.yaml").openStream(), path)
+		}
+		return path
 	}
 
 	fun getFile(subPathInTinboDir: Path): Path {
