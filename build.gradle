@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.4.0.M1'
+		springBootVersion = '1.4.0.RC1'
 		springShellVersion = '1.2.0.RELEASE'
 		kotlinVersion = '1.0.2'
 
@@ -51,7 +51,7 @@ eclipse {
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '2.11'
+	gradleVersion = '2.14'
 }
 sourceSets {
 	main.java.srcDirs += 'src/main/kotlin'
