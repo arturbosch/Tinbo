@@ -4,10 +4,8 @@ import com.gitlab.artismarti.tinbo.TiNBo
 import com.gitlab.artismarti.tinbo.common.AbstractExecutor
 import com.gitlab.artismarti.tinbo.config.Notification
 import com.gitlab.artismarti.tinbo.orValue
-import com.gitlab.artismarti.tinbo.plusElementAtBeginning
 import com.gitlab.artismarti.tinbo.utils.printInfo
 import com.gitlab.artismarti.tinbo.utils.printlnInfo
-import com.gitlab.artismarti.tinbo.withIndexedColumn
 import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -23,6 +21,8 @@ open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolde
 
 	override val TABLE_HEADER: String
 		get() = "No.;Category;Date;HH:MM:SS;Notice"
+
+	private val SUMMARY_HEADER = "No.;Category;Spent"
 
 	override fun newEntry(index: Int, dummy: DummyTime): TimeEntry {
 		val realTime = entriesInMemory[index]
@@ -107,20 +107,12 @@ open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolde
 
 	fun sumAllCategories(): String {
 		val summaries = timeDataHolder.createSummaries()
-		return tableAsString(summaries)
+		return tableAsString(summaries, SUMMARY_HEADER)
 	}
 
-	private fun tableAsString(summaries: List<String>): String {
-		return csv.asTable(
-				summaries.withIndexedColumn()
-						.plusElementAtBeginning("Nr.;Category;Spent")
-		).joinToString(separator = "\n")
-	}
-
-	fun sumForCategories(categories: String): String {
-		val filters = categories.split(Regex("[,;. ]+")).map { it.trim().toLowerCase() }
+	fun sumForCategories(filters: List<String>): String {
 		val summaries = timeDataHolder.createFilteredSummaries(filters)
-		return tableAsString(summaries)
+		return tableAsString(summaries, SUMMARY_HEADER)
 	}
 
 	fun pauseTimer() {

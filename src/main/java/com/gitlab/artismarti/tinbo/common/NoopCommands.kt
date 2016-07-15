@@ -6,7 +6,9 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-open class NoopCommands : Editable {
+open class NoopCommands(override val id: String = "noop") : Editable, Summarizable, Command {
+
+	override fun sum(categories: List<String>): String = ""
 
 	override fun add(): String = ""
 	override fun list(categoryName: String): String = ""

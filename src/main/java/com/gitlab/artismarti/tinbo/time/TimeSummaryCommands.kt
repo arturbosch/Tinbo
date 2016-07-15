@@ -1,32 +1,19 @@
 package com.gitlab.artismarti.tinbo.time
 
 import com.gitlab.artismarti.tinbo.common.Command
-import com.gitlab.artismarti.tinbo.config.ModeAdvisor
+import com.gitlab.artismarti.tinbo.common.Summarizable
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.shell.core.annotation.CliAvailabilityIndicator
-import org.springframework.shell.core.annotation.CliCommand
-import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
 
 /**
  * @author artur
  */
 @Component
-open class TimeSummaryCommands @Autowired constructor(val executor: TimeExecutor) : Command {
+open class TimeSummaryCommands @Autowired constructor(val executor: TimeExecutor) : Command, Summarizable {
 
 	override val id: String = "time"
 
-	@CliAvailabilityIndicator("sum")
-	fun isAvailable(): Boolean {
-		return ModeAdvisor.isTimerMode()
-	}
-
-	@CliCommand(value = "sum", help = "Sums up times of all or specified categories.")
-	fun sumCategories(@CliOption(key = arrayOf("categories", "cat", "c"),
-			help = "Specify categories to show sum for. Default: for all.",
-			unspecifiedDefaultValue = "",
-			specifiedDefaultValue = "") categories: String): String {
-
+	override fun sum(categories: List<String>): String {
 		if (categories.isEmpty()) {
 			return executor.sumAllCategories()
 		} else {

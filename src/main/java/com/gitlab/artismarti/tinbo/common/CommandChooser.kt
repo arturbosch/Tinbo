@@ -6,6 +6,7 @@ import com.gitlab.artismarti.tinbo.finance.FinanceCommands
 import com.gitlab.artismarti.tinbo.notes.NoteCommands
 import com.gitlab.artismarti.tinbo.tasks.TaskCommands
 import com.gitlab.artismarti.tinbo.time.TimeEditCommands
+import com.gitlab.artismarti.tinbo.time.TimeSummaryCommands
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component
 @Component
 class CommandChooser @Autowired constructor(
 		val timeEditCommands: TimeEditCommands,
+		val timeSummaryCommands: TimeSummaryCommands,
 		val noteCommands: NoteCommands,
 		val taskCommands: TaskCommands,
 		val financeCommands: FinanceCommands,
@@ -25,6 +27,14 @@ class CommandChooser @Autowired constructor(
 			Mode.NOTES -> noteCommands
 			Mode.TASKS -> taskCommands
 			Mode.TIMER -> timeEditCommands
+			Mode.FINANCE -> financeCommands
+			else -> noopCommands
+		}
+	}
+
+	fun forSummarizableMode(): Summarizable {
+		return when (ModeAdvisor.getMode()) {
+			Mode.TIMER -> timeSummaryCommands
 			Mode.FINANCE -> financeCommands
 			else -> noopCommands
 		}

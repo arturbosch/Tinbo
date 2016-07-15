@@ -9,6 +9,7 @@ import com.gitlab.artismarti.tinbo.common.Data
 import com.gitlab.artismarti.tinbo.common.DummyEntry
 import com.gitlab.artismarti.tinbo.common.EditableCommands
 import com.gitlab.artismarti.tinbo.common.Entry
+import com.gitlab.artismarti.tinbo.common.Summarizable
 import com.gitlab.artismarti.tinbo.config.CATEGORY_NAME_DEFAULT
 import com.gitlab.artismarti.tinbo.config.ConfigDefaults
 import com.gitlab.artismarti.tinbo.config.Defaults
@@ -37,8 +38,8 @@ import java.time.Month
  * @author artur
  */
 @Component
-class FinanceCommands @Autowired constructor(executor: FinanceExecutor) :
-		EditableCommands<FinanceEntry, FinanceData, DummyFinance>(executor), Command {
+class FinanceCommands @Autowired constructor(val financeExecutor: FinanceExecutor) :
+		EditableCommands<FinanceEntry, FinanceData, DummyFinance>(financeExecutor), Command, Summarizable {
 
 	override val id: String = "finance"
 	private val SUCCESS_MESSAGE = "Successfully added a finance entry."
@@ -61,6 +62,10 @@ class FinanceCommands @Autowired constructor(executor: FinanceExecutor) :
 		printlnInfo(name)
 	}
 
+	override fun sum(categories: List<String>): String {
+		return financeExecutor.sumCategories(categories)
+	}
+
 	override fun add(): String {
 		val month = Month.of(console.readLine("Enter a month as number from 1-12 (empty if this month): ")
 				.toIntOrDefault { LocalDate.now().month.value })
@@ -78,15 +83,44 @@ class FinanceCommands @Autowired constructor(executor: FinanceExecutor) :
 }
 
 @Component
-class FinanceExecutor @Autowired constructor(financeDataHolder: FinanceDataHolder) :
-		AbstractExecutor<FinanceEntry, FinanceData, DummyFinance>(financeDataHolder) {
+class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) :
+		AbstractExecutor<FinanceEntry, FinanceData, DummyFinance>(dataHolder) {
 
 	override val TABLE_HEADER: String
 		get() = "No.;Month;Category;Notice;Spend;Time"
 
+	private val SUMMARY_HEADER = "No.;Category;Spent"
+
 	override fun newEntry(index: Int, dummy: DummyFinance): FinanceEntry {
 		val entry = entriesInMemory[index]
 		return entry.copy(dummy.month, dummy.category, dummy.message, dummy.moneyValue, dummy.dateTime)
+	}
+
+	fun sumCategories(categories: List<String>): String {
+		val currentMonth = LocalDate.now().month
+		printlnInfo("Summary for current month: $currentMonth")
+		val summaries =
+				if (categories.isNotEmpty()) {
+					val sequence = dataHolder.getEntries().asSequence()
+							.filter { it.month.equals(currentMonth) }
+							.filter { categories.contains(it.category) }
+					mapToFilteredString(sequence)
+				} else {
+					val sequence = dataHolder.getEntries().asSequence()
+							.filter { it.month.equals(currentMonth) }
+					mapToFilteredString(sequence)
+				}
+		return tableAsString(summaries, SUMMARY_HEADER)
+	}
+
+	private fun mapToFilteredString(sequence: Sequence<FinanceEntry>): List<String> {
+		return sequence
+				.groupBy { it.category }
+				.mapValues {
+					it.value.map { it.moneyValue }
+							.reduce { money, money2 -> money.plus(money2) }
+				}
+				.map { "${it.key};${it.value.toString()}" }
 	}
 
 }
@@ -104,7 +138,7 @@ class FinanceDataHolder @Autowired constructor(persister: FinancePersister) :
 	}
 
 	override fun getEntriesFilteredBy(filter: String): List<FinanceEntry> {
-		return getEntries().filter { it.category == filter }
+		return getEntries().filter { it.category.equals(filter, ignoreCase = true) }
 	}
 
 	override fun changeCategory(oldName: String, newName: String) {

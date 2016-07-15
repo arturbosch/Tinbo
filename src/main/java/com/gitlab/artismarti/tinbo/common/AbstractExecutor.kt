@@ -99,5 +99,11 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
 		return dataHolder.getDataNames()
 	}
 
+	fun tableAsString(summaries: List<String>, header: String): String {
+		return csv.asTable(
+				summaries.withIndexedColumn()
+						.plusElementAtBeginning(header)
+		).joinToString(separator = "\n")
+	}
 }
 
