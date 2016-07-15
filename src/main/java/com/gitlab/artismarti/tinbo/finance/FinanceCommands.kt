@@ -56,12 +56,6 @@ class FinanceCommands @Autowired constructor(val financeExecutor: FinanceExecuto
 		executor.loadData(name)
 	}
 
-	@CliCommand("test", help = "...")
-	fun test(@CliOption(key = arrayOf("", "test"), mandatory = true,
-			specifiedDefaultValue = "", unspecifiedDefaultValue = "") name: String) {
-		printlnInfo(name)
-	}
-
 	override fun sum(categories: List<String>): String {
 		return financeExecutor.sumCategories(categories)
 	}
