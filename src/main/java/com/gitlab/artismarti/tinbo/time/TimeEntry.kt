@@ -22,8 +22,7 @@ class TimeEntry(var category: String = "Main",
 	}
 
 	override fun compareTo(other: Entry): Int {
-		if (other !is TimeEntry)
-			return -1
+		if (other !is TimeEntry) return -1
 		return this.date.compareTo(other.date)
 	}
 }

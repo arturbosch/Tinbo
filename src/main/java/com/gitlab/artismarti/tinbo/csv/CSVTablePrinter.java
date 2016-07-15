@@ -40,11 +40,16 @@ public class CSVTablePrinter {
 	}
 
 	private String[] getValuesFromList(int value, List<List<String>> columnValues) {
-		String[] values = new String[columnValues.size()];
-		for (int i = 0; i < columnValues.size(); i++) {
-			values[i] = columnValues.get(i).get(value);
+		try {
+			String[] values = new String[columnValues.size()];
+			for (int i = 0; i < columnValues.size(); i++) {
+				values[i] = columnValues.get(i).get(value);
+			}
+			return values;
+		} catch (Exception e) {
+			System.out.println(columnValues);
+			throw e;
 		}
-		return values;
 	}
 
 	private String formatHeaderSeparator(int[] columnSizes) {

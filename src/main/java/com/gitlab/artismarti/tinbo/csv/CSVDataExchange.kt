@@ -1,10 +1,12 @@
 package com.gitlab.artismarti.tinbo.csv
 
 import com.gitlab.artismarti.tinbo.common.Entry
+import org.joda.money.Money
 import java.lang.reflect.Field
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.*
+import java.time.Month
+import java.util.ArrayList
 
 /**
  * @author artur
@@ -54,6 +56,8 @@ class CSVDataExchange {
 			when (fields[index].type) {
 				Int::class.java -> data.toInt()
 				Long::class.java -> data.toLong()
+				Month::class.java -> Month.valueOf(data)
+				Money::class.java -> Money.parse(data)
 				Boolean::class.java -> data.toBoolean()
 				Double::class.java -> data.toDouble()
 				Float::class.java -> data.toFloat()

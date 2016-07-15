@@ -1,5 +1,7 @@
 package com.gitlab.artismarti.tinbo.config
 
+import com.gitlab.artismarti.tinbo.TiNBo
+
 /**
  * @author artur
  */
@@ -16,14 +18,17 @@ object Defaults {
 
 object ConfigDefaults {
 
-	const  val NOTES = "notes"
-	const  val TASKS = "tasks"
-	const  val TIMERS = "timers"
-	const  val FINANCE = "finance"
-	const  val LAST_USED = "last-used"
-	const  val NOTIFICATIONS = "notifications"
-	const  val TIME_INTERVAL = "interval"
-	const  val MAIN_CATEGORY_NAME = "category-name"
-	const  val DEFAULTS = "defaults"
+	const val NOTES = "notes"
+	const val TASKS = "tasks"
+	const val TIMERS = "timers"
+	const val FINANCE = "finance"
+	const val LAST_USED = "last-used"
+	const val NOTIFICATIONS = "notifications"
+	const val TIME_INTERVAL = "interval"
+	const val MAIN_CATEGORY_NAME = "category-name"
+	const val DEFAULTS = "defaults"
+	const val CURRENCY = "EUR"
 
 }
+
+val CATEGORY_NAME_DEFAULT = TiNBo.config.getCategoryName()

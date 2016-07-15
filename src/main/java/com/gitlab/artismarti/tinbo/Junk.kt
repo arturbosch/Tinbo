@@ -38,6 +38,14 @@ inline fun String.toLongOrDefault(long: () -> Long): Long {
 	}
 }
 
+inline fun String.toIntOrDefault(int: () -> Int): Int {
+	return try {
+		this.toInt()
+	} catch (e: NumberFormatException) {
+		int.invoke()
+	}
+}
+
 fun <E> List<E>.plusElementAtBeginning(element: E): List<E> {
 	val result = ArrayList<E>(size + 1)
 	result.add(element)
