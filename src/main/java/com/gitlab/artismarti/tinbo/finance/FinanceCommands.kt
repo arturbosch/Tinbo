@@ -43,9 +43,16 @@ class FinanceCommands @Autowired constructor(executor: FinanceExecutor) :
 	override val id: String = "finance"
 	private val SUCCESS_MESSAGE = "Successfully added a finance entry."
 
-	@CliAvailabilityIndicator("test")
+	@CliAvailabilityIndicator("test", "loadFinance")
 	fun isAvailable(): Boolean {
 		return ModeAdvisor.isFinanceMode()
+	}
+
+	@CliCommand("loadFinance", help = "Loads/Creates an other data set. Finance data sets are stored under ~/tinbo/finance/*.")
+	fun loadTasks(@CliOption(key = arrayOf("", "name"), mandatory = true,
+			specifiedDefaultValue = Defaults.FINANCE_NAME,
+			unspecifiedDefaultValue = Defaults.FINANCE_NAME) name: String) {
+		executor.loadData(name)
 	}
 
 	@CliCommand("test", help = "...")
