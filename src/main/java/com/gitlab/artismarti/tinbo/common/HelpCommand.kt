@@ -21,7 +21,8 @@ class HelpCommand : Command, ApplicationContextAware {
 
 	@CliCommand(value = "help", help = "List all commands usage")
 	fun obtainHelp(
-			@CliOption(key = arrayOf("", "command"), optionContext = "disable-string-converter availableCommands", help = "Command name to provide help for")
+			@CliOption(key = arrayOf("", "command"), optionContext = "disable-string-converter availableCommands",
+					help = "Command name to provide help for")
 			buffer: String?): String {
 
 		val shell = ctx.getBean("shell", JLineShellComponent::class.java)
@@ -33,11 +34,36 @@ class HelpCommand : Command, ApplicationContextAware {
 				.toList()
 
 		val currentModeCommands = when (ModeAdvisor.getMode()) {
-			Mode.START -> commands.filter { it.id == "start" || it.id == "help" || it.id == "share" }
-			Mode.TIMER -> commands.filter { it.id == "time" || it.id == "edit" || it.id == "share" || it.id == "mode" }
-			Mode.NOTES -> commands.filter { it.id == "note" || it.id == "edit" || it.id == "share" || it.id == "mode" }
-			Mode.TASKS -> commands.filter { it.id == "task" || it.id == "edit" || it.id == "share" || it.id == "mode" }
-			Mode.FINANCE -> commands.filter { it.id == "finance" || it.id == "edit" || it.id == "share" || it.id == "mode" }
+			Mode.START -> commands.filter {
+				when (it.id) {
+					"start", "help", "share" -> true
+					else -> false
+				}
+			}
+			Mode.TIMER -> commands.filter {
+				when (it.id) {
+					"time", "edit", "share", "mode", "sum" -> true
+					else -> false
+				}
+			}
+			Mode.NOTES -> commands.filter {
+				when (it.id) {
+					"note", "edit", "share", "mode" -> true
+					else -> false
+				}
+			}
+			Mode.TASKS -> commands.filter {
+				when (it.id) {
+					"task", "edit", "share", "mode" -> true
+					else -> false
+				}
+			}
+			Mode.FINANCE -> commands.filter {
+				when (it.id) {
+					"finance", "edit", "share", "mode", "sum" -> true
+					else -> false
+				}
+			}
 			else -> emptyList()
 		}
 
