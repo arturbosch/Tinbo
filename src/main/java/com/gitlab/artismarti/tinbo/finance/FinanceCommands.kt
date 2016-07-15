@@ -56,6 +56,12 @@ class FinanceCommands @Autowired constructor(val financeExecutor: FinanceExecuto
 		executor.loadData(name)
 	}
 
+	@CliCommand("year", "yearSummary", help = "Sums up the year by providing expenditure per month.")
+	fun yearSummary(@CliOption(key = arrayOf("last"), mandatory = false,
+			specifiedDefaultValue = "true", unspecifiedDefaultValue = "false") lastYear: Boolean): String {
+		return financeExecutor.yearSummary(lastYear)
+	}
+
 	override fun sum(categories: List<String>): String {
 		return financeExecutor.sumCategories(categories)
 	}
@@ -84,6 +90,7 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) 
 		get() = "No.;Month;Category;Notice;Spend;Time"
 
 	private val SUMMARY_HEADER = "No.;Category;Spent"
+	private val YEAR_SUMMARY_HEADER = "No.;Month;Spent"
 
 	override fun newEntry(index: Int, dummy: DummyFinance): FinanceEntry {
 		val entry = entriesInMemory[index]
@@ -95,26 +102,32 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) 
 		printlnInfo("Summary for current month: $currentMonth")
 		val summaries =
 				if (categories.isNotEmpty()) {
-					val sequence = dataHolder.getEntries().asSequence()
+					dataHolder.getEntries().asSequence()
 							.filter { it.month.equals(currentMonth) }
 							.filter { categories.contains(it.category) }
-					mapToFilteredString(sequence)
+							.toSummaryStringList { it.category }
 				} else {
-					val sequence = dataHolder.getEntries().asSequence()
+					dataHolder.getEntries().asSequence()
 							.filter { it.month.equals(currentMonth) }
-					mapToFilteredString(sequence)
+							.toSummaryStringList { it.category }
 				}
 		return tableAsString(summaries, SUMMARY_HEADER)
 	}
 
-	private fun mapToFilteredString(sequence: Sequence<FinanceEntry>): List<String> {
-		return sequence
-				.groupBy { it.category }
+	inline fun <T : FinanceEntry, K> Sequence<T>.toSummaryStringList(keySelector: (T) -> K): List<String> {
+		return this.groupBy { keySelector.invoke(it) }
 				.mapValues {
 					it.value.map { it.moneyValue }
 							.reduce { money, money2 -> money.plus(money2) }
 				}
 				.map { "${it.key};${it.value.toString()}" }
+	}
+
+	fun yearSummary(lastYear: Boolean): String {
+		val date = if (lastYear) LocalDate.now().minusYears(1) else LocalDate.now()
+		printlnInfo("Summary for year: ${date.year}")
+		val entries = dataHolder.getEntries().asSequence().filter { it.dateTime.toLocalDate().equals(date) }
+		return tableAsString(entries.toSummaryStringList { it.month }, YEAR_SUMMARY_HEADER)
 	}
 
 }
@@ -166,11 +179,11 @@ class FinanceData(name: String = Defaults.NOTES_NAME,
 				  entries: List<FinanceEntry> = listOf()) : Data<FinanceEntry>(name, entries) {
 }
 
-class FinanceEntry(val month: Month = Month.JANUARY,
-				   val category: String = CATEGORY_NAME_DEFAULT,
-				   val message: String = "",
-				   val moneyValue: Money = Money.of(currencyUnit, 0.0),
-				   val dateTime: LocalDateTime = LocalDateTime.now()) : Entry() {
+open class FinanceEntry(val month: Month = Month.JANUARY,
+						val category: String = CATEGORY_NAME_DEFAULT,
+						val message: String = "",
+						val moneyValue: Money = Money.of(currencyUnit, 0.0),
+						val dateTime: LocalDateTime = LocalDateTime.now()) : Entry() {
 
 	override fun compareTo(other: Entry): Int {
 		if (other !is FinanceEntry) return 1
