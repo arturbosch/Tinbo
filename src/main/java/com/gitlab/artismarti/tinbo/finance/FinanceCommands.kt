@@ -29,6 +29,7 @@ import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
+import java.math.RoundingMode
 import java.nio.file.Path
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -71,6 +72,36 @@ class FinanceCommands @Autowired constructor(val financeExecutor: FinanceExecuto
 		return financeExecutor.yearSummary(date)
 	}
 
+	@CliCommand("mean", help = "Provides the mean expenditure per month for current or specified year.")
+	fun means(@CliOption(key = arrayOf("last"), mandatory = false,
+			specifiedDefaultValue = "true", unspecifiedDefaultValue = "false") lastYear: Boolean,
+			  @CliOption(key = arrayOf(""), mandatory = false,
+					  specifiedDefaultValue = "-1", unspecifiedDefaultValue = "-1") year: Int): String {
+
+		val now = LocalDate.now()
+		if (year != -1 && (year < 2000 || year > now.year + 20)) {
+			return "Entered date must be not too far in the past (> 2000) or in the future ( < now + 20)!"
+		}
+
+		val date = if (lastYear) now.minusYears(1) else if (year == -1) now else LocalDate.of(year, 1, 1)
+		return financeExecutor.yearSummaryMean(date)
+	}
+
+	@CliCommand("deviation", help = "Provides the expenditure deviation per month for current or specified year.")
+	fun deviation(@CliOption(key = arrayOf("last"), mandatory = false,
+			specifiedDefaultValue = "true", unspecifiedDefaultValue = "false") lastYear: Boolean,
+				  @CliOption(key = arrayOf(""), mandatory = false,
+						  specifiedDefaultValue = "-1", unspecifiedDefaultValue = "-1") year: Int): String {
+
+		val now = LocalDate.now()
+		if (year != -1 && (year < 2000 || year > now.year + 20)) {
+			return "Entered date must be not too far in the past (> 2000) or in the future ( < now + 20)!"
+		}
+
+		val date = if (lastYear) now.minusYears(1) else if (year == -1) now else LocalDate.of(year, 1, 1)
+		return financeExecutor.yearSummaryDeviation(date)
+	}
+
 	override fun sum(categories: List<String>): String {
 		return financeExecutor.sumCategories(categories)
 	}
@@ -98,9 +129,6 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) 
 	override val TABLE_HEADER: String
 		get() = "No.;Month;Category;Notice;Spend;Time"
 
-	private val SUMMARY_HEADER = "No.;Category;Spent"
-	private val YEAR_SUMMARY_HEADER = "No.;Month;Spent"
-
 	override fun newEntry(index: Int, dummy: DummyFinance): FinanceEntry {
 		val entry = entriesInMemory[index]
 		return entry.copy(dummy.month, dummy.category, dummy.message, dummy.moneyValue, dummy.dateTime)
@@ -114,20 +142,36 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) 
 					dataHolder.getEntries().asSequence()
 							.filter { it.month.equals(currentMonth) }
 							.filter { categories.contains(it.category) }
-							.toSummaryStringList { it.category }
+							.toSummaryStringList()
 				} else {
 					dataHolder.getEntries().asSequence()
 							.filter { it.month.equals(currentMonth) }
-							.toSummaryStringList { it.category }
+							.toSummaryStringList()
 				}
-		return tableAsString(summaries, SUMMARY_HEADER)
+		return tableAsString(summaries, "No.;Category;Spent")
 	}
 
-	inline fun <K> Sequence<FinanceEntry>.toSummaryStringList(keySelector: (FinanceEntry) -> K): List<String> {
+	fun Sequence<FinanceEntry>.toSummaryStringList(): List<String> {
+		return this.toSummaryStringList({ it.category }, {
+			it.value.map { it.moneyValue }
+					.reduce { money, money2 -> money.plus(money2) }
+		})
+	}
+
+	fun <K> Sequence<FinanceEntry>.toSummaryStringList(
+			keySelector: (FinanceEntry) -> K): List<String> {
+		return this.toSummaryStringList(keySelector, {
+			it.value.map { it.moneyValue }
+					.reduce { money, money2 -> money.plus(money2) }
+		})
+	}
+
+	inline fun <K, V> Sequence<FinanceEntry>.toSummaryStringList(
+			keySelector: (FinanceEntry) -> K,
+			valueTransformation: (Map.Entry<K, List<FinanceEntry>>) -> V): List<String> {
 		return this.groupBy { keySelector.invoke(it) }
 				.mapValues {
-					it.value.map { it.moneyValue }
-							.reduce { money, money2 -> money.plus(money2) }
+					valueTransformation.invoke(it)
 				}
 				.map { "${it.key};${it.value.toString()}" }
 	}
@@ -135,9 +179,50 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) 
 	fun yearSummary(date: LocalDate): String {
 		printlnInfo("Summary for year: ${date.year}")
 		val entries = dataHolder.getEntries().asSequence()
-				.filter { it.dateTime.toLocalDate().year.equals(date.year) }
-		return tableAsString(entries.toSummaryStringList { it.month }, YEAR_SUMMARY_HEADER)
+				.filter { byYear(date, it) }
+		return tableAsString(entries.toSummaryStringList { it.month }, "No.;Month;Spent")
 	}
+
+	fun yearSummaryMean(date: LocalDate): String {
+		printlnInfo("Mean expenditure per month for year: ${date.year}")
+		val entries = dataHolder.getEntries().asSequence()
+				.filter { byYear(date, it) }
+				.toSummaryStringList({ it.category }, {
+					val value = it.value
+					val times = value.groupBy { it.month }.keys.size
+					val money = value.map { it.moneyValue }
+							.reduce { money, money2 -> money.plus(money2) }
+					money.dividedBy(times.toLong(), RoundingMode.DOWN)
+				})
+
+		return tableAsString(entries, "No.;Category;Mean")
+	}
+
+	fun yearSummaryDeviation(date: LocalDate): String {
+		printlnInfo("Deviation expenditure per month for year: ${date.year}")
+		val entries = dataHolder.getEntries().asSequence()
+				.filter { byYear(date, it) }
+				.toSummaryStringList({ it.category }, {
+					val monthToFinances = it.value.groupBy { it.month }
+					val times = monthToFinances.keys.size
+					val monthToMoney = monthToFinances.mapValues {
+						it.value.map { it.moneyValue }
+								.reduce { money, money2 -> money.plus(money2) }
+					}
+
+					val mean = monthToMoney.values.reduce { money, money2 -> money.plus(money2) }
+							.dividedBy(times.toLong(), RoundingMode.DOWN)
+
+					val deviation = Math.sqrt(monthToMoney.values.map { Math.pow((it.minus(mean)).amount.toDouble(), 2.0) }
+							.sum()
+							.div(times))
+					Money.parse(currencyUnit.code + " " + String.format("%.2f", deviation))
+				})
+
+		return tableAsString(entries, "No.;Category;Deviation")
+	}
+
+	private fun byYear(date: LocalDate, it: FinanceEntry) = it.dateTime.toLocalDate().year.equals(date.year)
 
 }
 
