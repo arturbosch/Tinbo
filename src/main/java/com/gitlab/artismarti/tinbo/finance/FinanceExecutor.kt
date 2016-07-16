@@ -64,7 +64,7 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) 
 	}
 
 	fun yearSummaryDeviation(date: LocalDate): String {
-		printlnInfo("Deviation expenditure per month for year: ${date.year}")
+		printlnInfo("Expenditure deviation per month for year: ${date.year}")
 		val entries = dataHolder.getEntries().asSequence()
 				.filter { byYear(date, it) }
 				.toSummaryStringList({ it.category }, {
