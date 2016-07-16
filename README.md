@@ -25,6 +25,12 @@ a shell like experience.
 - add, edit, delete, list notes/tasks
 - filter tasks, specify categories, descriptions, start/end times and locations
 
+### Finance mode
+
+- add, delete, list expenditure per month and categories
+- year for year summaries
+- sum, mean, deviation commands
+
 # Todos
 
 ### General
@@ -48,29 +54,34 @@ a shell like experience.
 
 ### Finances
 
-- Support incomes and expenditure
+- <s>Support expenditure</s>
+- <s>Year summaries</s>
 
 # Changelog
-### 1.0M1
+### 1.0.M1
 
 - initial release
 - list, add, edit, delete notes/tasks
 - start/stop timers
 - csv data storage
 
-### 1.0M2
+### 1.0.M2
 
 #### New features
 - sum time entries by categories
 - allow altering timers after stopping them via console input
 - plus nine more enhancements/fixes, see https://gitlab.com/ArtiSmarti/Tinbo/milestones/2
 
-### 1.0M3
+### 1.0.M3
 
 - defaults and configurations
 - startup performance
 
-### 1.0M4
+### 1.0.M4
 
 - divided help
 - pause timers
+
+### 1.0.M5
+
+- support expenditure and various summaries
