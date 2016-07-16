@@ -18,7 +18,7 @@ open class BannerProvider : DefaultBannerProvider() {
 	}
 
 	override fun getVersion(): String {
-		return "TiNBo v0.1"
+		return "TiNBo v1.0"
 	}
 
 	override fun getWelcomeMessage(): String {
