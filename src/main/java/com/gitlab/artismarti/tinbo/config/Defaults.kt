@@ -27,7 +27,7 @@ object ConfigDefaults {
 	const val TIME_INTERVAL = "interval"
 	const val MAIN_CATEGORY_NAME = "category-name"
 	const val DEFAULTS = "defaults"
-	const val CURRENCY = "EUR"
+	const val CURRENCY = "currency"
 
 }
 

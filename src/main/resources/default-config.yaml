@@ -10,3 +10,4 @@ finance:
   last-used: Finance
 defaults:
   category-name: Main
+  currency: EUR
