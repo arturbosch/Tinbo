@@ -57,6 +57,15 @@ a shell like experience.
 - <s>Support expenditure</s>
 - <s>Year summaries</s>
 
+### PSP-Tasks and Earned-Value-Tracking
+
+- support task and time management part of psp
+
+### Plugins
+
+- Implement basic support for plugins
+- Allow plugins as kotlin/groovy commands in the tinbo directory 
+
 # Changelog
 ### 1.0.M1
 
