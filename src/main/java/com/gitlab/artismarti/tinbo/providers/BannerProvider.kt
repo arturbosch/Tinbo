@@ -14,7 +14,8 @@ import org.springframework.stereotype.Component
 open class BannerProvider : DefaultBannerProvider() {
 
 	override fun getBanner(): String {
-		return Resources.readLines(Resources.getResource("banner.txt"), Charsets.UTF_8).joinToString(separator = OsUtils.LINE_SEPARATOR)
+		return Resources.readLines(Resources.getResource("banner.txt"),
+				Charsets.UTF_8).joinToString(separator = OsUtils.LINE_SEPARATOR)
 	}
 
 	override fun getVersion(): String {
