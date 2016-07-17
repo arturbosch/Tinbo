@@ -120,15 +120,15 @@ infix operator fun Triple<Long, Long, Long>.minus(other: Triple<Long, Long, Long
 		secs += 60
 		carry = 1
 	}
-	val mins = this.second - other.second - carry
-	if (secs < 0) {
-		secs += 60
+	var mins = this.second - other.second - carry
+	if (mins < 0) {
+		mins += 60
 		carry = 1
 	} else {
 		carry = 0
 	}
 	val hours = this.first - other.first - carry
-	if (hours < 0) throw IllegalStateException("Somehow the time calculation went wrong ...")
+	if (hours < 0) throw IllegalStateException("Somehow the time calculation went wrong ... (times: $this and $other)")
 	return Triple(hours, mins, secs)
 }
 
