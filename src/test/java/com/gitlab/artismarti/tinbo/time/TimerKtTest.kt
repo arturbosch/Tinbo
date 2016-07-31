@@ -1,6 +1,7 @@
 package com.gitlab.artismarti.tinbo.time
 
 import org.junit.Test
+import java.time.LocalDateTime
 
 /**
  * @author artur
@@ -43,6 +44,16 @@ class TimerKtTest {
 		val triple2 = Triple(5L, 42L, 59L)
 
 		triple minus triple2
+	}
+
+	@Test
+	fun pauseStringOfTimerMustBeInValidTimeFormat() {
+		val timer = Timer(TimeMode.DEFAULT, "Test", "", startDateTime = LocalDateTime.now().minusMinutes(188),
+				currentPauseTime = LocalDateTime.now().minusHours(1).minusMinutes(58).minusSeconds(88))
+
+		val timeString = timer.toTimeString()
+		assert(timeString.substring(timeString.length - 9).split(":")
+				.filter { it.trim().toLong().div(60) == 0L }.size == 3)
 	}
 
 }

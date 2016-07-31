@@ -111,7 +111,14 @@ fun Timer.copy(timeMode: TimeMode? = null,
 }
 
 infix operator fun Triple<Long, Long, Long>.plus(other: Triple<Long, Long, Long>): Triple<Long, Long, Long> {
-	return Triple(this.first + other.first, this.second + other.second, this.third + other.third)
+	val seconds = this.third + other.third
+	val realSeconds = seconds.mod(60)
+	val carryMinutes = seconds.div(60)
+	val minutes = this.second + other.second + carryMinutes
+	val realMinutes = minutes.mod(60)
+	val carryHours = minutes.div(60)
+	val hours = this.first + other.first + carryHours
+	return Triple(hours, realMinutes, realSeconds)
 }
 
 infix operator fun Triple<Long, Long, Long>.minus(other: Triple<Long, Long, Long>): Triple<Long, Long, Long> {
