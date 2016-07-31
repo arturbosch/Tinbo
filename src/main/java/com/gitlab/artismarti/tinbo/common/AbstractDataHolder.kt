@@ -27,6 +27,7 @@ abstract class AbstractDataHolder<E : Entry, D : Data<E>>(val persister: Abstrac
 	fun persistEntry(entry: E) {
 		data.addEntry(entry)
 		persister.store(data)
+		data = persister.restore(data.name)
 	}
 
 	fun saveData(name: String, entriesInMemory: List<E>) {

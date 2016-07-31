@@ -1,6 +1,7 @@
 package com.gitlab.artismarti.tinbo.csv
 
 import com.gitlab.artismarti.tinbo.common.Entry
+import com.gitlab.artismarti.tinbo.replaceSeparator
 import org.joda.money.Money
 import java.lang.reflect.Field
 import java.time.LocalDate
@@ -22,7 +23,7 @@ class CSVDataExchange {
 						it.isAccessible = true
 						it.get(entry)
 					}
-					.joinToString(separator)
+					.joinToString(separator) { it.toString().replaceSeparator() }
 		}
 
 	}

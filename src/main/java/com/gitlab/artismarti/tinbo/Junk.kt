@@ -70,3 +70,6 @@ fun String.orValue(value: String): String = if (this.isEmpty()) value else this
 fun String?.orDefault(value: String): String = if (this.isNullOrEmpty()) value else this!!
 fun Long.orValue(hours: Long): Long = if (this.equals(-1L)) hours else this
 
+fun String.replaceSeparator(): String {
+	return this.replace(";", ".,")
+}
