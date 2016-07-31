@@ -22,8 +22,7 @@ class TinboConfigTest {
 
 	@After
 	fun tearDown() {
-		if (Files.exists(path))
-			Files.delete(path)
+		Files.deleteIfExists(path)
 	}
 
 	@Test
