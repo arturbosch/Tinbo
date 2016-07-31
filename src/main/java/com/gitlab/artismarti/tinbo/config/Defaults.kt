@@ -1,6 +1,7 @@
 package com.gitlab.artismarti.tinbo.config
 
 import com.gitlab.artismarti.tinbo.TiNBo
+import java.io.IOException
 
 /**
  * @author artur
@@ -31,4 +32,8 @@ object ConfigDefaults {
 
 }
 
-val CATEGORY_NAME_DEFAULT = TiNBo.config.getCategoryName()
+val CATEGORY_NAME_DEFAULT = try {
+	TiNBo.config.getCategoryName()
+} catch (e: IOException) {
+	Defaults.MAIN_CATEGORY_NAME
+}
