@@ -1,7 +1,6 @@
 package com.gitlab.artismarti.tinbo.config
 
 import com.gitlab.artismarti.tinbo.TiNBo
-import java.nio.file.NoSuchFileException
 
 /**
  * @author artur
@@ -32,11 +31,4 @@ object ConfigDefaults {
 
 }
 
-val CATEGORY_NAME_DEFAULT = CATEGORY_NAME_DEFAULT()
-fun CATEGORY_NAME_DEFAULT(): String {
-	return try {
-		TiNBo.config.getCategoryName()
-	} catch (e: NoSuchFileException) {
-		Defaults.MAIN_CATEGORY_NAME
-	}
-}
+val CATEGORY_NAME_DEFAULT = TiNBo.config.getCategoryName()
