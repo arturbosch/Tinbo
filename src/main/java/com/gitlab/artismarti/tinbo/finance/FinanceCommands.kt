@@ -30,7 +30,7 @@ class FinanceCommands @Autowired constructor(val financeExecutor: FinanceExecuto
 	override val id: String = "finance"
 	private val SUCCESS_MESSAGE = "Successfully added a finance entry."
 
-	@CliAvailabilityIndicator("test", "loadFinance")
+	@CliAvailabilityIndicator("year", "mean", "deviation", "loadFinance")
 	fun isAvailable(): Boolean {
 		return ModeAdvisor.isFinanceMode()
 	}
