@@ -8,8 +8,7 @@ import com.gitlab.artismarti.tinbo.common.Entry
 class NoteEntry(val message: String = "") : Entry() {
 
 	override fun compareTo(other: Entry): Int {
-		if (other !is NoteEntry) return 1
-		return message.compareTo(other.message)
+		return 1
 	}
 
 	override fun toString(): String {
