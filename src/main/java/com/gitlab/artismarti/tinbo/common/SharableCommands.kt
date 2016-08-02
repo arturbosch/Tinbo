@@ -18,7 +18,7 @@ open class SharableCommands @Autowired constructor(val commandChooser: CommandCh
 
 	override val id: String = "edit"
 
-	@CliAvailabilityIndicator("add", "ls", "save", "cancel", "remove", "changeCategory", "data", "last")
+	@CliAvailabilityIndicator("add", "ls", "save", "cancel", "remove", "changeCategory", "data", "last", "edit")
 	fun basicsAvailable(): Boolean {
 		return ModeAdvisor.isModeWhereEditIsAllowed()
 	}
