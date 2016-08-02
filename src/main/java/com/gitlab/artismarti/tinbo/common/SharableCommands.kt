@@ -54,27 +54,27 @@ open class SharableCommands @Autowired constructor(val commandChooser: CommandCh
 	@CliCommand("save", help = "Saves current editing if list command was used.")
 	fun save(@CliOption(key = arrayOf("name", "n"), help = "Saves notes under a new data set (also a new filename).",
 			specifiedDefaultValue = "", unspecifiedDefaultValue = "") name: String): String {
-
 		return commandChooser.forCurrentMode().save(name)
 	}
+
+	private val SAVE_OR_CANCEL_CHANGES = " (Remember to 'save' or 'cancel' to apply changes!)"
 
 	@CliCommand("edit", help = "Edits entry with specified index.")
 	fun edit(@CliOption(key = arrayOf("", "i", "index"), mandatory = true,
 			help = "Index of entry to edit.") index: Int): String {
-		return commandChooser.forCurrentMode().edit(index)
+		return commandChooser.forCurrentMode().edit(index) + SAVE_OR_CANCEL_CHANGES
 	}
 
 	@CliCommand("remove", "delete", help = "Deletes entries from storage.")
 	fun delete(@CliOption(key = arrayOf("indices", "index", "i"), mandatory = true,
 			help = "Indices pattern, allowed are numbers with space in between or intervals like 1-5 e.g. '1 2 3-5 6'.")
 			   indexPattern: String): String {
-
-		return commandChooser.forCurrentMode().delete(indexPattern)
+		return commandChooser.forCurrentMode().delete(indexPattern) + SAVE_OR_CANCEL_CHANGES
 	}
 
 	@CliCommand("last", help = "Deletes the last entry from storage.")
 	fun delete(): String {
-		return commandChooser.forCurrentMode().delete("-1")
+		return commandChooser.forCurrentMode().delete("-1") + SAVE_OR_CANCEL_CHANGES
 	}
 
 	@CliCommand("changeCategory", help = "Changes a categories name with the side effect that all entries of this category get updated.")
