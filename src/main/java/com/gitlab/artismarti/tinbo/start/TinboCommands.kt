@@ -1,5 +1,6 @@
 package com.gitlab.artismarti.tinbo.start
 
+import com.gitlab.artismarti.tinbo.TiNBo
 import com.gitlab.artismarti.tinbo.common.Command
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
 import com.gitlab.artismarti.tinbo.config.Notification
@@ -30,13 +31,18 @@ open class TinboCommands @Autowired constructor(val bannerProvider: BannerProvid
 
 	@CliCommand("weather", help = "Shows the weather for following three days inclusive today's.")
 	fun weather(@CliOption(
-			key = arrayOf("city", "c"),
+			key = arrayOf("", "city"),
 			help = "Provide a existing city name.",
-			specifiedDefaultValue = "Bremen",
-			unspecifiedDefaultValue = "Bremen") city: String): String {
+			specifiedDefaultValue = "",
+			unspecifiedDefaultValue = "") city: String): String {
 
-		if (city.matches(Regex("[a-zA-Z]+"))) {
-			return Notification.weather(city)
+		var cityName = city
+		if (cityName.isEmpty()) {
+			cityName = TiNBo.config.getCity()
+		}
+
+		if (cityName.matches(Regex("[a-zA-Z]+"))) {
+			return Notification.weather(cityName)
 		} else {
 			return "The given city name must consist of only letters."
 		}

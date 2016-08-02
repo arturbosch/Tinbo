@@ -28,6 +28,7 @@ object ConfigDefaults {
 	const val MAIN_CATEGORY_NAME = "category-name"
 	const val DEFAULTS = "defaults"
 	const val CURRENCY = "currency"
+	const val CITY = "city"
 
 }
 

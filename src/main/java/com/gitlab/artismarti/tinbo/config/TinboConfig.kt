@@ -39,6 +39,11 @@ class TinboConfig private constructor(private var values: Map<String, Map<String
 				.orDefault(Defaults.MAIN_CATEGORY_NAME)
 	}
 
+	fun getCity(): String {
+		return getKey(ConfigDefaults.DEFAULTS)[ConfigDefaults.CITY]
+				.orDefault("-1")
+	}
+
 	companion object {
 
 		@Suppress("UNCHECKED_CAST")

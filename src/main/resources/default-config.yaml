@@ -11,3 +11,4 @@ finance:
 defaults:
   category-name: Main
   currency: EUR
+  city: Bremen
