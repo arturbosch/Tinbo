@@ -85,6 +85,11 @@ abstract class EditableCommands<E : Entry, D : Data<E>, in T : DummyEntry>(val e
 		}
 	}
 
+	override fun load(name: String): String {
+		executor.loadData(name)
+		return "Successfully loaded data set $name"
+	}
+
 	override fun list(categoryName: String): String {
 		return withListMode {
 			if (isEditMode) {

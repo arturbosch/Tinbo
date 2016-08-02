@@ -1,5 +1,6 @@
 package com.gitlab.artismarti.tinbo.common
 
+import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
 import com.gitlab.artismarti.tinbo.notes.NoteCommands
 import jline.console.ConsoleReader
@@ -18,7 +19,7 @@ open class SharableCommands @Autowired constructor(val commandChooser: CommandCh
 
 	override val id: String = "edit"
 
-	@CliAvailabilityIndicator("add", "ls", "save", "cancel", "remove", "changeCategory", "data", "last", "edit")
+	@CliAvailabilityIndicator("add", "ls", "save", "cancel", "remove", "changeCategory", "data", "last", "edit", "load")
 	fun basicsAvailable(): Boolean {
 		return ModeAdvisor.isModeWhereEditIsAllowed()
 	}
@@ -36,6 +37,13 @@ open class SharableCommands @Autowired constructor(val commandChooser: CommandCh
 			help = "Name to filter only for this specific category.") categoryName: String): String {
 
 		return commandChooser.forCurrentMode().list(categoryName)
+	}
+
+	@CliCommand("load", help = "Loads/Creates an other data set. Data sets are stored under ~/TiNBo/<MODE>/<NAME.")
+	fun load(@CliOption(key = arrayOf("name", ""), mandatory = true,
+			specifiedDefaultValue = Defaults.NOTES_NAME,
+			unspecifiedDefaultValue = Defaults.NOTES_NAME) name: String): String {
+		return commandChooser.forCurrentMode().load(name)
 	}
 
 	@CliCommand("cancel", help = "Cancels edit mode.")

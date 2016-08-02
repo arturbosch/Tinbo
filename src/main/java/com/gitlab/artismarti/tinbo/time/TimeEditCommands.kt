@@ -34,14 +34,6 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 		return ModeAdvisor.isTimerMode()
 	}
 
-	@CliCommand("loadTime", help = "Changes the complete data set.")
-	fun loadData(@CliOption(key = arrayOf("name"),
-			help = "name of the data set to load",
-			unspecifiedDefaultValue = Defaults.TIME_NAME,
-			specifiedDefaultValue = Defaults.TIME_NAME) name: String) {
-		executor.loadData(name)
-	}
-
 	override fun add(): String {
 		return whileNotInEditMode {
 			val category = console.readLine("Enter a category: ").orDefault(TiNBo.config.getCategoryName())

@@ -32,13 +32,6 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor) :
 		return ModeAdvisor.isTasksMode()
 	}
 
-	@CliCommand("loadTasks", help = "Loads/Creates an other data set. Task data sets are stored under ~/tinbo/tasks/*.")
-	fun loadTasks(@CliOption(key = arrayOf("name", "n"), mandatory = true,
-			specifiedDefaultValue = Defaults.TASKS_NAME,
-			unspecifiedDefaultValue = Defaults.TASKS_NAME) name: String) {
-		executor.loadData(name)
-	}
-
 	override fun add(): String {
 		return whileNotInEditMode {
 			val category = console.readLine("Enter a category: ").orDefault(TiNBo.config.getCategoryName())

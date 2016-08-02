@@ -6,6 +6,7 @@ package com.gitlab.artismarti.tinbo.common
 interface Editable {
 	fun add(): String
 	fun list(categoryName: String): String
+	fun load(name: String): String
 	fun cancel(): String
 	fun save(name: String): String
 	fun delete(indexPattern: String): String

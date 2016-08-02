@@ -27,13 +27,6 @@ open class NoteCommands @Autowired constructor(executor: NoteExecutor) :
 		return ModeAdvisor.isNotesMode()
 	}
 
-	@CliCommand("loadNotes", help = "Loads/Creates an other data set. Note data sets are stored under ~/tinbo/notes/*.")
-	fun loadNotes(@CliOption(key = arrayOf("name", "n"), mandatory = true,
-			specifiedDefaultValue = Defaults.NOTES_NAME,
-			unspecifiedDefaultValue = Defaults.NOTES_NAME) name: String) {
-		executor.loadData(name)
-	}
-
 	override fun add(): String {
 		return addNote(console.readLine("Enter a message: "))
 	}
