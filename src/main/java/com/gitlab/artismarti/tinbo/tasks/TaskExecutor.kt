@@ -1,7 +1,6 @@
 package com.gitlab.artismarti.tinbo.tasks
 
 import com.gitlab.artismarti.tinbo.common.AbstractExecutor
-import com.gitlab.artismarti.tinbo.orValue
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -16,13 +15,9 @@ open class TaskExecutor @Autowired constructor(taskDataHolder: TaskDataHolder) :
 		get() = "No.;Category;Message;Location;Start;End;Description"
 
 	override fun newEntry(index: Int, dummy: DummyTask): TaskEntry {
-		val realNote = entriesInMemory[index]
-		return TaskEntry(dummy.message.orValue(realNote.message),
-				dummy.description.orValue(realNote.description),
-				dummy.location.orValue(realNote.location),
-				dummy.category.orValue(realNote.category),
-				dummy.startTime.orValue(realNote.startTime),
-				dummy.endTime.orValue(realNote.endTime))
+		val entry = entriesInMemory[index]
+		return entry.copy(dummy.message, dummy.description, dummy.location,
+				dummy.category, dummy.startTime, dummy.endTime)
 	}
 
 }

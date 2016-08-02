@@ -11,4 +11,5 @@ interface Editable {
 	fun delete(indexPattern: String): String
 	fun changeCategory(oldName: String, newName: String): String
 	fun data(): String
+	fun edit(index: Int): String
 }

@@ -73,3 +73,6 @@ fun Long.orValue(hours: Long): Long = if (this.equals(-1L)) hours else this
 fun String.replaceSeparator(): String {
 	return this.replace(";", ".,")
 }
+
+fun String.orDefaultMonth(): Int = this.toIntOrDefault { LocalDate.now().month.value }
+fun String?.toLongOrNull(): Long? = this?.toLong() ?: null

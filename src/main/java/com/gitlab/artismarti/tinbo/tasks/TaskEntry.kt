@@ -44,4 +44,10 @@ class TaskEntry(val message: String = "invalid",
 	override fun hashCode(): Int {
 		return Objects.hash(message, description, location, category, startTime, endTime)
 	}
+
+	fun copy(message: String?, description: String?, location: String?, category: String?,
+			 startTime: LocalDateTime?, endTime: LocalDateTime?): TaskEntry {
+		return TaskEntry(message ?: this.message, description ?: this.description, location ?: this.location,
+				category ?: this.category, startTime ?: this.startTime, endTime ?: this.endTime)
+	}
 }

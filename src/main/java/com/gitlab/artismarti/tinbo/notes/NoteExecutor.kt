@@ -15,7 +15,9 @@ open class NoteExecutor @Autowired constructor(noteDataHolder: NoteDataHolder) :
 		get() = "No.;Message"
 
 	override fun newEntry(index: Int, dummy: DummyNote): NoteEntry {
-		return NoteEntry(dummy.message)
+		val entry = entriesInMemory[index]
+		return entry.copy(dummy.message)
 	}
 
 }
+

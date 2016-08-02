@@ -53,17 +53,17 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor) :
 	@CliCommand(value = "task", help = "Adds a new task.")
 	fun addTask(@CliOption(key = arrayOf("message", "msg", "m"), mandatory = true, help = "Summary of the task.",
 			specifiedDefaultValue = "", unspecifiedDefaultValue = "") message: String,
-	            @CliOption(key = arrayOf("category", "cat", "c"), help = "Category for the task",
-			            specifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME,
-			            unspecifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME) category: String,
-	            @CliOption(key = arrayOf("location", "loc", "l"), help = "Specify a location for this task.",
-			            specifiedDefaultValue = "", unspecifiedDefaultValue = "") location: String,
-	            @CliOption(key = arrayOf("description", "des", "d"), help = "Specify a description for this task.",
-			            specifiedDefaultValue = "", unspecifiedDefaultValue = "") description: String,
-	            @CliOption(key = arrayOf("start", "s"), help = "Specify a end time for this task. Format: yyyy-MM-dd HH:mm",
-			            specifiedDefaultValue = "", unspecifiedDefaultValue = "") startTime: String,
-	            @CliOption(key = arrayOf("end", "e"), help = "Specify a start time for this task. Format: yyyy-MM-dd HH:mm",
-			            specifiedDefaultValue = "", unspecifiedDefaultValue = "") endTime: String): String {
+				@CliOption(key = arrayOf("category", "cat", "c"), help = "Category for the task",
+						specifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME,
+						unspecifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME) category: String,
+				@CliOption(key = arrayOf("location", "loc", "l"), help = "Specify a location for this task.",
+						specifiedDefaultValue = "", unspecifiedDefaultValue = "") location: String,
+				@CliOption(key = arrayOf("description", "des", "d"), help = "Specify a description for this task.",
+						specifiedDefaultValue = "", unspecifiedDefaultValue = "") description: String,
+				@CliOption(key = arrayOf("start", "s"), help = "Specify a end time for this task. Format: yyyy-MM-dd HH:mm",
+						specifiedDefaultValue = "", unspecifiedDefaultValue = "") startTime: String,
+				@CliOption(key = arrayOf("end", "e"), help = "Specify a start time for this task. Format: yyyy-MM-dd HH:mm",
+						specifiedDefaultValue = "", unspecifiedDefaultValue = "") endTime: String): String {
 
 		return whileNotInEditMode {
 
@@ -86,19 +86,20 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor) :
 	}
 
 	@CliCommand("editTask", "editTasks", help = "Edits the task entry with given index")
-	fun editTask(@CliOption(key = arrayOf("index", "i"), mandatory = true, help = "Index of the task to edit.") index: Int,
-	             @CliOption(key = arrayOf("message", "msg", "m"), help = "Summary of the task.",
-			             specifiedDefaultValue = "", unspecifiedDefaultValue = "") message: String,
-	             @CliOption(key = arrayOf("category", "cat", "c"), help = "Category for the task",
-			             specifiedDefaultValue = "", unspecifiedDefaultValue = "") category: String,
-	             @CliOption(key = arrayOf("location", "loc", "l"), help = "Specify a location for this task.",
-			             specifiedDefaultValue = "", unspecifiedDefaultValue = "") location: String,
-	             @CliOption(key = arrayOf("description", "des", "d"), help = "Specify a description for this task.",
-			             specifiedDefaultValue = "", unspecifiedDefaultValue = "") description: String,
-	             @CliOption(key = arrayOf("start", "s"), help = "Specify a end time for this task. Format: yyyy-MM-dd HH:mm",
-			             specifiedDefaultValue = "", unspecifiedDefaultValue = "") startTime: String,
-	             @CliOption(key = arrayOf("end", "e"), help = "Specify a start time for this task. Format: yyyy-MM-dd HH:mm",
-			             specifiedDefaultValue = "", unspecifiedDefaultValue = "") endTime: String): String {
+	fun editTask(@CliOption(key = arrayOf("index", "i"), mandatory = true,
+			help = "Index of the task to edit.") index: Int,
+				 @CliOption(key = arrayOf("message", "msg", "m"),
+						 help = "Summary of the task.") message: String,
+				 @CliOption(key = arrayOf("category", "cat", "c"),
+						 help = "Category for the task") category: String,
+				 @CliOption(key = arrayOf("location", "loc", "l"),
+						 help = "Specify a location for this task.") location: String,
+				 @CliOption(key = arrayOf("description", "des", "d"),
+						 help = "Specify a description for this task.") description: String,
+				 @CliOption(key = arrayOf("start", "s"),
+						 help = "Specify a end time for this task. Format: yyyy-MM-dd HH:mm") startTime: String,
+				 @CliOption(key = arrayOf("end", "e"),
+						 help = "Specify a start time for this task. Format: yyyy-MM-dd HH:mm") endTime: String): String {
 
 		return withinListMode {
 			val i = index - 1
@@ -110,4 +111,21 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor) :
 		}
 	}
 
+	override fun edit(index: Int): String {
+		return withinListMode {
+			val i = index - 1
+			enterEditModeWithIndex(i) {
+				val category = console.readLine("Enter a category (leave empty if unchanged): ")
+				val message = console.readLine("Enter a message (leave empty if unchanged): ")
+				val location = console.readLine("Enter a location (leave empty if unchanged): ")
+				val description = console.readLine("Enter a description (leave empty if unchanged): ")
+				val startTime = console.readLine("Enter a start time (yyyy-MM-dd HH:mm) (leave empty if unchanged): ")
+				val endTime = console.readLine("Enter a end time (yyyy-MM-dd HH:mm) (leave empty if unchanged): ")
+
+				val pair = DateTimeFormatters.parseDateTimeOrDefault(endTime, startTime)
+				executor.editEntry(i, DummyTask(message, category, location, description, pair.first, pair.second))
+				"Successfully edited a task."
+			}
+		}
+	}
 }

@@ -50,6 +50,12 @@ open class SharableCommands @Autowired constructor(val commandChooser: CommandCh
 		return commandChooser.forCurrentMode().save(name)
 	}
 
+	@CliCommand("edit", help = "Edits entry with specified index.")
+	fun edit(@CliOption(key = arrayOf("", "i", "index"), mandatory = true,
+			help = "Index of entry to edit.") index: Int): String {
+		return commandChooser.forCurrentMode().edit(index)
+	}
+
 	@CliCommand("remove", "delete", help = "Deletes entries from storage.")
 	fun delete(@CliOption(key = arrayOf("indices", "index", "i"), mandatory = true,
 			help = "Indices pattern, allowed are numbers with space in between or intervals like 1-5 e.g. '1 2 3-5 6'.")

@@ -25,5 +25,11 @@ class TimeEntry(var category: String = "Main",
 		if (other !is TimeEntry) return -1
 		return this.date.compareTo(other.date)
 	}
+
+	fun copy(category: String?, message: String?, hours: Long?, minutes: Long?,
+			 seconds: Long?, date: LocalDate?): TimeEntry {
+		return TimeEntry(category ?: this.category, message ?: this.message,
+				hours ?: this.hours, minutes ?: this.minutes, seconds ?: this.seconds, date ?: this.date)
+	}
 }
 

@@ -25,14 +25,8 @@ open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolde
 	private val SUMMARY_HEADER = "No.;Category;Spent"
 
 	override fun newEntry(index: Int, dummy: DummyTime): TimeEntry {
-		val realTime = entriesInMemory[index]
-		return TimeEntry(
-				dummy.category.orValue(realTime.category),
-				dummy.message.orValue(realTime.message),
-				dummy.hours.orValue(realTime.hours),
-				dummy.minutes.orValue(realTime.minutes),
-				dummy.seconds.orValue(realTime.seconds),
-				dummy.date.orValue(realTime.date))
+		val entry = entriesInMemory[index]
+		return entry.copy(dummy.category, dummy.message, dummy.hours, dummy.minutes, dummy.seconds, dummy.date)
 	}
 
 	private var currentTimer = Timer.INVALID

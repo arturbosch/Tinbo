@@ -6,6 +6,7 @@ import com.gitlab.artismarti.tinbo.common.EditableCommands
 import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
 import com.gitlab.artismarti.tinbo.orDefault
+import com.gitlab.artismarti.tinbo.toLongOrNull
 import com.gitlab.artismarti.tinbo.utils.DateTimeFormatters
 import com.gitlab.artismarti.tinbo.utils.dateFormatter
 import org.springframework.beans.factory.annotation.Autowired
@@ -61,26 +62,26 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 			specifiedDefaultValue = "0",
 			unspecifiedDefaultValue = "0",
 			help = "Duration in hours.") hours: Long,
-	            @CliOption(key = arrayOf("minutes", "m", "mins"),
-			            specifiedDefaultValue = "0",
-			            unspecifiedDefaultValue = "0",
-			            help = "Duration in minutes.") mins: Long,
-	            @CliOption(key = arrayOf("seconds", "s", "mins"),
-			            specifiedDefaultValue = "0",
-			            unspecifiedDefaultValue = "0",
-			            help = "Duration in seconds.") seconds: Long,
-	            @CliOption(key = arrayOf("category", "cat", "c"),
-			            unspecifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME,
-			            specifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME,
-			            help = "Category of the time entry.") name: String,
-	            @CliOption(key = arrayOf("message", "msg"),
-			            unspecifiedDefaultValue = "",
-			            specifiedDefaultValue = "",
-			            help = "Note for this tracking.", mandatory = true) message: String,
-	            @CliOption(key = arrayOf("date"),
-			            help = "Specify a date for this time entry. Format: yyyy-MM-dd",
-			            specifiedDefaultValue = "",
-			            unspecifiedDefaultValue = "") date: String): String {
+				@CliOption(key = arrayOf("minutes", "m", "mins"),
+						specifiedDefaultValue = "0",
+						unspecifiedDefaultValue = "0",
+						help = "Duration in minutes.") mins: Long,
+				@CliOption(key = arrayOf("seconds", "s", "mins"),
+						specifiedDefaultValue = "0",
+						unspecifiedDefaultValue = "0",
+						help = "Duration in seconds.") seconds: Long,
+				@CliOption(key = arrayOf("category", "cat", "c"),
+						unspecifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME,
+						specifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME,
+						help = "Category of the time entry.") name: String,
+				@CliOption(key = arrayOf("message", "msg"),
+						unspecifiedDefaultValue = "",
+						specifiedDefaultValue = "",
+						help = "Note for this tracking.", mandatory = true) message: String,
+				@CliOption(key = arrayOf("date"),
+						help = "Specify a date for this time entry. Format: yyyy-MM-dd",
+						specifiedDefaultValue = "",
+						unspecifiedDefaultValue = "") date: String): String {
 
 		return whileNotInEditMode {
 			try {
@@ -93,34 +94,44 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 		}
 	}
 
+	override fun edit(index: Int): String {
+		return withinListMode {
+			val i = index - 1
+			enterEditModeWithIndex(i) {
+				val category = console.readLine("Enter a category (empty if unchanged): ")
+				val message = console.readLine("Enter a message (empty if unchanged): ")
+				val dateFormat = console.readLine("Enter a date (yyyy-mm-dd) (empty if unchanged): ")
+				try {
+					val hours = console.readLine("Enter amount of spent hours (empty if unchanged): ").toLongOrNull()
+					val mins = console.readLine("Enter amount of spent minutes (empty if unchanged): ").toLongOrNull()
+					val seconds = console.readLine("Enter amount of spent seconds (empty if unchanged): ").toLongOrNull()
+					val date: LocalDate? = DateTimeFormatters.parseDateOrNull(dateFormat)
+					executor.editEntry(i, DummyTime(category, message, hours, mins, seconds, date))
+					SUCCESS_MESSAGE
+				} catch(e: NumberFormatException) {
+					"Could not parse given time values. Use numbers only!"
+				}
+
+			}
+		}
+	}
+
 	@CliCommand("editTime", help = "Edits a time entry.")
-	fun editTime(@CliOption(key = arrayOf("index", "i"),
+	fun editTime(@CliOption(key = arrayOf("", "i", "index"),
 			mandatory = true,
 			help = "Index of the task to edit.") index: Int,
-	             @CliOption(key = arrayOf("hours", "h"),
-			             specifiedDefaultValue = "-1",
-			             unspecifiedDefaultValue = "-1",
-			             help = "Duration in hours.") hours: Long,
-	             @CliOption(key = arrayOf("minutes", "m", "mins"),
-			             specifiedDefaultValue = "-1",
-			             unspecifiedDefaultValue = "-1",
-			             help = "Duration in minutes.") mins: Long,
-	             @CliOption(key = arrayOf("seconds", "s", "mins"),
-			             specifiedDefaultValue = "-1",
-			             unspecifiedDefaultValue = "-1",
-			             help = "Duration in seconds.") seconds: Long,
-	             @CliOption(key = arrayOf("category", "cat", "c"),
-			             unspecifiedDefaultValue = "",
-			             specifiedDefaultValue = "",
-			             help = "Category of the time entry.") name: String,
-	             @CliOption(key = arrayOf("message", "msg"),
-			             unspecifiedDefaultValue = "",
-			             specifiedDefaultValue = "",
-			             help = "Note for this tracking.") message: String,
-	             @CliOption(key = arrayOf("date"),
-			             help = "Specify a date for this time entry. Format: yyyy-MM-dd",
-			             specifiedDefaultValue = "",
-			             unspecifiedDefaultValue = "") dateFormat: String): String {
+				 @CliOption(key = arrayOf("hours", "h"),
+						 help = "Duration in hours.") hours: Long,
+				 @CliOption(key = arrayOf("minutes", "m", "mins"),
+						 help = "Duration in minutes.") mins: Long,
+				 @CliOption(key = arrayOf("seconds", "s", "mins"),
+						 help = "Duration in seconds.") seconds: Long,
+				 @CliOption(key = arrayOf("category", "cat", "c"),
+						 help = "Category of the time entry.") name: String,
+				 @CliOption(key = arrayOf("message", "msg"),
+						 help = "Note for this tracking.") message: String,
+				 @CliOption(key = arrayOf("date"),
+						 help = "Specify a date for this time entry. Format: yyyy-MM-dd") dateFormat: String): String {
 
 		return withinListMode {
 			val i = index - 1
@@ -133,3 +144,4 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 	}
 
 }
+

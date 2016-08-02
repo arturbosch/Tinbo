@@ -5,4 +5,4 @@ import com.gitlab.artismarti.tinbo.common.DummyEntry
 /**
  * @author artur
  */
-class DummyNote(val message: String) : DummyEntry()
+class DummyNote(val message: String?) : DummyEntry()
