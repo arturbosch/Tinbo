@@ -5,6 +5,7 @@ import com.gitlab.artismarti.tinbo.common.Command
 import com.gitlab.artismarti.tinbo.common.EditableCommands
 import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
+import com.gitlab.artismarti.tinbo.nullIfEmpty
 import com.gitlab.artismarti.tinbo.orDefault
 import com.gitlab.artismarti.tinbo.toLongOrNull
 import com.gitlab.artismarti.tinbo.utils.DateTimeFormatters
@@ -98,9 +99,9 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 		return withinListMode {
 			val i = index - 1
 			enterEditModeWithIndex(i) {
-				val category = console.readLine("Enter a category (empty if unchanged): ")
-				val message = console.readLine("Enter a message (empty if unchanged): ")
-				val dateFormat = console.readLine("Enter a date (yyyy-mm-dd) (empty if unchanged): ")
+				val category = console.readLine("Enter a category (empty if unchanged): ").nullIfEmpty()
+				val message = console.readLine("Enter a message (empty if unchanged): ").nullIfEmpty()
+				val dateFormat = console.readLine("Enter a date (yyyy-mm-dd) (empty if unchanged): ").orEmpty()
 				try {
 					val hours = console.readLine("Enter amount of spent hours (empty if unchanged): ").toLongOrNull()
 					val mins = console.readLine("Enter amount of spent minutes (empty if unchanged): ").toLongOrNull()

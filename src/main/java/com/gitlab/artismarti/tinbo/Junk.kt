@@ -71,5 +71,5 @@ fun String.replaceSeparator(): String {
 }
 
 fun String.orDefaultMonth(): Int = this.toIntOrDefault { LocalDate.now().month.value }
-fun String?.toLongOrNull(): Long? = this?.toLong() ?: null
+fun String?.toLongOrNull(): Long? = if (this.isNullOrEmpty()) null else this?.toLong()
 fun String?.nullIfEmpty(): String? = if (this.isNullOrEmpty()) null else this
