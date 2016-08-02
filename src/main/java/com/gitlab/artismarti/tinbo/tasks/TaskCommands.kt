@@ -5,6 +5,7 @@ import com.gitlab.artismarti.tinbo.common.Command
 import com.gitlab.artismarti.tinbo.common.EditableCommands
 import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
+import com.gitlab.artismarti.tinbo.nullIfEmpty
 import com.gitlab.artismarti.tinbo.orDefault
 import com.gitlab.artismarti.tinbo.orThrow
 import com.gitlab.artismarti.tinbo.utils.DateTimeFormatters
@@ -89,16 +90,16 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor) :
 	fun editTask(@CliOption(key = arrayOf("index", "i"), mandatory = true,
 			help = "Index of the task to edit.") index: Int,
 				 @CliOption(key = arrayOf("message", "msg", "m"),
-						 help = "Summary of the task.") message: String,
+						 help = "Summary of the task.") message: String?,
 				 @CliOption(key = arrayOf("category", "cat", "c"),
-						 help = "Category for the task") category: String,
+						 help = "Category for the task") category: String?,
 				 @CliOption(key = arrayOf("location", "loc", "l"),
-						 help = "Specify a location for this task.") location: String,
+						 help = "Specify a location for this task.") location: String?,
 				 @CliOption(key = arrayOf("description", "des", "d"),
-						 help = "Specify a description for this task.") description: String,
-				 @CliOption(key = arrayOf("start", "s"),
+						 help = "Specify a description for this task.") description: String?,
+				 @CliOption(key = arrayOf("start", "s"), unspecifiedDefaultValue = "", specifiedDefaultValue = "",
 						 help = "Specify a end time for this task. Format: yyyy-MM-dd HH:mm") startTime: String,
-				 @CliOption(key = arrayOf("end", "e"),
+				 @CliOption(key = arrayOf("end", "e"), unspecifiedDefaultValue = "", specifiedDefaultValue = "",
 						 help = "Specify a start time for this task. Format: yyyy-MM-dd HH:mm") endTime: String): String {
 
 		return withinListMode {
@@ -115,12 +116,12 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor) :
 		return withinListMode {
 			val i = index - 1
 			enterEditModeWithIndex(i) {
-				val category = console.readLine("Enter a category (leave empty if unchanged): ")
-				val message = console.readLine("Enter a message (leave empty if unchanged): ")
-				val location = console.readLine("Enter a location (leave empty if unchanged): ")
-				val description = console.readLine("Enter a description (leave empty if unchanged): ")
-				val startTime = console.readLine("Enter a start time (yyyy-MM-dd HH:mm) (leave empty if unchanged): ")
-				val endTime = console.readLine("Enter a end time (yyyy-MM-dd HH:mm) (leave empty if unchanged): ")
+				val category = console.readLine("Enter a category (leave empty if unchanged): ").nullIfEmpty()
+				val message = console.readLine("Enter a message (leave empty if unchanged): ").nullIfEmpty()
+				val location = console.readLine("Enter a location (leave empty if unchanged): ").nullIfEmpty()
+				val description = console.readLine("Enter a description (leave empty if unchanged): ").nullIfEmpty()
+				val startTime = console.readLine("Enter a start time (yyyy-MM-dd HH:mm) (leave empty if unchanged): ").orEmpty()
+				val endTime = console.readLine("Enter a end time (yyyy-MM-dd HH:mm) (leave empty if unchanged): ").orEmpty()
 
 				val pair = DateTimeFormatters.parseDateTimeOrDefault(endTime, startTime)
 				executor.editEntry(i, DummyTask(message, category, location, description, pair.first, pair.second))

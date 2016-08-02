@@ -6,6 +6,7 @@ import com.gitlab.artismarti.tinbo.common.Summarizable
 import com.gitlab.artismarti.tinbo.config.CATEGORY_NAME_DEFAULT
 import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
+import com.gitlab.artismarti.tinbo.nullIfEmpty
 import com.gitlab.artismarti.tinbo.orDefaultMonth
 import com.gitlab.artismarti.tinbo.orThrow
 import com.gitlab.artismarti.tinbo.orValue
@@ -109,13 +110,13 @@ class FinanceCommands @Autowired constructor(val financeExecutor: FinanceExecuto
 			enterEditModeWithIndex(i) {
 				val monthString = console.readLine("Enter a month as number from 1-12 (empty if this month) (leave empty if unchanged): ")
 				val month = if (monthString.isNullOrEmpty()) null else Month.of(monthString.orDefaultMonth())
-				val category = console.readLine("Enter a category (leave empty if unchanged): ")
-				val message = console.readLine("Enter a message (leave empty if unchanged): ")
+				val category = console.readLine("Enter a category (leave empty if unchanged): ").nullIfEmpty()
+				val message = console.readLine("Enter a message (leave empty if unchanged): ").nullIfEmpty()
 				val moneyString = console.readLine("Enter a money value (leave empty if unchanged): ")
 				val money =  if (moneyString.isNullOrEmpty()) null else Money.of(currencyUnit, moneyString.toDouble())
 				val dateString = console.readLine("Enter a end time (yyyy-MM-dd HH:mm) (leave empty if unchanged): ")
 				val dateTime = if (dateString.isNullOrEmpty()) null else LocalDateTime.parse(dateString, dateTimeFormatter)
-				executor.editEntry(i, DummyFinance(message, category, month, money, dateTime))
+				executor.editEntry(i, DummyFinance(category, message, month, money, dateTime))
 				"Successfully edited a finance entry."
 			}
 		}

@@ -4,7 +4,7 @@ import com.gitlab.artismarti.tinbo.common.Command
 import com.gitlab.artismarti.tinbo.common.EditableCommands
 import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
-import com.gitlab.artismarti.tinbo.orDefault
+import com.gitlab.artismarti.tinbo.nullIfEmpty
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
@@ -22,7 +22,7 @@ open class NoteCommands @Autowired constructor(executor: NoteExecutor) :
 
 	private val SUCCESS_MESSAGE = "Successfully added a note."
 
-	@CliAvailabilityIndicator("note", "loadNotes", "editNotes")
+	@CliAvailabilityIndicator("note", "loadNotes", "editNote")
 	fun isAvailable(): Boolean {
 		return ModeAdvisor.isNotesMode()
 	}
@@ -52,9 +52,9 @@ open class NoteCommands @Autowired constructor(executor: NoteExecutor) :
 		}
 	}
 
-	@CliCommand("editNote", "editNotes", help = "Edits the note entry(/entries) with given index")
+	@CliCommand("editNote", help = "Edits the note entry(/entries) with given index")
 	fun editNote(@CliOption(key = arrayOf("index", "i"), mandatory = true, help = "Index of the task to edit.") index: Int,
-	             @CliOption(key = arrayOf("message", "msg", "m"), help = "Summary of the task.") message: String): String {
+	             @CliOption(key = arrayOf("message", "msg", "m"), help = "Summary of the task.") message: String?): String {
 
 		return withinListMode {
 			val i = index - 1
@@ -69,10 +69,12 @@ open class NoteCommands @Autowired constructor(executor: NoteExecutor) :
 		return withinListMode {
 			val i = index - 1
 			enterEditModeWithIndex(i) {
-				executor.editEntry(i, DummyNote(console.readLine("Enter a message or leave empty if unchanged")))
+				val message = console.readLine("Enter a message or leave empty if unchanged: ").nullIfEmpty()
+				executor.editEntry(i, DummyNote(message))
 				"Successfully edited a note."
 			}
 		}
 	}
 
 }
+

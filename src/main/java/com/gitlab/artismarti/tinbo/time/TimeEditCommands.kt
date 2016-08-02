@@ -121,16 +121,16 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 			mandatory = true,
 			help = "Index of the task to edit.") index: Int,
 				 @CliOption(key = arrayOf("hours", "h"),
-						 help = "Duration in hours.") hours: Long,
+						 help = "Duration in hours.") hours: Long?,
 				 @CliOption(key = arrayOf("minutes", "m", "mins"),
-						 help = "Duration in minutes.") mins: Long,
+						 help = "Duration in minutes.") mins: Long?,
 				 @CliOption(key = arrayOf("seconds", "s", "mins"),
-						 help = "Duration in seconds.") seconds: Long,
+						 help = "Duration in seconds.") seconds: Long?,
 				 @CliOption(key = arrayOf("category", "cat", "c"),
-						 help = "Category of the time entry.") name: String,
+						 help = "Category of the time entry.") name: String?,
 				 @CliOption(key = arrayOf("message", "msg"),
-						 help = "Note for this tracking.") message: String,
-				 @CliOption(key = arrayOf("date"),
+						 help = "Note for this tracking.") message: String?,
+				 @CliOption(key = arrayOf("date"), specifiedDefaultValue = "", unspecifiedDefaultValue = "",
 						 help = "Specify a date for this time entry. Format: yyyy-MM-dd") dateFormat: String): String {
 
 		return withinListMode {

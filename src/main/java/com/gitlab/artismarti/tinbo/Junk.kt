@@ -8,10 +8,6 @@ import java.util.*
  * @author artur
  */
 
-/**
- * Transforms a long number into a string by calling the to string method specified
- * by the format 'xx' where xx can't be higher than 59.
- */
 fun Long.toTimeString(): String {
 	return toString().apply {
 		if (length == 1) {
@@ -76,3 +72,4 @@ fun String.replaceSeparator(): String {
 
 fun String.orDefaultMonth(): Int = this.toIntOrDefault { LocalDate.now().month.value }
 fun String?.toLongOrNull(): Long? = this?.toLong() ?: null
+fun String?.nullIfEmpty(): String? = if (this.isNullOrEmpty()) null else this
