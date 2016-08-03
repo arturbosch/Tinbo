@@ -27,17 +27,17 @@ import org.springframework.shell.core.JLineShellComponent
  * @author artur
  */
 @Configuration
-class ShellConfiguration {
+open class ShellConfiguration {
 
-	@Bean fun commandLine(): CommandLine {
+	@Bean open fun commandLine(): CommandLine {
 		return CommandLine(null, 3000, null)
 	}
 
-	@Bean fun console(): ConsoleReader {
+	@Bean open fun console(): ConsoleReader {
 		return ConsoleReader()
 	}
 
-	@Bean fun shell(): JLineShellComponent {
+	@Bean open fun shell(): JLineShellComponent {
 		val shell = JLineShellComponent()
 		val simpleParser = shell.simpleParser
 		simpleParser.add(StringConverter())
@@ -57,7 +57,6 @@ class ShellConfiguration {
 		simpleParser.add(ShortConverter())
 		simpleParser.add(StaticFieldConverterImpl())
 		simpleParser.add(LocaleConverter())
-		println(simpleParser.converters)
 		return shell
 	}
 }
