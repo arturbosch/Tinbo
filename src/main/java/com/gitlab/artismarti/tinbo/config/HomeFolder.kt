@@ -12,6 +12,8 @@ import java.nio.file.Paths
 object HomeFolder {
 
 	const val CONFIG_NAME = "config.yaml"
+	const val PLUGINS: String = "plugins"
+	const val PLUGIN_REGISTRY: String = "PluginRegistry"
 
 	private val mainDir = "TiNBo"
 	private val homeDir = System.getProperty("user.home") + File.separator + mainDir
@@ -47,4 +49,3 @@ object HomeFolder {
 	}
 
 }
-

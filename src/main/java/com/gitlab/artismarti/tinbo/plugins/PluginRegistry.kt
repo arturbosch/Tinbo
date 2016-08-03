@@ -24,14 +24,14 @@ class PluginRegistry @Autowired constructor(val shell: JLineShellComponent) :
 	@PostConstruct
 	fun postConstruct() {
 		try {
-			val pluginPath = HomeFolder.getDirectory("plugins")
-			val pluginRegistryFile = HomeFolder.getFile(pluginPath.resolve("PluginRegistry"))
-			val plugins = pluginPath.toFile().listFiles()
+			val pluginsPath = HomeFolder.getDirectory(HomeFolder.PLUGINS)
+			val pluginRegistryPath = HomeFolder.getFile(pluginsPath.resolve(HomeFolder.PLUGIN_REGISTRY))
+			val pluginFiles = pluginsPath.toFile().listFiles()
 
-			if (plugins.isEmpty()) return
+			if (pluginFiles.isEmpty()) return
 
-			val classUrls = plugins.filter { it.name.endsWith(".class") }.map { it.toURI().toURL() }
-			val classNames = pluginRegistryFile.toFile().readLines()
+			val classUrls = pluginFiles.filter { it.name.endsWith(".class") }.map { it.toURI().toURL() }
+			val classNames = pluginRegistryPath.toFile().readLines()
 					.filter { !it.toString().startsWith("#") }
 					.filter { !it.toString().isBlank() }
 					.toList()
