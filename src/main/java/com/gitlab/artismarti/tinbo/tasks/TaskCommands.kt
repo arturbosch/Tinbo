@@ -7,13 +7,14 @@ import com.gitlab.artismarti.tinbo.config.Defaults
 import com.gitlab.artismarti.tinbo.config.ModeAdvisor
 import com.gitlab.artismarti.tinbo.nullIfEmpty
 import com.gitlab.artismarti.tinbo.orDefault
-import com.gitlab.artismarti.tinbo.orThrow
 import com.gitlab.artismarti.tinbo.utils.DateTimeFormatters
+import com.gitlab.artismarti.tinbo.utils.dateTimeFormatter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
+import java.time.LocalDateTime
 import java.time.format.DateTimeParseException
 
 /**
@@ -38,7 +39,8 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor) :
 			val message = console.readLine("Enter a message: ")
 			val location = console.readLine("Enter a location: ")
 			val description = console.readLine("Enter a description: ")
-			val startTime = console.readLine("Enter a start time (yyyy-MM-dd HH:mm): ").orThrow()
+			val startTime = console.readLine("Enter a start time (yyyy-MM-dd HH:mm): ")
+					.orDefault(LocalDateTime.now().format(dateTimeFormatter))
 			val endTime = console.readLine("Enter a end time (yyyy-MM-dd HH:mm): ")
 			addTask(message, category, location, description, startTime, endTime)
 		}
