@@ -1,5 +1,6 @@
 package com.gitlab.artismarti.tinbo.plugins
 
+import com.gitlab.artismarti.tinbo.common.Command
 import com.gitlab.artismarti.tinbo.config.HomeFolder
 import com.gitlab.artismarti.tinbo.utils.printlnInfo
 import org.apache.log4j.LogManager
@@ -15,7 +16,8 @@ import javax.annotation.PostConstruct
  * @author artur
  */
 @Component
-class PluginRegistry @Autowired constructor(val shell: JLineShellComponent) : ClassLoader() {
+class PluginRegistry @Autowired constructor(val shell: JLineShellComponent) :
+		ClassLoader(Command::class.java.classLoader) {
 
 	private val LOGGER = LogManager.getLogger(javaClass)
 
@@ -51,7 +53,9 @@ class PluginRegistry @Autowired constructor(val shell: JLineShellComponent) : Cl
 				if (registerClass(bytes, className, classNames)) successfulPlugins.add(className)
 			}
 		}
-		printlnInfo("Successfully loaded plugins: ${successfulPlugins.joinToString(", ")}")
+		if (successfulPlugins.isNotEmpty()) {
+			printlnInfo("Successfully loaded plugins: ${successfulPlugins.joinToString(", ")}")
+		}
 	}
 
 	private fun registerClass(bytes: ByteArray, className: String, classNames: List<String>): Boolean {
@@ -74,7 +78,6 @@ class PluginRegistry @Autowired constructor(val shell: JLineShellComponent) : Cl
 
 	fun registerPlugin(command: CommandMarker) {
 		shell.simpleParser.add(command)
-		shell.simpleParser.commandMarkers.forEach { println(it) }
 	}
 
 }
