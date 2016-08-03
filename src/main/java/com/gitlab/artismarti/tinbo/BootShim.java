@@ -1,8 +1,6 @@
 package com.gitlab.artismarti.tinbo;
 
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.shell.CommandLine;
@@ -32,30 +30,8 @@ public class BootShim {
 			throw new ShellException(e.getMessage(), e);
 		}
 
-		this.configureApplicationContext(this.ctx);
 		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner((BeanDefinitionRegistry) this.ctx);
-//		if (commandLine.getDisableInternalCommands()) {
-			scanner.scan("org.springframework.shell.converters", "org.springframework.shell.plugin.support");
-//		} else {
-//			scanner.scan("org.springframework.shell.commands", "org.springframework.shell.converters", "org.springframework.shell.plugin.support");
-//		}
-
-	}
-
-	private void configureApplicationContext(ConfigurableApplicationContext context) {
-		this.createAndRegisterBeanDefinition(context, JLineShellComponent.class, "shell");
-		//		context.getBeanFactory().registerSingleton("commandLine", commandLine);
-	}
-
-	private void createAndRegisterBeanDefinition(ConfigurableApplicationContext context, Class<?> clazz, String name) {
-		RootBeanDefinition rbd = new RootBeanDefinition();
-		rbd.setBeanClass(clazz);
-		DefaultListableBeanFactory bf = (DefaultListableBeanFactory) context.getBeanFactory();
-		if (name != null) {
-			bf.registerBeanDefinition(name, rbd);
-		} else {
-			bf.registerBeanDefinition(clazz.getSimpleName(), rbd);
-		}
+		scanner.scan("org.springframework.shell.converters", "org.springframework.shell.plugin.support");
 
 	}
 

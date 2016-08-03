@@ -4,8 +4,6 @@ import com.gitlab.artismarti.tinbo.config.HomeFolder
 import com.gitlab.artismarti.tinbo.utils.printlnInfo
 import org.apache.log4j.LogManager
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.support.BeanDefinitionRegistry
-import org.springframework.context.ApplicationContext
 import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.JLineShellComponent
 import org.springframework.stereotype.Component
@@ -17,8 +15,7 @@ import javax.annotation.PostConstruct
  * @author artur
  */
 @Component
-class PluginRegistry @Autowired constructor(val context: ApplicationContext,
-											val shell: JLineShellComponent) : ClassLoader() {
+class PluginRegistry @Autowired constructor(val shell: JLineShellComponent) : ClassLoader() {
 
 	private val LOGGER = LogManager.getLogger(javaClass)
 
