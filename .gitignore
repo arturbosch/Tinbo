@@ -154,3 +154,4 @@ sympy-plots-for-*.tex/
 ## Maven
 target/
 
+/classes/
