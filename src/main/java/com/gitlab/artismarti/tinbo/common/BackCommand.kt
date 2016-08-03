@@ -21,7 +21,7 @@ class BackCommand @Autowired constructor(val promptProvider: PromptProvider) : C
 		return !ModeAdvisor.isStartMode()
 	}
 
-	@CliCommand("back", "b", help = "Exits current mode and enters start mode where you have access to all other modes.")
+	@CliCommand("back", "..", help = "Exits current mode and enters start mode where you have access to all other modes.")
 	fun startMode() {
 		ModeAdvisor.setStartMode()
 		promptProvider.promptText = "tinbo"
