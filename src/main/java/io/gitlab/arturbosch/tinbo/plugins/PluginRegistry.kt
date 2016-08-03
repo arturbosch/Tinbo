@@ -59,19 +59,19 @@ class PluginRegistry @Autowired constructor(val shell: JLineShellComponent) :
 	}
 
 	private fun registerClass(bytes: ByteArray, className: String, classNames: List<String>): Boolean {
-		return try {
+		try {
 			val clazz = defineClass(classNames.first { it.toString().contains(className) }, bytes, 0, bytes.size)
 			val newInstance = clazz.newInstance() as CommandMarker
 			registerPlugin(newInstance)
-			true
-		} catch (e: RuntimeException) {
-			val message = "Fatal exception was thrown during instantiation of plugin $className: ${e.message}"
+			return true
+		} catch (e: Throwable) {
+			val message = "Fatal exception was thrown during instantiation of plugin $className: ${e.cause}"
 			logError(e, message)
-			false
+			return false
 		}
 	}
 
-	private fun logError(e: RuntimeException, message: String) {
+	private fun logError(e: Throwable, message: String) {
 		printlnInfo(message)
 		LOGGER.error(message, e)
 	}
