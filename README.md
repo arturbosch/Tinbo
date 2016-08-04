@@ -63,7 +63,7 @@ a shell like experience.
 
 ### Plugins
 
-- Implement basic support for plugins
+- <s>Implement basic support for plugins<s>
 - Allow plugins as kotlin/groovy commands in the tinbo directory 
 
 # Changelog
@@ -94,3 +94,8 @@ a shell like experience.
 ### 1.0.M5
 
 - support expenditure and various summaries
+
+### 1.0.M6
+
+- small enhancements and convenience commands
+- baseline to support plugins
