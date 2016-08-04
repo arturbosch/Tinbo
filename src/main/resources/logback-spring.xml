@@ -8,8 +8,8 @@
         </layout>
     </appender>
 
-    <logger name="com.gitlab.artismarti.tinbo.config" level="debug"/>
-    <logger name="com.gitlab.artismarti.tinbo.start" level="debug"/>
+    <logger name="io.gitlab.arturbosch.tinbo.config" level="debug"/>
+    <logger name="io.gitlab.arturbosch.tinbo.start" level="debug"/>
 
     <root level="error">
         <appender-ref ref="FILE"/>
