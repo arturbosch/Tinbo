@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.notes
 
-import io.gitlab.arturbosch.tinbo.common.Data
+import io.gitlab.arturbosch.tinbo.model.Data
 import io.gitlab.arturbosch.tinbo.config.Defaults
 import org.springframework.stereotype.Component
 

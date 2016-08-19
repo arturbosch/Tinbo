@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.notes
 
-import io.gitlab.arturbosch.tinbo.common.AbstractExecutor
+import io.gitlab.arturbosch.tinbo.model.AbstractExecutor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

@@ -1,8 +1,8 @@
 package io.gitlab.arturbosch.tinbo.finance
 
 import io.gitlab.arturbosch.tinbo.TiNBo
-import io.gitlab.arturbosch.tinbo.common.AbstractDataHolder
-import io.gitlab.arturbosch.tinbo.common.AbstractPersister
+import io.gitlab.arturbosch.tinbo.model.AbstractDataHolder
+import io.gitlab.arturbosch.tinbo.model.AbstractPersister
 import io.gitlab.arturbosch.tinbo.config.ConfigDefaults
 import io.gitlab.arturbosch.tinbo.config.Defaults
 import io.gitlab.arturbosch.tinbo.config.HomeFolder

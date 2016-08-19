@@ -1,5 +1,6 @@
 package io.gitlab.arturbosch.tinbo.common
 
+import io.gitlab.arturbosch.tinbo.api.Command
 import org.springframework.shell.core.ExitShellRequest
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.stereotype.Component

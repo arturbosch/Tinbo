@@ -1,5 +1,10 @@
 package io.gitlab.arturbosch.tinbo.common
 
+import io.gitlab.arturbosch.tinbo.api.Editable
+import io.gitlab.arturbosch.tinbo.model.AbstractExecutor
+import io.gitlab.arturbosch.tinbo.model.Data
+import io.gitlab.arturbosch.tinbo.model.DummyEntry
+import io.gitlab.arturbosch.tinbo.model.Entry
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
 import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired

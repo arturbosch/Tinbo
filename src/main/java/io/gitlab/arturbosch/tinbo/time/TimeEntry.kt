@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.time
 
-import io.gitlab.arturbosch.tinbo.common.Entry
+import io.gitlab.arturbosch.tinbo.model.Entry
 import io.gitlab.arturbosch.tinbo.spaceIfEmpty
 import io.gitlab.arturbosch.tinbo.toTimeString
 import io.gitlab.arturbosch.tinbo.utils.dateFormatter

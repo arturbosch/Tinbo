@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.time
 
-import io.gitlab.arturbosch.tinbo.common.DummyEntry
+import io.gitlab.arturbosch.tinbo.model.DummyEntry
 import java.time.LocalDate
 
 /**

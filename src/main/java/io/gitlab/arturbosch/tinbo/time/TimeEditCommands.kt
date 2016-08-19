@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.time
 
 import io.gitlab.arturbosch.tinbo.TiNBo
-import io.gitlab.arturbosch.tinbo.common.Command
+import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.common.EditableCommands
 import io.gitlab.arturbosch.tinbo.config.Defaults
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
@@ -40,15 +40,17 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 			val message = console.readLine("Enter a message: ")
 			val date = console.readLine("Enter a date (yyyy-mm-dd), leave empty for today: ")
 			try {
-				val hours = console.readLine("Enter amount of spent hours: ").toLong()
-				val mins = console.readLine("Enter amount of spent minutes: ").toLong()
-				val seconds = console.readLine("Enter amount of spent seconds: ").toLong()
+				val hours = readNumber("Enter amount of spent hours: ")
+				val mins = readNumber("Enter amount of spent minutes: ")
+				val seconds = readNumber("Enter amount of spent seconds: ")
 				addTime(hours, mins, seconds, category, message, date)
 			} catch(e: NumberFormatException) {
 				"Could not parse given time values. Use numbers only!"
 			}
 		}
 	}
+
+	private fun readNumber(message: String) = console.readLine(message).orDefault("0").toLong()
 
 	@CliCommand("newTime", "addTime", help = "Adds a new time entry without executing a timer.")
 	fun addTime(@CliOption(key = arrayOf("hours", "h"),

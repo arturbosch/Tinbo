@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.plugins
 
-import io.gitlab.arturbosch.tinbo.common.Command
+import io.gitlab.arturbosch.tinbo.api.Command
 import org.springframework.stereotype.Component
 
 /**

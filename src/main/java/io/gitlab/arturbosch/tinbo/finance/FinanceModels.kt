@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.finance
 
 import io.gitlab.arturbosch.tinbo.TiNBo
-import io.gitlab.arturbosch.tinbo.common.Data
-import io.gitlab.arturbosch.tinbo.common.DummyEntry
-import io.gitlab.arturbosch.tinbo.common.Entry
+import io.gitlab.arturbosch.tinbo.model.Data
+import io.gitlab.arturbosch.tinbo.model.DummyEntry
+import io.gitlab.arturbosch.tinbo.model.Entry
 import io.gitlab.arturbosch.tinbo.config.CATEGORY_NAME_DEFAULT
 import io.gitlab.arturbosch.tinbo.config.ConfigDefaults
 import io.gitlab.arturbosch.tinbo.config.Defaults

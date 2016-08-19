@@ -1,5 +1,6 @@
 package io.gitlab.arturbosch.tinbo.common
 
+import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
 import io.gitlab.arturbosch.tinbo.providers.PromptProvider
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo

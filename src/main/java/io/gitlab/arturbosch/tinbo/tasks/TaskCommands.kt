@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.tasks
 
 import io.gitlab.arturbosch.tinbo.TiNBo
-import io.gitlab.arturbosch.tinbo.common.Command
+import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.common.EditableCommands
 import io.gitlab.arturbosch.tinbo.config.Defaults
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor

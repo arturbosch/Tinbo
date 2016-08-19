@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.tasks
 
 import io.gitlab.arturbosch.tinbo.TiNBo
-import io.gitlab.arturbosch.tinbo.common.AbstractDataHolder
+import io.gitlab.arturbosch.tinbo.model.AbstractDataHolder
 import io.gitlab.arturbosch.tinbo.config.ConfigDefaults
 import io.gitlab.arturbosch.tinbo.config.Defaults
 import org.springframework.beans.factory.annotation.Autowired

@@ -1,5 +1,6 @@
 package io.gitlab.arturbosch.tinbo.common
 
+import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.config.Mode
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
 import org.springframework.context.ApplicationContext

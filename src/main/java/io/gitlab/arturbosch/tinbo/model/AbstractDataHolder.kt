@@ -1,4 +1,4 @@
-package io.gitlab.arturbosch.tinbo.common
+package io.gitlab.arturbosch.tinbo.model
 
 import io.gitlab.arturbosch.tinbo.utils.DelegateExt
 import java.nio.file.Files

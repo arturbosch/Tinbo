@@ -1,5 +1,8 @@
 package io.gitlab.arturbosch.tinbo.common
 
+import io.gitlab.arturbosch.tinbo.api.Command
+import io.gitlab.arturbosch.tinbo.api.Editable
+import io.gitlab.arturbosch.tinbo.api.Summarizable
 import org.springframework.stereotype.Component
 
 /**

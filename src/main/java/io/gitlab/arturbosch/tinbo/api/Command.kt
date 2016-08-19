@@ -1,4 +1,4 @@
-package io.gitlab.arturbosch.tinbo.common
+package io.gitlab.arturbosch.tinbo.api
 
 import org.springframework.shell.core.CommandMarker
 

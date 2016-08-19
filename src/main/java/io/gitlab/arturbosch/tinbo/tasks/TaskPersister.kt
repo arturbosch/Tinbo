@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.tasks
 
-import io.gitlab.arturbosch.tinbo.common.AbstractPersister
+import io.gitlab.arturbosch.tinbo.model.AbstractPersister
 import io.gitlab.arturbosch.tinbo.config.ConfigDefaults
 import io.gitlab.arturbosch.tinbo.config.HomeFolder
 import org.springframework.stereotype.Component

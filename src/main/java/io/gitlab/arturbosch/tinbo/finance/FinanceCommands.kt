@@ -1,8 +1,8 @@
 package io.gitlab.arturbosch.tinbo.finance
 
-import io.gitlab.arturbosch.tinbo.common.Command
+import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.common.EditableCommands
-import io.gitlab.arturbosch.tinbo.common.Summarizable
+import io.gitlab.arturbosch.tinbo.api.Summarizable
 import io.gitlab.arturbosch.tinbo.config.CATEGORY_NAME_DEFAULT
 import io.gitlab.arturbosch.tinbo.config.Defaults
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor

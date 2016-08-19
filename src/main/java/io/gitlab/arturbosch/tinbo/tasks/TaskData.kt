@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.tasks
 
-import io.gitlab.arturbosch.tinbo.common.Data
+import io.gitlab.arturbosch.tinbo.model.Data
 import io.gitlab.arturbosch.tinbo.config.Defaults
 import org.springframework.stereotype.Component
 

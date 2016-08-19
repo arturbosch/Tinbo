@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.csv
 
-import io.gitlab.arturbosch.tinbo.common.Entry
+import io.gitlab.arturbosch.tinbo.model.Entry
 import io.gitlab.arturbosch.tinbo.replaceSeparator
 import org.joda.money.Money
 import java.lang.reflect.Field

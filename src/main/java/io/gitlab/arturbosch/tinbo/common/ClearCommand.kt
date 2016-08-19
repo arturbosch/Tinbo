@@ -1,5 +1,6 @@
 package io.gitlab.arturbosch.tinbo.common
 
+import io.gitlab.arturbosch.tinbo.api.Command
 import org.fusesource.jansi.Ansi.ansi
 import org.fusesource.jansi.AnsiConsole
 import org.springframework.shell.core.annotation.CliCommand

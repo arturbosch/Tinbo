@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.finance
 
-import io.gitlab.arturbosch.tinbo.common.AbstractExecutor
+import io.gitlab.arturbosch.tinbo.model.AbstractExecutor
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
 import org.joda.money.Money
 import org.springframework.beans.factory.annotation.Autowired

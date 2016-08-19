@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.start
 
 import io.gitlab.arturbosch.tinbo.TiNBo
-import io.gitlab.arturbosch.tinbo.common.Command
+import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
 import io.gitlab.arturbosch.tinbo.config.Notification
 import org.springframework.beans.factory.annotation.Autowired

@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.time
 
 import io.gitlab.arturbosch.tinbo.TiNBo
-import io.gitlab.arturbosch.tinbo.common.AbstractExecutor
+import io.gitlab.arturbosch.tinbo.model.AbstractExecutor
 import io.gitlab.arturbosch.tinbo.config.Notification
 import io.gitlab.arturbosch.tinbo.orValue
 import io.gitlab.arturbosch.tinbo.utils.printInfo
