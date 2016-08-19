@@ -8,6 +8,16 @@ import org.springframework.stereotype.Component
 @Component
 object ModeAdvisor {
 
+	private var backBlocked = false
+
+	fun isBackBlocked() = backBlocked
+
+	fun setBackBlocked(value: Boolean) {
+		synchronized(this) {
+			backBlocked = value
+		}
+	}
+
 	private var mode = Mode.START
 
 	fun getMode() = mode
