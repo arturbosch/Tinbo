@@ -4,6 +4,7 @@ import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.config.Mode
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.ApplicationContext
 import org.springframework.shell.core.JLineShellComponent
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class HelpCommand @Autowired constructor(val shell: JLineShellComponent) : Command {
+class HelpCommand @Autowired constructor(val ctx: ApplicationContext) : Command {
 
 	override val id: String = "share"
 
@@ -23,6 +24,7 @@ class HelpCommand @Autowired constructor(val shell: JLineShellComponent) : Comma
 					help = "Command name to provide help for")
 			buffer: String?): String {
 
+		val shell = ctx.getBean("shell", JLineShellComponent::class.java)
 		val parser = shell.simpleParser
 
 		val commands: List<Command> = parser.commandMarkers.asSequence()
@@ -64,7 +66,7 @@ class HelpCommand @Autowired constructor(val shell: JLineShellComponent) : Comma
 			else -> emptyList()
 		}
 
-		return io.gitlab.arturbosch.tinbo.common.HelpParser(currentModeCommands).obtainHelp(buffer)
+		return HelpParser(currentModeCommands).obtainHelp(buffer)
 	}
 
 }
