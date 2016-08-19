@@ -3,8 +3,7 @@ package io.gitlab.arturbosch.tinbo.common
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.config.Mode
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
-import org.springframework.context.ApplicationContext
-import org.springframework.context.ApplicationContextAware
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.JLineShellComponent
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
@@ -14,11 +13,9 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class HelpCommand : Command, ApplicationContextAware {
+class HelpCommand @Autowired constructor(val shell: JLineShellComponent) : Command {
 
 	override val id: String = "share"
-
-	private lateinit var ctx: ApplicationContext
 
 	@CliCommand(value = "help", help = "List all commands usage")
 	fun obtainHelp(
@@ -26,7 +23,6 @@ class HelpCommand : Command, ApplicationContextAware {
 					help = "Command name to provide help for")
 			buffer: String?): String {
 
-		val shell = ctx.getBean("shell", JLineShellComponent::class.java)
 		val parser = shell.simpleParser
 
 		val commands: List<Command> = parser.commandMarkers.asSequence()
@@ -71,7 +67,4 @@ class HelpCommand : Command, ApplicationContextAware {
 		return io.gitlab.arturbosch.tinbo.common.HelpParser(currentModeCommands).obtainHelp(buffer)
 	}
 
-	override fun setApplicationContext(applicationContext: ApplicationContext) {
-		ctx = applicationContext
-	}
 }
