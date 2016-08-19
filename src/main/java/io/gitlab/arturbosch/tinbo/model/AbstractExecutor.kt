@@ -1,6 +1,7 @@
 package io.gitlab.arturbosch.tinbo.model
 
 import io.gitlab.arturbosch.tinbo.applyToString
+import io.gitlab.arturbosch.tinbo.csv.CSVTablePrinter
 import io.gitlab.arturbosch.tinbo.plusElementAtBeginning
 import io.gitlab.arturbosch.tinbo.replaceAt
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
@@ -12,7 +13,7 @@ import io.gitlab.arturbosch.tinbo.withIndexedColumn
 abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
 		private val dataHolder: AbstractDataHolder<E, D>) {
 
-	protected val csv = io.gitlab.arturbosch.tinbo.csv.CSVTablePrinter()
+	protected val csv = CSVTablePrinter()
 	protected var entriesInMemory: List<E> = listOf()
 
 	protected abstract val TABLE_HEADER: String
