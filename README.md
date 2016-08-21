@@ -63,7 +63,7 @@ a shell like experience.
 
 ### Plugins
 
-- <s>Implement basic support for plugins<s>
+- <s>Implement basic support for plugins</s>
 - Allow plugins as kotlin/groovy commands in the tinbo directory 
 
 # Changelog
