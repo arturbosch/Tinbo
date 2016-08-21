@@ -13,6 +13,7 @@ object HomeFolder {
 
 	const val CONFIG_NAME = "config.yaml"
 	const val PLUGINS: String = "plugins"
+	const val BACKUP: String = "backup"
 	const val PLUGIN_REGISTRY: String = "PluginRegistry"
 
 	private val mainDir = "TiNBo"
