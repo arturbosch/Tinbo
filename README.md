@@ -5,6 +5,15 @@ support many different kinds of trackings. From note and task taking to time
 tracking and finance checking, everything should work fast and easy through 
 a shell like experience.
 
+Development at `https://gitlab.com/arturbosch/Tinbo`
+Mirror at `https://github.com/arturbosch/TiNBo`
+
+# Build
+
+Download from bintray `https://bintray.com/arturbosch/software/TiNBo/`
+or run `gradle clean build` to build a executable jar.
+
+Current version is [M6.2](https://bintray.com/arturbosch/software/TiNBo/M6.2#files)
 # Features
 
 ### General
