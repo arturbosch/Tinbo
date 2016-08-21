@@ -1,4 +1,4 @@
-package io.gitlab.arturbosch.tinbo.start
+package io.gitlab.arturbosch.tinbo.commands
 
 import io.gitlab.arturbosch.tinbo.TiNBo
 import io.gitlab.arturbosch.tinbo.api.Command

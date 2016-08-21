@@ -1,4 +1,4 @@
-package io.gitlab.arturbosch.tinbo.common
+package io.gitlab.arturbosch.tinbo.commands
 
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.api.Editable
