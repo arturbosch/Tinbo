@@ -23,13 +23,13 @@ class BackCommand @Autowired constructor(val promptProvider: PromptProvider) : C
 	}
 
 	@CliCommand("back", "..", help = "Exits current mode and enters start mode where you have access to all other modes.")
-	fun startMode(): String {
+	fun startMode() {
 		if (ModeAdvisor.isBackBlocked()) {
-			return "Can't change mode when editing... use save or cancel."
+			printlnInfo("Can't change mode when editing... use save or cancel.")
 		} else {
 			ModeAdvisor.setStartMode()
 			promptProvider.promptText = "tinbo"
-			return "Entering tinbo mode..."
+			printlnInfo("Entering tinbo mode...")
 		}
 	}
 }
