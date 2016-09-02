@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.math.RoundingMode
 import java.time.LocalDate
+import java.time.Month
 
 /**
  * @author artur
@@ -26,19 +27,37 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) 
 
 	fun sumCategories(categories: List<String>): String {
 		val currentMonth = LocalDate.now().month
-		printlnInfo("Summary for current month: $currentMonth")
-		val summaries =
-				if (categories.isNotEmpty()) {
-					dataHolder.getEntries().asSequence()
-							.filter { it.month.equals(currentMonth) }
-							.filter { categories.contains(it.category) }
-							.toSummaryStringList()
-				} else {
-					dataHolder.getEntries().asSequence()
-							.filter { it.month.equals(currentMonth) }
-							.toSummaryStringList()
-				}
-		return tableAsString(summaries, "No.;Category;Spent")
+		var summariesReturnString = ""
+
+		val beforeLastMonth = currentMonth.minus(2)
+		summaryForMonth(categories, beforeLastMonth).ifNotEmpty {
+			summariesReturnString += "Summary for month: $beforeLastMonth" + "\n"
+			summariesReturnString += tableAsString(this, "No.;Category;Spent") + "\n\n"
+		}
+
+		val lastMonth = currentMonth.minus(1)
+		summaryForMonth(categories, lastMonth).ifNotEmpty {
+			summariesReturnString += "Summary for month: $lastMonth" + "\n"
+			summariesReturnString += tableAsString(this, "No.;Category;Spent") + "\n\n"
+		}
+
+		summariesReturnString += "Summary for current month: $currentMonth" + "\n"
+		val summaryCurrent = summaryForMonth(categories, currentMonth)
+		summariesReturnString += tableAsString(summaryCurrent, "No.;Category;Spent")
+		return summariesReturnString
+	}
+
+	private fun summaryForMonth(categories: List<String>, currentMonth: Month): List<String> {
+		return if (categories.isNotEmpty()) {
+			dataHolder.getEntries().asSequence()
+					.filter { it.month.equals(currentMonth) }
+					.filter { categories.contains(it.category) }
+					.toSummaryStringList()
+		} else {
+			dataHolder.getEntries().asSequence()
+					.filter { it.month.equals(currentMonth) }
+					.toSummaryStringList()
+		}
 	}
 
 	fun yearSummary(date: LocalDate): String {
@@ -89,4 +108,10 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) 
 
 	private fun byYear(date: LocalDate, it: FinanceEntry) = it.dateTime.toLocalDate().year.equals(date.year)
 
+}
+
+fun <E> List<E>.ifNotEmpty(function: List<E>.() -> Unit) {
+	if (this.isNotEmpty()) {
+		function.invoke(this)
+	}
 }
