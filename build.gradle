@@ -16,6 +16,11 @@ buildscript {
 	}
 }
 
+plugins {
+	id 'com.github.ben-manes.versions' version '0.13.0'
+//	id "com.github.hierynomus.license" version "0.13.1"
+}
+
 apply plugin: 'kotlin'
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -23,7 +28,7 @@ apply plugin: 'spring-boot'
 
 jar {
 	baseName = 'TiNBo'
-	version = '1.0.M6.2'
+	version = '1.0.M6.5'
 }
 
 repositories {
