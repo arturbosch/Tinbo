@@ -64,7 +64,7 @@ fun LocalDate?.orValue(dateTime: LocalDate): LocalDate = if (this == null) dateT
 
 fun String.orValue(value: String): String = if (this.isEmpty()) value else this
 fun String?.orDefault(value: String): String = if (this.isNullOrEmpty()) value else this!!
-fun Long.orValue(hours: Long): Long = if (this.equals(-1L)) hours else this
+fun Long.orValue(hours: Long): Long = if (this == -1L) hours else this
 
 fun String.replaceSeparator(): String {
 	return this.replace(";", ".,")
@@ -73,3 +73,10 @@ fun String.replaceSeparator(): String {
 fun String.orDefaultMonth(): Int = this.toIntOrDefault { LocalDate.now().month.value }
 fun String?.toLongOrNull(): Long? = if (this.isNullOrEmpty()) null else this?.toLong()
 fun String?.nullIfEmpty(): String? = if (this.isNullOrEmpty()) null else this
+
+
+fun <E> List<E>.ifNotEmpty(function: List<E>.() -> Unit) {
+	if (this.isNotEmpty()) {
+		function.invoke(this)
+	}
+}

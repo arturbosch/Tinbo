@@ -1,5 +1,6 @@
 package io.gitlab.arturbosch.tinbo.finance
 
+import io.gitlab.arturbosch.tinbo.ifNotEmpty
 import io.gitlab.arturbosch.tinbo.model.AbstractExecutor
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
 import org.joda.money.Money
@@ -118,8 +119,3 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) 
 
 }
 
-fun <E> List<E>.ifNotEmpty(function: List<E>.() -> Unit) {
-	if (this.isNotEmpty()) {
-		function.invoke(this)
-	}
-}
