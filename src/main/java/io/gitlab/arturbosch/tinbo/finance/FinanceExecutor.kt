@@ -50,12 +50,12 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) 
 	private fun summaryForMonth(categories: List<String>, currentMonth: Month): List<String> {
 		return if (categories.isNotEmpty()) {
 			dataHolder.getEntries().asSequence()
-					.filter { it.month.equals(currentMonth) }
+					.filter { it.month == currentMonth }
 					.filter { categories.contains(it.category) }
 					.toSummaryStringList()
 		} else {
 			dataHolder.getEntries().asSequence()
-					.filter { it.month.equals(currentMonth) }
+					.filter { it.month == currentMonth }
 					.toSummaryStringList()
 		}
 	}
@@ -75,7 +75,7 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) 
 					val value = it.value
 					val times = value.groupBy { it.month }.keys.size
 					val money = value.map { it.moneyValue }
-							.reduce { money, money2 -> money.plus(money2) }
+							.reduce(Money::plus)
 					money.dividedBy(times.toLong(), RoundingMode.DOWN)
 				})
 
@@ -91,10 +91,10 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) 
 					val times = monthToFinances.keys.size
 					val monthToMoney = monthToFinances.mapValues {
 						it.value.map { it.moneyValue }
-								.reduce { money, money2 -> money.plus(money2) }
+								.reduce(Money::plus)
 					}
 
-					val mean = monthToMoney.values.reduce { money, money2 -> money.plus(money2) }
+					val mean = monthToMoney.values.reduce(Money::plus)
 							.dividedBy(times.toLong(), RoundingMode.DOWN)
 
 					val deviation = Math.sqrt(monthToMoney.values.map { Math.pow((it.minus(mean)).amount.toDouble(), 2.0) }
@@ -106,7 +106,7 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) 
 		return tableAsString(entries, "No.;Category;Deviation")
 	}
 
-	private fun byYear(date: LocalDate, it: FinanceEntry) = it.dateTime.toLocalDate().year.equals(date.year)
+	private fun byYear(date: LocalDate, it: FinanceEntry) = it.dateTime.toLocalDate().year == date.year
 
 }
 
