@@ -10,7 +10,7 @@ import java.time.LocalDate
 import java.time.Month
 
 /**
- * @author artur
+ * @author Artur Bosch
  */
 
 @Component
@@ -31,32 +31,40 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) 
 
 		val beforeLastMonth = currentMonth.minus(2)
 		summaryForMonth(categories, beforeLastMonth).ifNotEmpty {
+			val financeSequence = this.asSequence()
+			val summaryStringList = financeSequence.toSummaryStringList()
 			summariesReturnString += "Summary for month: $beforeLastMonth" + "\n"
-			summariesReturnString += tableAsString(this, "No.;Category;Spent") + "\n\n"
+			summariesReturnString += tableAsString(summaryStringList, "No.;Category;Spent") +
+					"\nTotal sum: ${financeSequence.sum()}" + "\n\n"
 		}
 
 		val lastMonth = currentMonth.minus(1)
 		summaryForMonth(categories, lastMonth).ifNotEmpty {
+			val financeSequence = this.asSequence()
+			val summaryStringList = financeSequence.toSummaryStringList()
 			summariesReturnString += "Summary for month: $lastMonth" + "\n"
-			summariesReturnString += tableAsString(this, "No.;Category;Spent") + "\n\n"
+			summariesReturnString += tableAsString(summaryStringList, "No.;Category;Spent") +
+					"\nTotal sum: ${financeSequence.sum()}" + "\n\n"
 		}
 
 		summariesReturnString += "Summary for current month: $currentMonth" + "\n"
-		val summaryCurrent = summaryForMonth(categories, currentMonth)
-		summariesReturnString += tableAsString(summaryCurrent, "No.;Category;Spent")
-		return summariesReturnString
+		val summaryCurrent = summaryForMonth(categories, currentMonth).asSequence()
+		summariesReturnString += tableAsString(summaryCurrent.toSummaryStringList(), "No.;Category;Spent")
+		return summariesReturnString + "\nTotal sum: ${summaryCurrent.sum()}" + "\n\n"
 	}
 
-	private fun summaryForMonth(categories: List<String>, currentMonth: Month): List<String> {
+	private fun Sequence<FinanceEntry>.sum() = this.map { it.moneyValue }.reduce(Money::plus)
+
+	private fun summaryForMonth(categories: List<String>, currentMonth: Month): List<FinanceEntry> {
 		return if (categories.isNotEmpty()) {
 			dataHolder.getEntries().asSequence()
 					.filter { it.month == currentMonth }
 					.filter { categories.contains(it.category) }
-					.toSummaryStringList()
+					.toList()
 		} else {
 			dataHolder.getEntries().asSequence()
 					.filter { it.month == currentMonth }
-					.toSummaryStringList()
+					.toList()
 		}
 	}
 

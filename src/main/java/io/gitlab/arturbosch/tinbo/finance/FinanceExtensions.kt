@@ -1,13 +1,15 @@
 package io.gitlab.arturbosch.tinbo.finance
 
+import org.joda.money.Money
+
 /**
- * @author artur
+ * @author Artur Bosch
  */
 
 fun Sequence<FinanceEntry>.toSummaryStringList(): List<String> {
 	return this.toSummaryStringList({ it.category }, {
 		it.value.map { it.moneyValue }
-				.reduce { money, money2 -> money.plus(money2) }
+				.reduce(Money::plus)
 	})
 }
 
@@ -15,7 +17,7 @@ inline fun <K> Sequence<FinanceEntry>.toSummaryStringList(
 		keySelector: (FinanceEntry) -> K): List<String> {
 	return this.toSummaryStringList(keySelector, {
 		it.value.map { it.moneyValue }
-				.reduce { money, money2 -> money.plus(money2) }
+				.reduce(Money::plus)
 	})
 }
 
