@@ -108,3 +108,4 @@ Current version is [M6.2](https://bintray.com/arturbosch/software/TiNBo/M6.2#fil
 
 - small enhancements and convenience commands
 - baseline to support plugins
+- backup commands (local, remote -> https://gitlab.com/arturbosch/TinboServer)
