@@ -34,8 +34,12 @@ object HomeFolder {
 		return path
 	}
 
-	fun getFile(subPathInTinboDir: Path): Path {
-		return checkAndCreate(subPathInTinboDir, { newFile -> Files.createFile(newFile) })
+	fun getFile(filePath: Path): Path {
+		return checkAndCreate(filePath, { newFile -> Files.createFile(newFile) })
+	}
+
+	fun getFileResolved(subPathInTinboDir: String): Path {
+		return getFile(get().resolve(subPathInTinboDir))
 	}
 
 	private fun checkAndCreate(path: Path, createFile: (Path) -> Path): Path {

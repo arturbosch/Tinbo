@@ -1,16 +1,26 @@
 package io.gitlab.arturbosch.tinbo.common
 
+import io.gitlab.arturbosch.tinbo.TiNBo
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.api.MarkAsPersister
 import io.gitlab.arturbosch.tinbo.config.HomeFolder
+import io.gitlab.arturbosch.tinbo.utils.HttpClient
+import io.gitlab.arturbosch.tinbo.utils.dateTimeFormatter
+import io.gitlab.arturbosch.tinbo.utils.printlnInfo
+import org.apache.log4j.LogManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
+import java.io.IOException
 import java.nio.file.FileVisitOption
 import java.nio.file.Files
 import java.nio.file.Path
+import java.time.LocalDateTime
+import java.util.Base64
 import java.util.Comparator
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 /**
  * @author Artur Bosch
@@ -18,6 +28,8 @@ import java.util.Comparator
 @Component
 class BackupCommand @Autowired constructor(val persisters: List<MarkAsPersister>) : Command {
 	override val id: String = "share"
+
+	private val logger = LogManager.getLogger(javaClass)
 
 	@CliCommand("backup local", help = "Stores all data sets into the backup folder.")
 	fun backupLocal(): String {
@@ -50,8 +62,66 @@ class BackupCommand @Autowired constructor(val persisters: List<MarkAsPersister>
 	@CliCommand("backup remote", help = "Uploads all data sets to your specified TiNBo server.")
 	fun backupRemote(@CliOption(key = arrayOf("", "url"),
 			specifiedDefaultValue = "",
-			unspecifiedDefaultValue = "") url: String): String {
-		return "Backup'ed data to remote tinbo server: $url."
+			unspecifiedDefaultValue = "") url: String) {
+
+		backupLocal()
+
+		val config = TiNBo.config.getKey("remote-backup")
+		val backupName = config.getOrElse("name", { "backup" }) + "-" +
+				dateTimeFormatter.format(LocalDateTime.now())
+		val backupServer =
+				if (url.isEmpty()) {
+					config["server"] ?:
+							throw BackUpServerError("No server url specified in tinbo config!")
+				} else url
+		val backupCredentials = config["credentials"] ?:
+				throw BackUpServerError("No credentials specified in tinbo config!")
+
+		val zippedBackup = zipBackup(backupName)
+		uploadZip(backupCredentials, backupServer, zippedBackup)
+		Files.deleteIfExists(zippedBackup)
 	}
 
+	private fun uploadZip(backupCredentials: String, backupServer: String, zippedBackup: Path) {
+		val encoded = "Basic " + Base64.getEncoder()
+				.encode(backupCredentials.toByteArray())
+				.toString(Charsets.ISO_8859_1)
+		val url = backupServer + "/backup"
+		val headers = mapOf("Authorization" to encoded)
+		try {
+			val response = HttpClient(url, "UTF-8", headers)
+					.addFilePart(zippedBackup.fileName.toString(), zippedBackup)
+					.execute()
+			if (response.failure()) {
+				val error = response.errorBody()
+				printlnInfo("${error.message} (${response.status})")
+				logger.error(error.message, error)
+			} else {
+				printlnInfo("Successfully backup'ed data (${response.status}).")
+			}
+		} catch (ex: IOException) {
+			val message = "Could not establish connection to tinbo server."
+			printlnInfo(message)
+			logger.error(message, ex)
+		}
+	}
+
+	private fun zipBackup(backupName: String): Path {
+		val backupDir = HomeFolder.getDirectory(HomeFolder.BACKUP).toAbsolutePath()
+		val zipped = HomeFolder.getFileResolved("$backupName.zip")
+
+		with(ZipOutputStream(Files.newOutputStream(zipped))) {
+			Files.walk(backupDir)
+					.filter { !Files.isDirectory(it) }
+					.forEach {
+						putNextEntry(ZipEntry(it.fileName.toString()))
+						Files.copy(it, this)
+						closeEntry()
+					}
+			close()
+		}
+		return zipped
+	}
+
+	private class BackUpServerError(message: String) : RuntimeException(message)
 }
