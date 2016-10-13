@@ -27,7 +27,9 @@ open class NoteCommands @Autowired constructor(executor: NoteExecutor) :
 	}
 
 	override fun add(): String {
-		return addNote(console.readLine("Enter a message: "))
+		return whileNotInEditMode {
+			addNote(console.readLine("Enter a message: "))
+		}
 	}
 
 	@CliCommand(value = "note", help = "Adds a new note.")

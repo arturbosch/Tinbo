@@ -93,16 +93,17 @@ class FinanceCommands @Autowired constructor(val financeExecutor: FinanceExecuto
 	}
 
 	override fun add(): String {
-		val month = Month.of(console.readLine("Enter a month as number from 1-12 (empty if this month): ").orDefaultMonth())
+		return whileNotInEditMode {
+			val month = Month.of(console.readLine("Enter a month as number from 1-12 (empty if this month): ").orDefaultMonth())
+			val category = console.readLine("Enter a category: ").orValue(CATEGORY_NAME_DEFAULT)
+			val message = console.readLine("Enter a message: ").orEmpty()
+			val money = Money.of(currencyUnit, console.readLine("Enter a money value: ").orThrow().toDouble())
+			val dateString = console.readLine("Enter a end time (yyyy-MM-dd HH:mm): ")
+			val dateTime = parseDateTime(dateString)
 
-		val category = console.readLine("Enter a category: ").orValue(CATEGORY_NAME_DEFAULT)
-		val message = console.readLine("Enter a message: ").orEmpty()
-		val money = Money.of(currencyUnit, console.readLine("Enter a money value: ").orThrow().toDouble())
-		val dateString = console.readLine("Enter a end time (yyyy-MM-dd HH:mm): ")
-		val dateTime = parseDateTime(dateString)
-
-		executor.addEntry(FinanceEntry(month, category, message, money, dateTime))
-		return SUCCESS_MESSAGE
+			executor.addEntry(FinanceEntry(month, category, message, money, dateTime))
+			SUCCESS_MESSAGE
+		}
 	}
 
 	private fun parseDateTime(dateString: String): LocalDateTime {
