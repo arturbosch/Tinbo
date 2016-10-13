@@ -51,7 +51,7 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) 
 		summariesReturnString += "Summary for current month: $currentMonth" + "\n"
 		val summaryCurrent = summaryForMonth(categories, currentMonth).asSequence()
 		summariesReturnString += tableAsString(summaryCurrent.toSummaryStringList(), "No.;Category;Spent")
-		return summariesReturnString + "\nTotal sum: ${summaryCurrent.sum()}" + "\n\n"
+		return summariesReturnString + "\nTotal sum: ${summaryCurrent.sum()}"
 	}
 
 	private fun Sequence<FinanceEntry>.sum() = this.map { it.moneyValue }.reduce(Money::plus)
