@@ -5,6 +5,8 @@ support many different kinds of trackings. From note and task taking to time
 tracking and finance checking, everything should work fast and easy through 
 a shell like experience.
 
+![tinbo](img/tinbostart.png "Tinbo - Welcome")
+
 Development at `https://gitlab.com/arturbosch/Tinbo`
 Mirror at `https://github.com/arturbosch/TiNBo`
 
@@ -29,6 +31,8 @@ Current version is [M6.2](https://bintray.com/arturbosch/software/TiNBo/M6.2#fil
 - list, filter and sum time entries
 - choose between fore- and background
 
+![tinbo](img/tinbotime.png "Tinbo - Time")
+
 ### Notes/Tasks mode
 
 - add, edit, delete, list notes/tasks
@@ -39,6 +43,8 @@ Current version is [M6.2](https://bintray.com/arturbosch/software/TiNBo/M6.2#fil
 - add, delete, list expenditure per month and categories
 - year for year summaries
 - sum, mean, deviation commands
+
+![tinbo](img/tinbofinance.png "Tinbo - Finance")
 
 # Todos
 
