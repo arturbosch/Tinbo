@@ -28,7 +28,7 @@ apply plugin: 'spring-boot'
 
 jar {
 	baseName = 'TiNBo'
-	version = '1.0.M6.3'
+	version = '1.0.M7'
 }
 
 repositories {
