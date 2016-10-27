@@ -47,6 +47,34 @@ Current version is [M7](https://bintray.com/arturbosch/software/TiNBo/M7#files)
 
 ![tinbo](img/tinbofinance.png "Tinbo - Finance")
 
+# Plugins
+
+M7 introduces an API which supports plugins. Follow this five steps guide 
+to create your own plugins:
+
+1. Create a new project with plugin-api as dependency (Take a look at tinbo-lloc-plugin for a gradle project).
+2. Create a class and extend TiNBoPlugin (e.g. `class LLOC : TiNBoPlugin { ... }`)
+3. Write your shell commands! (e.g. ``` @CliCommand("hello")
+                                       	fun execute(): String {
+                                       		return "Hello World"
+                                       	}
+                                       	```
+4. Create a file `io.gitlab.arturbosch.tinbo.plugins` in `resources/META-INF/services`
+and write down your fully qualified plugin names. (e.g. `io.gitlab.arturbosch.tinbo.lloc.LLOC`)
+5. Package up your plugin as a jar in the TiNBo/plugins folder and enjoy Tinbo!
+
+PS: If you use external dependency make sure to package them too. (e.g. with gradle: 
+`jar { from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } } }`)
+PS2: Mark your Kotlin/Tinbo dependency as provided/compileOnly for smaller jar files!
+```groovy
+dependencies {
+	compileOnly project(":plugin-api")
+	compile 'io.gitlab.arturbosch:lloc:1.4'
+	compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+```
+                                                                                     
+
 # Todos
 
 ### General
