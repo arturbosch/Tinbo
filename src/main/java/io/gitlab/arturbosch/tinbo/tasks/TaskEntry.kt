@@ -19,7 +19,7 @@ class TaskEntry(val message: String = "invalid",
 	override fun toString(): String {
 		return "${category.spaceIfEmpty()};${message.spaceIfEmpty()};${location.spaceIfEmpty()};" +
 				"${startTime.format(dateTimeFormatter)};${endTime.format(dateTimeFormatter)};" +
-				"${description.spaceIfEmpty()}"
+				description.spaceIfEmpty()
 	}
 
 	override fun compareTo(other: Entry): Int {

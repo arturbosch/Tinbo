@@ -29,7 +29,7 @@ class CSVDataExchange {
 	}
 
 	fun toCSV2(entries: List<Entry>): List<String> {
-		return entries.map { it.toString() }
+		return entries.map(Entry::toString)
 	}
 
 	fun <T : Entry> fromCSV(clazz: Class<T>, entriesAsString: List<String>): List<T> {

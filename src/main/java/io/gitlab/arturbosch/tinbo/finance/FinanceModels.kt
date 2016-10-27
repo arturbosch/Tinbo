@@ -40,7 +40,7 @@ class FinanceEntry(val month: Month = Month.JANUARY,
 
 	override fun toString(): String {
 		return "$month;${category.spaceIfEmpty()};${message.spaceIfEmpty()};" +
-				"${moneyValue.toString()};${dateTime.format(dateTimeFormatter)}"
+				"$moneyValue;${dateTime.format(dateTimeFormatter)}"
 	}
 
 }

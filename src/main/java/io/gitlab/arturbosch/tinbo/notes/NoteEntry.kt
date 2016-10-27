@@ -13,7 +13,7 @@ class NoteEntry(val message: String = "") : Entry() {
 	}
 
 	override fun toString(): String {
-		return "${message.spaceIfEmpty()}"
+		return message.spaceIfEmpty()
 	}
 
 	fun copy(message: String?): NoteEntry {
