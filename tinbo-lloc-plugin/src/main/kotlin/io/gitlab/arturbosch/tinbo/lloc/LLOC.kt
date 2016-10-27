@@ -24,7 +24,11 @@ class LLOC : TiNBoPlugin {
 	@CliCommand("plugin lloc", help = "Runs lloc over specified project path and return the logical lines of code.")
 	fun run(@CliOption(key = arrayOf("")) path: String?): String {
 		return path?.let {
-			val languageLocPairs = Files.walk(Paths.get(path))
+
+			val path1 = Paths.get(path)
+			if (Files.notExists(path1)) return "Specified path does not exist!"
+
+			val languageLocPairs = Files.walk(path1)
 					.filter { Files.isRegularFile(it) }
 					.map { path ->
 						val strategy = languages.find {
@@ -37,7 +41,10 @@ class LLOC : TiNBoPlugin {
 					.groupByTo(HashMap(), { it.first }, { it.second })
 					.map { it.key to it.value.sum() }
 
-			"Project: $path: \n ${languagePerLOC.map { "\t${it.first} - ${it.second}\n" }}"
+			"Project: $path:\n" + languagePerLOC.filterNot { it.first == "null" }
+					.joinToString(separator = "") { "\t${it.first} - ${it.second}\n" } +
+					"\nTotal LOC: ${languagePerLOC.sumBy { it.second }}"
+
 		} ?: "You have to specify a project path to count LOC."
 	}
 }
