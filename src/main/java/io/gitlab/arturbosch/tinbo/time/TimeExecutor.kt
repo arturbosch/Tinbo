@@ -22,7 +22,7 @@ open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolde
 	override val TABLE_HEADER: String
 		get() = "No.;Category;Date;HH:MM:SS;Notice"
 
-	private val SUMMARY_HEADER = "No.;Category;Spent"
+	val SUMMARY_HEADER = "No.;Category;Spent"
 
 	override fun newEntry(index: Int, dummy: DummyTime): TimeEntry {
 		val entry = entriesInMemory[index]

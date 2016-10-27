@@ -32,12 +32,12 @@ open class TimeDataHolder @Autowired constructor(persister: TimePersister) :
 		return summariesInternal(getEntries())
 	}
 
-	private fun summariesInternal(entries: List<TimeEntry>): List<String> {
+	fun summariesInternal(entries: List<TimeEntry>): List<String> {
 		val categoryToTimeString = entries.groupBy { it.category }.mapValues { sumTimesAsString(it.value) }
 		return categoryToTimeString.map { it.key + ";" + it.value }
 	}
 
-	private fun sumTimesAsString(value: List<TimeEntry>): String {
+	fun sumTimesAsString(value: List<TimeEntry>): String {
 		val seconds = value.map { it.seconds }.sum()
 		val (extraMinutes, realSeconds) = divAndMod(seconds)
 		val minutes = value.map { it.minutes }.sum().plus(extraMinutes)
