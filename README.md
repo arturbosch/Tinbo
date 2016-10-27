@@ -73,7 +73,7 @@ dependencies {
 	compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 ```
-                                                                                     
+PS3: If your using maven for plugin development, run `gradle publishToMavenLocal` in plugin-api folder first.                                                                      
 
 # Todos
 
