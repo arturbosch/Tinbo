@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.time
 
-import io.gitlab.arturbosch.tinbo.model.AbstractExecutor
+import io.gitlab.arturbosch.tinbo.model.CSVAwareExecutor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.time.LocalDate
@@ -10,14 +10,10 @@ import java.time.LocalDate
  */
 @Component
 open class WeekSummaryExecutor @Autowired constructor(val timeDataHolder: TimeDataHolder) :
-		AbstractExecutor<TimeEntry, TimeData, DummyTime>(timeDataHolder) {
+		CSVAwareExecutor() {
 
 	override val TABLE_HEADER: String
 		get() = "No.;Category;Spent"
-
-	override fun newEntry(index: Int, dummy: DummyTime): TimeEntry {
-		throw UnsupportedOperationException("not implemented")
-	}
 
 	fun sumAllCategories(): String {
 		val summaries = timeDataHolder.createSummaries()

@@ -1,7 +1,6 @@
 package io.gitlab.arturbosch.tinbo.model
 
 import io.gitlab.arturbosch.tinbo.applyToString
-import io.gitlab.arturbosch.tinbo.csv.CSVTablePrinter
 import io.gitlab.arturbosch.tinbo.plusElementAtBeginning
 import io.gitlab.arturbosch.tinbo.replaceAt
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
@@ -11,12 +10,9 @@ import io.gitlab.arturbosch.tinbo.withIndexedColumn
  * @author artur
  */
 abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
-		private val dataHolder: AbstractDataHolder<E, D>) {
+		private val dataHolder: AbstractDataHolder<E, D>) : CSVAwareExecutor() {
 
-	protected val csv = CSVTablePrinter()
 	protected var entriesInMemory: List<E> = listOf()
-
-	protected abstract val TABLE_HEADER: String
 
 	private val NEW_LINE = "\n"
 
@@ -99,11 +95,5 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
 		return dataHolder.getDataNames()
 	}
 
-	fun tableAsString(summaries: List<String>, header: String): String {
-		return csv.asTable(
-				summaries.withIndexedColumn()
-						.plusElementAtBeginning(header)
-		).joinToString(separator = "\n")
-	}
 }
 
