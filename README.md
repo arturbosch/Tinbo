@@ -3,7 +3,7 @@
 Ti(me)N(otes)B(urndown)o(mni - lat. everything) is a tool with the aim to 
 support many different kinds of trackings. From note and task taking to time
 tracking and finance checking, everything should work fast and easy through 
-a shell like experience.
+a shell like experience. 
 
 ![tinbo](img/tinbostart.png "Tinbo - Welcome")
 
@@ -15,7 +15,7 @@ Mirror at `https://github.com/arturbosch/TiNBo`
 Download from bintray `https://bintray.com/arturbosch/software/TiNBo/`
 or run `gradle clean build` to build a executable jar.
 
-Current version is [M6.2](https://bintray.com/arturbosch/software/TiNBo/M6.2#files)
+Current version is [M7](https://bintray.com/arturbosch/software/TiNBo/M7#files)
 # Features
 
 ### General
@@ -30,6 +30,7 @@ Current version is [M6.2](https://bintray.com/arturbosch/software/TiNBo/M6.2#fil
 - add categories and messages
 - list, filter and sum time entries
 - choose between fore- and background
+- week summaries
 
 ![tinbo](img/tinbotime.png "Tinbo - Time")
 
@@ -78,7 +79,7 @@ Current version is [M6.2](https://bintray.com/arturbosch/software/TiNBo/M6.2#fil
 
 ### Plugins
 
-- <s>Implement basic support for plugins</s>
+- <s>Implement basic support for plugins via ServiceLoader</s>
 - Allow plugins as kotlin/groovy commands in the tinbo directory 
 
 # Changelog
@@ -115,3 +116,8 @@ Current version is [M6.2](https://bintray.com/arturbosch/software/TiNBo/M6.2#fil
 - small enhancements and convenience commands
 - baseline to support plugins
 - backup commands (local, remote -> https://gitlab.com/arturbosch/TinboServer)
+
+### 1.0.M7
+
+- Support plugins via ServiceLoader Api (see tinbo-lloc-plugin for sample implementation)
+- Week summaries for time mode
