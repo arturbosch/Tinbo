@@ -26,12 +26,20 @@ class PluginRegistry @Autowired constructor(val shell: JLineShellComponent) :
 	fun postConstruct() {
 		try {
 			val pluginsPath = HomeFolder.getDirectory(HomeFolder.PLUGINS)
+			val pluginRegistryPath = HomeFolder.getFile(pluginsPath.resolve(HomeFolder.PLUGIN_REGISTRY))
 			val pluginFiles = pluginsPath.toFile().listFiles()
 
 			if (pluginFiles.isEmpty()) return
+
+			val classUrls = pluginFiles.filter { it.name.endsWith(".class") }.map { it.toURI().toURL() }
 			val jarUrls = pluginFiles.filter { it.name.endsWith(".jar") }.map { it.toURI().toURL() }
+			val classNames = pluginRegistryPath.toFile().readLines()
+					.filter { !it.toString().startsWith("#") }
+					.filter { !it.toString().isBlank() }
+					.toList()
 
 			loadJarPlugins(jarUrls)
+			loadPlugins(classNames, classUrls)
 		} catch (e: RuntimeException) {
 			val message = "Could not load plugins: ${e.message}"
 			logError(e, message)
@@ -51,13 +59,41 @@ class PluginRegistry @Autowired constructor(val shell: JLineShellComponent) :
 		}
 	}
 
-	fun registerPlugin(command: CommandMarker) {
-		shell.simpleParser.add(command)
+	private fun loadPlugins(classNames: List<String>, classUrls: List<URL>) {
+		val successfulPlugins = ArrayList<String>()
+		classUrls.forEach {
+			val className = it.file.substringAfterLast('/').substringBeforeLast('.')
+			val stream = it.openStream()
+			stream.use {
+				val bytes = stream.readBytes()
+				if (registerClass(bytes, className, classNames)) successfulPlugins.add(className)
+			}
+		}
+		if (successfulPlugins.isNotEmpty()) {
+			printlnInfo("Successfully loaded plugins: ${successfulPlugins.joinToString(", ")}")
+		}
+	}
+
+	private fun registerClass(bytes: ByteArray, className: String, classNames: List<String>): Boolean {
+		try {
+			val clazz = defineClass(classNames.first { it.toString().contains(className) }, bytes, 0, bytes.size)
+			val newInstance = clazz.newInstance() as CommandMarker
+			registerPlugin(newInstance)
+			return true
+		} catch (e: Throwable) {
+			val message = "Fatal exception was thrown during instantiation of plugin $className: ${e.cause}"
+			logError(e, message)
+			return false
+		}
 	}
 
 	private fun logError(e: Throwable, message: String) {
 		printlnInfo(message)
 		LOGGER.error(message, e)
+	}
+
+	fun registerPlugin(command: CommandMarker) {
+		shell.simpleParser.add(command)
 	}
 
 }
