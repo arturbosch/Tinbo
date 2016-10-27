@@ -10,17 +10,16 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-open class TimeSummaryCommands @Autowired constructor(val executor: TimeExecutor,
-													  val summaryExecutor: WeekSummaryExecutor) :
+open class TimeSummaryCommands @Autowired constructor(val summaryExecutor: WeekSummaryExecutor) :
 		Command, Summarizable {
 
 	override val id: String = "time"
 
 	override fun sum(categories: List<String>): String {
 		if (categories.isEmpty()) {
-			return executor.sumAllCategories()
+			return summaryExecutor.sumAllCategories()
 		} else {
-			return executor.sumForCategories(categories)
+			return summaryExecutor.sumForCategories(categories)
 		}
 	}
 

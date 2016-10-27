@@ -19,6 +19,16 @@ open class WeekSummaryExecutor @Autowired constructor(val timeDataHolder: TimeDa
 		throw UnsupportedOperationException("not implemented")
 	}
 
+	fun sumAllCategories(): String {
+		val summaries = timeDataHolder.createSummaries()
+		return tableAsString(summaries, TABLE_HEADER)
+	}
+
+	fun sumForCategories(filters: List<String>): String {
+		val summaries = timeDataHolder.createFilteredSummaries(filters)
+		return tableAsString(summaries, TABLE_HEADER)
+	}
+
 	fun twoWeekSummary(): String {
 		val data = timeDataHolder.getEntries()
 		val today = LocalDate.now()

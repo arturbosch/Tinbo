@@ -15,14 +15,12 @@ import java.time.LocalDateTime
  * @author artur
  */
 @Component
-open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolder,
+open class TimeExecutor @Autowired constructor(timeDataHolder: TimeDataHolder,
 											   val consoleReader: ConsoleReader) :
 		AbstractExecutor<TimeEntry, TimeData, DummyTime>(timeDataHolder) {
 
 	override val TABLE_HEADER: String
 		get() = "No.;Category;Date;HH:MM:SS;Notice"
-
-	val SUMMARY_HEADER = "No.;Category;Spent"
 
 	override fun newEntry(index: Int, dummy: DummyTime): TimeEntry {
 		val entry = entriesInMemory[index]
@@ -97,16 +95,6 @@ open class TimeExecutor @Autowired constructor(val timeDataHolder: TimeDataHolde
 
 	fun changeTimeMode(mode: TimeMode) {
 		currentTimer = currentTimer.copy(timeMode = mode)
-	}
-
-	fun sumAllCategories(): String {
-		val summaries = timeDataHolder.createSummaries()
-		return tableAsString(summaries, SUMMARY_HEADER)
-	}
-
-	fun sumForCategories(filters: List<String>): String {
-		val summaries = timeDataHolder.createFilteredSummaries(filters)
-		return tableAsString(summaries, SUMMARY_HEADER)
 	}
 
 	fun pauseTimer() {
