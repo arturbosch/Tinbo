@@ -1,7 +1,6 @@
 package io.gitlab.arturbosch.tinbo.plugins
 
 import io.gitlab.arturbosch.tinbo.api.Command
-import org.springframework.stereotype.Component
 
 /**
  * All Tinbo plugins must implement this interface.
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component
  *
  * @author Artur Bosch
  */
-@Component
 interface TiNBoPlugin : Command {
 	override val id: String
 		get() = "plugins"

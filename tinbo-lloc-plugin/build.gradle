@@ -1,0 +1,31 @@
+version '1.0'
+
+buildscript {
+	ext.kotlin_version = '1.0.4'
+
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+	}
+}
+
+apply plugin: 'kotlin'
+
+jar {
+	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+repositories {
+	mavenCentral()
+	maven {
+		url "http://dl.bintray.com/arturbosch/generic"
+	}
+}
+
+dependencies {
+	compileOnly project(":plugin-api")
+	compile 'io.gitlab.arturbosch:lloc:1.4'
+	compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}

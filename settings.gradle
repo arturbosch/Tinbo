@@ -1,2 +1,3 @@
 include 'plugin-api'
+include 'tinbo-lloc-plugin'
 
