@@ -34,24 +34,21 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) 
 		summaryForMonth(categories, beforeLastMonth).ifNotEmpty {
 			val financeSequence = this.asSequence()
 			val summaryStringList = financeSequence.toSummaryStringList()
-			summariesReturnString += "Summary for month: $beforeLastMonth" + "\n"
 			summariesReturnString += tableAsString(summaryStringList, "No.;Category;Spent") +
-					"\nTotal sum: ${financeSequence.sum()}" + "\n\n"
+					"\nTotal sum: ${financeSequence.sum()} for month $beforeLastMonth" + "\n\n"
 		}
 
 		val lastMonth = currentMonth.minus(1)
 		summaryForMonth(categories, lastMonth).ifNotEmpty {
 			val financeSequence = this.asSequence()
 			val summaryStringList = financeSequence.toSummaryStringList()
-			summariesReturnString += "Summary for month: $lastMonth" + "\n"
 			summariesReturnString += tableAsString(summaryStringList, "No.;Category;Spent") +
-					"\nTotal sum: ${financeSequence.sum()}" + "\n\n"
+					"\nTotal sum: ${financeSequence.sum()} for month $lastMonth" + "\n\n"
 		}
 
-		summariesReturnString += "Summary for current month: $currentMonth" + "\n"
 		val summaryCurrent = summaryForMonth(categories, currentMonth).asSequence()
 		summariesReturnString += tableAsString(summaryCurrent.toSummaryStringList(), "No.;Category;Spent")
-		return summariesReturnString + "\nTotal sum: ${summaryCurrent.sum()}"
+		return summariesReturnString + "\nTotal sum: ${summaryCurrent.sum()} for month $currentMonth"
 	}
 
 	private fun Sequence<FinanceEntry>.sum() = this.map { it.moneyValue }.reduce(Money::plus)
