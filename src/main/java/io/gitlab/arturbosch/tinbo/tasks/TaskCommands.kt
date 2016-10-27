@@ -1,7 +1,6 @@
 package io.gitlab.arturbosch.tinbo.tasks
 
 import io.gitlab.arturbosch.tinbo.TiNBo
-import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.commands.EditableCommands
 import io.gitlab.arturbosch.tinbo.config.Defaults
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
@@ -22,7 +21,7 @@ import java.time.format.DateTimeParseException
  */
 @Component
 open class TaskCommands @Autowired constructor(executor: TaskExecutor) :
-		EditableCommands<TaskEntry, TaskData, DummyTask>(executor), Command {
+		EditableCommands<TaskEntry, TaskData, DummyTask>(executor) {
 
 	override val id: String = "task"
 

@@ -1,5 +1,6 @@
 package io.gitlab.arturbosch.tinbo.commands
 
+import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.api.Editable
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
 import io.gitlab.arturbosch.tinbo.model.AbstractExecutor
@@ -14,7 +15,8 @@ import java.util.HashSet
 /**
  * @author artur
  */
-abstract class EditableCommands<E : Entry, D : Data<E>, in T : DummyEntry>(val executor: AbstractExecutor<E, D, T>) : Editable {
+abstract class EditableCommands<E : Entry, D : Data<E>, in T : DummyEntry>(
+		val executor: AbstractExecutor<E, D, T>) : Command, Editable {
 
 	private val NEED_EDIT_MODE_TEXT = "Before adding or list entries exit edit mode with 'save' or 'cancel'."
 
@@ -127,7 +129,7 @@ abstract class EditableCommands<E : Entry, D : Data<E>, in T : DummyEntry>(val e
 	override fun delete(indexPattern: String): String {
 		return withinListMode {
 			try {
-				val indices = if(indexPattern == "-1") setOf(-1) else parseIndices(indexPattern)
+				val indices = if (indexPattern == "-1") setOf(-1) else parseIndices(indexPattern)
 				ModeAdvisor.setBackBlocked(true)
 				isEditMode = true
 				executor.deleteEntries(indices)

@@ -1,0 +1,21 @@
+buildscript {
+	ext.kotlin_version = '1.0.4'
+
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+	}
+}
+
+apply plugin: 'kotlin'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile "org.springframework.shell:spring-shell:$springShellVersion"
+	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}

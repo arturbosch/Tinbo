@@ -1,7 +1,6 @@
 package io.gitlab.arturbosch.tinbo.time
 
 import io.gitlab.arturbosch.tinbo.TiNBo
-import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.commands.EditableCommands
 import io.gitlab.arturbosch.tinbo.config.Defaults
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
@@ -23,7 +22,7 @@ import java.time.format.DateTimeParseException
  */
 @Component
 open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
-		EditableCommands<TimeEntry, TimeData, DummyTime>(executor), Command {
+		EditableCommands<TimeEntry, TimeData, DummyTime>(executor) {
 
 	override val id: String = "time"
 

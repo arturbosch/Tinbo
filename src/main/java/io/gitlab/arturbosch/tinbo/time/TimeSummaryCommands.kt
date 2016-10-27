@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 open class TimeSummaryCommands @Autowired constructor(val summaryExecutor: WeekSummaryExecutor) :
-		Command, Summarizable {
+		Summarizable, Command {
 
 	override val id: String = "time"
 

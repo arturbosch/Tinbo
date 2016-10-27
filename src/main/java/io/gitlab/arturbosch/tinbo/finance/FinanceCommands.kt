@@ -1,6 +1,5 @@
 package io.gitlab.arturbosch.tinbo.finance
 
-import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.api.Summarizable
 import io.gitlab.arturbosch.tinbo.commands.EditableCommands
 import io.gitlab.arturbosch.tinbo.config.CATEGORY_NAME_DEFAULT
@@ -28,7 +27,7 @@ import java.time.format.DateTimeParseException
  */
 @Component
 class FinanceCommands @Autowired constructor(val financeExecutor: FinanceExecutor) :
-		EditableCommands<FinanceEntry, FinanceData, DummyFinance>(financeExecutor), Command, Summarizable {
+		EditableCommands<FinanceEntry, FinanceData, DummyFinance>(financeExecutor), Summarizable {
 
 	override val id: String = "finance"
 	private val SUCCESS_MESSAGE = "Successfully added a finance entry."
