@@ -1,6 +1,7 @@
 package io.gitlab.arturbosch.tinbo.plugins
 
 import io.gitlab.arturbosch.tinbo.api.Command
+import io.gitlab.arturbosch.tinbo.api.SpringContext
 
 /**
  * All Tinbo plugins must implement this interface.
@@ -15,4 +16,10 @@ import io.gitlab.arturbosch.tinbo.api.Command
 interface TiNBoPlugin : Command {
 	override val id: String
 		get() = "plugins"
+
+	fun context() = ContextAware.context
+
+	object ContextAware {
+		var context: SpringContext? = null
+	}
 }
