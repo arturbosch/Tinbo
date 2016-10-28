@@ -47,7 +47,7 @@ class WeekPieChart : TiNBoPlugin {
 			JFrame("Tinbo Chart - $method").apply {
 				defaultCloseOperation = WindowConstants.DISPOSE_ON_CLOSE
 				add(ChartPanel(chart).apply {
-					preferredSize = Dimension(320, 240)
+					preferredSize = Dimension(640, 480)
 				})
 				pack()
 			}.isVisible = true
