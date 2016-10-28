@@ -16,7 +16,7 @@ import javax.swing.WindowConstants
  */
 class WeekPieChart : TiNBoPlugin {
 
-	@CliCommand("charts week", help = "")
+	@CliCommand("charts week", help = "Generates a chart illustrates time spent in current week.")
 	fun run() {
 		loadSummary()?.let { week ->
 			val data = DefaultPieDataset().apply {
@@ -42,7 +42,7 @@ class WeekPieChart : TiNBoPlugin {
 	}
 
 	private fun loadSummary(): WeekSummary? {
-		TiNBoPlugin.ContextAware.context?.let {
+		context()?.let {
 			it.commands.find { it.javaClass.simpleName == "TimeSummaryCommands" }?.let {
 				return it.javaClass.getMethod("forChartTest").invoke(it) as WeekSummary
 			}
