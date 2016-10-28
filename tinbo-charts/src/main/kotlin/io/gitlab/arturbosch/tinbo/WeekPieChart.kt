@@ -17,34 +17,47 @@ import javax.swing.WindowConstants
 class WeekPieChart : TiNBoPlugin {
 
 	@CliCommand("charts week", help = "Generates a chart illustrates time spent in current week.")
-	fun run() {
-		loadSummary()?.let { week ->
-			val data = DefaultPieDataset().apply {
-				week.entries.forEach {
-					val (h, m) = it.asHourMinutes()
-					this.setValue(it.category + " - ${h}h${m}m", it.minutes)
-				}
-			}
-			val chart = ChartFactory.createPieChart("Week: ${week.asDateRangeString()}",
-					data, false, true, false)
-			val (hour, mins) = week.totalHourMinutes()
-			chart.addSubtitle(TextTitle("Total ${week.totalMinutes()}m / ${hour}h${mins}m"))
-			SwingUtilities.invokeLater {
-				JFrame("Tinbo Chart - Week").apply {
-					defaultCloseOperation = WindowConstants.DISPOSE_ON_CLOSE
-					add(ChartPanel(chart).apply {
-						preferredSize = Dimension(320, 240)
-					})
-					pack()
-				}.isVisible = true
-			}
+	fun week() {
+		val method = "Week"
+		loadSummary("week")?.let { week ->
+			createChartForSummary(method, week)
 		}
 	}
 
-	private fun loadSummary(): WeekSummary? {
+	@CliCommand("charts month", help = "Generates a chart illustrates time spent in current month.")
+	fun month() {
+		val method = "Month"
+		loadSummary("month")?.let { month ->
+			createChartForSummary(method, month)
+		}
+	}
+
+	private fun createChartForSummary(method: String, week: WeekSummary) {
+		val data = DefaultPieDataset().apply {
+			week.entries.forEach {
+				val (h, m) = it.asHourMinutes()
+				this.setValue(it.category + " - ${h}h${m}m", it.minutes)
+			}
+		}
+		val chart = ChartFactory.createPieChart("$method: ${week.asDateRangeString()}",
+				data, false, true, false)
+		val (hour, mins) = week.totalHourMinutes()
+		chart.addSubtitle(TextTitle("Total ${week.totalMinutes()}m / ${hour}h${mins}m"))
+		SwingUtilities.invokeLater {
+			JFrame("Tinbo Chart - $method").apply {
+				defaultCloseOperation = WindowConstants.DISPOSE_ON_CLOSE
+				add(ChartPanel(chart).apply {
+					preferredSize = Dimension(320, 240)
+				})
+				pack()
+			}.isVisible = true
+		}
+	}
+
+	private fun loadSummary(method: String): WeekSummary? {
 		context()?.let {
-			it.commands.find { it.javaClass.simpleName == "TimeSummaryCommands" }?.let {
-				return it.javaClass.getMethod("forChartTest").invoke(it) as WeekSummary
+			it.helpers.find { it.javaClass.simpleName == "TimeSummaryPluginHelper" }?.let {
+				return it.javaClass.getMethod(method).invoke(it) as WeekSummary
 			}
 		}
 		return null

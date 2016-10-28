@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.plugins
 
-import io.gitlab.arturbosch.tinbo.api.SpringContext
+import io.gitlab.arturbosch.tinbo.plugins.SpringContext
 import io.gitlab.arturbosch.tinbo.config.HomeFolder
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
 import org.apache.log4j.LogManager

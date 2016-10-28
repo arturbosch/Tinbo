@@ -1,4 +1,4 @@
-package io.gitlab.arturbosch.tinbo.api
+package io.gitlab.arturbosch.tinbo.plugins
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationContext
@@ -9,7 +9,4 @@ import org.springframework.stereotype.Component
  */
 @Component
 class SpringContext @Autowired constructor(val context: ApplicationContext,
-										   val commands: List<Command>) {
-
-
-}
+										   val helpers: List<PluginHelper>)
