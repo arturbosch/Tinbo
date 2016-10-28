@@ -39,10 +39,4 @@ open class WeekSummaryExecutor @Autowired constructor(val timeDataHolder: TimeDa
 		return tableAsString(summary, TABLE_HEADER) + "\n\nTotal time spent: $sum - ($from - $to)"
 	}
 
-	private fun weekRange(today: LocalDate): Pair<LocalDate, LocalDate> {
-		val dayOfWeek = today.dayOfWeek
-		val from = dayOfWeek.value - 1
-		val to = 7 - dayOfWeek.value
-		return today.minusDays(from.toLong()) to today.plusDays(to.toLong())
-	}
 }

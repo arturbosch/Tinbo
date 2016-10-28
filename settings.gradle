@@ -1,3 +1,5 @@
 include 'plugin-api'
 include 'tinbo-lloc-plugin'
+include 'tinbo-ascii-plugin'
+include 'tinbo-charts'
 
