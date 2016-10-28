@@ -1,2 +1,2 @@
 #!/bin/sh
-java -jar TiNBo-1.0.M7.jar
+java -jar -Djava.awt.headless=false TiNBo-1.0.M7.jar
