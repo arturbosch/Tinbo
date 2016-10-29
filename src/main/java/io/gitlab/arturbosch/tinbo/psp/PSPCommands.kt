@@ -97,10 +97,10 @@ class CurrentProject @Autowired constructor(private val csvTasks: CSVTasks,
 	fun showTasks(ofProject: Project = project): String = csvTasks.convert(ofProject.tasks)
 	fun showProject(name: String): String {
 		return findByName(name)?.let {
-			"Project: ${it.name}\nDescription: ${it.description}\n" +
+			"\n\nProject: ${it.name}\nDescription: ${it.description}\n" +
 					"Project duration: ${it.start} - ${it.end}\n" +
-					"Planned/actual time: ${it.sumPlannedTime()}/${it.sumActualTime()}\n" +
-					"Planned/actual units: ${it.sumPlannedUnits()}/${it.sumActualUnits()}\n\n" +
+					"Actual/planned time: ${it.sumActualTime()}/${it.sumPlannedTime()}\n" +
+					"Actual/planned units: ${it.sumActualUnits()}/${it.sumPlannedUnits()}\n\n" +
 					"Tasks:\n" + showTasks(it)
 		} ?: "No project with given name $name found!"
 	}
