@@ -155,3 +155,7 @@ sympy-plots-for-*.tex/
 target/
 
 /classes/
+plugin-api/build/
+tinbo-ascii-plugin/build/
+tinbo-charts/build/
+tinbo-lloc-plugin/build/
