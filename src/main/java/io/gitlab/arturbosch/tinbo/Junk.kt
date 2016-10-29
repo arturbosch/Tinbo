@@ -23,8 +23,11 @@ fun String.spaceIfEmpty(): String =
 		}
 
 
-fun String.orThrow(): String = if (this.isEmpty())
-	throw IllegalArgumentException("Empty value not allowed!") else this
+fun String.orThrow(message: () -> String = { "Empty value not allowed!" }): String =
+		if (this.isEmpty())
+			throw IllegalArgumentException(message())
+		else this
+
 
 inline fun String.toLongOrDefault(long: () -> Long): Long {
 	return try {

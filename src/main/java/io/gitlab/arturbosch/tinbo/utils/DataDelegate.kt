@@ -12,7 +12,9 @@ private class DataDelegate<T>(private var initializer: () -> T) : ReadWritePrope
 
 	override fun getValue(thisRef: Any?, property: KProperty<*>): T {
 		if (value == null) {
-			value = initializer()
+			synchronized(this) {
+				value = initializer()
+			}
 		}
 		return value!!
 	}
@@ -22,6 +24,4 @@ private class DataDelegate<T>(private var initializer: () -> T) : ReadWritePrope
 	}
 }
 
-object DelegateExt {
-	fun <T> lazyData(initializer: () -> T): ReadWriteProperty<Any?, T> = DataDelegate(initializer)
-}
+fun <T> lazyData(initializer: () -> T): ReadWriteProperty<Any?, T> = DataDelegate(initializer)

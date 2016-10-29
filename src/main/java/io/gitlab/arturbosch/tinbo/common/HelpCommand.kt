@@ -27,10 +27,9 @@ class HelpCommand @Autowired constructor(val ctx: ApplicationContext) : Command 
 		val shell = ctx.getBean("shell", JLineShellComponent::class.java)
 		val parser = shell.simpleParser
 
-		val commands: List<Command> = parser.commandMarkers.asSequence()
+		val commands: List<Command> = parser.commandMarkers
 				.filter { it is Command }
 				.map { it as Command }
-				.toList()
 
 		val currentModeCommands = when (ModeAdvisor.getMode()) {
 			Mode.START -> commands.filter {

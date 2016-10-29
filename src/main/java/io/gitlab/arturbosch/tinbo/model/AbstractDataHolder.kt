@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.model
 
-import io.gitlab.arturbosch.tinbo.utils.DelegateExt
+import io.gitlab.arturbosch.tinbo.utils.lazyData
 import java.nio.file.Files
 import java.util.stream.Collectors
 
@@ -11,7 +11,7 @@ abstract class AbstractDataHolder<E : Entry, D : Data<E>>(val persister: Abstrac
 
 	protected abstract val last_used_data: String
 
-	var data: D by DelegateExt.lazyData { persister.restore(last_used_data) }
+	var data: D by lazyData { persister.restore(last_used_data) }
 
 	fun loadData(name: String) {
 		data = persister.restore(name)
