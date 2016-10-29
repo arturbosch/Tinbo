@@ -21,7 +21,7 @@ class ProjectCommands @Autowired constructor(val console: ConsoleReader,
 											 val currentProject: CurrentProject) : Command {
 	override val id: String = "psp"
 
-	@CliAvailabilityIndicator("show-tasks", "new-task")
+	@CliAvailabilityIndicator("show-tasks", "new-task", "close-task")
 	fun isAvailable() = currentProject.isSpecified()
 
 	@CliCommand("show-tasks", help = "Prints tasks of current opened project.")

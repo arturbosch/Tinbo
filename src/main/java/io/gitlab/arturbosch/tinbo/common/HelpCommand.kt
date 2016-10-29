@@ -62,6 +62,12 @@ class HelpCommand @Autowired constructor(val ctx: ApplicationContext) : Command 
 					else -> false
 				}
 			}
+			Mode.PROJECTS -> commands.filter {
+				when (it.id) {
+					"psp", "share", "mode" -> true
+					else -> false
+				}
+			}
 			else -> emptyList()
 		}
 

@@ -4,12 +4,14 @@ import io.gitlab.arturbosch.tinbo.Project
 import io.gitlab.arturbosch.tinbo.Task
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.config.HomeFolder
+import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
 import io.gitlab.arturbosch.tinbo.model.CSVAwareExecutor
 import io.gitlab.arturbosch.tinbo.providers.PromptProvider
 import io.gitlab.arturbosch.tinbo.utils.dateFormatter
 import io.gitlab.arturbosch.tinbo.utils.lazyData
 import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
@@ -28,18 +30,21 @@ class PSPCommands @Autowired constructor(val console: ConsoleReader,
 										 val csvProjects: CSVProjects) : Command {
 	override val id: String = "psp"
 
-	@CliCommand("projects", help = "Shows all running projects.")
+	@CliAvailabilityIndicator("showAll", "show-project", "new-project", "open-project")
+	fun available() = ModeAdvisor.isProjectsMode()
+
+	@CliCommand("showAll", help = "Shows all running projects.")
 	fun projects(): String {
 		return csvProjects.convert()
 	}
 
 	@CliCommand("show-project")
-	fun showProject(@CliOption(key = arrayOf("")) name: String?): String {
+	fun showProject(@CliOption(key = arrayOf(""), help = "Name the project must start with.") name: String?): String {
 		return name?.let { currentProject.showProject(it) } ?: "Specify a project by its name!"
 	}
 
 	@CliCommand("new-project", help = "Creates a new project.")
-	fun newProject(@CliOption(key = arrayOf("")) name: String?): String {
+	fun newProject(@CliOption(key = arrayOf(""), help = "Name the project must start with.") name: String?): String {
 		val wrong = "Enter a valid and non existing name..."
 		return name?.let {
 			if (currentProject.projectWithNameExists(name)) return wrong
@@ -58,7 +63,7 @@ class PSPCommands @Autowired constructor(val console: ConsoleReader,
 	}
 
 	@CliCommand("open-project", help = "Opens project with given name.")
-	fun openProject(@CliOption(key = arrayOf("")) name: String?): String {
+	fun openProject(@CliOption(key = arrayOf(""), help = "Name the project must start with.") name: String?): String {
 		val wrong = "No such project, enter an existing name..."
 		return name?.let {
 			if (!currentProject.projectWithNameExists(name)) return wrong
@@ -88,6 +93,9 @@ class CurrentProject @Autowired constructor(private val csvTasks: CSVTasks,
 
 	fun projectWithNameExists(name: String) = findByName(name) != null
 	fun isSpecified(): Boolean = project != unspecified
+	fun unspecify() {
+		project = unspecified
+	}
 
 	fun name(): String = project.name
 	fun addTask(task: Task) {

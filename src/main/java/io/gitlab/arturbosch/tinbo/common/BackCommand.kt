@@ -1,8 +1,10 @@
 package io.gitlab.arturbosch.tinbo.common
 
 import io.gitlab.arturbosch.tinbo.api.Command
+import io.gitlab.arturbosch.tinbo.config.Mode
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
 import io.gitlab.arturbosch.tinbo.providers.PromptProvider
+import io.gitlab.arturbosch.tinbo.providers.StateProvider
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
@@ -13,7 +15,8 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class BackCommand @Autowired constructor(val promptProvider: PromptProvider) : Command {
+class BackCommand @Autowired constructor(val promptProvider: PromptProvider,
+										 val stateProvider: StateProvider) : Command {
 
 	override val id: String = "mode"
 
@@ -27,8 +30,9 @@ class BackCommand @Autowired constructor(val promptProvider: PromptProvider) : C
 		if (ModeAdvisor.isBackBlocked()) {
 			printlnInfo("Can't change mode when editing... use save or cancel.")
 		} else {
-			ModeAdvisor.setStartMode()
+			stateProvider.evaluate(ModeAdvisor.getMode(), Mode.START)
 			promptProvider.promptText = "tinbo"
+			ModeAdvisor.setStartMode()
 			printlnInfo("Entering tinbo mode...")
 		}
 	}

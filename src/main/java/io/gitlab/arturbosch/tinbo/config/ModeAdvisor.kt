@@ -30,6 +30,14 @@ object ModeAdvisor {
 		return mode == Mode.TIMER
 	}
 
+	fun setProjectsMode() {
+		mode = Mode.PROJECTS
+	}
+
+	fun isProjectsMode(): Boolean {
+		return mode == Mode.PROJECTS
+	}
+
 	fun setStartMode() {
 		mode = Mode.START
 	}

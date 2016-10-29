@@ -10,14 +10,14 @@ import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.stereotype.Component
 
 /**
- * @author artur
+ * @author Artur Bosch
  */
 @Component
 open class ModeCommands @Autowired constructor(val promptProvider: PromptProvider) : Command {
 
 	override val id: String = "start"
 
-	@CliAvailabilityIndicator("time", "tasks", "notes", "finance")
+	@CliAvailabilityIndicator("time", "tasks", "notes", "finance", "projects")
 	fun onlyModeCommands(): Boolean {
 		return ModeAdvisor.isStartMode()
 	}
@@ -48,6 +48,13 @@ open class ModeCommands @Autowired constructor(val promptProvider: PromptProvide
 		ModeAdvisor.setNotesMode()
 		promptProvider.promptText = "notes"
 		printlnInfo("Entering notes mode...")
+	}
+
+	@CliCommand("projects", help = "Switch to projects mode, managing projects like in PSP.")
+	fun projectsMode() {
+		ModeAdvisor.setProjectsMode()
+		promptProvider.promptText = "projects"
+		printlnInfo("Entering projects mode...")
 	}
 
 }
