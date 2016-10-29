@@ -46,8 +46,16 @@ data class Task(var name: String = "",
 	fun csvHeader(): String = "Name;pTime;aTime;pUnits;aUnits;End;Done?"
 	fun asCSV(): String = "$name;${plannedTime.minutes.asHourString()};" +
 			"${actualTime?.minutes?.asHourString() ?: "undef"};" +
-			"$plannedUnits;${actualUnits ?: "undef"};" +
+			"$plannedUnits;${safeActual()};" +
 			"${dateFormatter.format(end)};${actualTime != null && actualUnits != null}"
+
+	private fun safeActual() = if (actualUnits == null || actualUnits == 0)
+		"undef" else actualUnits.toString()
+
+	fun complete(minutes: Int, units: Int) {
+		actualTime = Time(minutes)
+		actualUnits = units
+	}
 }
 
 data class Time(var minutes: Int = 0,

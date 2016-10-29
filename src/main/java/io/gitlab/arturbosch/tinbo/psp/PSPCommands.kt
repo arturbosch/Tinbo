@@ -34,8 +34,8 @@ class PSPCommands @Autowired constructor(val console: ConsoleReader,
 	}
 
 	@CliCommand("show-project")
-	fun showProject(): String {
-		return currentProject.showProject()
+	fun showProject(@CliOption(key = arrayOf("")) name: String?): String {
+		return name?.let { currentProject.showProject(it) } ?: "Specify a project by its name!"
 	}
 
 	@CliCommand("new-project", help = "Creates a new project.")
@@ -90,17 +90,27 @@ class CurrentProject @Autowired constructor(private val csvTasks: CSVTasks,
 		if (isSpecified()) project.add(task)
 	}
 
-	fun showTasks(): String = csvTasks.convert(project.tasks)
-	fun showProject(): String {
-		return "Project: ${name()}\nDescription: ${project.description}\n" +
-				"Project duration: ${project.start} - ${project.end}\n" +
-				"Planned/actual time: ${project.sumPlannedTime()}/${project.sumActualTime()}\n" +
-				"Planned/actual units: ${project.sumPlannedUnits()}/${project.sumActualUnits()}\n\n" +
-				"Tasks:\n" + showTasks()
+	fun showTasks(ofProject: Project = project): String = csvTasks.convert(ofProject.tasks)
+	fun showProject(name: String): String {
+		return findByName(name)?.let {
+			"Project: ${it.name}\nDescription: ${it.description}\n" +
+					"Project duration: ${it.start} - ${it.end}\n" +
+					"Planned/actual time: ${it.sumPlannedTime()}/${it.sumActualTime()}\n" +
+					"Planned/actual units: ${it.sumPlannedUnits()}/${it.sumActualUnits()}\n\n" +
+					"Tasks:\n" + showTasks(it)
+		} ?: "No project with given name $name found!"
 	}
 
 	fun newProject(project: Project) {
 		fileProjects.persistProject(project)
+	}
+
+	fun closeTaskWithStartingName(name: String, minutes: Int, units: Int): Pair<Boolean, String> {
+		val task = project.tasks.find { it.name.startsWith(name, ignoreCase = true) }
+		return task?.let {
+			it.complete(minutes, units)
+			true to it.name
+		} ?: false to "undef"
 	}
 
 }
