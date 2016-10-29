@@ -13,10 +13,9 @@ import java.nio.file.Path
 /**
  * @author Artur Bosch
  */
-class HttpClient
-@Throws(IOException::class)
-constructor(requestURL: String, private val charset: String,
-			headers: Map<String, String>) {
+class HttpClient constructor(requestURL: String,
+							 private val charset: String,
+							 headers: Map<String, String>) {
 
 	companion object {
 		private const val LINE_FEED = "\r\n"
@@ -28,9 +27,7 @@ constructor(requestURL: String, private val charset: String,
 	private val writer: PrintWriter
 
 	init {
-		// creates a unique boundary based on time stamp
 		boundary = "===" + System.currentTimeMillis() + "==="
-
 		val url = URL(requestURL)
 		httpConn = url.openConnection() as HttpURLConnection
 		httpConn.useCaches = false
@@ -39,38 +36,21 @@ constructor(requestURL: String, private val charset: String,
 		httpConn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary)
 		headers.forEach { httpConn.setRequestProperty(it.key, it.value) }
 		outputStream = httpConn.outputStream
-		writer = PrintWriter(OutputStreamWriter(outputStream, charset),
-				true)
+		writer = PrintWriter(OutputStreamWriter(outputStream, charset), true)
 	}
 
-	/**
-	 * Adds a form field to the request
-
-	 * @param name  field name
-	 * *
-	 * @param value field value
-	 */
 	@Suppress("unused")
+	@Throws(IOException::class)
 	fun addFormField(name: String, value: String): HttpClient {
 		writer.append("--").append(boundary).append(LINE_FEED)
 		writer.append("Content-Disposition: form-data; name=\"").append(name).append("\"").append(LINE_FEED)
-		writer.append("Content-Type: text/plain; charset=").append(charset).append(
-				LINE_FEED)
+		writer.append("Content-Type: text/plain; charset=").append(charset).append(LINE_FEED)
 		writer.append(LINE_FEED)
 		writer.append(value).append(LINE_FEED)
 		writer.flush()
 		return this
 	}
 
-	/**
-	 * Adds a upload file section to the request
-
-	 * @param fieldName  name attribute in
-	 * *
-	 * @param uploadFile a File to be uploaded
-	 * *
-	 * @throws IOException
-	 */
 	@Throws(IOException::class)
 	fun addFilePart(fieldName: String, uploadFile: Path): HttpClient {
 		val fileName = uploadFile.fileName.toString()
@@ -94,10 +74,8 @@ constructor(requestURL: String, private val charset: String,
 	/**
 	 * Completes the request and receives response from the server.
 
-	 * @return a list of Strings as response in case the server returned
-	 * * status OK, otherwise an exception is thrown.
-	 * *
-	 * @throws IOException
+	 * @return a list of Strings as response in case the server returned status OK,
+	 * otherwise an exception is thrown.
 	 */
 	@Throws(IOException::class)
 	fun execute(): Response {
