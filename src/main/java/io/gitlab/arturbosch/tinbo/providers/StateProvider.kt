@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component
 @Component
 class StateProvider(val currentProject: CurrentProject) {
 
+	fun isProjectOpen() = currentProject.isSpecified()
+
 	fun evaluate(oldMode: Mode, newMode: Mode) {
 		if (oldMode == Mode.PROJECTS && newMode != Mode.PROJECTS) {
 			currentProject.unspecify()

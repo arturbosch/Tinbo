@@ -1,12 +1,15 @@
 package io.gitlab.arturbosch.tinbo.commands
 
 import io.gitlab.arturbosch.tinbo.api.Editable
+import io.gitlab.arturbosch.tinbo.api.Listable
 import io.gitlab.arturbosch.tinbo.api.Summarizable
-import io.gitlab.arturbosch.tinbo.commands.NoopCommands
 import io.gitlab.arturbosch.tinbo.config.Mode
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
 import io.gitlab.arturbosch.tinbo.finance.FinanceCommands
 import io.gitlab.arturbosch.tinbo.notes.NoteCommands
+import io.gitlab.arturbosch.tinbo.providers.StateProvider
+import io.gitlab.arturbosch.tinbo.psp.PSPCommands
+import io.gitlab.arturbosch.tinbo.psp.ProjectCommands
 import io.gitlab.arturbosch.tinbo.tasks.TaskCommands
 import io.gitlab.arturbosch.tinbo.time.TimeEditCommands
 import io.gitlab.arturbosch.tinbo.time.TimeSummaryCommands
@@ -23,7 +26,10 @@ class CommandChooser @Autowired constructor(
 		val noteCommands: NoteCommands,
 		val taskCommands: TaskCommands,
 		val financeCommands: FinanceCommands,
-		val noopCommands: NoopCommands) {
+		val pspCommands: PSPCommands,
+		val projectCommands: ProjectCommands,
+		val noopCommands: NoopCommands,
+		val stateProvider: StateProvider) {
 
 	fun forCurrentMode(): Editable {
 		return when (ModeAdvisor.getMode()) {
@@ -32,6 +38,13 @@ class CommandChooser @Autowired constructor(
 			Mode.TIMER -> timeEditCommands
 			Mode.FINANCE -> financeCommands
 			else -> noopCommands
+		}
+	}
+
+	fun forListableMode(): Listable {
+		return when (ModeAdvisor.getMode()) {
+			Mode.PROJECTS -> if (stateProvider.isProjectOpen()) projectCommands else pspCommands
+			else -> forCurrentMode()
 		}
 	}
 

@@ -71,6 +71,6 @@ object ModeAdvisor {
 	}
 
 	fun isModeWhereEditIsAllowed(): Boolean {
-		return isFinanceMode() || isNotesMode() || isTasksMode() || isTimerMode()
+		return isFinanceMode() || isNotesMode() || isTasksMode() || isTimerMode() || isProjectsMode()
 	}
 }

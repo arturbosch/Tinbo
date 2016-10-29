@@ -3,6 +3,7 @@ package io.gitlab.arturbosch.tinbo.psp
 import io.gitlab.arturbosch.tinbo.Task
 import io.gitlab.arturbosch.tinbo.Time
 import io.gitlab.arturbosch.tinbo.api.Command
+import io.gitlab.arturbosch.tinbo.api.Listable
 import io.gitlab.arturbosch.tinbo.orThrow
 import io.gitlab.arturbosch.tinbo.utils.dateFormatter
 import jline.console.ConsoleReader
@@ -18,16 +19,15 @@ import java.time.LocalDate
  */
 @Component
 class ProjectCommands @Autowired constructor(val console: ConsoleReader,
-											 val currentProject: CurrentProject) : Command {
+											 val currentProject: CurrentProject) : Command, Listable {
 	override val id: String = "psp"
+
+	override fun list(categoryName: String): String {
+		return currentProject.showTasks()
+	}
 
 	@CliAvailabilityIndicator("show-tasks", "new-task", "close-task")
 	fun isAvailable() = currentProject.isSpecified()
-
-	@CliCommand("show-tasks", help = "Prints tasks of current opened project.")
-	fun tasks(): String {
-		return currentProject.showTasks()
-	}
 
 	@CliCommand("new-task", help = "Adds new task to current opened project.")
 	fun newTask(): String {

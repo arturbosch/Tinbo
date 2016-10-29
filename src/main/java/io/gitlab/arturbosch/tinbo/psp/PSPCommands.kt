@@ -2,6 +2,7 @@ package io.gitlab.arturbosch.tinbo.psp
 
 import io.gitlab.arturbosch.tinbo.Project
 import io.gitlab.arturbosch.tinbo.api.Command
+import io.gitlab.arturbosch.tinbo.api.Listable
 import io.gitlab.arturbosch.tinbo.config.ConfigDefaults.PROJECTS
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
 import io.gitlab.arturbosch.tinbo.providers.PromptProvider
@@ -22,16 +23,16 @@ import java.time.format.DateTimeParseException
 class PSPCommands @Autowired constructor(val console: ConsoleReader,
 										 val prompt: PromptProvider,
 										 val currentProject: CurrentProject,
-										 val csvProjects: CSVProjects) : Command {
+										 val csvProjects: CSVProjects) : Command, Listable {
+
 	override val id: String = "psp"
+
+	override fun list(categoryName: String): String {
+		return csvProjects.convert()
+	}
 
 	@CliAvailabilityIndicator("showAll", "show-project", "new-project", "open-project", "close-project")
 	fun available() = ModeAdvisor.isProjectsMode()
-
-	@CliCommand("showAll", help = "Shows all running projects.")
-	fun projects(): String {
-		return csvProjects.convert()
-	}
 
 	@CliCommand("show-project")
 	fun showProject(@CliOption(key = arrayOf(""), help = "Name the project must start with.") name: String?): String {
