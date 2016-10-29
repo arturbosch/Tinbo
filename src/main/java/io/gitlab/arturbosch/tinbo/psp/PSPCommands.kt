@@ -62,9 +62,9 @@ class PSPCommands @Autowired constructor(val console: ConsoleReader,
 		val wrong = "No such project, enter an existing name..."
 		return name?.let {
 			if (!currentProject.projectWithNameExists(name)) return wrong
-			currentProject.enter(name)
-			prompt.promptText = name
-			return "Opening project $name..."
+			val realName = currentProject.enter(name)
+			prompt.promptText = realName
+			return "Opening project $realName..."
 		} ?: wrong
 	}
 
@@ -76,10 +76,14 @@ class CurrentProject @Autowired constructor(private val csvTasks: CSVTasks,
 
 	val unspecified = Project("undef")
 	private var project: Project = unspecified
-	private fun findByName(name: String) = fileProjects.projects.find { it.name == name }
+	private fun findByName(name: String) = fileProjects.projects.find {
+		it.name.startsWith(name, ignoreCase = true)
+	}
 
-	fun enter(name: String) {
-		project = findByName(name) ?: unspecified
+	fun enter(name: String): String {
+		val maybeProject = findByName(name)
+		project = maybeProject ?: unspecified
+		return maybeProject?.name ?: "undef"
 	}
 
 	fun projectWithNameExists(name: String) = findByName(name) != null
