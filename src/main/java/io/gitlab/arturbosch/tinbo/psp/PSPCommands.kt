@@ -109,6 +109,7 @@ class CurrentProject @Autowired constructor(private val csvTasks: CSVTasks,
 		val task = project.tasks.find { it.name.startsWith(name, ignoreCase = true) }
 		return task?.let {
 			it.complete(minutes, units)
+			fileProjects.persistProject(project)
 			true to it.name
 		} ?: false to "undef"
 	}
@@ -118,12 +119,14 @@ class CurrentProject @Autowired constructor(private val csvTasks: CSVTasks,
 @Component
 class FileProjects(val projectsPath: Path = HomeFolder.getDirectory("projects")) {
 
+	private val yml = "yml"
+
 	init {
 		Assert.isTrue(Files.exists(projectsPath))
 	}
 
 	private var _projects: MutableList<Project> by lazyData {
-		projectsPath.toFile().listFiles { file -> file.name.endsWith("yml") }
+		projectsPath.toFile().listFiles { file -> file.name.endsWith(yml) }
 				.map { it.readText() }
 				.map(String::fromYaml)
 				.toMutableList()
@@ -133,8 +136,7 @@ class FileProjects(val projectsPath: Path = HomeFolder.getDirectory("projects"))
 		get() = _projects.toList()
 
 	fun persistProject(project: Project) {
-		println(project)
-		val file = HomeFolder.getFile(projectsPath.resolve(project.name))
+		val file = HomeFolder.getFile(projectsPath.resolve("${project.name}.$yml"))
 		Files.write(file, project.toYaml().toByteArray())
 		reloadIfNeeded(project)
 	}
@@ -153,9 +155,8 @@ class FileProjects(val projectsPath: Path = HomeFolder.getDirectory("projects"))
 @Component
 class CSVProjects @Autowired constructor(private val fileProjects: FileProjects) : CSVAwareExecutor() {
 
-	val dummy = Project()
-	override val TABLE_HEADER: String
-		get() = "No.;" + dummy.csvHeader()
+	private val dummy = Project()
+	override val TABLE_HEADER: String = "No.;" + dummy.csvHeader()
 
 	fun convert(): String {
 		val sums = fileProjects.projects.map { it.asCSV() }
@@ -166,8 +167,10 @@ class CSVProjects @Autowired constructor(private val fileProjects: FileProjects)
 
 @Component
 class CSVTasks : CSVAwareExecutor() {
+
 	private val dummy = Task()
 	override val TABLE_HEADER: String = "No.;" + dummy.csvHeader()
+
 	fun convert(tasks: List<Task>): String {
 		return tableAsString(tasks.map(Task::asCSV))
 	}
