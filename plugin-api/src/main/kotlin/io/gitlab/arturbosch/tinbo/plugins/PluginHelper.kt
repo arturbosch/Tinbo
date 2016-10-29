@@ -9,5 +9,4 @@ package io.gitlab.arturbosch.tinbo.plugins
  *
  * @author Artur Bosch
  */
-interface PluginHelper {
-}
+interface PluginHelper

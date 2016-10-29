@@ -1,6 +1,5 @@
 package io.gitlab.arturbosch.tinbo.plugins
 
-import io.gitlab.arturbosch.tinbo.plugins.SpringContext
 import io.gitlab.arturbosch.tinbo.config.HomeFolder
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
 import org.apache.log4j.LogManager
@@ -19,8 +18,7 @@ import javax.annotation.PostConstruct
  */
 @Component
 class PluginRegistry @Autowired constructor(val shell: JLineShellComponent,
-											val context: SpringContext) :
-		ClassLoader(TiNBoPlugin::class.java.classLoader) {
+											val context: SpringContext) {
 
 	private val LOGGER = LogManager.getLogger(javaClass)
 
@@ -42,7 +40,8 @@ class PluginRegistry @Autowired constructor(val shell: JLineShellComponent,
 
 	private fun loadJarPlugins(jarUrls: List<URL>) {
 		val successfulPlugins = ArrayList<String>()
-		ServiceLoader.load(TiNBoPlugin::class.java, URLClassLoader(jarUrls.toTypedArray(), this))
+		ServiceLoader.load(TiNBoPlugin::class.java,
+				URLClassLoader(jarUrls.toTypedArray(), TiNBoPlugin::class.java.classLoader))
 				.forEach {
 					registerPlugin(it)
 					successfulPlugins.add(it.javaClass.simpleName)
