@@ -2,6 +2,7 @@ package io.gitlab.arturbosch.tinbo.psp
 
 import io.gitlab.arturbosch.tinbo.Project
 import io.gitlab.arturbosch.tinbo.api.Command
+import io.gitlab.arturbosch.tinbo.config.ConfigDefaults.PROJECTS
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
 import io.gitlab.arturbosch.tinbo.providers.PromptProvider
 import io.gitlab.arturbosch.tinbo.utils.dateFormatter
@@ -12,6 +13,7 @@ import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
 import java.time.LocalDate
+import java.time.format.DateTimeParseException
 
 /**
  * @author Artur Bosch
@@ -23,7 +25,7 @@ class PSPCommands @Autowired constructor(val console: ConsoleReader,
 										 val csvProjects: CSVProjects) : Command {
 	override val id: String = "psp"
 
-	@CliAvailabilityIndicator("showAll", "show-project", "new-project", "open-project")
+	@CliAvailabilityIndicator("showAll", "show-project", "new-project", "open-project", "close-project")
 	fun available() = ModeAdvisor.isProjectsMode()
 
 	@CliCommand("showAll", help = "Shows all running projects.")
@@ -64,6 +66,30 @@ class PSPCommands @Autowired constructor(val console: ConsoleReader,
 			prompt.promptText = realName
 			return "Opening project $realName..."
 		} ?: wrong
+	}
+
+	@CliCommand("close-project", help = "Sets the end date of a project.")
+	fun closeProject(@CliOption(key = arrayOf("")) name: String?,
+					 @CliOption(key = arrayOf("end")) end: String?): String {
+
+		try {
+
+			if (name.isNullOrEmpty() && currentProject.isSpecified()) {
+				val date = end?.let { LocalDate.parse(end, dateFormatter) } ?: LocalDate.now()
+				currentProject.closeProject(currentProject.name(), date)
+				return "Finished ${currentProject.name()}"
+			}
+
+			if (name.isNullOrEmpty()) return "Specify project name or open a project."
+
+			val date = end?.let { LocalDate.parse(end, dateFormatter) } ?: LocalDate.now()
+			currentProject.closeProject(name!!, date)
+			prompt.promptText = PROJECTS
+			return "Closed $name project"
+
+		} catch (e: DateTimeParseException) {
+			return "Could not parse given date string!"
+		}
 	}
 
 }

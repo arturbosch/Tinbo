@@ -1,6 +1,7 @@
 package io.gitlab.arturbosch.tinbo.psp
 
 import io.gitlab.arturbosch.tinbo.Project
+import io.gitlab.arturbosch.tinbo.config.ConfigDefaults.PROJECTS
 import io.gitlab.arturbosch.tinbo.config.HomeFolder
 import io.gitlab.arturbosch.tinbo.utils.lazyData
 import org.springframework.stereotype.Component
@@ -12,7 +13,7 @@ import java.nio.file.Path
  * @author Artur Bosch
  */
 @Component
-class FileProjects(val projectsPath: Path = HomeFolder.getDirectory("projects")) {
+class FileProjects(val projectsPath: Path = HomeFolder.getDirectory(PROJECTS)) {
 
 	private val yml = "yml"
 

@@ -22,6 +22,7 @@ object ConfigDefaults {
 	const val TASKS = "tasks"
 	const val TIMERS = "timers"
 	const val FINANCE = "finance"
+	const val PROJECTS = "projects"
 	const val LAST_USED = "last-used"
 	const val NOTIFICATIONS = "notifications"
 	const val TIME_INTERVAL = "interval"

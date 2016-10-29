@@ -11,16 +11,17 @@ data class Project(var name: String = "",
 				   var description: String = "",
 				   var start: LocalDate = LocalDate.now(),
 				   var end: LocalDate? = null,
-				   var tasks: List<Task> = listOf()) {
+				   var tasks: List<Task> = listOf(),
+				   var done: Boolean = false) {
 	fun sumPlannedTime(): Int = tasks.sumBy { it.plannedTime.minutes }
 	fun sumPlannedUnits(): Int = tasks.sumBy(Task::plannedUnits)
 	fun sumActualTime(): Int = tasks.sumBy { it.actualTime?.minutes ?: 0 }
 	fun sumActualUnits(): Int = tasks.sumBy { it.actualUnits ?: 0 }
 
-	fun csvHeader(): String = "Name;pTime;aTime;pUnits;aUnits;Start;End;Description"
+	fun csvHeader(): String = "Name;pTime;aTime;pUnits;aUnits;Start;End;Done;Description"
 	fun asCSV(): String = "$name;${sumPlannedTime().asHourString()};${sumActualTime().asHourString()};" +
 			"${sumPlannedUnits()};${sumActualUnits()};${dateFormatter.format(start)};" +
-			"${formatEndDate()};${description.orSpace()}"
+			"${formatEndDate()};$done;${description.orSpace()}"
 
 	private fun formatEndDate() = if (end == null) "undef" else dateFormatter.format(end)
 

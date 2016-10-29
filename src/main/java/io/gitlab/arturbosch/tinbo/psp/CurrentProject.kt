@@ -4,6 +4,7 @@ import io.gitlab.arturbosch.tinbo.Project
 import io.gitlab.arturbosch.tinbo.Task
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.time.LocalDate
 
 /**
  * @author Artur Bosch
@@ -62,6 +63,15 @@ class CurrentProject @Autowired constructor(private val csvTasks: CSVTasks,
 			fileProjects.persistProject(project)
 			true to it.name
 		} ?: false to "undef"
+	}
+
+	fun closeProject(name: String, date: LocalDate) {
+		findByName(name)?.let {
+			it.end = date
+			it.done = true
+			fileProjects.persistProject(it)
+		}
+		unspecify()
 	}
 
 }
