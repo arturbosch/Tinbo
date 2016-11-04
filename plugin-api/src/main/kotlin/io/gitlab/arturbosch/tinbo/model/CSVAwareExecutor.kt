@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.model
 
-import io.gitlab.arturbosch.tinbo.csv.CSVTablePrinter
+import io.gitlab.arturbosch.tinbo.model.util.CSVTablePrinter
 import io.gitlab.arturbosch.tinbo.plusElementAtBeginning
 import io.gitlab.arturbosch.tinbo.withIndexedColumn
 

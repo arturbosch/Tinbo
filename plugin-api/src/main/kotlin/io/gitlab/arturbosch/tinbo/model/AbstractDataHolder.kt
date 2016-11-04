@@ -1,11 +1,11 @@
 package io.gitlab.arturbosch.tinbo.model
 
-import io.gitlab.arturbosch.tinbo.utils.lazyData
+import io.gitlab.arturbosch.tinbo.model.util.lazyData
 import java.nio.file.Files
 import java.util.stream.Collectors
 
 /**
- * @author artur
+ * @author Artur Bosch
  */
 abstract class AbstractDataHolder<E : Entry, D : Data<E>>(val persister: AbstractPersister<E, D>) {
 

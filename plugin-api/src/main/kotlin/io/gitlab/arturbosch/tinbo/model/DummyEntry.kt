@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.model
 
 /**
- * @author artur
+ * @author Artur Bosch
  */
 abstract class DummyEntry

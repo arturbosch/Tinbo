@@ -1,4 +1,4 @@
-package io.gitlab.arturbosch.tinbo.csv
+package io.gitlab.arturbosch.tinbo.model.util
 
 import io.gitlab.arturbosch.tinbo.model.Entry
 import io.gitlab.arturbosch.tinbo.replaceSeparator
@@ -10,7 +10,7 @@ import java.time.Month
 import java.util.ArrayList
 
 /**
- * @author artur
+ * @author Artur Bosch
  */
 class CSVDataExchange {
 

@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.model
 
 /**
- * @author artur
+ * @author Artur Bosch
  */
 abstract class Data<E : Entry>(var name: String,
 							   var entries: List<E>) {

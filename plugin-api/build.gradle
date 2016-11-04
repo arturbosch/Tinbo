@@ -29,7 +29,13 @@ group 'io.gitlab.arturbosch.tinbo'
 version '1.0.M7'
 
 dependencies {
+	compile "org.joda:joda-money:0.11"
 	compile "org.springframework.boot:spring-boot-starter:$springBootVersion"
 	compile "org.springframework.shell:spring-shell:$springShellVersion"
 	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+	testCompile "junit:junit:4.12"
+}
+
+sourceSets {
+	main.java.srcDirs += 'src/main/kotlin'
 }

@@ -1,10 +1,10 @@
-package io.gitlab.arturbosch.tinbo.utils
+package io.gitlab.arturbosch.tinbo.model.util
 
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 /**
- * @author artur
+ * @author Artur Bosch
  */
 private class DataDelegate<T>(private var initializer: () -> T) : ReadWriteProperty<Any?, T> {
 

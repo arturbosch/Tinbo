@@ -1,4 +1,4 @@
-package io.gitlab.arturbosch.tinbo.csv;
+package io.gitlab.arturbosch.tinbo.model.util;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
  * Formats a given list with csv strings to a table stored also in a list.
  * This class doesn't check for valid csv strings all with same length, this is up to the user.
  *
- * @author artur
+ * @author Artur Bosch
  */
 public class CSVTablePrinter {
 
@@ -31,10 +31,10 @@ public class CSVTablePrinter {
 		table.add(formatHeaderSeparator(columnSizes));
 
 		IntStream.range(0, columnValues.get(0).size())
-			.forEach(value -> {
-				String[] values = getValuesFromList(value, columnValues);
-				table.add(formatString(values, columnSizes));
-			});
+				.forEach(value -> {
+					String[] values = getValuesFromList(value, columnValues);
+					table.add(formatString(values, columnSizes));
+				});
 
 		return table;
 	}
@@ -54,9 +54,9 @@ public class CSVTablePrinter {
 
 	private String formatHeaderSeparator(int[] columnSizes) {
 		return IntStream.range(0, columnSizes.length)
-			.mapToObj(i -> separators(columnSizes[i]))
-			.map(value -> value + "+")
-			.collect(Collectors.joining());
+				.mapToObj(i -> separators(columnSizes[i]))
+				.map(value -> value + "+")
+				.collect(Collectors.joining());
 	}
 
 	private String separators(int size) {
@@ -65,8 +65,8 @@ public class CSVTablePrinter {
 
 	private String fill(int size, String filler) {
 		return IntStream.range(0, size)
-			.mapToObj(value -> filler)
-			.collect(Collectors.joining());
+				.mapToObj(value -> filler)
+				.collect(Collectors.joining());
 	}
 
 	private String whiteSpaces(int size) {
@@ -79,8 +79,8 @@ public class CSVTablePrinter {
 			String headerEntry = headerEntries[i];
 			int sizeToFill = columnSizes[i] - headerEntry.length();
 			sb.append(headerEntry)
-				.append(whiteSpaces(sizeToFill))
-				.append("|");
+					.append(whiteSpaces(sizeToFill))
+					.append("|");
 		}
 		return sb.toString();
 	}
@@ -89,38 +89,38 @@ public class CSVTablePrinter {
 		int[] sizes = new int[ints.length];
 		for (int i = 0; i < ints.length; i++) {
 			sizes[i] = Integer.compare(headerEntries[i].length(), ints[i]) == -1
-				? ints[i] : headerEntries[i].length();
+					? ints[i] : headerEntries[i].length();
 		}
 		return sizes;
 	}
 
 	private int[] calculateSizes(List<List<String>> columnValues) {
 		return columnValues.stream()
-			.mapToInt(this::getMaxSize)
-			.toArray();
+				.mapToInt(this::getMaxSize)
+				.toArray();
 	}
 
 	private int getMaxSize(List<String> list) {
 		return list.stream()
-			.max(Comparator.comparingInt(String::length))
-			.orElseGet(() -> "")
-			.length();
+				.max(Comparator.comparingInt(String::length))
+				.orElseGet(() -> "")
+				.length();
 	}
 
 	private void fillListsWithValues(List<List<String>> columnValues, List<String> entries) {
 		entries.stream()
-			.map(entry -> entry.split(";"))
-			.forEach(splits -> {
-				for (int i = 0; i < splits.length; i++) {
-					columnValues.get(i).add(splits[i]);
-				}
-			});
+				.map(entry -> entry.split(";"))
+				.forEach(splits -> {
+					for (int i = 0; i < splits.length; i++) {
+						columnValues.get(i).add(splits[i]);
+					}
+				});
 	}
 
 	private List<List<String>> createListForEachColumn(int size) {
 		return IntStream.range(0, size)
-			.mapToObj(entry -> new ArrayList<String>())
-			.collect(Collectors.toList());
+				.mapToObj(entry -> new ArrayList<String>())
+				.collect(Collectors.toList());
 	}
 
 }

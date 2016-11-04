@@ -3,11 +3,10 @@ package io.gitlab.arturbosch.tinbo.model
 import io.gitlab.arturbosch.tinbo.applyToString
 import io.gitlab.arturbosch.tinbo.plusElementAtBeginning
 import io.gitlab.arturbosch.tinbo.replaceAt
-import io.gitlab.arturbosch.tinbo.utils.printlnInfo
 import io.gitlab.arturbosch.tinbo.withIndexedColumn
 
 /**
- * @author artur
+ * @author Artur Bosch
  */
 abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
 		private val dataHolder: AbstractDataHolder<E, D>) : CSVAwareExecutor() {
@@ -63,7 +62,6 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
 				indices.contains(index).not()
 			}
 		}
-		if (entriesInMemory.isEmpty()) printlnInfo("")
 	}
 
 	private fun isSpecialCaseToDeleteLast(indices: Set<Int>) = indices.size == 1 && indices.first() == -1
