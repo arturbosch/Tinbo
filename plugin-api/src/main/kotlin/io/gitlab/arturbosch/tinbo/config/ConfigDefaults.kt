@@ -1,21 +1,8 @@
 package io.gitlab.arturbosch.tinbo.config
 
-import io.gitlab.arturbosch.tinbo.TiNBo
-
 /**
- * @author artur
+ * @author Artur Bosch
  */
-object Defaults {
-
-	const val TIME_NAME = "Data"
-	const val TASKS_NAME = "Tasks"
-	const val NOTES_NAME = "Notes"
-	const val FINANCE_NAME = "Finance"
-	const val MAIN_CATEGORY_NAME = "Main"
-	const val INFO_NOTIFICATION_TIME = 30L
-
-}
-
 object ConfigDefaults {
 
 	const val NOTES = "notes"
@@ -32,5 +19,3 @@ object ConfigDefaults {
 	const val CITY = "city"
 
 }
-
-val CATEGORY_NAME_DEFAULT = TiNBo.config.getCategoryName()

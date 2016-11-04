@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.notes
 
-import io.gitlab.arturbosch.tinbo.TiNBo
-import io.gitlab.arturbosch.tinbo.model.AbstractDataHolder
 import io.gitlab.arturbosch.tinbo.config.ConfigDefaults
 import io.gitlab.arturbosch.tinbo.config.Defaults
+import io.gitlab.arturbosch.tinbo.config.TinboConfig
+import io.gitlab.arturbosch.tinbo.model.AbstractDataHolder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -11,11 +11,12 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-open class NoteDataHolder @Autowired constructor(persister: NotePersister) :
+open class NoteDataHolder @Autowired constructor(persister: NotePersister,
+												 val config: TinboConfig) :
 		AbstractDataHolder<NoteEntry, NoteData>(persister) {
 
 	override val last_used_data: String
-		get() = TiNBo.config.getKey(ConfigDefaults.NOTES)
+		get() = config.getKey(ConfigDefaults.NOTES)
 				.getOrElse(ConfigDefaults.LAST_USED, { Defaults.NOTES_NAME })
 
 	override fun newData(name: String, entriesInMemory: List<NoteEntry>): NoteData {

@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.time
 
-import io.gitlab.arturbosch.tinbo.TiNBo
 import io.gitlab.arturbosch.tinbo.commands.EditableCommands
 import io.gitlab.arturbosch.tinbo.config.Defaults
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
+import io.gitlab.arturbosch.tinbo.config.TinboConfig
 import io.gitlab.arturbosch.tinbo.nullIfEmpty
 import io.gitlab.arturbosch.tinbo.orDefault
 import io.gitlab.arturbosch.tinbo.toLongOrNull
@@ -21,7 +21,8 @@ import java.time.format.DateTimeParseException
  * @author artur
  */
 @Component
-open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
+open class TimeEditCommands @Autowired constructor(executor: TimeExecutor,
+												   val config: TinboConfig) :
 		EditableCommands<TimeEntry, TimeData, DummyTime>(executor) {
 
 	override val id: String = "time"
@@ -35,7 +36,7 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor) :
 
 	override fun add(): String {
 		return whileNotInEditMode {
-			val category = console.readLine("Enter a category: ").orDefault(TiNBo.config.getCategoryName())
+			val category = console.readLine("Enter a category: ").orDefault(config.getCategoryName())
 			val message = console.readLine("Enter a message: ")
 			val date = console.readLine("Enter a date (yyyy-mm-dd), leave empty for today: ")
 			try {

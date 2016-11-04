@@ -1,24 +1,24 @@
 package io.gitlab.arturbosch.tinbo.finance
 
-import io.gitlab.arturbosch.tinbo.TiNBo
-import io.gitlab.arturbosch.tinbo.model.AbstractDataHolder
-import io.gitlab.arturbosch.tinbo.model.AbstractPersister
 import io.gitlab.arturbosch.tinbo.config.ConfigDefaults
 import io.gitlab.arturbosch.tinbo.config.Defaults
 import io.gitlab.arturbosch.tinbo.config.HomeFolder
+import io.gitlab.arturbosch.tinbo.config.TinboConfig
+import io.gitlab.arturbosch.tinbo.model.AbstractDataHolder
+import io.gitlab.arturbosch.tinbo.model.AbstractPersister
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.nio.file.Path
 
 /**
  * @author artur
  */
 @Component
-class FinanceDataHolder @Autowired constructor(persister: FinancePersister) :
+class FinanceDataHolder @Autowired constructor(persister: FinancePersister,
+											   val config: TinboConfig) :
 		AbstractDataHolder<FinanceEntry, FinanceData>(persister) {
 
 	override val last_used_data: String
-		get() = TiNBo.config.getKey(ConfigDefaults.FINANCE)
+		get() = config.getKey(ConfigDefaults.FINANCE)
 				.getOrElse(ConfigDefaults.LAST_USED, { Defaults.FINANCE_NAME })
 
 	override fun newData(name: String, entriesInMemory: List<FinanceEntry>): FinanceData {
@@ -43,8 +43,8 @@ class FinanceDataHolder @Autowired constructor(persister: FinancePersister) :
 }
 
 @Component
-class FinancePersister(FINANCE_PATH: Path = HomeFolder.getDirectory(ConfigDefaults.FINANCE)) :
-		AbstractPersister<FinanceEntry, FinanceData>(FINANCE_PATH) {
+class FinancePersister @Autowired constructor(config: TinboConfig) :
+		AbstractPersister<FinanceEntry, FinanceData>(HomeFolder.getDirectory(ConfigDefaults.FINANCE), config) {
 
 	override fun restore(name: String): FinanceData {
 		return load(name, FinanceData(name), FinanceEntry::class.java)

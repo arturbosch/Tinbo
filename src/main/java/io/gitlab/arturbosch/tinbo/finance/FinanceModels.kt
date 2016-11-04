@@ -1,15 +1,10 @@
 package io.gitlab.arturbosch.tinbo.finance
 
-import io.gitlab.arturbosch.tinbo.TiNBo
+import io.gitlab.arturbosch.tinbo.config.Defaults
 import io.gitlab.arturbosch.tinbo.model.Data
 import io.gitlab.arturbosch.tinbo.model.DummyEntry
 import io.gitlab.arturbosch.tinbo.model.Entry
-import io.gitlab.arturbosch.tinbo.config.CATEGORY_NAME_DEFAULT
-import io.gitlab.arturbosch.tinbo.config.ConfigDefaults
-import io.gitlab.arturbosch.tinbo.config.Defaults
-import io.gitlab.arturbosch.tinbo.orDefault
 import io.gitlab.arturbosch.tinbo.spaceIfEmpty
-import io.gitlab.arturbosch.tinbo.orSpace
 import io.gitlab.arturbosch.tinbo.utils.dateTimeFormatter
 import org.joda.money.CurrencyUnit
 import org.joda.money.Money
@@ -25,13 +20,12 @@ class DummyFinance(val category: String?, val message: String?,
 				   val dateTime: LocalDateTime?) : DummyEntry()
 
 class FinanceData(name: String = Defaults.NOTES_NAME,
-				  entries: List<FinanceEntry> = listOf()) : Data<FinanceEntry>(name, entries) {
-}
+				  entries: List<FinanceEntry> = listOf()) : Data<FinanceEntry>(name, entries)
 
 class FinanceEntry(val month: Month = Month.JANUARY,
-				   val category: String = CATEGORY_NAME_DEFAULT,
+				   val category: String = "Main",
 				   val message: String = "",
-				   val moneyValue: Money = Money.of(currencyUnit, 0.0),
+				   val moneyValue: Money = Money.of(CurrencyUnit.of("EUR"), 0.0),
 				   val dateTime: LocalDateTime = LocalDateTime.now()) : Entry() {
 
 	override fun compareTo(other: Entry): Int {
@@ -45,9 +39,6 @@ class FinanceEntry(val month: Month = Month.JANUARY,
 	}
 
 }
-
-val currencyUnit: CurrencyUnit = CurrencyUnit.of(TiNBo.config
-		.getKey(ConfigDefaults.DEFAULTS)[ConfigDefaults.CURRENCY].orDefault("EUR"))
 
 fun FinanceEntry.copy(month: Month? = null,
 					  category: String? = null,

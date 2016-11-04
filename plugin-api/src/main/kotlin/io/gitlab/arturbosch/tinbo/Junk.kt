@@ -1,12 +1,6 @@
 package io.gitlab.arturbosch.tinbo
 
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.ArrayList
-
-/**
- * @author artur
- */
 
 fun Long.toTimeString(): String {
 	return toString().apply {
@@ -62,18 +56,14 @@ fun <E> List<E>.replaceAt(index: Int, element: E): List<E> {
 	return list.toList()
 }
 
-fun LocalDateTime?.orValue(dateTime: LocalDateTime): LocalDateTime = if (this == null) dateTime else this
-fun LocalDate?.orValue(dateTime: LocalDate): LocalDate = if (this == null) dateTime else this
-
 fun String.orValue(value: String): String = if (this.isEmpty()) value else this
 fun String?.orDefault(value: String): String = if (this.isNullOrEmpty()) value else this!!
-fun Long.orValue(hours: Long): Long = if (this == -1L) hours else this
 
 fun String.replaceSeparator(): String {
 	return this.replace(";", ".,")
 }
 
-fun String.orDefaultMonth(): Int = this.toIntOrDefault { LocalDate.now().month.value }
+fun String.orDefaultMonth(): Int = this.toIntOrDefault { java.time.LocalDate.now().month.value }
 fun String?.toLongOrNull(): Long? = if (this.isNullOrEmpty()) null else this?.toLong()
 fun String?.nullIfEmpty(): String? = if (this.isNullOrEmpty()) null else this
 

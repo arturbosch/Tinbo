@@ -1,6 +1,5 @@
 package io.gitlab.arturbosch.tinbo.time
 
-import io.gitlab.arturbosch.tinbo.config.CATEGORY_NAME_DEFAULT
 import io.gitlab.arturbosch.tinbo.orValue
 import io.gitlab.arturbosch.tinbo.toTimeString
 import java.time.Duration
@@ -47,7 +46,7 @@ class Timer(val timeMode: TimeMode = TimeMode.INVALID,
 		val (pauseHours, pauseMins, pauseSecs) = getPauseTriple()
 
 		val timeString =
-				"Elapsed time: ${diffHours.toTimeString()}:${diffMins.toTimeString()}:${diffSecs.toTimeString()} (${category.orValue(CATEGORY_NAME_DEFAULT)})"
+				"Elapsed time: ${diffHours.toTimeString()}:${diffMins.toTimeString()}:${diffSecs.toTimeString()} (${category.orValue("Main")})"
 
 		val returnString = when {
 			pauseSecs == 0L && pauseMins == 0L && pauseHours == 0L -> timeString

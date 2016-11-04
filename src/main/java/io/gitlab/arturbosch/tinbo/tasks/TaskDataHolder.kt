@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.tasks
 
-import io.gitlab.arturbosch.tinbo.TiNBo
-import io.gitlab.arturbosch.tinbo.model.AbstractDataHolder
 import io.gitlab.arturbosch.tinbo.config.ConfigDefaults
 import io.gitlab.arturbosch.tinbo.config.Defaults
+import io.gitlab.arturbosch.tinbo.config.TinboConfig
+import io.gitlab.arturbosch.tinbo.model.AbstractDataHolder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -11,11 +11,12 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-open class TaskDataHolder @Autowired constructor(persister: TaskPersister) :
+open class TaskDataHolder @Autowired constructor(persister: TaskPersister,
+												 val config: TinboConfig) :
 		AbstractDataHolder<TaskEntry, TaskData>(persister) {
 
 	override val last_used_data: String
-		get() = TiNBo.config.getKey(ConfigDefaults.TASKS)
+		get() = config.getKey(ConfigDefaults.TASKS)
 				.getOrElse(ConfigDefaults.LAST_USED, { Defaults.TASKS_NAME })
 
 

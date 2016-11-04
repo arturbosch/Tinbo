@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.commands
 
-import io.gitlab.arturbosch.tinbo.TiNBo
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
 import io.gitlab.arturbosch.tinbo.config.Notification
+import io.gitlab.arturbosch.tinbo.config.TinboConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
@@ -15,7 +15,8 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-open class TinboCommands @Autowired constructor(val bannerProvider: BannerProvider) : Command {
+open class TinboCommands @Autowired constructor(val bannerProvider: BannerProvider,
+												val config: TinboConfig) : Command {
 
 	override val id: String = "start"
 
@@ -38,7 +39,7 @@ open class TinboCommands @Autowired constructor(val bannerProvider: BannerProvid
 
 		var cityName = city
 		if (cityName.isEmpty()) {
-			cityName = TiNBo.config.getCity()
+			cityName = config.getCity()
 		}
 
 		if (cityName.matches(Regex("[a-zA-Z]+"))) {

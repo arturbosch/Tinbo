@@ -15,7 +15,8 @@ import java.time.Month
  */
 
 @Component
-class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) :
+class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder,
+											 val configProvider: ConfigProvider) :
 		AbstractExecutor<FinanceEntry, FinanceData, DummyFinance>(dataHolder) {
 
 	override val TABLE_HEADER: String
@@ -106,7 +107,7 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder) 
 					val deviation = Math.sqrt(monthToMoney.values.map { Math.pow((it.minus(mean)).amount.toDouble(), 2.0) }
 							.sum()
 							.div(times))
-					Money.parse(currencyUnit.code + " " + String.format("%.2f", deviation))
+					Money.parse(configProvider.currencyUnit.code + " " + String.format("%.2f", deviation))
 				})
 
 		return tableAsString(entries, "No.;Category;Deviation")

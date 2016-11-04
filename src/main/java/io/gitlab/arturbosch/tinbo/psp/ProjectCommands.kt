@@ -50,7 +50,7 @@ class ProjectCommands @Autowired constructor(val console: ConsoleReader,
 				   @CliOption(key = arrayOf("units")) units: Int?): String {
 		val wrong = "There was no task starting with given characters!"
 		return name?.let {
-			if (minutes == null || units == null) return "Actual time and unit values must be specified!"
+			if (minutes == null || units == null) return "Actual time and currencyUnit values must be specified!"
 			val (success, task) = currentProject.closeTaskWithStartingName(name, minutes, units)
 			return if (success) "Successfully closed task $task" else wrong
 		} ?: wrong

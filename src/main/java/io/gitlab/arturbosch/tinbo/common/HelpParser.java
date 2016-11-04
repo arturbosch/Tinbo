@@ -17,7 +17,7 @@ import java.util.*;
  * to show only the help for commands of current mode.
  *
  * @author Ben Alex
- * @author artur
+ * @author Artur Bosch
  */
 class HelpParser {
 
@@ -39,7 +39,7 @@ class HelpParser {
 		StringBuilder sb = new StringBuilder();
 
 		// Figure out if there's a single command we can offer help for
-		Collection<MethodTarget> matchingTargets = locateTargets(buffer, false);
+		Collection<MethodTarget> matchingTargets = locateTargets(buffer);
 		for (MethodTarget candidate : matchingTargets) {
 			if (buffer.equals(candidate.getKey())) {
 				matchingTargets = Collections.singleton(candidate);
@@ -116,7 +116,7 @@ class HelpParser {
 		return sb.toString();
 	}
 
-	private Collection<MethodTarget> locateTargets(final String buffer, final boolean strictMatching) {
+	private Collection<MethodTarget> locateTargets(final String buffer) {
 		Assert.notNull(buffer, "Buffer required");
 		final Collection<MethodTarget> result = new HashSet<>();
 
@@ -128,7 +128,7 @@ class HelpParser {
 				if (cmd != null) {
 					// We have a @CliCommand.
 					for (String value : cmd.value()) {
-						String remainingBuffer = isMatch(buffer, value, strictMatching);
+						String remainingBuffer = isMatch(buffer, value, false);
 						if (remainingBuffer != null) {
 							result.add(new MethodTarget(method, command, remainingBuffer, value));
 						}

@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.tasks
 
-import io.gitlab.arturbosch.tinbo.TiNBo
 import io.gitlab.arturbosch.tinbo.commands.EditableCommands
 import io.gitlab.arturbosch.tinbo.config.Defaults
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
+import io.gitlab.arturbosch.tinbo.config.TinboConfig
 import io.gitlab.arturbosch.tinbo.nullIfEmpty
 import io.gitlab.arturbosch.tinbo.orDefault
 import io.gitlab.arturbosch.tinbo.utils.DateTimeFormatters
@@ -20,7 +20,8 @@ import java.time.format.DateTimeParseException
  * @author artur
  */
 @Component
-open class TaskCommands @Autowired constructor(executor: TaskExecutor) :
+open class TaskCommands @Autowired constructor(executor: TaskExecutor,
+											   val config: TinboConfig) :
 		EditableCommands<TaskEntry, TaskData, DummyTask>(executor) {
 
 	override val id: String = "task"
@@ -34,7 +35,7 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor) :
 
 	override fun add(): String {
 		return whileNotInEditMode {
-			val category = console.readLine("Enter a category: ").orDefault(TiNBo.config.getCategoryName())
+			val category = console.readLine("Enter a category: ").orDefault(config.getCategoryName())
 			val message = console.readLine("Enter a message: ")
 			val location = console.readLine("Enter a location: ")
 			val description = console.readLine("Enter a description: ")

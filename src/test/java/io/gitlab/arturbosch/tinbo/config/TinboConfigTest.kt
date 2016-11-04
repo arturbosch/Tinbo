@@ -15,7 +15,7 @@ class TinboConfigTest {
 
 	private val config: TinboConfig
 		get() {
-			val tinboConfig = TinboConfig.load(
+			val tinboConfig = TinboConfig(
 					Paths.get(Resources.getResource("default-config.yaml").file))
 			return tinboConfig
 		}
@@ -27,7 +27,7 @@ class TinboConfigTest {
 
 	@Test
 	fun writeConfig() {
-		val write = TinboConfig.write(path, config)
+		val write = config.writeToFile()
 		assert(write)
 	}
 

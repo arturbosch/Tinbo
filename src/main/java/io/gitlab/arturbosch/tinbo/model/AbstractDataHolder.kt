@@ -18,7 +18,7 @@ abstract class AbstractDataHolder<E : Entry, D : Data<E>>(val persister: Abstrac
 	}
 
 	fun getDataNames(): List<String> {
-		return Files.list(persister.SAVE_DIR_PATH)
+		return Files.list(persister.persistencePath)
 				.map { it.fileName.toString() }
 				.collect(Collectors.toList<String>())
 				.toList()

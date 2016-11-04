@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.common
 
-import io.gitlab.arturbosch.tinbo.TiNBo
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.api.MarkAsPersister
 import io.gitlab.arturbosch.tinbo.config.HomeFolder
+import io.gitlab.arturbosch.tinbo.config.TinboConfig
 import io.gitlab.arturbosch.tinbo.utils.HttpClient
 import io.gitlab.arturbosch.tinbo.utils.dateTimeFormatter
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
@@ -26,7 +26,8 @@ import java.util.zip.ZipOutputStream
  * @author Artur Bosch
  */
 @Component
-class BackupCommand @Autowired constructor(val persisters: List<MarkAsPersister>) : Command {
+class BackupCommand @Autowired constructor(val persisters: List<MarkAsPersister>,
+										   val config: TinboConfig) : Command {
 	override val id: String = "share"
 
 	private val logger = LogManager.getLogger(javaClass)
@@ -46,7 +47,7 @@ class BackupCommand @Autowired constructor(val persisters: List<MarkAsPersister>
 	}
 
 	private fun backupModes(backupDir: Path) {
-		persisters.map { it.SAVE_DIR_PATH }
+		persisters.map { it.persistencePath }
 				.forEach { pathToMode -> copyFilesFromMode(backupDir, pathToMode) }
 	}
 
@@ -66,7 +67,7 @@ class BackupCommand @Autowired constructor(val persisters: List<MarkAsPersister>
 
 		backupLocal()
 
-		val config = TiNBo.config.getKey("remote-backup")
+		val config = config.getKey("remote-backup")
 		val backupName = config.getOrElse("name", { "backup" }) + "-" +
 				dateTimeFormatter.format(LocalDateTime.now())
 		val backupServer =

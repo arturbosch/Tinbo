@@ -39,10 +39,8 @@ class CSVDataExchange {
 			val instance = clazz.newInstance()
 			val fieldData = entryString.split(Regex.fromLiteral(separator))
 			if (fieldData.size == fields.size) {
-				for ((index, data) in fieldData.withIndex()) {
-					val transformedData = transformData(data, fields, index)
-					fields[index].set(instance, transformedData)
-				}
+				fieldData.mapIndexed { index, data -> transformData(data, fields, index) }
+						.forEachIndexed { index, transformedData -> fields[index].set(instance, transformedData) }
 				result.add(instance)
 			}
 		}

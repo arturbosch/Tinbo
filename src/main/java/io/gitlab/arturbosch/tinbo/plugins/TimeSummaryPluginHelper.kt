@@ -15,6 +15,7 @@ import java.time.LocalDate
 @Component
 class TimeSummaryPluginHelper @Autowired constructor(val timeDataHolder: TimeDataHolder) : PluginHelper {
 
+	@PluginSupport
 	fun week(): WeekSummary {
 		val data = timeDataHolder.getEntries()
 		val (from, to) = weekRange(LocalDate.now())
@@ -27,6 +28,7 @@ class TimeSummaryPluginHelper @Autowired constructor(val timeDataHolder: TimeDat
 		return WeekSummary(from to to, entriesOfWeek)
 	}
 
+	@PluginSupport
 	fun month(): WeekSummary {
 		val data = timeDataHolder.getEntries()
 		val month = LocalDate.now().month

@@ -1,20 +1,18 @@
 package io.gitlab.arturbosch.tinbo.config
 
-import com.google.common.io.Resources
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
 /**
- * @author artur
+ * @author Artur Bosch
  */
 object HomeFolder {
 
 	const val CONFIG_NAME = "config.yaml"
 	const val PLUGINS: String = "plugins"
 	const val BACKUP: String = "backup"
-	const val PLUGIN_REGISTRY: String = "PluginRegistry"
 
 	private val mainDir = "TiNBo"
 	private val homeDir = System.getProperty("user.home") + File.separator + mainDir
@@ -29,7 +27,7 @@ object HomeFolder {
 	fun getOrCreateDefaultConfig(): Path {
 		val path = get().resolve(CONFIG_NAME)
 		if (Files.notExists(path)) {
-			Files.copy(Resources.getResource("default-config.yaml").openStream(), path)
+			Files.copy(javaClass.getResource("/default-config.yaml").openStream(), path)
 		}
 		return path
 	}

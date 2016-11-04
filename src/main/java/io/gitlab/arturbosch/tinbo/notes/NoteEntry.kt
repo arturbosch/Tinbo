@@ -2,7 +2,6 @@ package io.gitlab.arturbosch.tinbo.notes
 
 import io.gitlab.arturbosch.tinbo.model.Entry
 import io.gitlab.arturbosch.tinbo.spaceIfEmpty
-import io.gitlab.arturbosch.tinbo.orSpace
 
 /**
  * @author artur

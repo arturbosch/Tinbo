@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.time
 
-import io.gitlab.arturbosch.tinbo.TiNBo
 import io.gitlab.arturbosch.tinbo.config.Notification
+import io.gitlab.arturbosch.tinbo.config.TinboConfig
 import io.gitlab.arturbosch.tinbo.model.AbstractExecutor
 import io.gitlab.arturbosch.tinbo.orValue
 import io.gitlab.arturbosch.tinbo.utils.printInfo
@@ -16,7 +16,8 @@ import java.time.LocalDateTime
  */
 @Component
 open class TimeExecutor @Autowired constructor(timeDataHolder: TimeDataHolder,
-											   val consoleReader: ConsoleReader) :
+											   val consoleReader: ConsoleReader,
+											   val config: TinboConfig) :
 		AbstractExecutor<TimeEntry, TimeData, DummyTime>(timeDataHolder) {
 
 	override val TABLE_HEADER: String
@@ -42,7 +43,7 @@ open class TimeExecutor @Autowired constructor(timeDataHolder: TimeDataHolder,
 				printInfo("\r${currentTimer.toTimeString()}")
 			if (currentTimer.isFinished())
 				stop()
-			if (currentTimer.isPauseTime(TiNBo.config.getTimeInterval()))
+			if (currentTimer.isPauseTime(config.getTimeInterval()))
 				notify("Info")
 			Thread.sleep(1000L)
 		}
@@ -53,7 +54,7 @@ open class TimeExecutor @Autowired constructor(timeDataHolder: TimeDataHolder,
 			running = false
 			changeCategoryAndMessageIfNotEmpty(name, message)
 			if (currentTimer.category.isEmpty()) {
-				val category = consoleReader.readLine("Enter a category name: ").orValue(TiNBo.config.getCategoryName())
+				val category = consoleReader.readLine("Enter a category name: ").orValue(config.getCategoryName())
 				val description = consoleReader.readLine("Enter a description: ").orValue("")
 				currentTimer = currentTimer.copy(category = category, message = description)
 			}

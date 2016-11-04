@@ -2,8 +2,8 @@ package io.gitlab.arturbosch.tinbo.config
 
 import io.gitlab.arturbosch.tinbo.orDefault
 import io.gitlab.arturbosch.tinbo.toLongOrDefault
+import org.springframework.stereotype.Component
 import org.yaml.snakeyaml.Yaml
-import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardOpenOption
@@ -12,11 +12,22 @@ import java.util.HashMap
 /**
  * @author artur
  */
-class TinboConfig private constructor(private var values: Map<String, Map<String, String>>) {
+@Component
+class TinboConfig(val path: Path = HomeFolder.getOrCreateDefaultConfig()) {
+
+	private var values: Map<String, Map<String, String>>
+
+	init {
+		values = Files.newBufferedReader(path).use {
+			@Suppress("UNCHECKED_CAST")
+			Yaml().loadAs(it, Map::class.java) as Map<String, Map<String, String>>
+		}
+	}
 
 	fun getKey(key: String): Map<String, String> {
 		return values.getOrElse(key, { HashMap<String, String>() })
 	}
+
 
 	fun writeLastUsed(property: String, value: String) {
 		val oldMap = values[property]
@@ -24,8 +35,15 @@ class TinboConfig private constructor(private var values: Map<String, Map<String
 			if (oldMap[ConfigDefaults.LAST_USED] != value) {
 				val updatedMap = oldMap.plus(ConfigDefaults.LAST_USED to value)
 				values = values.plus(property to updatedMap)
-				TinboConfig.write(HomeFolder.getOrCreateDefaultConfig(), this)
+				writeToFile()
 			}
+		}
+	}
+
+	fun writeToFile(): Boolean {
+		val dumpAsMap = Yaml().dumpAsMap(values)
+		return Files.write(path, dumpAsMap.toByteArray(), StandardOpenOption.CREATE).run {
+			Files.exists(this)
 		}
 	}
 
@@ -44,24 +62,4 @@ class TinboConfig private constructor(private var values: Map<String, Map<String
 				.orDefault("-1")
 	}
 
-	companion object {
-
-		@Suppress("UNCHECKED_CAST")
-		@Throws(IOException::class)
-		fun load(path: Path): TinboConfig {
-			return Files.newBufferedReader(path).use {
-				val yaml = Yaml()
-				val config = yaml.loadAs(it, Map::class.java) as Map<String, Map<String, String>>
-				TinboConfig(config)
-			}
-		}
-
-		fun write(path: Path, config: TinboConfig): Boolean {
-			val dumpAsMap = Yaml().dumpAsMap(config.values)
-			return Files.write(path, dumpAsMap.toByteArray(), StandardOpenOption.CREATE).run {
-				Files.exists(this)
-			}
-		}
-
-	}
 }

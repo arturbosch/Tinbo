@@ -2,7 +2,6 @@ package io.gitlab.arturbosch.tinbo.finance
 
 import io.gitlab.arturbosch.tinbo.api.Summarizable
 import io.gitlab.arturbosch.tinbo.commands.EditableCommands
-import io.gitlab.arturbosch.tinbo.config.CATEGORY_NAME_DEFAULT
 import io.gitlab.arturbosch.tinbo.config.Defaults
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
 import io.gitlab.arturbosch.tinbo.nullIfEmpty
@@ -26,7 +25,8 @@ import java.time.format.DateTimeParseException
  * @author artur
  */
 @Component
-class FinanceCommands @Autowired constructor(val financeExecutor: FinanceExecutor) :
+class FinanceCommands @Autowired constructor(val financeExecutor: FinanceExecutor,
+											 val configProvider: ConfigProvider) :
 		EditableCommands<FinanceEntry, FinanceData, DummyFinance>(financeExecutor), Summarizable {
 
 	override val id: String = "finance"
@@ -94,9 +94,9 @@ class FinanceCommands @Autowired constructor(val financeExecutor: FinanceExecuto
 	override fun add(): String {
 		return whileNotInEditMode {
 			val month = Month.of(console.readLine("Enter a month as number from 1-12 (empty if this month): ").orDefaultMonth())
-			val category = console.readLine("Enter a category: ").orValue(CATEGORY_NAME_DEFAULT)
+			val category = console.readLine("Enter a category: ").orValue(configProvider.categoryName)
 			val message = console.readLine("Enter a message: ").orEmpty()
-			val money = Money.of(currencyUnit, console.readLine("Enter a money value: ").orThrow().toDouble())
+			val money = Money.of(configProvider.currencyUnit, console.readLine("Enter a money value: ").orThrow().toDouble())
 			val dateString = console.readLine("Enter a end time (yyyy-MM-dd HH:mm): ")
 			val dateTime = parseDateTime(dateString)
 
@@ -126,7 +126,7 @@ class FinanceCommands @Autowired constructor(val financeExecutor: FinanceExecuto
 				val category = console.readLine("Enter a category (leave empty if unchanged): ").nullIfEmpty()
 				val message = console.readLine("Enter a message (leave empty if unchanged): ").nullIfEmpty()
 				val moneyString = console.readLine("Enter a money value (leave empty if unchanged): ")
-				val money = if (moneyString.isNullOrEmpty()) null else Money.of(currencyUnit, moneyString.toDouble())
+				val money = if (moneyString.isNullOrEmpty()) null else Money.of(configProvider.currencyUnit, moneyString.toDouble())
 				val dateString = console.readLine("Enter a end time (yyyy-MM-dd HH:mm) (leave empty if unchanged): ")
 				val dateTime = if (dateString.isNullOrEmpty()) null else LocalDateTime.parse(dateString, dateTimeFormatter)
 				executor.editEntry(i, DummyFinance(category, message, month, money, dateTime))

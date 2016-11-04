@@ -1,17 +1,18 @@
 package io.gitlab.arturbosch.tinbo.time
 
-import io.gitlab.arturbosch.tinbo.model.AbstractPersister
 import io.gitlab.arturbosch.tinbo.config.ConfigDefaults
 import io.gitlab.arturbosch.tinbo.config.HomeFolder
+import io.gitlab.arturbosch.tinbo.config.TinboConfig
+import io.gitlab.arturbosch.tinbo.model.AbstractPersister
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.nio.file.Path
 
 /**
  * @author artur
  */
 @Component
-open class TimePersister(TIMER_PATH: Path = HomeFolder.getDirectory(ConfigDefaults.TIMERS)) :
-		AbstractPersister<TimeEntry, TimeData>(TIMER_PATH) {
+open class TimePersister @Autowired constructor(config: TinboConfig) :
+		AbstractPersister<TimeEntry, TimeData>(HomeFolder.getDirectory(ConfigDefaults.TIMERS), config) {
 
 	override fun restore(name: String): TimeData {
 		return load(name, TimeData(name), TimeEntry::class.java)
