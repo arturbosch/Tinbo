@@ -9,6 +9,7 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+		mavenLocal()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -33,14 +34,29 @@ jar {
 
 repositories {
 	mavenCentral()
+	mavenLocal()
 }
 
+configurations {
+	detekt
+}
+
+task detekt(type: JavaExec) {
+	main = "io.gitlab.arturbosch.detekt.cli.Main"
+	classpath = configurations.detekt
+	def input = "$project.projectDir.absolutePath"
+	def config = "$project.projectDir/detekt.yml"
+	def filters = ".*test.*"
+	def rulesets = ""
+	def params = [ '-p', input, '-c', config, '-f', filters, '-r', rulesets]
+	args(params)
+}
 
 dependencies {
 	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 	compile "org.joda:joda-money:0.11"
 	compile project(":plugin-api")
-
+	detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.M2'
 	compile 'org.springframework.boot:spring-boot-starter'
 	compile "org.springframework.shell:spring-shell:$springShellVersion"
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
