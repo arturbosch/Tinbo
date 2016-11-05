@@ -51,8 +51,8 @@ class BurndownChart : TiNBoPlugin {
 	}
 
 	private fun customizeChart(data: DefaultCategoryDataset, project: Project): JFreeChart {
-		val chart = ChartFactory.createLineChart("Burndown Chart for project", "Time", "Units", data)
-		chart.addSubtitle(TextTitle("${project.name}: ${project.start} - ${project.end}"))
+		val chart = ChartFactory.createLineChart("Burndown Chart for project: ${project.name}", "Time", "Units", data)
+		chart.addSubtitle(TextTitle("${project.start} - ${project.end}"))
 		val plot = chart.categoryPlot
 		plot.domainAxis.tickLabelFont = Font("Dialog", Font.PLAIN, 8)
 		val renderer = plot.renderer as LineAndShapeRenderer
