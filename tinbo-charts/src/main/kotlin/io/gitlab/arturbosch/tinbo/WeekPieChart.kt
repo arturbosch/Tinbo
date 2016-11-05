@@ -38,7 +38,7 @@ class WeekPieChart : TiNBoPlugin {
 				data, false, true, false)
 		val (hour, mins) = week.totalHourMinutes()
 		chart.addSubtitle(TextTitle("Total ${week.totalMinutes()}m / ${hour}h${mins}m"))
-		showImage(chart, "Tinbo Chart - $method")
+		showChart(chart, "Tinbo Chart - $method")
 	}
 
 	private fun loadSummary(method: String): WeekSummary? {
