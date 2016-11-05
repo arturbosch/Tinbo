@@ -15,7 +15,7 @@ Mirror at `https://github.com/arturbosch/TiNBo`
 Download from bintray `https://bintray.com/arturbosch/software/TiNBo/`
 or run `gradle clean build` to build a executable jar.
 
-Current version is [M7](https://bintray.com/arturbosch/software/TiNBo/M7#files)
+Current version is [M8](https://bintray.com/arturbosch/software/TiNBo/M8#files)
 # Features
 
 ### General
@@ -47,7 +47,21 @@ Current version is [M7](https://bintray.com/arturbosch/software/TiNBo/M7#files)
 
 ![tinbo](img/tinbofinance.png "Tinbo - Finance")
 
-# Plugins
+### Projects mode
+
+- create projects with tasks
+- track your progress 
+- visualize with plugin charts burndown [project]
+
+### Plugins
+
+- extensible plug and play system
+- tinbo-charts (Powered by JFreeChart)
+- charts week/month for time summaries
+- charts burndown [project] for burndown charts
+- tinbo-lloc - Logical lines of code plugin supports some jvm languages
+
+# Write a Plugin
 
 M7 introduces an API which supports plugins. Follow this five steps guide 
 to create your own plugins:
@@ -79,7 +93,7 @@ PS3: If your using maven for plugin development, run `gradle publishToMavenLocal
 
 ### General
 
-- Support diagrams and graphs, maybe trees for visualization
+- <s>Support diagrams and graphs, maybe trees for visualization</s>
 
 ### Timer
 - <s>Provide Categories and messages</s>
@@ -93,7 +107,7 @@ PS3: If your using maven for plugin development, run `gradle publishToMavenLocal
 
 ### BurnDown-Tracker
 
-- Week/Month overviews for trackers
+- <s>Week/Month overviews for trackers</s>
 - Other useful overviews
 
 ### Finances
@@ -103,7 +117,7 @@ PS3: If your using maven for plugin development, run `gradle publishToMavenLocal
 
 ### PSP-Tasks and Earned-Value-Tracking
 
-- support task and time management part of psp
+- <s>support task and time management part of psp</s>
 
 ### Plugins
 
@@ -149,3 +163,8 @@ PS3: If your using maven for plugin development, run `gradle publishToMavenLocal
 
 - Support plugins via ServiceLoader Api (see tinbo-lloc-plugin for sample implementation)
 - Week summaries for time mode
+
+### 1.0.M8
+
+- projects mode
+- charts, lloc, ascii plugins
