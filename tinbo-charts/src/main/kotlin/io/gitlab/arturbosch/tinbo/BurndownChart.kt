@@ -2,7 +2,6 @@ package io.gitlab.arturbosch.tinbo
 
 import io.gitlab.arturbosch.tinbo.plugins.TiNBoPlugin
 import org.jfree.chart.ChartFactory
-import org.jfree.chart.ChartPanel
 import org.jfree.chart.JFreeChart
 import org.jfree.chart.renderer.category.LineAndShapeRenderer
 import org.jfree.chart.title.TextTitle
@@ -11,13 +10,9 @@ import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import java.awt.BasicStroke
 import java.awt.Color
-import java.awt.Dimension
 import java.awt.Font
 import java.time.LocalDate
 import java.time.Period
-import javax.swing.JFrame
-import javax.swing.SwingUtilities
-import javax.swing.WindowConstants
 
 /**
  * @author Artur Bosch
@@ -124,36 +119,4 @@ class BurndownChart : TiNBoPlugin {
 		return null
 	}
 
-}
-
-fun showChart(chart: JFreeChart, title: String) {
-	SwingUtilities.invokeLater {
-		JFrame(title).apply {
-			defaultCloseOperation = WindowConstants.DISPOSE_ON_CLOSE
-			add(ChartPanel(chart).apply {
-				preferredSize = Dimension(1280, 760)
-			})
-			pack()
-		}.isVisible = true
-	}
-}
-
-private fun LocalDate.toDateFormat(): Comparable<DateChartFormat> = DateChartFormat(this)
-
-class DateChartFormat(val date: LocalDate) : Comparable<DateChartFormat> {
-	override fun compareTo(other: DateChartFormat): Int {
-		return date.compareTo(other.date)
-	}
-
-	override fun toString(): String {
-		return "${date.dayOfMonth}.${date.monthValue}"
-	}
-
-	override fun equals(other: Any?): Boolean {
-		return if (other is DateChartFormat) date == other.date else false
-	}
-
-	override fun hashCode(): Int {
-		return date.hashCode()
-	}
 }

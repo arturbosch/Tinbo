@@ -9,7 +9,7 @@ import org.springframework.shell.core.annotation.CliCommand
 /**
  * @author Artur Bosch
  */
-class WeekPieChart : TiNBoPlugin {
+class WeekMonthChart : TiNBoPlugin {
 
 	@CliCommand("charts week", help = "Generates a chart illustrates time spent in current week.")
 	fun week() {
