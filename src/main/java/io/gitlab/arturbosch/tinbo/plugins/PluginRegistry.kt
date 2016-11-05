@@ -11,6 +11,8 @@ import java.net.URL
 import java.net.URLClassLoader
 import java.util.ArrayList
 import java.util.ServiceLoader
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.Executors
 import javax.annotation.PostConstruct
 
 /**
@@ -24,18 +26,25 @@ class PluginRegistry @Autowired constructor(val shell: JLineShellComponent,
 
 	@PostConstruct
 	fun postConstruct() {
+		val executor = Executors.newSingleThreadExecutor()
 		try {
-			val pluginsPath = HomeFolder.getDirectory(HomeFolder.PLUGINS)
-			val pluginFiles = pluginsPath.toFile().listFiles()
+			CompletableFuture.runAsync(Runnable {
+				val pluginsPath = HomeFolder.getDirectory(HomeFolder.PLUGINS)
+				val pluginFiles = pluginsPath.toFile().listFiles()
 
-			if (pluginFiles.isEmpty()) return
-			val jarUrls = pluginFiles.filter { it.name.endsWith(".jar") }.map { it.toURI().toURL() }
+				if (pluginFiles.isNotEmpty()) {
+					val jarUrls = pluginFiles
+							.filter { it.name.endsWith(".jar") }
+							.map { it.toURI().toURL() }
+					loadJarPlugins(jarUrls)
+				}
+			}, executor)
 
-			loadJarPlugins(jarUrls)
 		} catch (e: RuntimeException) {
 			val message = "Could not load plugins: ${e.message}"
 			logError(e, message)
 		}
+		executor.shutdown()
 	}
 
 	private fun loadJarPlugins(jarUrls: List<URL>) {
