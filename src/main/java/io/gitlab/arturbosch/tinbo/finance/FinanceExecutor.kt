@@ -36,7 +36,7 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder,
 			val financeSequence = this.asSequence()
 			val summaryStringList = financeSequence.toSummaryStringList()
 			summariesReturnString += tableAsString(summaryStringList, "No.;Category;Spent") +
-					"\nTotal sum: ${financeSequence.sum()} for month $beforeLastMonth" + "\n\n"
+					"\n\nTotal sum: ${financeSequence.sum()} for month $beforeLastMonth" + "\n\n"
 		}
 
 		val lastMonth = currentMonth.minus(1)
@@ -44,12 +44,12 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder,
 			val financeSequence = this.asSequence()
 			val summaryStringList = financeSequence.toSummaryStringList()
 			summariesReturnString += tableAsString(summaryStringList, "No.;Category;Spent") +
-					"\nTotal sum: ${financeSequence.sum()} for month $lastMonth" + "\n\n"
+					"\n\nTotal sum: ${financeSequence.sum()} for month $lastMonth" + "\n\n"
 		}
 
 		val summaryCurrent = summaryForMonth(categories, currentMonth).asSequence()
 		summariesReturnString += tableAsString(summaryCurrent.toSummaryStringList(), "No.;Category;Spent")
-		return summariesReturnString + "\nTotal sum: ${summaryCurrent.sum()} for month $currentMonth"
+		return summariesReturnString + "\n\nTotal sum: ${summaryCurrent.sum()} for month $currentMonth"
 	}
 
 	private fun Sequence<FinanceEntry>.sum() = this.map { it.moneyValue }
