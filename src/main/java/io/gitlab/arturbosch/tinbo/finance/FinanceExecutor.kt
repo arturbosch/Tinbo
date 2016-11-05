@@ -52,7 +52,8 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder,
 		return summariesReturnString + "\nTotal sum: ${summaryCurrent.sum()} for month $currentMonth"
 	}
 
-	private fun Sequence<FinanceEntry>.sum() = this.map { it.moneyValue }.reduce(Money::plus)
+	private fun Sequence<FinanceEntry>.sum() = this.map { it.moneyValue }
+			.fold(Money.zero(configProvider.currencyUnit), Money::plus)
 
 	private fun summaryForMonth(categories: List<String>, currentMonth: Month): List<FinanceEntry> {
 		return if (categories.isNotEmpty()) {
