@@ -13,16 +13,18 @@ open class WeekSummaryExecutor @Autowired constructor(val timeDataHolder: TimeDa
 		CSVAwareExecutor() {
 
 	override val TABLE_HEADER: String
-		get() = "No.;Category;Spent"
+		get() = "No.;Category;Time"
+
+	fun asTable(summaries: List<String>): String = tableAsString(summaries, TABLE_HEADER)
 
 	fun sumAllCategories(): String {
 		val summaries = timeDataHolder.createSummaries()
-		return tableAsString(summaries, TABLE_HEADER)
+		return asTable(summaries)
 	}
 
 	fun sumForCategories(filters: List<String>): String {
 		val summaries = timeDataHolder.createFilteredSummaries(filters)
-		return tableAsString(summaries, TABLE_HEADER)
+		return asTable(summaries)
 	}
 
 	fun twoWeekSummary(): String {
@@ -36,7 +38,7 @@ open class WeekSummaryExecutor @Autowired constructor(val timeDataHolder: TimeDa
 		val entriesOfWeek = data.filter { it.date >= from && it.date <= to }
 		val summary = timeDataHolder.summariesInternal(entriesOfWeek)
 		val sum = timeDataHolder.sumTimesAsString(entriesOfWeek)
-		return tableAsString(summary, TABLE_HEADER) + "\n\nTotal time spent: $sum - ($from - $to)"
+		return asTable(summary) + "\n\nTotal time spent: $sum - ($from - $to)"
 	}
 
 }

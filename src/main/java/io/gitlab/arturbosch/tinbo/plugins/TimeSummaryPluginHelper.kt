@@ -17,8 +17,12 @@ class TimeSummaryPluginHelper @Autowired constructor(val timeDataHolder: TimeDat
 
 	@PluginSupport
 	fun week(): WeekSummary {
+		return week(LocalDate.now())
+	}
+
+	fun week(date: LocalDate): WeekSummary {
 		val data = timeDataHolder.getEntries()
-		val (from, to) = weekRange(LocalDate.now())
+		val (from, to) = weekRange(date)
 		val entriesOfWeek = data.asSequence()
 				.filter { it.date >= from && it.date <= to }
 				.map { it.category to it.timeAsMinutes() }
@@ -30,9 +34,13 @@ class TimeSummaryPluginHelper @Autowired constructor(val timeDataHolder: TimeDat
 
 	@PluginSupport
 	fun month(): WeekSummary {
+		return month(LocalDate.now())
+	}
+
+	fun month(date: LocalDate): WeekSummary {
 		val data = timeDataHolder.getEntries()
-		val month = LocalDate.now().month
-		val year = LocalDate.now().year
+		val month = date.month
+		val year = date.year
 		val entriesOfWeek = data.asSequence()
 				.filter { it.date.month == month && it.date.year == year }
 				.map { it.category to it.timeAsMinutes() }
