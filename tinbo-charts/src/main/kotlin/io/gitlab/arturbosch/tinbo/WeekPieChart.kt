@@ -2,14 +2,9 @@ package io.gitlab.arturbosch.tinbo
 
 import io.gitlab.arturbosch.tinbo.plugins.TiNBoPlugin
 import org.jfree.chart.ChartFactory
-import org.jfree.chart.ChartPanel
 import org.jfree.chart.title.TextTitle
 import org.jfree.data.general.DefaultPieDataset
 import org.springframework.shell.core.annotation.CliCommand
-import java.awt.Dimension
-import javax.swing.JFrame
-import javax.swing.SwingUtilities
-import javax.swing.WindowConstants
 
 /**
  * @author Artur Bosch
@@ -43,15 +38,7 @@ class WeekPieChart : TiNBoPlugin {
 				data, false, true, false)
 		val (hour, mins) = week.totalHourMinutes()
 		chart.addSubtitle(TextTitle("Total ${week.totalMinutes()}m / ${hour}h${mins}m"))
-		SwingUtilities.invokeLater {
-			JFrame("Tinbo Chart - $method").apply {
-				defaultCloseOperation = WindowConstants.DISPOSE_ON_CLOSE
-				add(ChartPanel(chart).apply {
-					preferredSize = Dimension(640, 480)
-				})
-				pack()
-			}.isVisible = true
-		}
+		showImage(chart, "Tinbo Chart - $method")
 	}
 
 	private fun loadSummary(method: String): WeekSummary? {

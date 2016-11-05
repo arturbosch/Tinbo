@@ -15,8 +15,14 @@ data class Project(var name: String = "",
 				   var done: Boolean = false) {
 	fun sumPlannedTime(): Int = tasks.sumBy { it.plannedTime.minutes }
 	fun sumPlannedUnits(): Int = tasks.sumBy(Task::plannedUnits)
+	fun sumPlannedUnitsAfter(date: LocalDate): Int = tasks.filter { it.end >= date }.sumBy(Task::plannedUnits)
 	fun sumActualTime(): Int = tasks.sumBy { it.actualTime?.minutes ?: 0 }
 	fun sumActualUnits(): Int = tasks.sumBy { it.actualUnits ?: 0 }
+	fun sumActualUnitsAfter(date: LocalDate): Int {
+		val plannedUnits = sumPlannedUnits()
+		val sumBy = tasks.filter { it.completeDate?.let { it <= date } ?: false }.sumBy(Task::plannedUnits)
+		return plannedUnits - sumBy
+	}
 
 	fun csvHeader(): String = "Name;pTime;aTime;pUnits;aUnits;Start;End;Done;Description"
 	fun asCSV(): String = "$name;${sumPlannedTime().asHourString()};${sumActualTime().asHourString()};" +
@@ -43,7 +49,8 @@ data class Task(var name: String = "",
 				var plannedTime: Time = Time(),
 				var actualTime: Time? = null,
 				var end: LocalDate = LocalDate.now(),
-				var time: List<Time> = listOf()) {
+				var time: List<Time> = listOf(),
+				var completeDate: LocalDate? = null) {
 	fun csvHeader(): String = "Name;pTime;aTime;pUnits;aUnits;End;Done?"
 	fun asCSV(): String = "$name;${plannedTime.minutes.asHourString()};" +
 			"${actualTime?.minutes?.asHourString() ?: "undef"};" +
@@ -56,6 +63,7 @@ data class Task(var name: String = "",
 	fun complete(minutes: Int, units: Int) {
 		actualTime = Time(minutes)
 		actualUnits = units
+		completeDate = LocalDate.now()
 	}
 }
 
