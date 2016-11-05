@@ -3,8 +3,7 @@ package io.gitlab.arturbosch.tinbo.api
 /**
  * @author artur
  */
-interface Editable : Listable {
-	fun add(): String
+interface Editable : Listable, Addable {
 	fun load(name: String): String
 	fun cancel(): String
 	fun save(name: String): String

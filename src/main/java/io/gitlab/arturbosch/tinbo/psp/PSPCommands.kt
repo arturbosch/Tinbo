@@ -1,6 +1,7 @@
 package io.gitlab.arturbosch.tinbo.psp
 
 import io.gitlab.arturbosch.tinbo.Project
+import io.gitlab.arturbosch.tinbo.api.Addable
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.api.Listable
 import io.gitlab.arturbosch.tinbo.config.ConfigDefaults.PROJECTS
@@ -23,12 +24,16 @@ import java.time.format.DateTimeParseException
 class PSPCommands @Autowired constructor(val console: ConsoleReader,
 										 val prompt: PromptProvider,
 										 val currentProject: CurrentProject,
-										 val csvProjects: CSVProjects) : Command, Listable {
+										 val csvProjects: CSVProjects) : Command, Listable, Addable {
 
 	override val id: String = "psp"
 
 	override fun list(categoryName: String): String {
-		return csvProjects.convert()
+		return if (categoryName.isNotEmpty()) showProject(categoryName) else csvProjects.convert()
+	}
+
+	override fun add(): String {
+		return newProject(console.readLine("Enter project name: "))
 	}
 
 	@CliAvailabilityIndicator("showAll", "show-project", "new-project", "open-project", "close-project")
@@ -50,7 +55,7 @@ class PSPCommands @Autowired constructor(val console: ConsoleReader,
 				val end = console.readLine("Enter end date of project(empty if not yet known): ")
 				val startDate = if (start.isEmpty()) LocalDate.now() else LocalDate.parse(start, dateFormatter)
 				val endDate = if (end.isEmpty()) null else LocalDate.parse(end, dateFormatter)
-				currentProject.newProject(Project(name, description, startDate, endDate))
+				currentProject.persistProject(Project(name, description, startDate, endDate))
 				return "Successfully added project $name"
 			} catch(e: Exception) {
 				return e.message ?: throw e

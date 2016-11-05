@@ -17,7 +17,7 @@ tmp/
 local.properties
 .settings/
 .loadpath
-.project
+.theProject
 .classpath
 
 ### IDEA ###

@@ -20,14 +20,9 @@ open class SharableCommands @Autowired constructor(val commandChooser: CommandCh
 
 	override val id: String = "edit"
 
-	@CliAvailabilityIndicator("add", "save", "cancel", "remove", "changeCategory", "data", "last", "edit", "load")
+	@CliAvailabilityIndicator("save", "cancel", "remove", "changeCategory", "data", "last", "edit", "load")
 	fun basicsAvailable(): Boolean {
 		return ModeAdvisor.isModeWhereEditIsAllowed()
-	}
-
-	@CliCommand("add", help = "Adds a new entry")
-	fun add(): String {
-		return commandChooser.forCurrentMode().add()
 	}
 
 	@CliCommand("load", help = "Loads/Creates an other data set. Data sets are stored under ~/TiNBo/<MODE>/<NAME.")

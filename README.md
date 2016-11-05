@@ -52,7 +52,7 @@ Current version is [M7](https://bintray.com/arturbosch/software/TiNBo/M7#files)
 M7 introduces an API which supports plugins. Follow this five steps guide 
 to create your own plugins:
 
-1. Create a new project with plugin-api as dependency (Take a look at tinbo-lloc-plugin for a gradle project).
+1. Create a new theProject with plugin-api as dependency (Take a look at tinbo-lloc-plugin for a gradle theProject).
 2. Create a class and extend TiNBoPlugin (e.g. `class LLOC : TiNBoPlugin { ... }`)
 3. Write your shell commands! (e.g. ``` @CliCommand("hello")
                                        	fun execute(): String {
@@ -68,7 +68,7 @@ PS: If you use external dependency make sure to package them too. (e.g. with gra
 PS2: Mark your Kotlin/Tinbo dependency as provided/compileOnly for smaller jar files!
 ```groovy
 dependencies {
-	compileOnly project(":plugin-api")
+	compileOnly theProject(":plugin-api")
 	compile 'io.gitlab.arturbosch:lloc:1.4'
 	compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }

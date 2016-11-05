@@ -1,5 +1,6 @@
 package io.gitlab.arturbosch.tinbo.commands
 
+import io.gitlab.arturbosch.tinbo.api.Addable
 import io.gitlab.arturbosch.tinbo.api.Editable
 import io.gitlab.arturbosch.tinbo.api.Listable
 import io.gitlab.arturbosch.tinbo.api.Summarizable
@@ -42,6 +43,13 @@ class CommandChooser @Autowired constructor(
 	}
 
 	fun forListableMode(): Listable {
+		return when (ModeAdvisor.getMode()) {
+			Mode.PROJECTS -> if (stateProvider.isProjectOpen()) projectCommands else pspCommands
+			else -> forCurrentMode()
+		}
+	}
+
+	fun forAddableMode(): Addable {
 		return when (ModeAdvisor.getMode()) {
 			Mode.PROJECTS -> if (stateProvider.isProjectOpen()) projectCommands else pspCommands
 			else -> forCurrentMode()

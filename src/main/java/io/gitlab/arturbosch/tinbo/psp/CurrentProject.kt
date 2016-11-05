@@ -37,7 +37,10 @@ class CurrentProject @Autowired constructor(private val csvTasks: CSVTasks,
 	fun name(): String = project.name
 
 	fun addTask(task: Task) {
-		if (isSpecified()) project.add(task)
+		if (isSpecified()) {
+			project.add(task)
+			persistProject(project)
+		}
 	}
 
 	fun showTasks(ofProject: Project = project): String = csvTasks.convert(ofProject.tasks)
@@ -52,8 +55,8 @@ class CurrentProject @Autowired constructor(private val csvTasks: CSVTasks,
 		} ?: "No project with given name $name found!"
 	}
 
-	fun newProject(project: Project) {
-		fileProjects.persistProject(project)
+	fun persistProject(theProject: Project) {
+		fileProjects.persistProject(theProject)
 	}
 
 	fun closeTaskWithStartingName(name: String, minutes: Int, units: Int): Pair<Boolean, String> {
