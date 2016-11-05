@@ -1,5 +1,6 @@
 package io.gitlab.arturbosch.tinbo.time
 
+import io.gitlab.arturbosch.tinbo.WeekSummary
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.api.Summarizable
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
@@ -36,19 +37,22 @@ open class TimeSummaryCommands @Autowired constructor(val summaryExecutor: WeekS
 
 	@CliCommand("week", help = "Summarizes last and this week's time spending on categories.")
 	fun weekSummary(): String {
-		return summaryExecutor.twoWeekSummary()
+		val now = LocalDate.now()
+		val summaryString = monthSummaryAsString { timeSummaryPluginHelper.week(now) }
+		val summaryLastString = monthSummaryAsString { timeSummaryPluginHelper.week(now.minusDays(7)) }
+		return summaryLastString + "\n\n" + summaryString
 	}
 
 	@CliCommand("month", help = "Summarizes last and this month's time spending on categories.")
 	fun monthSummary(): String {
 		val now = LocalDate.now()
-		val summaryString = monthSummaryAsString(now)
-		val summaryLastString = monthSummaryAsString(now.minusMonths(1))
+		val summaryString = monthSummaryAsString { timeSummaryPluginHelper.month(now) }
+		val summaryLastString = monthSummaryAsString { timeSummaryPluginHelper.month(now.minusMonths(1)) }
 		return summaryLastString + "\n\n" + summaryString
 	}
 
-	private fun monthSummaryAsString(now: LocalDate): String {
-		val month = timeSummaryPluginHelper.month(now)
+	private fun monthSummaryAsString(now: () -> WeekSummary): String {
+		val month = now.invoke()
 		val monthString = month.entries.map {
 			val pair = it.asHourMinutes()
 			"${it.category};${formatTime(pair)}"
