@@ -35,10 +35,14 @@ jar {
 repositories {
 	mavenCentral()
 	mavenLocal()
+	maven {
+		url  "http://dl.bintray.com/arturbosch/code-analysis"
+	}
 }
 
 configurations {
 	detekt
+	smartsmells
 }
 
 task detekt(type: JavaExec) {
@@ -52,11 +56,21 @@ task detekt(type: JavaExec) {
 	args(params)
 }
 
+task smartsmells(type: JavaExec) {
+	main = "io.gitlab.arturbosch.smartsmells.Main"
+	classpath = configurations.smartsmells
+	def input = "$project.projectDir.absolutePath"
+	def output = "$project.projectDir/smartsmells.xml"
+	def params = [ '-i', input, '-o', output, '-f']
+	args(params)
+}
+
 dependencies {
 	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 	compile project(":plugin-api")
 	compile project(":tinbo-api")
 	detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.M2'
+	smartsmells 'io.gitlab.arturbosch.smartsmells:SmartSmells:M7'
 	compile 'org.springframework.boot:spring-boot-starter'
 	compile "org.springframework.shell:spring-shell:$springShellVersion"
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
