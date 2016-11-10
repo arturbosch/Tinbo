@@ -40,7 +40,7 @@ class ProjectCommands @Autowired constructor(val console: ConsoleReader,
 			val date = if (end.isEmpty()) LocalDate.now() else LocalDate.parse(end, dateFormatter)
 			currentProject.addTask(Task(name = name, plannedTime = Time(pTime), plannedUnits = pUnits, end = date))
 			return "Successfully added task to ${currentProject.name()}"
-		} catch(e: Exception) {
+		} catch (e: Exception) {
 			e.message ?: throw e
 		}
 	}

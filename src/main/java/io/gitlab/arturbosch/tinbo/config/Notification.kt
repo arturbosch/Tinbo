@@ -29,7 +29,7 @@ object Notification {
 					.bufferedReader()
 					.lines()
 					.reduce("", { s1, s2 -> "$s1\n$s2" })
-		} catch(e: Exception) {
+		} catch (e: Exception) {
 			logger.error(WEATHER_COMMAND_ERROR, e)
 			return WEATHER_COMMAND_ERROR
 		}

@@ -42,7 +42,6 @@ fun Int.asHourString(): String {
 	return "${this / 60}h${this % 60}m"
 }
 
-
 data class Task(var name: String = "",
 				var plannedUnits: Int = 0,
 				var actualUnits: Int? = null,

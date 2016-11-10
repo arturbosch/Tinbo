@@ -15,12 +15,12 @@ object DateTimeFormatters {
 		var formattedEndTime = formattedStartTime
 		try {
 			formattedStartTime = LocalDateTime.parse(startTime, dateTimeFormatter)
-		} catch(ignored: DateTimeParseException) {
+		} catch (ignored: DateTimeParseException) {
 		}
 		if (endTime.isNotEmpty()) {
 			try {
 				formattedEndTime = LocalDateTime.parse(endTime, dateTimeFormatter)
-			} catch(ignored: DateTimeParseException) {
+			} catch (ignored: DateTimeParseException) {
 			}
 		}
 		return Pair(formattedStartTime, formattedEndTime)
@@ -36,7 +36,7 @@ object DateTimeFormatters {
 	fun parseDateOrNull(startTime: String): LocalDate? {
 		return try {
 			LocalDate.parse(startTime, dateFormatter)
-		} catch(e: DateTimeParseException) {
+		} catch (e: DateTimeParseException) {
 			null
 		}
 	}

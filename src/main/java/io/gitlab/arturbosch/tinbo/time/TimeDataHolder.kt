@@ -20,7 +20,6 @@ open class TimeDataHolder @Autowired constructor(persister: TimePersister,
 		get() = config.getKey(ConfigDefaults.TIMERS)
 				.getOrElse(ConfigDefaults.LAST_USED, { Defaults.TIME_NAME })
 
-
 	override fun newData(name: String, entriesInMemory: List<TimeEntry>): TimeData {
 		return TimeData(name, entriesInMemory)
 	}

@@ -44,7 +44,7 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor,
 				val mins = readNumber("Enter amount of spent minutes: ")
 				val seconds = readNumber("Enter amount of spent seconds: ")
 				addTime(hours, mins, seconds, category, message, date)
-			} catch(e: NumberFormatException) {
+			} catch (e: NumberFormatException) {
 				"Could not parse given time values. Use numbers only!"
 			}
 		}
@@ -83,7 +83,7 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor,
 				val localDate = if (date.isEmpty()) LocalDate.now() else LocalDate.parse(date, dateFormatter)
 				executor.addEntry(TimeEntry(name, message, hours, mins, seconds, localDate))
 				SUCCESS_MESSAGE
-			} catch(e: DateTimeParseException) {
+			} catch (e: DateTimeParseException) {
 				"Could not parse given date."
 			}
 		}
@@ -103,7 +103,7 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor,
 					val date: LocalDate? = DateTimeFormatters.parseDateOrNull(dateFormat)
 					executor.editEntry(i, DummyTime(category, message, hours, mins, seconds, date))
 					SUCCESS_MESSAGE
-				} catch(e: NumberFormatException) {
+				} catch (e: NumberFormatException) {
 					"Could not parse given time values. Use numbers only!"
 				}
 

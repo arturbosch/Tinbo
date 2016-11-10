@@ -3,7 +3,6 @@ package com.gitlab.artismarti.tinbo.plugins
 import com.gitlab.artismarti.tinbo.common.Command
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.JLineShellComponent
-import org.springframework.shell.core.MethodTarget
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component

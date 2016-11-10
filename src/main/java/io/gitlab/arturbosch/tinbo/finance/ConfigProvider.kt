@@ -16,7 +16,6 @@ class ConfigProvider @Autowired constructor(val config: TinboConfig) {
 	val currencyUnit: CurrencyUnit = CurrencyUnit.of(
 			config.getKey(ConfigDefaults.DEFAULTS)[ConfigDefaults.CURRENCY].orDefault("EUR"))
 
-
 	val categoryName = config.getCategoryName()
 
 }

@@ -16,12 +16,10 @@ fun String.spaceIfEmpty(): String =
 			else -> this
 		}
 
-
 fun String.orThrow(message: () -> String = { "Empty value not allowed!" }): String =
 		if (this.isEmpty())
 			throw IllegalArgumentException(message())
 		else this
-
 
 inline fun String.toLongOrDefault(long: () -> Long): Long {
 	return try {
@@ -66,7 +64,6 @@ fun String.replaceSeparator(): String {
 fun String.orDefaultMonth(): Int = this.toIntOrDefault { java.time.LocalDate.now().month.value }
 fun String?.toLongOrNull(): Long? = if (this.isNullOrEmpty()) null else this?.toLong()
 fun String?.nullIfEmpty(): String? = if (this.isNullOrEmpty()) null else this
-
 
 fun <E> List<E>.ifNotEmpty(function: List<E>.() -> Unit) {
 	if (this.isNotEmpty()) {

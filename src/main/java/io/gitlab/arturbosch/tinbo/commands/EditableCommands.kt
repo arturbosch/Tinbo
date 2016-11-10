@@ -134,7 +134,7 @@ abstract class EditableCommands<E : Entry, D : Data<E>, in T : DummyEntry>(
 				isEditMode = true
 				executor.deleteEntries(indices)
 				"Successfully deleted task(s)."
-			} catch(e: IllegalArgumentException) {
+			} catch (e: IllegalArgumentException) {
 				"Could not parse the indices pattern. Use something like '1 2 3-5 6'."
 			}
 		}

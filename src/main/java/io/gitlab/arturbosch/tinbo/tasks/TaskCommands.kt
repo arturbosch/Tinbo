@@ -70,7 +70,7 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor,
 					val formattedEndTime = pair.second
 					executor.addEntry(TaskEntry(message, description, location, category, formattedStartTime, formattedEndTime))
 					SUCCESS_MESSAGE
-				} catch(e: DateTimeParseException) {
+				} catch (e: DateTimeParseException) {
 					"Could not parse date, use format: yyyy-MM-dd HH:mm"
 				}
 			} else {

@@ -28,7 +28,6 @@ class TinboConfig(val path: Path = HomeFolder.getOrCreateDefaultConfig()) {
 		return values.getOrElse(key, { HashMap<String, String>() })
 	}
 
-
 	fun writeLastUsed(property: String, value: String) {
 		val oldMap = values[property]
 		if (oldMap != null) {

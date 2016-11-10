@@ -19,7 +19,6 @@ open class TaskDataHolder @Autowired constructor(persister: TaskPersister,
 		get() = config.getKey(ConfigDefaults.TASKS)
 				.getOrElse(ConfigDefaults.LAST_USED, { Defaults.TASKS_NAME })
 
-
 	override fun newData(name: String, entriesInMemory: List<TaskEntry>): TaskData {
 		return TaskData(name, entriesInMemory)
 	}

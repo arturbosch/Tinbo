@@ -57,7 +57,7 @@ class PSPCommands @Autowired constructor(val console: ConsoleReader,
 				val endDate = if (end.isEmpty()) null else LocalDate.parse(end, dateFormatter)
 				currentProject.persistProject(Project(name, description, startDate, endDate))
 				return "Successfully added project $name"
-			} catch(e: Exception) {
+			} catch (e: Exception) {
 				return e.message ?: throw e
 			}
 		} ?: wrong
