@@ -69,7 +69,7 @@ dependencies {
 	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 	compile project(":plugin-api")
 	compile project(":tinbo-api")
-	detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.M2'
+	detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.M3'
 	smartsmells 'io.gitlab.arturbosch.smartsmells:SmartSmells:M7'
 	compile 'org.springframework.boot:spring-boot-starter'
 	compile "org.springframework.shell:spring-shell:$springShellVersion"

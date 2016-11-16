@@ -1,13 +1,49 @@
+autoCorrect: true
+
 code-smell:
   active: true
   LongMethod:
-    threshold: 20
+    threshold: 12
   LongParameterList:
     threshold: 5
   LargeClass:
     threshold: 70
   ComplexMethod:
     threshold: 10
+
+formatting:
+  active: true
+  useTabs: true
+  Indentation:
+    active: false
+    autoCorrect: false
+  ConsecutiveBlankLines:
+    active: true
+    autoCorrect: true
+  MultipleSpaces:
+    active: true
+    autoCorrect: true
+  SpacingAfterComma:
+    active: true
+    autoCorrect: true
+  SpacingAfterKeyword:
+    active: true
+    autoCorrect: true
+  SpacingAroundColon:
+    active: true
+    autoCorrect: true
+  SpacingAroundCurlyBraces:
+    active: true
+    autoCorrect: true
+  SpacingAroundOperator:
+    active: true
+    autoCorrect: true
+  TrailingSpaces:
+    active: true
+    autoCorrect: true
+  UnusedImports:
+    active: true
+    autoCorrect: true
 
 style:
   active: true
@@ -18,7 +54,7 @@ style:
   NamingConventionViolation:
 
 comments:
-  active: false
+  active: true
   CommentOverPrivateMethod:
     active: true
   CommentOverPrivateProperty:
