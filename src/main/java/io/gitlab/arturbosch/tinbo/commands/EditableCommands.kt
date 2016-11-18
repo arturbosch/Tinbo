@@ -97,16 +97,16 @@ abstract class EditableCommands<E : Entry, D : Data<E>, in T : DummyEntry>(
 		return "Successfully loaded data set $name"
 	}
 
-	override fun list(categoryName: String): String {
+	override fun list(categoryName: String, all: Boolean): String {
 		return withListMode {
 			if (isEditMode) {
 				if (categoryName.isNotEmpty())
 					printlnInfo("While in edit mode filtering is ignored.")
-				executor.listInMemoryEntries()
+				executor.listInMemoryEntries(all)
 			} else {
 				when (categoryName) {
-					"" -> executor.listData()
-					else -> executor.listDataFilteredBy(categoryName)
+					"" -> executor.listData(all)
+					else -> executor.listDataFilteredBy(categoryName, all)
 				}
 			}
 		}

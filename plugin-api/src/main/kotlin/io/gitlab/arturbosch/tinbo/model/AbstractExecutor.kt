@@ -1,6 +1,7 @@
 package io.gitlab.arturbosch.tinbo.model
 
 import io.gitlab.arturbosch.tinbo.applyToString
+import io.gitlab.arturbosch.tinbo.config.TinboConfig
 import io.gitlab.arturbosch.tinbo.plusElementAtBeginning
 import io.gitlab.arturbosch.tinbo.replaceAt
 import io.gitlab.arturbosch.tinbo.withIndexedColumn
@@ -9,7 +10,8 @@ import io.gitlab.arturbosch.tinbo.withIndexedColumn
  * @author Artur Bosch
  */
 abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
-		private val dataHolder: AbstractDataHolder<E, D>) : CSVAwareExecutor() {
+		private val dataHolder: AbstractDataHolder<E, D>,
+		private val tinboConfig: TinboConfig) : CSVAwareExecutor() {
 
 	protected var entriesInMemory: List<E> = listOf()
 
@@ -24,18 +26,25 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
 		dataHolder.loadData(name)
 	}
 
-	fun listData(): String {
+	fun listData(all: Boolean): String {
 		entriesInMemory = dataHolder.getEntries()
-		return listDataInternal()
+		return listDataInternal(all)
 	}
 
-	fun listInMemoryEntries(): String {
-		return listDataInternal()
+	fun listInMemoryEntries(all: Boolean): String {
+		return listDataInternal(all)
 	}
 
-	private fun listDataInternal(): String {
+	private fun listDataInternal(all: Boolean): String {
 
-		val entryTableData = entriesInMemory
+		val entries = if (all) {
+			entriesInMemory
+		} else {
+			val amount = tinboConfig.getListAmount()
+			entriesInMemory.take(amount)
+		}
+
+		val entryTableData = entries
 				.applyToString()
 				.withIndexedColumn()
 				.plusElementAtBeginning(TABLE_HEADER)
@@ -43,9 +52,9 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
 		return csv.asTable(entryTableData).joinToString(NEW_LINE)
 	}
 
-	fun listDataFilteredBy(filter: String): String {
+	fun listDataFilteredBy(filter: String, all: Boolean): String {
 		entriesInMemory = dataHolder.getEntriesFilteredBy(filter)
-		return listDataInternal()
+		return listDataInternal(all)
 	}
 
 	fun editEntry(index: Int, dummy: T) {

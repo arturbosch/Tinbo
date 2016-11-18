@@ -17,5 +17,6 @@ object ConfigDefaults {
 	const val DEFAULTS = "defaults"
 	const val CURRENCY = "currency"
 	const val CITY = "city"
+	const val LIST_AMOUNT = "listAmount"
 
 }

@@ -1,5 +1,6 @@
 package io.gitlab.arturbosch.tinbo.finance
 
+import io.gitlab.arturbosch.tinbo.config.TinboConfig
 import io.gitlab.arturbosch.tinbo.ifNotEmpty
 import io.gitlab.arturbosch.tinbo.model.AbstractExecutor
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
@@ -16,8 +17,9 @@ import java.time.Month
 
 @Component
 class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder,
-											 val configProvider: ConfigProvider) :
-		AbstractExecutor<FinanceEntry, FinanceData, DummyFinance>(dataHolder) {
+											 val configProvider: ConfigProvider,
+											 tinboConfig: TinboConfig) :
+		AbstractExecutor<FinanceEntry, FinanceData, DummyFinance>(dataHolder, tinboConfig) {
 
 	override val TABLE_HEADER: String
 		get() = "No.;Month;Category;Notice;Spend;Time"

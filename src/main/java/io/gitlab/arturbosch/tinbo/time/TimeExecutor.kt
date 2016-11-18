@@ -18,7 +18,7 @@ import java.time.LocalDateTime
 open class TimeExecutor @Autowired constructor(timeDataHolder: TimeDataHolder,
 											   val consoleReader: ConsoleReader,
 											   val config: TinboConfig) :
-		AbstractExecutor<TimeEntry, TimeData, DummyTime>(timeDataHolder) {
+		AbstractExecutor<TimeEntry, TimeData, DummyTime>(timeDataHolder, config) {
 
 	override val TABLE_HEADER: String
 		get() = "No.;Category;Date;HH:MM:SS;Notice"

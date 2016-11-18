@@ -23,7 +23,7 @@ class ProjectCommands @Autowired constructor(val console: ConsoleReader,
 											 val currentProject: CurrentProject) : Command, Listable, Addable {
 	override val id: String = "psp"
 
-	override fun list(categoryName: String): String = currentProject.showTasks()
+	override fun list(categoryName: String, all: Boolean): String = currentProject.showTasks()
 
 	override fun add(): String = newTask()
 

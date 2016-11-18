@@ -1,5 +1,6 @@
 package io.gitlab.arturbosch.tinbo.tasks
 
+import io.gitlab.arturbosch.tinbo.config.TinboConfig
 import io.gitlab.arturbosch.tinbo.model.AbstractExecutor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -8,8 +9,9 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-open class TaskExecutor @Autowired constructor(taskDataHolder: TaskDataHolder) :
-		AbstractExecutor<TaskEntry, TaskData, DummyTask>(taskDataHolder) {
+open class TaskExecutor @Autowired constructor(taskDataHolder: TaskDataHolder,
+											   tinboConfig: TinboConfig) :
+		AbstractExecutor<TaskEntry, TaskData, DummyTask>(taskDataHolder, tinboConfig) {
 
 	override val TABLE_HEADER: String
 		get() = "No.;Category;Message;Location;Start;End;Description"

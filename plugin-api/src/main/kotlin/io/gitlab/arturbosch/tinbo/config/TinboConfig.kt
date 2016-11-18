@@ -1,6 +1,7 @@
 package io.gitlab.arturbosch.tinbo.config
 
 import io.gitlab.arturbosch.tinbo.orDefault
+import io.gitlab.arturbosch.tinbo.toIntOrDefault
 import io.gitlab.arturbosch.tinbo.toLongOrDefault
 import org.springframework.stereotype.Component
 import org.yaml.snakeyaml.Yaml
@@ -10,7 +11,7 @@ import java.nio.file.StandardOpenOption
 import java.util.HashMap
 
 /**
- * @author artur
+ * @author Artur Bosch
  */
 @Component
 class TinboConfig(val path: Path = HomeFolder.getOrCreateDefaultConfig()) {
@@ -26,6 +27,10 @@ class TinboConfig(val path: Path = HomeFolder.getOrCreateDefaultConfig()) {
 
 	fun getKey(key: String): Map<String, String> {
 		return values.getOrElse(key, { HashMap<String, String>() })
+	}
+
+	fun getKeySafe(key: String): Map<String, Any> {
+		return values.getOrElse(key, { HashMap<String, Any>() })
 	}
 
 	fun writeLastUsed(property: String, value: String) {
@@ -47,7 +52,7 @@ class TinboConfig(val path: Path = HomeFolder.getOrCreateDefaultConfig()) {
 	}
 
 	fun getTimeInterval(): Long {
-		val time = getKey(ConfigDefaults.NOTIFICATIONS)[ConfigDefaults.TIME_INTERVAL].orEmpty()
+		val time = getKeySafe(ConfigDefaults.NOTIFICATIONS)[ConfigDefaults.TIME_INTERVAL].toString()
 		return time.toLongOrDefault({ Defaults.INFO_NOTIFICATION_TIME })
 	}
 
@@ -59,6 +64,11 @@ class TinboConfig(val path: Path = HomeFolder.getOrCreateDefaultConfig()) {
 	fun getCity(): String {
 		return getKey(ConfigDefaults.DEFAULTS)[ConfigDefaults.CITY]
 				.orDefault("-1")
+	}
+
+	fun getListAmount(): Int {
+		val amount = getKeySafe(ConfigDefaults.DEFAULTS)[ConfigDefaults.LIST_AMOUNT].toString()
+		return amount.toIntOrDefault { 20 }
 	}
 
 }

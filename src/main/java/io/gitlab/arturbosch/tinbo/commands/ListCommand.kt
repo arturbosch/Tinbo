@@ -22,13 +22,19 @@ class ListCommand @Autowired constructor(val commandChooser: CommandChooser) : C
 	}
 
 	@CliCommand("ls", "list", help = "Lists all entries.")
-	fun list(@CliOption(
-			key = arrayOf("category", "cat", "c"),
-			unspecifiedDefaultValue = "",
-			specifiedDefaultValue = "",
-			help = "Name to filter only for this specific category.") categoryName: String): String {
+	fun list(
+			@CliOption(
+					key = arrayOf("category", "cat", "c"),
+					unspecifiedDefaultValue = "",
+					specifiedDefaultValue = "",
+					help = "Name to filter only for this specific category.") categoryName: String,
+			@CliOption(
+					key = arrayOf("all"),
+					help = "Should all entries be printed?",
+					unspecifiedDefaultValue = "false",
+					specifiedDefaultValue = "true") all: Boolean): String {
 
-		return commandChooser.forListableMode().list(categoryName)
+		return commandChooser.forListableMode().list(categoryName, all)
 	}
 
 }
