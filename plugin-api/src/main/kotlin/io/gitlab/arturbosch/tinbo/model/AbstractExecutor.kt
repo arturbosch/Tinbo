@@ -41,7 +41,7 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
 			entriesInMemory
 		} else {
 			val amount = tinboConfig.getListAmount()
-			entriesInMemory.take(amount)
+			entriesInMemory.takeLast(amount)
 		}
 
 		val entryTableData = entries
