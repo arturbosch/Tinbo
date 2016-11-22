@@ -24,7 +24,7 @@ class ListCommand @Autowired constructor(val commandChooser: CommandChooser) : C
 	@CliCommand("ls", "list", help = "Lists all entries.")
 	fun list(
 			@CliOption(
-					key = arrayOf("category", "cat", "c"),
+					key = arrayOf("category", "c", ""),
 					unspecifiedDefaultValue = "",
 					specifiedDefaultValue = "",
 					help = "Name to filter only for this specific category.") categoryName: String,
