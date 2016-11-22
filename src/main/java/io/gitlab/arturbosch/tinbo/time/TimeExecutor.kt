@@ -25,7 +25,9 @@ open class TimeExecutor @Autowired constructor(timeDataHolder: TimeDataHolder,
 
 	override fun newEntry(index: Int, dummy: DummyTime): TimeEntry {
 		val entry = entriesInMemory[index]
-		return entry.copy(dummy.category, dummy.message, dummy.hours, dummy.minutes, dummy.seconds, dummy.date)
+		return entry.copy(dummy.category, dummy.message, dummy.hours,
+				dummy.minutes?.validateInHourRange(),
+				dummy.seconds?.validateInHourRange(), dummy.date)
 	}
 
 	private var currentTimer = Timer.INVALID

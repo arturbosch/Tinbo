@@ -41,11 +41,11 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor,
 			val date = console.readLine("Enter a date (yyyy-mm-dd), leave empty for today: ")
 			try {
 				val hours = readNumber("Enter amount of spent hours: ")
-				val mins = readNumber("Enter amount of spent minutes: ")
-				val seconds = readNumber("Enter amount of spent seconds: ")
+				val mins = readNumber("Enter amount of spent minutes: ").validateInHourRange()
+				val seconds = readNumber("Enter amount of spent seconds: ").validateInHourRange()
 				addTime(hours, mins, seconds, category, message, date)
-			} catch (e: NumberFormatException) {
-				"Could not parse given time values. Use numbers only!"
+			}  catch (e: IllegalArgumentException) {
+				e.message ?: throw e
 			}
 		}
 	}
@@ -81,10 +81,14 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor,
 		return whileNotInEditMode {
 			try {
 				val localDate = if (date.isEmpty()) LocalDate.now() else LocalDate.parse(date, dateFormatter)
-				executor.addEntry(TimeEntry(name, message, hours, mins, seconds, localDate))
+				executor.addEntry(TimeEntry(name, message, hours,
+						mins.validateInHourRange(),
+						seconds.validateInHourRange(), localDate))
 				SUCCESS_MESSAGE
 			} catch (e: DateTimeParseException) {
 				"Could not parse given date."
+			} catch (e: IllegalArgumentException) {
+				e.message ?: throw e
 			}
 		}
 	}
@@ -103,8 +107,8 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor,
 					val date: LocalDate? = DateTimeFormatters.parseDateOrNull(dateFormat)
 					executor.editEntry(i, DummyTime(category, message, hours, mins, seconds, date))
 					SUCCESS_MESSAGE
-				} catch (e: NumberFormatException) {
-					"Could not parse given time values. Use numbers only!"
+				} catch (e: IllegalArgumentException) {
+					e.message ?: throw e
 				}
 
 			}
@@ -139,4 +143,3 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor,
 	}
 
 }
-

@@ -14,3 +14,7 @@ fun weekRange(today: LocalDate): Pair<LocalDate, LocalDate> {
 }
 
 fun TimeEntry.timeAsMinutes(): Int = (hours * 60 + minutes).toInt()
+
+@Throws(IllegalArgumentException::class)
+fun Long.validateInHourRange(): Long =
+		if (this >= 60) throw IllegalArgumentException("Minutes and seconds must be < 60!") else this
