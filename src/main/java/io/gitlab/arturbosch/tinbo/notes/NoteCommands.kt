@@ -32,7 +32,7 @@ open class NoteCommands @Autowired constructor(executor: NoteExecutor) :
 	}
 
 	@CliCommand(value = "note", help = "Adds a new note.")
-	fun addNote(@CliOption(key = arrayOf("message", "msg", "m"), mandatory = true, help = "Summary of the task.",
+	fun addNote(@CliOption(key = arrayOf("message", "m", ""), mandatory = true, help = "Summary of the task.",
 			specifiedDefaultValue = "", unspecifiedDefaultValue = "") message: String): String {
 
 		return whileNotInEditMode {
@@ -47,7 +47,7 @@ open class NoteCommands @Autowired constructor(executor: NoteExecutor) :
 
 	@CliCommand("editNote", help = "Edits the note entry(/entries) with given index")
 	fun editNote(@CliOption(key = arrayOf("index", "i"), mandatory = true, help = "Index of the task to edit.") index: Int,
-	             @CliOption(key = arrayOf("message", "msg", "m"), help = "Summary of the task.") message: String?): String {
+	             @CliOption(key = arrayOf("message", "m", ""), help = "Summary of the task.") message: String?): String {
 
 		return withinListMode {
 			val i = index - 1

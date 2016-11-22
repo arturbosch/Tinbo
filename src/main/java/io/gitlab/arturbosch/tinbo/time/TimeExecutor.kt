@@ -53,11 +53,13 @@ open class TimeExecutor @Autowired constructor(timeDataHolder: TimeDataHolder,
 		if (inProgress()) {
 			running = false
 			changeCategoryAndMessageIfNotEmpty(name, message)
-			if (currentTimer.category.isEmpty()) {
-				val category = consoleReader.readLine("Enter a category name: ").orValue(config.getCategoryName())
-				val description = consoleReader.readLine("Enter a description: ").orValue("")
-				currentTimer = currentTimer.copy(category = category, message = description)
-			}
+			val category = if (currentTimer.category.isEmpty()) {
+				consoleReader.readLine("Enter a category name: ").orValue(config.getCategoryName())
+			} else currentTimer.category
+			val description = if (currentTimer.message.isEmpty()) {
+				consoleReader.readLine("Enter a description: ").orValue("")
+			} else currentTimer.message
+			currentTimer = currentTimer.copy(category = category, message = description)
 			saveAndResetCurrentTimer()
 		} else {
 			printlnInfo("There is no current timer to stop.")

@@ -37,7 +37,7 @@ open class TimerCommands @Autowired constructor(val executor: TimeExecutor) : Co
 						   unspecifiedDefaultValue = "0", help = "Duration of timer in seconds.") seconds: Int,
 				   @CliOption(key = arrayOf("background", "bg"), unspecifiedDefaultValue = "false",
 						   specifiedDefaultValue = "true", help = "If the timer should be started in background.") bg: Boolean,
-				   @CliOption(key = arrayOf("category", "cat", "c"), unspecifiedDefaultValue = "",
+				   @CliOption(key = arrayOf("category", "c", ""), unspecifiedDefaultValue = "",
 						   specifiedDefaultValue = "", help = "Category in which the time should be saved.") name: String,
 				   @CliOption(key = arrayOf("message", "msg"), unspecifiedDefaultValue = "",
 						   specifiedDefaultValue = "", help = "Note for this tracking.") message: String) {

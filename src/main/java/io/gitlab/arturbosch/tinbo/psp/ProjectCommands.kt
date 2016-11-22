@@ -40,12 +40,16 @@ class ProjectCommands @Autowired constructor(val console: ConsoleReader,
 			val date = if (end.isEmpty()) LocalDate.now() else LocalDate.parse(end, dateFormatter)
 			currentProject.addTask(Task(name = name, plannedTime = Time(pTime), plannedUnits = pUnits, end = date))
 			return "Successfully added task to ${currentProject.name()}"
-		} catch (e: Exception) {
-			e.message ?: throw e
+		} catch (e: IllegalArgumentException) {
+			printMessageOfException(e)
+		} catch (e: NumberFormatException) {
+			printMessageOfException(e)
 		}
 	}
 
-	@CliCommand("close-task", help = "Marks task with given starting name as finish.")
+	private fun printMessageOfException(e: Exception) = e.message ?: throw e
+
+	@CliCommand("close-task", "finish", help = "Marks task with given starting name as finish.")
 	fun finishTask(@CliOption(key = arrayOf("")) name: String?,
 				   @CliOption(key = arrayOf("time")) minutes: Int?,
 				   @CliOption(key = arrayOf("units")) units: Int?): String {
