@@ -25,9 +25,6 @@ publishing {
 	}
 }
 
-group 'io.gitlab.arturbosch.tinbo'
-version '1.0.M7'
-
 dependencies {
 	compile "org.joda:joda-money:0.11"
 	compile "org.springframework.boot:spring-boot-starter:$springBootVersion"
