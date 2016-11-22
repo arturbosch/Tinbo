@@ -22,7 +22,7 @@ open class TimeSummaryCommands @Autowired constructor(val summaryExecutor: WeekS
 
 	override val id: String = "time"
 
-	@CliAvailabilityIndicator("week")
+	@CliAvailabilityIndicator("week", "month")
 	fun isAvailable(): Boolean {
 		return ModeAdvisor.isTimerMode()
 	}
