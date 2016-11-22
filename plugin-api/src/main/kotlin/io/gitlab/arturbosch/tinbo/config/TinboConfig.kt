@@ -68,7 +68,7 @@ class TinboConfig(val path: Path = HomeFolder.getOrCreateDefaultConfig()) {
 
 	fun getListAmount(): Int {
 		val amount = getKeySafe(ConfigDefaults.DEFAULTS)[ConfigDefaults.LIST_AMOUNT].toString()
-		return amount.toIntOrDefault { 20 }
+		return amount.toIntOrDefault { Defaults.LIST_ENTRIES }
 	}
 
 }

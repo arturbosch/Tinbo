@@ -11,5 +11,6 @@ object Defaults {
 	const val FINANCE_NAME = "Finance"
 	const val MAIN_CATEGORY_NAME = "Main"
 	const val INFO_NOTIFICATION_TIME = 30L
+	const val LIST_ENTRIES = 20
 
 }

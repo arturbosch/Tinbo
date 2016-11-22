@@ -37,17 +37,16 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
 
 	private fun listDataInternal(all: Boolean): String {
 
-		val entries = if (all) {
-			entriesInMemory
-		} else {
-			val amount = tinboConfig.getListAmount()
-			entriesInMemory.takeLast(amount)
-		}
-
-		val entryTableData = entries
+		var entryTableData = entriesInMemory
 				.applyToString()
 				.withIndexedColumn()
-				.plusElementAtBeginning(TABLE_HEADER)
+
+		if (!all) {
+			val amount = tinboConfig.getListAmount()
+			entryTableData = entryTableData.takeLast(amount)
+		}
+
+		entryTableData = entryTableData.plusElementAtBeginning(TABLE_HEADER)
 
 		return csv.asTable(entryTableData).joinToString(NEW_LINE)
 	}
