@@ -2,6 +2,7 @@ package io.gitlab.arturbosch.tinbo.psp
 
 import io.gitlab.arturbosch.tinbo.Project
 import io.gitlab.arturbosch.tinbo.Task
+import io.gitlab.arturbosch.tinbo.asHourString
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.time.LocalDate
@@ -49,7 +50,7 @@ class CurrentProject @Autowired constructor(private val csvTasks: CSVTasks,
 		return findByName(name)?.let {
 			"\n\nProject: ${it.name}\nDescription: ${it.description}\n" +
 					"Project duration: ${it.start} - ${it.end}\n" +
-					"Actual/planned time: ${it.sumActualTime()}/${it.sumPlannedTime()}\n" +
+					"Actual/planned time: ${it.sumActualTime().asHourString()}/${it.sumPlannedTime().asHourString()}\n" +
 					"Actual/planned units: ${it.sumActualUnits()}/${it.sumPlannedUnits()}\n\n" +
 					"Tasks:\n" + showTasks(it)
 		} ?: "No project with given name $name found!"
