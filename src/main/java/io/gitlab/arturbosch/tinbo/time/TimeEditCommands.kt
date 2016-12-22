@@ -44,7 +44,7 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor,
 				val mins = readNumber("Enter amount of spent minutes: ").validateInHourRange()
 				val seconds = readNumber("Enter amount of spent seconds: ").validateInHourRange()
 				addTime(hours, mins, seconds, category, message, date)
-			}  catch (e: IllegalArgumentException) {
+			} catch (e: IllegalArgumentException) {
 				e.message ?: throw e
 			}
 		}

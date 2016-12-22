@@ -7,10 +7,10 @@ import io.gitlab.arturbosch.tinbo.model.AbstractExecutor
 import io.gitlab.arturbosch.tinbo.model.Data
 import io.gitlab.arturbosch.tinbo.model.DummyEntry
 import io.gitlab.arturbosch.tinbo.model.Entry
+import io.gitlab.arturbosch.tinbo.utils.parseIndices
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
 import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.HashSet
 
 /**
  * @author artur
@@ -25,30 +25,6 @@ abstract class EditableCommands<E : Entry, D : Data<E>, in T : DummyEntry>(
 
 	@Autowired
 	protected lateinit var console: ConsoleReader
-
-	protected fun parseIndices(indexPattern: String): Set<Int> {
-		val result = HashSet<Int>()
-		val indices = indexPattern.split(" ")
-		val regex = Regex("[1-9][0-9]*")
-		val regex2 = Regex("[1-9]+-[0-9]+")
-		for (index in indices) {
-			if (regex.matches(index)) {
-				result.add(index.toInt() - 1)
-			} else if (regex2.matches(index)) {
-				val interval = index.split("-")
-				if (interval.size == 2) {
-					val (i1, i2) = Pair(interval[0].toInt(), interval[1].toInt())
-					IntRange(i1 - 1, i2 - 1)
-							.forEach { result.add(it) }
-				} else {
-					throw IllegalArgumentException()
-				}
-			} else {
-				throw IllegalArgumentException()
-			}
-		}
-		return result
-	}
 
 	protected fun withListMode(body: () -> String): String {
 		isListMode = true

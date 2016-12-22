@@ -11,18 +11,9 @@ import java.time.format.DateTimeParseException
 object DateTimeFormatters {
 
 	fun parseDateTimeOrDefault(endTime: String, startTime: String): Pair<LocalDateTime?, LocalDateTime?> {
-		var formattedStartTime: LocalDateTime? = null
-		var formattedEndTime = formattedStartTime
-		try {
-			formattedStartTime = LocalDateTime.parse(startTime, dateTimeFormatter)
-		} catch (ignored: DateTimeParseException) {
-		}
-		if (endTime.isNotEmpty()) {
-			try {
-				formattedEndTime = LocalDateTime.parse(endTime, dateTimeFormatter)
-			} catch (ignored: DateTimeParseException) {
-			}
-		}
+		val formattedStartTime = parseDateTimeOrNull(startTime)
+		val formattedEndTime = if (endTime.isNotEmpty())
+			parseDateTimeOrNull(startTime) else null
 		return Pair(formattedStartTime, formattedEndTime)
 	}
 
@@ -36,6 +27,14 @@ object DateTimeFormatters {
 	fun parseDateOrNull(startTime: String): LocalDate? {
 		return try {
 			LocalDate.parse(startTime, dateFormatter)
+		} catch (e: DateTimeParseException) {
+			null
+		}
+	}
+
+	fun parseDateTimeOrNull(date: String): LocalDateTime? {
+		return try {
+			LocalDateTime.parse(date, dateTimeFormatter)
 		} catch (e: DateTimeParseException) {
 			null
 		}

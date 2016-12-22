@@ -22,9 +22,10 @@ import org.springframework.shell.converters.SimpleFileConverter
 import org.springframework.shell.converters.StaticFieldConverterImpl
 import org.springframework.shell.converters.StringConverter
 import org.springframework.shell.core.JLineShellComponent
+import org.springframework.shell.core.SimpleParser
 
 /**
- * @author artur
+ * @author Artur Bosch
  */
 @Configuration
 open class ShellConfiguration {
@@ -38,25 +39,32 @@ open class ShellConfiguration {
 	}
 
 	@Bean open fun shell(): JLineShellComponent {
-		val shell = JLineShellComponent()
-		val simpleParser = shell.simpleParser
-		simpleParser.add(StringConverter())
-		simpleParser.add(IntegerConverter())
-		simpleParser.add(BooleanConverter())
-		simpleParser.add(LongConverter())
-		simpleParser.add(SimpleFileConverter())
-		simpleParser.add(DoubleConverter())
-		simpleParser.add(AvailableCommandsConverter())
-		simpleParser.add(ArrayConverter())
-		simpleParser.add(BigDecimalConverter())
-		simpleParser.add(BigIntegerConverter())
-		simpleParser.add(CharacterConverter())
-		simpleParser.add(DateConverter())
-		simpleParser.add(EnumConverter())
-		simpleParser.add(FloatConverter())
-		simpleParser.add(ShortConverter())
-		simpleParser.add(StaticFieldConverterImpl())
-		simpleParser.add(LocaleConverter())
-		return shell
+		return JLineShellComponent().apply {
+			simpleParser.addPrimitiveConverters()
+			simpleParser.addObjectConverters()
+		}
+	}
+
+	private fun SimpleParser.addPrimitiveConverters() {
+		add(StringConverter())
+		add(IntegerConverter())
+		add(BooleanConverter())
+		add(LongConverter())
+		add(CharacterConverter())
+		add(FloatConverter())
+		add(ShortConverter())
+		add(DoubleConverter())
+	}
+
+	private fun SimpleParser.addObjectConverters() {
+		add(ArrayConverter())
+		add(SimpleFileConverter())
+		add(AvailableCommandsConverter())
+		add(BigDecimalConverter())
+		add(BigIntegerConverter())
+		add(DateConverter())
+		add(EnumConverter())
+		add(StaticFieldConverterImpl())
+		add(LocaleConverter())
 	}
 }
