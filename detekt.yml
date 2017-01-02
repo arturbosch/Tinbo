@@ -1,15 +1,31 @@
-autoCorrect: true
+autoCorrect: false
+
+build:
+  warningThreshold: 30
+  failThreshold: 50
+
+potential-bugs:
+  active: true
+
+exceptions:
+  active: true
+
+comments:
+  active: true
+
+empty:
+  active: true
 
 code-smell:
   active: true
   LongMethod:
-    threshold: 12
+    threshold: 20
   LongParameterList:
     threshold: 5
   LargeClass:
-    threshold: 70
+    threshold: 150
   ComplexMethod:
-    threshold: 6
+    threshold: 10
 
 formatting:
   active: true
