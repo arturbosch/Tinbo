@@ -2,7 +2,9 @@ autoCorrect: false
 
 build:
   warningThreshold: 30
-  failThreshold: 50
+  failThreshold: 70
+  weights:
+    code-smell: 2
 
 potential-bugs:
   active: true

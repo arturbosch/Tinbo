@@ -68,7 +68,7 @@ task smartsmells(type: JavaExec) {
 	classpath = configurations.smartsmells
 	def input = "$project.projectDir.absolutePath"
 	def output = "$project.projectDir/smartsmells.xml"
-	def params = ['-i', input, '-o', output, '-f']
+	def params = ['-i', input, '-o', output, '-f', ".*/test/.*", "-fs"]
 	args(params)
 }
 
@@ -81,8 +81,9 @@ dependencies {
 
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
 
-	detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.M6'
-	smartsmells 'io.gitlab.arturbosch.smartsmells:SmartSmells:M8'
+	detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.M8'
+	detekt 'io.gitlab.arturbosch.detekt:detekt-formatting:1.0.0.M8'
+	smartsmells 'io.gitlab.arturbosch.smartsmells:SmartSmells:1.0.0.RC3'
 }
 
 eclipse {
