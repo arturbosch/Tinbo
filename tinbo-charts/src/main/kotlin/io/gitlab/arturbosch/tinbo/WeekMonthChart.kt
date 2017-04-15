@@ -11,6 +11,14 @@ import org.springframework.shell.core.annotation.CliCommand
  */
 class WeekMonthChart : TiNBoPlugin {
 
+	@CliCommand("charts day", help = "Generates a chart illustrates time spent in current day.")
+	fun day() {
+		val method = "Day"
+		loadSummary("day")?.let { week ->
+			createChartForSummary(method, week)
+		}
+	}
+
 	@CliCommand("charts week", help = "Generates a chart illustrates time spent in current week.")
 	fun week() {
 		val method = "Week"

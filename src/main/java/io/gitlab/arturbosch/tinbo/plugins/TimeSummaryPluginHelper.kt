@@ -10,10 +10,30 @@ import org.springframework.stereotype.Component
 import java.time.LocalDate
 
 /**
+ * Creates summaries for days, weeks or months.
+ * Needs default parameterless methods for charts plugin.
+ *
  * @author Artur Bosch
  */
 @Component
 class TimeSummaryPluginHelper @Autowired constructor(val timeDataHolder: TimeDataHolder) : PluginHelper {
+
+	@PluginSupport
+	fun day(): WeekSummary {
+		return day(LocalDate.now())
+	}
+
+	fun day(date: LocalDate): WeekSummary {
+		val entriesOfDay = timeDataHolder.getEntries()
+				.asSequence()
+				.filter { it.date == date }
+				.map { it.category to it.timeAsMinutes() }
+				.groupBy({ it.first }, { it.second })
+				.map { it.key to it.value.sum() }
+				.map { WeekEntry(it.first, it.second) }
+		return WeekSummary(date to date, entriesOfDay)
+
+	}
 
 	@PluginSupport
 	fun week(): WeekSummary {
@@ -21,10 +41,10 @@ class TimeSummaryPluginHelper @Autowired constructor(val timeDataHolder: TimeDat
 	}
 
 	fun week(date: LocalDate): WeekSummary {
-		val data = timeDataHolder.getEntries()
 		val (from, to) = weekRange(date)
-		val entriesOfWeek = data.asSequence()
-				.filter { it.date >= from && it.date <= to }
+		val entriesOfWeek = timeDataHolder.getEntries()
+				.asSequence()
+				.filter { it.date in from..to }
 				.map { it.category to it.timeAsMinutes() }
 				.groupBy({ it.first }, { it.second })
 				.map { it.key to it.value.sum() }
@@ -38,10 +58,10 @@ class TimeSummaryPluginHelper @Autowired constructor(val timeDataHolder: TimeDat
 	}
 
 	fun month(date: LocalDate): WeekSummary {
-		val data = timeDataHolder.getEntries()
 		val month = date.month
 		val year = date.year
-		val entriesOfWeek = data.asSequence()
+		val entriesOfWeek = timeDataHolder.getEntries()
+				.asSequence()
 				.filter { it.date.month == month && it.date.year == year }
 				.map { it.category to it.timeAsMinutes() }
 				.groupBy({ it.first }, { it.second })

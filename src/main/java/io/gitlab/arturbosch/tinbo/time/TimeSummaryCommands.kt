@@ -35,6 +35,14 @@ open class TimeSummaryCommands @Autowired constructor(val summaryExecutor: WeekS
 		}
 	}
 
+	@CliCommand("day", help = "Summarizes current days activities.")
+	fun daySummary(): String {
+		val now = LocalDate.now()
+		val summaryString = monthSummaryAsString { timeSummaryPluginHelper.day(now) }
+		val summaryLastString = monthSummaryAsString { timeSummaryPluginHelper.day(now.minusDays(1)) }
+		return summaryLastString + "\n\n" + summaryString
+	}
+
 	@CliCommand("week", help = "Summarizes last and this week's time spending on categories.")
 	fun weekSummary(): String {
 		val now = LocalDate.now()
