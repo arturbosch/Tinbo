@@ -6,14 +6,14 @@ import java.time.LocalDateTime
  * @author Artur Bosch
  */
 
-fun Timer.copy(timeMode: TimeMode? = null,
+fun Timer.copy(timerMode: TimerMode? = null,
 			   category: String? = null,
 			   message: String? = null,
 			   startDateTime: LocalDateTime? = null,
 			   stopDateTime: LocalDateTime? = null,
 			   currentPauseTime: LocalDateTime? = null,
 			   pauseTimes: MutableList<Pair<LocalDateTime, Long>>? = null): Timer {
-	return Timer(timeMode ?: this.timeMode, category ?: this.category, message ?: this.message,
+	return Timer(timerMode ?: this.timerMode, category ?: this.category, message ?: this.message,
 			startDateTime ?: this.startDateTime, stopDateTime ?: this.stopDateTime,
 			currentPauseTime ?: this.currentPauseTime, pauseTimes ?: this.pauseTimes)
 }

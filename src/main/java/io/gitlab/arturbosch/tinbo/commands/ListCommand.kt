@@ -2,6 +2,7 @@ package io.gitlab.arturbosch.tinbo.commands
 
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
+import io.gitlab.arturbosch.tinbo.config.ModeManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
@@ -18,7 +19,7 @@ class ListCommand @Autowired constructor(val commandChooser: CommandChooser) : C
 
 	@CliAvailabilityIndicator("ls")
 	fun basicsAvailable(): Boolean {
-		return ModeAdvisor.isModeWhereEditIsAllowed()
+		return ModeManager.isEditAllowed()
 	}
 
 	@CliCommand("ls", "list", help = "Lists all entries.")

@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.time
 
 import io.gitlab.arturbosch.tinbo.api.Command
-import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
+import io.gitlab.arturbosch.tinbo.config.ModeManager
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
@@ -22,12 +22,12 @@ open class TimerCommands @Autowired constructor(val executor: TimeExecutor) : Co
 
 	@CliAvailabilityIndicator("show", "start", "stop", "q", "pause")
 	fun isAvailable(): Boolean {
-		return ModeAdvisor.isTimerMode()
+		return ModeManager.isCurrentMode(TimeMode)
 	}
 
 	@CliAvailabilityIndicator("bg", "fg")
 	fun isTimerRunning(): Boolean {
-		return ModeAdvisor.isTimerMode() && executor.inProgress()
+		return ModeManager.isCurrentMode(TimeMode) && executor.inProgress()
 	}
 
 	@CliCommand(value = "start", help = "Starts the timer and waits for you to type 'stop' to finish it if no arguments are specified.")
@@ -57,9 +57,9 @@ open class TimerCommands @Autowired constructor(val executor: TimeExecutor) : Co
 		}
 	}
 
-	private fun specifyTimerMode(bg: Boolean): TimeMode {
-		if (bg) return TimeMode.BACKGROUND
-		else return TimeMode.DEFAULT
+	private fun specifyTimerMode(bg: Boolean): TimerMode {
+		if (bg) return TimerMode.BACKGROUND
+		else return TimerMode.DEFAULT
 	}
 
 	private fun inputsAreInvalid(mins: Int, seconds: Int): Boolean {

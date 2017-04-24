@@ -3,7 +3,7 @@ package io.gitlab.arturbosch.tinbo.time
 import io.gitlab.arturbosch.tinbo.WeekSummary
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.api.Summarizable
-import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
+import io.gitlab.arturbosch.tinbo.config.ModeManager
 import io.gitlab.arturbosch.tinbo.plugins.TimeSummaryPluginHelper
 import io.gitlab.arturbosch.tinbo.toTimeString
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,7 +24,7 @@ open class TimeSummaryCommands @Autowired constructor(val summaryExecutor: WeekS
 
 	@CliAvailabilityIndicator("week", "month")
 	fun isAvailable(): Boolean {
-		return ModeAdvisor.isTimerMode()
+		return ModeManager.isCurrentMode(TimeMode)
 	}
 
 	override fun sum(categories: List<String>): String {

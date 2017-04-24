@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.commands
 
 import io.gitlab.arturbosch.tinbo.api.Command
-import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
+import io.gitlab.arturbosch.tinbo.config.ModeManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
@@ -18,7 +18,7 @@ open class SummarizableUmbrellaCommands @Autowired constructor(val commandChoose
 
 	@CliAvailabilityIndicator("sum")
 	fun isAvailable(): Boolean {
-		return ModeAdvisor.isTimerMode() || ModeAdvisor.isFinanceMode()
+		return ModeManager.isSumAllowed()
 	}
 
 	@CliCommand(value = "sum", help = "Sums up entries of all or specified categories.")

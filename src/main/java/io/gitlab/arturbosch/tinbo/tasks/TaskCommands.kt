@@ -2,7 +2,7 @@ package io.gitlab.arturbosch.tinbo.tasks
 
 import io.gitlab.arturbosch.tinbo.commands.EditableCommands
 import io.gitlab.arturbosch.tinbo.config.Defaults
-import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
+import io.gitlab.arturbosch.tinbo.config.ModeManager
 import io.gitlab.arturbosch.tinbo.config.TinboConfig
 import io.gitlab.arturbosch.tinbo.nullIfEmpty
 import io.gitlab.arturbosch.tinbo.orDefault
@@ -30,7 +30,7 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor,
 
 	@CliAvailabilityIndicator("task", "loadTasks", "editTasks")
 	fun isAvailable(): Boolean {
-		return ModeAdvisor.isTasksMode()
+		return ModeManager.isCurrentMode(TasksMode)
 	}
 
 	override fun add(): String {

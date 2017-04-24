@@ -5,7 +5,7 @@ import io.gitlab.arturbosch.tinbo.api.Addable
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.api.Listable
 import io.gitlab.arturbosch.tinbo.config.ConfigDefaults.PROJECTS
-import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
+import io.gitlab.arturbosch.tinbo.config.ModeManager
 import io.gitlab.arturbosch.tinbo.providers.PromptProvider
 import io.gitlab.arturbosch.tinbo.utils.dateFormatter
 import jline.console.ConsoleReader
@@ -37,7 +37,7 @@ class PSPCommands @Autowired constructor(val console: ConsoleReader,
 	}
 
 	@CliAvailabilityIndicator("showAll", "show-project", "new-project", "open-project", "close-project")
-	fun available() = ModeAdvisor.isProjectsMode()
+	fun available() = ModeManager.isCurrentMode(ProjectsMode)
 
 	@CliCommand("show-project")
 	fun showProject(@CliOption(key = arrayOf(""), help = "Name the project must start with.") name: String?): String {

@@ -1,9 +1,10 @@
 package io.gitlab.arturbosch.tinbo.commands
 
 import io.gitlab.arturbosch.tinbo.api.Command
-import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
+import io.gitlab.arturbosch.tinbo.config.ModeManager
 import io.gitlab.arturbosch.tinbo.config.Notification
 import io.gitlab.arturbosch.tinbo.config.TinboConfig
+import io.gitlab.arturbosch.tinbo.config.TinboMode
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
@@ -22,7 +23,7 @@ open class TinboCommands @Autowired constructor(val bannerProvider: BannerProvid
 
 	@CliAvailabilityIndicator("welcome", "weather")
 	fun isAvailable(): Boolean {
-		return ModeAdvisor.isStartMode()
+		return ModeManager.isCurrentMode(TinboMode.START)
 	}
 
 	@CliCommand("welcome", help = "Shows the banner and welcome message.")

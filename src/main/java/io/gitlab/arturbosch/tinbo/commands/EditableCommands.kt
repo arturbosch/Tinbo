@@ -2,7 +2,7 @@ package io.gitlab.arturbosch.tinbo.commands
 
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.api.Editable
-import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
+import io.gitlab.arturbosch.tinbo.config.ModeManager
 import io.gitlab.arturbosch.tinbo.model.AbstractExecutor
 import io.gitlab.arturbosch.tinbo.model.Data
 import io.gitlab.arturbosch.tinbo.model.DummyEntry
@@ -41,7 +41,7 @@ abstract class EditableCommands<E : Entry, D : Data<E>, in T : DummyEntry>(
 
 	protected fun enterEditModeWithIndex(index: Int, body: () -> String): String {
 		if (executor.indexExists(index)) {
-			ModeAdvisor.setBackBlocked(true)
+			ModeManager.isBackCommandBlocked = true
 			isEditMode = true
 			return body.invoke()
 		} else {
@@ -51,7 +51,7 @@ abstract class EditableCommands<E : Entry, D : Data<E>, in T : DummyEntry>(
 
 	protected fun withinEditMode(command: String, body: () -> String): String {
 		if (isEditMode) {
-			ModeAdvisor.setBackBlocked(false)
+			ModeManager.isBackCommandBlocked = false
 			isEditMode = false
 			isListMode = false
 			return body.invoke()
@@ -106,7 +106,7 @@ abstract class EditableCommands<E : Entry, D : Data<E>, in T : DummyEntry>(
 		return withinListMode {
 			try {
 				val indices = if (indexPattern == "-1") setOf(-1) else parseIndices(indexPattern)
-				ModeAdvisor.setBackBlocked(true)
+				ModeManager.isBackCommandBlocked = true
 				isEditMode = true
 				executor.deleteEntries(indices)
 				"Successfully deleted task(s)."

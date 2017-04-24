@@ -41,7 +41,7 @@ open class TimeExecutor @Autowired constructor(timeDataHolder: TimeDataHolder,
 		currentTimer = timer
 		running = true
 		while (running) {
-			if (currentTimer.timeMode == TimeMode.DEFAULT)
+			if (currentTimer.timerMode == TimerMode.DEFAULT)
 				printInfo("\r${currentTimer.toTimeString()}")
 			if (currentTimer.isFinished())
 				stop()
@@ -98,8 +98,8 @@ open class TimeExecutor @Autowired constructor(timeDataHolder: TimeDataHolder,
 		else return "No current timer is running"
 	}
 
-	fun changeTimeMode(mode: TimeMode) {
-		currentTimer = currentTimer.copy(timeMode = mode)
+	fun changeTimeMode(mode: TimerMode) {
+		currentTimer = currentTimer.copy(timerMode = mode)
 	}
 
 	fun pauseTimer() {

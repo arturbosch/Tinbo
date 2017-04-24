@@ -48,7 +48,7 @@ class TimerKtTest {
 
 	@Test
 	fun pauseStringOfTimerMustBeInValidTimeFormat() {
-		val timer = Timer(TimeMode.DEFAULT, "Test", "", startDateTime = LocalDateTime.now().minusMinutes(188),
+		val timer = Timer(TimerMode.DEFAULT, "Test", "", startDateTime = LocalDateTime.now().minusMinutes(188),
 				currentPauseTime = LocalDateTime.now().minusHours(1).minusMinutes(58).minusSeconds(88))
 
 		val timeString = timer.toTimeString()

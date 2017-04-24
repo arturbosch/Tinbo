@@ -3,7 +3,7 @@ package io.gitlab.arturbosch.tinbo.finance
 import io.gitlab.arturbosch.tinbo.api.Summarizable
 import io.gitlab.arturbosch.tinbo.commands.EditableCommands
 import io.gitlab.arturbosch.tinbo.config.Defaults
-import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
+import io.gitlab.arturbosch.tinbo.config.ModeManager
 import io.gitlab.arturbosch.tinbo.nullIfEmpty
 import io.gitlab.arturbosch.tinbo.orDefaultMonth
 import io.gitlab.arturbosch.tinbo.orThrow
@@ -34,7 +34,7 @@ class FinanceCommands @Autowired constructor(val financeExecutor: FinanceExecuto
 
 	@CliAvailabilityIndicator("year", "mean", "deviation", "loadFinance")
 	fun isAvailable(): Boolean {
-		return ModeAdvisor.isFinanceMode()
+		return ModeManager.isCurrentMode(FinanceMode)
 	}
 
 	@CliCommand("loadFinance", help = "Loads/Creates an other data set. Finance data sets are stored under ~/tinbo/finance/*.")

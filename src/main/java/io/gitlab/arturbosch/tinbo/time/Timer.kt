@@ -13,7 +13,7 @@ import java.util.ArrayList
  *
  * @author artur
  */
-class Timer(val timeMode: TimeMode = TimeMode.INVALID,
+class Timer(val timerMode: TimerMode = TimerMode.INVALID,
 			val category: String,
 			val message: String,
 			val startDateTime: LocalDateTime = LocalDateTime.now(),
@@ -23,7 +23,7 @@ class Timer(val timeMode: TimeMode = TimeMode.INVALID,
 
 	companion object {
 
-		val INVALID = Timer(TimeMode.INVALID, "INVALID", "INVALID")
+		val INVALID = Timer(TimerMode.INVALID, "INVALID", "INVALID")
 
 		fun calcStopTime(mins: Int, seconds: Int): LocalDateTime? {
 			var stop: LocalDateTime? = null
@@ -92,7 +92,7 @@ class Timer(val timeMode: TimeMode = TimeMode.INVALID,
 	}
 
 	override fun toString(): String {
-		return "Timer(timeMode=$timeMode, category='$category', message='$message', startDateTime=$startDateTime, stopDateTime=$stopDateTime, currentPauseTime=$currentPauseTime, pauseTimes=$pauseTimes)"
+		return "Timer(timeMode=$timerMode, category='$category', message='$message', startDateTime=$startDateTime, stopDateTime=$stopDateTime, currentPauseTime=$currentPauseTime, pauseTimes=$pauseTimes)"
 	}
 
 }

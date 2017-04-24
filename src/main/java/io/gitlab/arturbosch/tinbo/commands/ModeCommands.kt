@@ -1,10 +1,14 @@
 package io.gitlab.arturbosch.tinbo.commands
 
 import io.gitlab.arturbosch.tinbo.api.Command
-import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
-import io.gitlab.arturbosch.tinbo.providers.PromptProvider
+import io.gitlab.arturbosch.tinbo.config.ModeManager
+import io.gitlab.arturbosch.tinbo.config.TinboMode
+import io.gitlab.arturbosch.tinbo.finance.FinanceMode
+import io.gitlab.arturbosch.tinbo.notes.NotesMode
+import io.gitlab.arturbosch.tinbo.psp.ProjectsMode
+import io.gitlab.arturbosch.tinbo.tasks.TasksMode
+import io.gitlab.arturbosch.tinbo.time.TimeMode
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.stereotype.Component
@@ -13,47 +17,42 @@ import org.springframework.stereotype.Component
  * @author Artur Bosch
  */
 @Component
-open class ModeCommands @Autowired constructor(val promptProvider: PromptProvider) : Command {
+open class ModeCommands : Command {
 
 	override val id: String = "start"
 
 	@CliAvailabilityIndicator("time", "tasks", "notes", "finance", "projects")
 	fun onlyModeCommands(): Boolean {
-		return ModeAdvisor.isStartMode()
+		return ModeManager.isCurrentMode(TinboMode.START)
 	}
 
 	@CliCommand("time", help = "Switch to time mode where you can start timers and list previous timings.")
 	fun timerMode() {
-		ModeAdvisor.setTimerMode()
-		promptProvider.promptText = "time"
+		ModeManager.current = TimeMode
 		printlnInfo("Entering time mode...")
 	}
 
 	@CliCommand("finance", help = "Switch to finance mode where you can manage your finances.")
 	fun financeMode() {
-		ModeAdvisor.setFinanceMode()
-		promptProvider.promptText = "finance"
+		ModeManager.current = FinanceMode
 		printlnInfo("Entering finance mode...")
 	}
 
 	@CliCommand("tasks", help = "Switch to tasks mode to write down tasks.")
 	fun tasksMode() {
-		ModeAdvisor.setTasksMode()
-		promptProvider.promptText = "tasks"
+		ModeManager.current = TasksMode
 		printlnInfo("Entering tasks mode...")
 	}
 
 	@CliCommand("notes", help = "Switch to notes mode to write down tasks.")
 	fun notesMode() {
-		ModeAdvisor.setNotesMode()
-		promptProvider.promptText = "notes"
+		ModeManager.current = NotesMode
 		printlnInfo("Entering notes mode...")
 	}
 
 	@CliCommand("projects", help = "Switch to projects mode, managing projects like in PSP.")
 	fun projectsMode() {
-		ModeAdvisor.setProjectsMode()
-		promptProvider.promptText = "projects"
+		ModeManager.current = ProjectsMode
 		printlnInfo("Entering projects mode...")
 	}
 

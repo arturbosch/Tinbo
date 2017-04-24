@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.commands
 
 import io.gitlab.arturbosch.tinbo.api.Command
-import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
+import io.gitlab.arturbosch.tinbo.config.ModeManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
@@ -17,7 +17,7 @@ class AddCommand @Autowired constructor(val commandChooser: CommandChooser) : Co
 
 	@CliAvailabilityIndicator("add")
 	fun basicsAvailable(): Boolean {
-		return ModeAdvisor.isModeWhereEditIsAllowed()
+		return ModeManager.isEditAllowed()
 	}
 
 	@CliCommand("add", help = "Adds a new entry")

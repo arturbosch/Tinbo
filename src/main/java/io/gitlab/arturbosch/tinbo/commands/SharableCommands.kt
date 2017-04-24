@@ -2,7 +2,7 @@ package io.gitlab.arturbosch.tinbo.commands
 
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.config.Defaults
-import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
+import io.gitlab.arturbosch.tinbo.config.ModeManager
 import io.gitlab.arturbosch.tinbo.notes.NoteCommands
 import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,7 +22,7 @@ open class SharableCommands @Autowired constructor(val commandChooser: CommandCh
 
 	@CliAvailabilityIndicator("save", "cancel", "remove", "changeCategory", "data", "last", "edit", "load")
 	fun basicsAvailable(): Boolean {
-		return ModeAdvisor.isModeWhereEditIsAllowed()
+		return ModeManager.isEditAllowed()
 	}
 
 	@CliCommand("load", help = "Loads/Creates an other data set. Data sets are stored under ~/TiNBo/<MODE>/<NAME.")

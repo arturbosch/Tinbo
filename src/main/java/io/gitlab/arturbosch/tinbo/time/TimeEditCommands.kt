@@ -2,7 +2,7 @@ package io.gitlab.arturbosch.tinbo.time
 
 import io.gitlab.arturbosch.tinbo.commands.EditableCommands
 import io.gitlab.arturbosch.tinbo.config.Defaults
-import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
+import io.gitlab.arturbosch.tinbo.config.ModeManager
 import io.gitlab.arturbosch.tinbo.config.TinboConfig
 import io.gitlab.arturbosch.tinbo.nullIfEmpty
 import io.gitlab.arturbosch.tinbo.orDefault
@@ -31,7 +31,7 @@ open class TimeEditCommands @Autowired constructor(executor: TimeExecutor,
 
 	@CliAvailabilityIndicator("editTime", "newTime", "loadTime")
 	fun isAvailable(): Boolean {
-		return ModeAdvisor.isTimerMode()
+		return ModeManager.isCurrentMode(TimeMode)
 	}
 
 	override fun add(): String {

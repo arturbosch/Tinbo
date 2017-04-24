@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.notes
 
 import io.gitlab.arturbosch.tinbo.commands.EditableCommands
-import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
+import io.gitlab.arturbosch.tinbo.config.ModeManager
 import io.gitlab.arturbosch.tinbo.nullIfEmpty
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
@@ -22,7 +22,7 @@ open class NoteCommands @Autowired constructor(executor: NoteExecutor) :
 
 	@CliAvailabilityIndicator("note", "loadNotes", "editNote")
 	fun isAvailable(): Boolean {
-		return ModeAdvisor.isNotesMode()
+		return ModeManager.isCurrentMode(NotesMode)
 	}
 
 	override fun add(): String {
@@ -47,7 +47,7 @@ open class NoteCommands @Autowired constructor(executor: NoteExecutor) :
 
 	@CliCommand("editNote", help = "Edits the note entry(/entries) with given index")
 	fun editNote(@CliOption(key = arrayOf("index", "i"), mandatory = true, help = "Index of the task to edit.") index: Int,
-	             @CliOption(key = arrayOf("message", "m", ""), help = "Summary of the task.") message: String?): String {
+				 @CliOption(key = arrayOf("message", "m", ""), help = "Summary of the task.") message: String?): String {
 
 		return withinListMode {
 			val i = index - 1
