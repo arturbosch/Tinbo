@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.shell.support.logging.HandlerUtils
+import java.util.ServiceLoader
 import java.util.logging.Logger
 
 /**
@@ -34,8 +35,11 @@ open class TiNBo {
 	}
 
 	@Bean
-	fun register(prompt: PromptProvider): CommandLineRunner {
+	open fun register(prompt: PromptProvider): CommandLineRunner {
 		return CommandLineRunner {
+			ServiceLoader.load(ModeListener::class.java).forEach {
+				ModeManager.register(it)
+			}
 			ModeManager.register(object : ModeListener {
 				override fun change(mode: TinboMode) {
 					prompt.promptText = mode.id

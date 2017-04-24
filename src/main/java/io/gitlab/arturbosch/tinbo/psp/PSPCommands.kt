@@ -26,7 +26,7 @@ class PSPCommands @Autowired constructor(val console: ConsoleReader,
 										 val currentProject: CurrentProject,
 										 val csvProjects: CSVProjects) : Command, Listable, Addable {
 
-	override val id: String = "psp"
+	override val id: String = "projects"
 
 	override fun list(categoryName: String, all: Boolean): String {
 		return if (categoryName.isNotEmpty()) showProject(categoryName) else csvProjects.convert()

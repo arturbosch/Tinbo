@@ -6,10 +6,7 @@ import io.gitlab.arturbosch.tinbo.api.Editable
 import io.gitlab.arturbosch.tinbo.api.Listable
 import io.gitlab.arturbosch.tinbo.api.Summarizable
 import io.gitlab.arturbosch.tinbo.config.ModeManager
-import io.gitlab.arturbosch.tinbo.providers.StateProvider
-import io.gitlab.arturbosch.tinbo.psp.PSPCommands
-import io.gitlab.arturbosch.tinbo.psp.ProjectCommands
-import io.gitlab.arturbosch.tinbo.psp.ProjectsMode
+import io.gitlab.arturbosch.tinbo.plugins.SpringContext
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -17,11 +14,11 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class CommandChooser @Autowired constructor(val commands: List<Command>,
-											val pspCommands: PSPCommands,
-											val projectCommands: ProjectCommands,
-											val noopCommands: NoopCommands,
-											val stateProvider: StateProvider) {
+class CommandChooser @Autowired constructor(springContext: SpringContext,
+											val noopCommands: NoopCommands) {
+
+	private var commands: List<Command> = springContext.context.getBeansOfType(Command::class.java)
+			.values.toList()
 
 	fun forCurrentMode(): Editable {
 		val currentModeId = ModeManager.current.id
@@ -30,17 +27,15 @@ class CommandChooser @Autowired constructor(val commands: List<Command>,
 	}
 
 	fun forListableMode(): Listable {
-		return when (ModeManager.current) {
-			ProjectsMode -> if (stateProvider.isProjectOpen()) projectCommands else pspCommands
-			else -> forCurrentMode()
-		}
+		val currentModeId = ModeManager.current.id
+		return commands.filterIsInstance<Listable>()
+				.find { (it as Command).id == currentModeId } ?: noopCommands
 	}
 
 	fun forAddableMode(): Addable {
-		return when (ModeManager.current) {
-			ProjectsMode -> if (stateProvider.isProjectOpen()) projectCommands else pspCommands
-			else -> forCurrentMode()
-		}
+		val currentModeId = ModeManager.current.id
+		return commands.filterIsInstance<Addable>()
+				.find { (it as Command).id == currentModeId } ?: noopCommands
 	}
 
 	fun forSummarizableMode(): Summarizable {

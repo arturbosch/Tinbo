@@ -21,7 +21,7 @@ import java.time.LocalDate
 @Component
 class ProjectCommands @Autowired constructor(val console: ConsoleReader,
 											 val currentProject: CurrentProject) : Command, Listable, Addable {
-	override val id: String = "psp"
+	override val id: String = "projects"
 
 	override fun list(categoryName: String, all: Boolean): String = currentProject.showTasks()
 

@@ -5,8 +5,8 @@ import io.gitlab.arturbosch.tinbo.config.TinboMode
 /**
  * @author Artur Bosch
  */
-object ProjectsMode : TinboMode {
-	override val id: String = "projects"
+object PSPMode : TinboMode {
+	override val id: String = "psp"
 	override val editAllowed: Boolean = false
 	override val isSummarizable: Boolean = false
 }

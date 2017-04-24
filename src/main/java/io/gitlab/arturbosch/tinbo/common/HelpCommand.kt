@@ -39,7 +39,7 @@ class HelpCommand @Autowired constructor(val ctx: ApplicationContext) : Command 
 		val currentModeCommands = when (ModeManager.current) {
 			TinboMode.START -> commands.filter {
 				when (it.id) {
-					"start", "help", "share" -> true
+					"start", "help" -> true
 					else -> false
 				}
 			}

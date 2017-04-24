@@ -29,8 +29,8 @@ object ModeManager {
 
 	var current: TinboMode = TinboMode.START
 		set(value) {
-			field = value
 			listeners.forEach { it.change(value) }
+			field = value
 		}
 	var isBackCommandBlocked = false
 		set(value) = synchronized(this) { field = value }
