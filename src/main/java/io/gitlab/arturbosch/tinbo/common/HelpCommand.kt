@@ -1,8 +1,13 @@
 package io.gitlab.arturbosch.tinbo.common
 
 import io.gitlab.arturbosch.tinbo.api.Command
-import io.gitlab.arturbosch.tinbo.config.Mode
-import io.gitlab.arturbosch.tinbo.config.ModeAdvisor
+import io.gitlab.arturbosch.tinbo.config.ModeManager
+import io.gitlab.arturbosch.tinbo.config.TinboMode
+import io.gitlab.arturbosch.tinbo.finance.FinanceMode
+import io.gitlab.arturbosch.tinbo.notes.NotesMode
+import io.gitlab.arturbosch.tinbo.psp.ProjectsMode
+import io.gitlab.arturbosch.tinbo.tasks.TasksMode
+import io.gitlab.arturbosch.tinbo.time.TimeMode
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationContext
 import org.springframework.shell.core.JLineShellComponent
@@ -31,38 +36,38 @@ class HelpCommand @Autowired constructor(val ctx: ApplicationContext) : Command 
 				.filter { it is Command }
 				.map { it as Command }
 
-		val currentModeCommands = when (ModeAdvisor.getMode()) {
-			Mode.START -> commands.filter {
+		val currentModeCommands = when (ModeManager.current) {
+			TinboMode.START -> commands.filter {
 				when (it.id) {
 					"start", "help", "share" -> true
 					else -> false
 				}
 			}
-			Mode.TIMER -> commands.filter {
+			TimeMode -> commands.filter {
 				when (it.id) {
 					"time", "edit", "share", "mode", "sum" -> true
 					else -> false
 				}
 			}
-			Mode.NOTES -> commands.filter {
+			NotesMode -> commands.filter {
 				when (it.id) {
 					"note", "edit", "share", "mode" -> true
 					else -> false
 				}
 			}
-			Mode.TASKS -> commands.filter {
+			TasksMode -> commands.filter {
 				when (it.id) {
 					"task", "edit", "share", "mode" -> true
 					else -> false
 				}
 			}
-			Mode.FINANCE -> commands.filter {
+			FinanceMode -> commands.filter {
 				when (it.id) {
 					"finance", "edit", "share", "mode", "sum" -> true
 					else -> false
 				}
 			}
-			Mode.PROJECTS -> commands.filter {
+			ProjectsMode -> commands.filter {
 				when (it.id) {
 					"psp", "share", "mode" -> true
 					else -> false

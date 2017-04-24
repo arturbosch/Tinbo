@@ -1,6 +1,5 @@
 package io.gitlab.arturbosch.tinbo.providers
 
-import io.gitlab.arturbosch.tinbo.config.Mode
 import io.gitlab.arturbosch.tinbo.config.TinboMode
 import io.gitlab.arturbosch.tinbo.psp.CurrentProject
 import io.gitlab.arturbosch.tinbo.psp.ProjectsMode
@@ -15,12 +14,6 @@ import org.springframework.stereotype.Component
 class StateProvider(val currentProject: CurrentProject) {
 
 	fun isProjectOpen() = currentProject.isSpecified()
-
-	fun evaluate(oldMode: Mode, newMode: Mode) {
-		if (oldMode == Mode.PROJECTS && newMode != Mode.PROJECTS) {
-			currentProject.unspecify()
-		}
-	}
 
 	fun unspecifyProjectIfNeeded(oldMode: TinboMode, newMode: TinboMode) {
 		if (oldMode == ProjectsMode && newMode != ProjectsMode) {
