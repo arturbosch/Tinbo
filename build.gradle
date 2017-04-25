@@ -2,7 +2,6 @@ buildscript {
 	ext {
 		springBootVersion = '1.4.1.RELEASE'
 		springShellVersion = '1.2.0.RELEASE'
-		kotlinVersion = '1.0.4'
 
 		sourceCompatibility = 1.8
 		targetCompatibility = 1.8
