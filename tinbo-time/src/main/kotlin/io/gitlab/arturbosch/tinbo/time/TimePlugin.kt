@@ -32,6 +32,7 @@ class TimePlugin : TiNBoPlugin {
 		val timerCommands = TimerCommands(executor)
 		tinboContext.registerSingleton("TimerCommands", timerCommands)
 
+		tinboContext.registerSingleton("TimePersister", persister)
 		return listOf(financeCommands, financeModeCommand, timerCommands, timeSummaryCommands)
 	}
 

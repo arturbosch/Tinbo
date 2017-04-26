@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.common
 
 import io.gitlab.arturbosch.tinbo.api.Command
-import io.gitlab.arturbosch.tinbo.api.MarkAsPersister
+import io.gitlab.arturbosch.tinbo.api.PersistableMarker
 import io.gitlab.arturbosch.tinbo.config.HomeFolder
 import io.gitlab.arturbosch.tinbo.config.TinboConfig
 import io.gitlab.arturbosch.tinbo.plugins.SpringContext
@@ -35,7 +35,7 @@ class BackupCommand @Autowired constructor(val springContext: SpringContext,
 
 	private var _persisters = lazy {
 		springContext.context
-				.getBeansOfType(MarkAsPersister::class.java)
+				.getBeansOfType(PersistableMarker::class.java)
 				.values.toList()
 	}
 

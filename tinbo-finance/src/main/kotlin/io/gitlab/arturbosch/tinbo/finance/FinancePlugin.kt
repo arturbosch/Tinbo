@@ -20,9 +20,12 @@ class FinancePlugin : TiNBoPlugin {
 		val dataHolder = FinanceDataHolder(persister, tinboConfig)
 		val executor = FinanceExecutor(dataHolder, configProvider, tinboConfig)
 		val financeCommands = FinanceCommands(executor, configProvider, consoleReader)
-		val financeModeCommand = StartFinanceModeCommand()
 		tinboContext.registerSingleton("FinanceCommands", financeCommands)
+
+		val financeModeCommand = StartFinanceModeCommand()
 		tinboContext.registerSingleton("StartFinanceModeCommand", financeModeCommand)
+
+		tinboContext.registerSingleton("FinancePersister", persister)
 		return listOf(financeCommands, financeModeCommand)
 	}
 

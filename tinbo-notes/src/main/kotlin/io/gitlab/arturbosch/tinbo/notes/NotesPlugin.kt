@@ -19,9 +19,12 @@ class NotesPlugin : TiNBoPlugin {
 		val dataHolder = NoteDataHolder(persister, tinboConfig)
 		val executor = NoteExecutor(dataHolder, tinboConfig)
 		val noteCommands = NoteCommands(executor, consoleReader)
-		val notesModeCommand = StartNotesModeCommand()
 		tinboContext.registerSingleton("NoteCommands", noteCommands)
+
+		val notesModeCommand = StartNotesModeCommand()
 		tinboContext.registerSingleton("StartNoteModeCommand", notesModeCommand)
+
+		tinboContext.registerSingleton("NotesPersister", persister)
 		return listOf(noteCommands, notesModeCommand)
 	}
 

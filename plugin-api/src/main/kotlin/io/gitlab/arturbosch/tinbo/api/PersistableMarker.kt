@@ -5,6 +5,6 @@ import java.nio.file.Path
 /**
  * @author Artur Bosch
  */
-interface MarkAsPersister {
+interface PersistableMarker {
 	val persistencePath: Path
 }

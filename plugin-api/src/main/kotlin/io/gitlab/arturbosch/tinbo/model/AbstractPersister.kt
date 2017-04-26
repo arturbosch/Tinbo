@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.model
 
-import io.gitlab.arturbosch.tinbo.api.MarkAsPersister
+import io.gitlab.arturbosch.tinbo.api.PersistableMarker
 import io.gitlab.arturbosch.tinbo.config.HomeFolder
 import io.gitlab.arturbosch.tinbo.config.TinboConfig
 import io.gitlab.arturbosch.tinbo.model.util.CSVDataExchange
@@ -10,7 +10,7 @@ import java.nio.file.Path
 /**
  * @author Artur Bosch
  */
-abstract class AbstractPersister<E : Entry, D : Data<E>>(override val persistencePath: Path, val config: TinboConfig) : MarkAsPersister {
+abstract class AbstractPersister<E : Entry, D : Data<E>>(override val persistencePath: Path, val config: TinboConfig) : PersistableMarker {
 
 	private val writer = CSVDataExchange()
 

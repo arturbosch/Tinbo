@@ -24,6 +24,7 @@ class TasksPlugin : TiNBoPlugin {
 		val taskModeCommand = StartTaskModeCommand()
 		tinboContext.registerSingleton("StartTaskModeCommand", taskModeCommand)
 
+		tinboContext.registerSingleton("TasksPersister", persister)
 		return listOf(taskCommands, taskModeCommand)
 	}
 
