@@ -1,5 +1,6 @@
 package io.gitlab.arturbosch.tinbo.notes
 
+import io.gitlab.arturbosch.tinbo.api.UnsupportedMarker
 import io.gitlab.arturbosch.tinbo.commands.EditableCommands
 import io.gitlab.arturbosch.tinbo.config.ModeManager
 import io.gitlab.arturbosch.tinbo.nullIfEmpty
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 open class NoteCommands @Autowired constructor(executor: NoteExecutor) :
-		EditableCommands<NoteEntry, NoteData, DummyNote>(executor) {
+		EditableCommands<NoteEntry, NoteData, DummyNote>(executor), UnsupportedMarker {
 
 	override val id: String = "note"
 

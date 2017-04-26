@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
 class TimePlugin : TiNBoPlugin {
 
 	override fun registerCommands(tinboContext: SpringContext): List<Command> {
-		val consoleReader = tinboContext.bean<ConsoleReader>()
+		val consoleReader = tinboContext.beanOf<ConsoleReader>()
 		val tinboConfig = tinboContext.tinboConfig
 		val persister = TimePersister(tinboConfig)
 		val dataHolder = TimeDataHolder(persister, tinboConfig)

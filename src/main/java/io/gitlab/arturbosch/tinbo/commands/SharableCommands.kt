@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.commands
 
 import io.gitlab.arturbosch.tinbo.api.Command
+import io.gitlab.arturbosch.tinbo.api.UnsupportedMarker
 import io.gitlab.arturbosch.tinbo.config.Defaults
 import io.gitlab.arturbosch.tinbo.config.ModeManager
-import io.gitlab.arturbosch.tinbo.notes.NoteCommands
 import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
@@ -70,8 +70,8 @@ open class SharableCommands @Autowired constructor(val commandChooser: CommandCh
 							   unspecifiedDefaultValue = "", specifiedDefaultValue = "") new: String): String {
 
 		val commandsForCurrentMode = commandChooser.forCurrentMode()
-		if (commandsForCurrentMode is NoteCommands || commandsForCurrentMode is NoopCommands) {
-			return "Changing category is not yet supported for notes."
+		if (commandsForCurrentMode is UnsupportedMarker || commandsForCurrentMode is NoopCommands) {
+			return "Changing category is not yet supported for this mode!"
 		}
 
 		var oldName = old

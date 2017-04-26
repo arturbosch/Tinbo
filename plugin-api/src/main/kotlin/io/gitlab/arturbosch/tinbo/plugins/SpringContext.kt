@@ -15,16 +15,19 @@ class SpringContext @Autowired constructor(val context: ApplicationContext,
 										   val helpers: List<PluginHelper>,
 										   val tinboConfig: TinboConfig) {
 
+	@PluginSupport
 	fun registerBeanDefinition(name: String, bean: BeanDefinition) {
 		(context as GenericApplicationContext).defaultListableBeanFactory
 				.registerBeanDefinition(name, bean)
 	}
 
+	@PluginSupport
 	fun registerSingleton(name: String, obj: Any) {
 		(context as GenericApplicationContext).beanFactory.registerSingleton(name, obj)
 	}
 
-	inline fun <reified T : Any> bean(): T {
+	@PluginSupport
+	inline fun <reified T : Any> beanOf(): T {
 		return context.getBean(T::class.java)
 	}
 }
