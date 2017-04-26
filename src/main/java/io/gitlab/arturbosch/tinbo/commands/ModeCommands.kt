@@ -6,7 +6,6 @@ import io.gitlab.arturbosch.tinbo.config.TinboMode
 import io.gitlab.arturbosch.tinbo.notes.NotesMode
 import io.gitlab.arturbosch.tinbo.psp.ProjectsMode
 import io.gitlab.arturbosch.tinbo.tasks.TasksMode
-import io.gitlab.arturbosch.tinbo.time.TimeMode
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
@@ -20,15 +19,9 @@ open class ModeCommands : Command {
 
 	override val id: String = "start"
 
-	@CliAvailabilityIndicator("time", "tasks", "notes", "projects")
+	@CliAvailabilityIndicator("tasks", "notes", "projects")
 	fun onlyModeCommands(): Boolean {
 		return ModeManager.isCurrentMode(TinboMode.START)
-	}
-
-	@CliCommand("time", help = "Switch to time mode where you can start timers and list previous timings.")
-	fun timerMode() {
-		ModeManager.current = TimeMode
-		printlnInfo("Entering time mode...")
 	}
 
 	@CliCommand("tasks", help = "Switch to tasks mode to write down tasks.")

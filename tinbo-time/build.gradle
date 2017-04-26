@@ -24,7 +24,10 @@ publishing {
 }
 
 dependencies {
-	compileOnly project(":plugin-api")
+	compile project(":plugin-api")
+	testCompile "junit:junit:4.12"
+	testCompile "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+	testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 }
 
 sourceSets {

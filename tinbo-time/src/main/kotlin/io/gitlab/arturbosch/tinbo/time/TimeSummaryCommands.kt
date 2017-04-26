@@ -4,7 +4,6 @@ import io.gitlab.arturbosch.tinbo.WeekSummary
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.api.Summarizable
 import io.gitlab.arturbosch.tinbo.config.ModeManager
-import io.gitlab.arturbosch.tinbo.plugins.TimeSummaryPluginHelper
 import io.gitlab.arturbosch.tinbo.toTimeString
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
@@ -22,7 +21,7 @@ open class TimeSummaryCommands @Autowired constructor(val summaryExecutor: WeekS
 
 	override val id: String = "time"
 
-	@CliAvailabilityIndicator("week", "month")
+	@CliAvailabilityIndicator("week", "month", "day")
 	fun isAvailable(): Boolean {
 		return ModeManager.isCurrentMode(TimeMode)
 	}

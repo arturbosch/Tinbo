@@ -23,4 +23,8 @@ class SpringContext @Autowired constructor(val context: ApplicationContext,
 	fun registerSingleton(name: String, obj: Any) {
 		(context as GenericApplicationContext).beanFactory.registerSingleton(name, obj)
 	}
+
+	inline fun <reified T : Any> bean(): T {
+		return context.getBean(T::class.java)
+	}
 }

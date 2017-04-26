@@ -4,4 +4,5 @@ include 'tinbo-ascii-plugin'
 include 'tinbo-charts'
 include 'tinbo-api'
 include 'tinbo-finance'
+include 'tinbo-time'
 
