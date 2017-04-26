@@ -4,6 +4,7 @@ import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.api.MarkAsPersister
 import io.gitlab.arturbosch.tinbo.config.HomeFolder
 import io.gitlab.arturbosch.tinbo.config.TinboConfig
+import io.gitlab.arturbosch.tinbo.plugins.SpringContext
 import io.gitlab.arturbosch.tinbo.utils.HttpClient
 import io.gitlab.arturbosch.tinbo.utils.dateTimeFormatter
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
@@ -26,11 +27,19 @@ import java.util.zip.ZipOutputStream
  * @author Artur Bosch
  */
 @Component
-class BackupCommand @Autowired constructor(val persisters: List<MarkAsPersister>,
+class BackupCommand @Autowired constructor(val springContext: SpringContext,
 										   val config: TinboConfig) : Command {
 	override val id: String = "share"
 
 	private val logger = LogManager.getLogger(javaClass)
+
+	private var _persisters = lazy {
+		springContext.context
+				.getBeansOfType(MarkAsPersister::class.java)
+				.values.toList()
+	}
+
+	private fun persisters() = _persisters.value
 
 	@CliCommand("backup local", help = "Stores all data sets into the backup folder.")
 	fun backupLocal(): String {
@@ -47,7 +56,7 @@ class BackupCommand @Autowired constructor(val persisters: List<MarkAsPersister>
 	}
 
 	private fun backupModes(backupDir: Path) {
-		persisters.map { it.persistencePath }
+		persisters().map { it.persistencePath }
 				.forEach { pathToMode -> copyFilesFromMode(backupDir, pathToMode) }
 	}
 

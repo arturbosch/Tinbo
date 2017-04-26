@@ -6,4 +6,5 @@ include 'tinbo-api'
 include 'tinbo-finance'
 include 'tinbo-time'
 include 'tinbo-notes'
+include 'tinbo-tasks'
 
