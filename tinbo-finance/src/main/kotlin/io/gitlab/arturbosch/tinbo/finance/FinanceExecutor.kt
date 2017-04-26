@@ -119,4 +119,3 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder,
 	private fun byYear(date: LocalDate, it: FinanceEntry) = it.dateTime.toLocalDate().year == date.year
 
 }
-

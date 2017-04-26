@@ -17,30 +17,35 @@ import org.springframework.stereotype.Component
 class CommandChooser @Autowired constructor(springContext: SpringContext,
 											val noopCommands: NoopCommands) {
 
-	private var commands: List<Command> = springContext.context.getBeansOfType(Command::class.java)
-			.values.toList()
+	private var _commands = lazy {
+		springContext.context
+				.getBeansOfType(Command::class.java)
+				.values.toList()
+	}
+
+	private fun commands(): List<Command> = _commands.value
 
 	fun forCurrentMode(): Editable {
 		val currentModeId = ModeManager.current.id
-		return commands.filterIsInstance<Editable>()
+		return commands().filterIsInstance<Editable>()
 				.find { (it as Command).id == currentModeId } ?: noopCommands
 	}
 
 	fun forListableMode(): Listable {
 		val currentModeId = ModeManager.current.id
-		return commands.filterIsInstance<Listable>()
+		return commands().filterIsInstance<Listable>()
 				.find { (it as Command).id == currentModeId } ?: noopCommands
 	}
 
 	fun forAddableMode(): Addable {
 		val currentModeId = ModeManager.current.id
-		return commands.filterIsInstance<Addable>()
+		return commands().filterIsInstance<Addable>()
 				.find { (it as Command).id == currentModeId } ?: noopCommands
 	}
 
 	fun forSummarizableMode(): Summarizable {
 		val currentModeId = ModeManager.current.id
-		return commands.filterIsInstance<Summarizable>()
+		return commands().filterIsInstance<Summarizable>()
 				.find { (it as Command).id == currentModeId } ?: noopCommands
 	}
 

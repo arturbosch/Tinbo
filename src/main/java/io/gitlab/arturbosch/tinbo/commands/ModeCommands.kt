@@ -3,7 +3,6 @@ package io.gitlab.arturbosch.tinbo.commands
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.config.ModeManager
 import io.gitlab.arturbosch.tinbo.config.TinboMode
-import io.gitlab.arturbosch.tinbo.finance.FinanceMode
 import io.gitlab.arturbosch.tinbo.notes.NotesMode
 import io.gitlab.arturbosch.tinbo.psp.ProjectsMode
 import io.gitlab.arturbosch.tinbo.tasks.TasksMode
@@ -21,7 +20,7 @@ open class ModeCommands : Command {
 
 	override val id: String = "start"
 
-	@CliAvailabilityIndicator("time", "tasks", "notes", "finance", "projects")
+	@CliAvailabilityIndicator("time", "tasks", "notes", "projects")
 	fun onlyModeCommands(): Boolean {
 		return ModeManager.isCurrentMode(TinboMode.START)
 	}
@@ -30,12 +29,6 @@ open class ModeCommands : Command {
 	fun timerMode() {
 		ModeManager.current = TimeMode
 		printlnInfo("Entering time mode...")
-	}
-
-	@CliCommand("finance", help = "Switch to finance mode where you can manage your finances.")
-	fun financeMode() {
-		ModeManager.current = FinanceMode
-		printlnInfo("Entering finance mode...")
 	}
 
 	@CliCommand("tasks", help = "Switch to tasks mode to write down tasks.")

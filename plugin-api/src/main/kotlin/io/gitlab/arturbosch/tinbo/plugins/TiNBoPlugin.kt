@@ -21,4 +21,8 @@ interface TiNBoPlugin : Command {
 	object ContextAware {
 		var context: SpringContext? = null
 	}
+
+	fun registerCommands(tinboContext: SpringContext): List<Command> {
+		return emptyList()
+	}
 }

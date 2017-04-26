@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
  * @author Artur Bosch
  */
 @Component
-class ConfigProvider @Autowired constructor(val config: TinboConfig) {
+class ConfigProvider @Autowired constructor(config: TinboConfig) {
 
 	val currencyUnit: CurrencyUnit = CurrencyUnit.of(
 			config.getKey(ConfigDefaults.DEFAULTS)[ConfigDefaults.CURRENCY].orDefault("EUR"))

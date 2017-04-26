@@ -1,6 +1,3 @@
-group 'io.gitlab.arturbosch.tinbo'
-version '1.0.RC1'
-
 buildscript {
 	repositories {
 		mavenCentral()
@@ -11,12 +8,25 @@ buildscript {
 }
 
 apply plugin: 'kotlin'
+apply plugin: 'maven-publish'
 
 repositories {
 	mavenCentral()
 	mavenLocal()
 }
 
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+}
+
 dependencies {
-	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+	compile project(":plugin-api")
+}
+
+sourceSets {
+	main.java.srcDirs += 'src/main/kotlin'
 }

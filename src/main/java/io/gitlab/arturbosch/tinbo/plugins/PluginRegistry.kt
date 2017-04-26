@@ -4,7 +4,6 @@ import io.gitlab.arturbosch.tinbo.config.HomeFolder
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
 import org.apache.log4j.LogManager
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.JLineShellComponent
 import org.springframework.stereotype.Component
 import java.net.URL
@@ -38,7 +37,9 @@ class PluginRegistry @Autowired constructor(val shell: JLineShellComponent,
 							.map { it.toURI().toURL() }
 					loadJarPlugins(jarUrls)
 				}
-			}, executor)
+			}, executor).exceptionally {
+				logError(it, it.message ?: ""); null
+			}
 
 		} catch (e: RuntimeException) {
 			val message = "Could not load plugins: ${e.message}"
@@ -49,8 +50,8 @@ class PluginRegistry @Autowired constructor(val shell: JLineShellComponent,
 
 	private fun loadJarPlugins(jarUrls: List<URL>) {
 		val successfulPlugins = ArrayList<String>()
-		ServiceLoader.load(TiNBoPlugin::class.java,
-				URLClassLoader(jarUrls.toTypedArray(), TiNBoPlugin::class.java.classLoader))
+		val loader = URLClassLoader(jarUrls.toTypedArray(), TiNBoPlugin::class.java.classLoader)
+		ServiceLoader.load(TiNBoPlugin::class.java, loader)
 				.forEach {
 					registerPlugin(it)
 					successfulPlugins.add(it.javaClass.simpleName)
@@ -62,8 +63,8 @@ class PluginRegistry @Autowired constructor(val shell: JLineShellComponent,
 		}
 	}
 
-	fun registerPlugin(command: CommandMarker) {
-		shell.simpleParser.add(command)
+	fun registerPlugin(plugin: TiNBoPlugin) {
+		plugin.registerCommands(context).forEach { shell.simpleParser.add(it) }
 	}
 
 	private fun logError(e: Throwable, message: String) {

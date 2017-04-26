@@ -3,7 +3,7 @@ package io.gitlab.arturbosch.tinbo.utils
 import org.fusesource.jansi.Ansi
 
 /**
- * @author artur
+ * @author Artur Bosch
  */
 
 fun printInfo(message: String) {

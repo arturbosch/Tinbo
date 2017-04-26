@@ -34,7 +34,7 @@ open class TinboCommands @Autowired constructor(val bannerProvider: BannerProvid
 	@CliCommand("weather", help = "Shows the weather for following three days inclusive today's.")
 	fun weather(@CliOption(
 			key = arrayOf("", "city"),
-			help = "Provide a existing city name.",
+			help = "Provide an existing city name.",
 			specifiedDefaultValue = "",
 			unspecifiedDefaultValue = "") city: String): String {
 
