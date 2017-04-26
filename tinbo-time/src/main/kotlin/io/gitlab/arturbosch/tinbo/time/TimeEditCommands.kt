@@ -9,6 +9,7 @@ import io.gitlab.arturbosch.tinbo.orDefault
 import io.gitlab.arturbosch.tinbo.toLongOrNull
 import io.gitlab.arturbosch.tinbo.utils.DateTimeFormatters
 import io.gitlab.arturbosch.tinbo.utils.dateFormatter
+import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
@@ -22,8 +23,9 @@ import java.time.format.DateTimeParseException
  */
 @Component
 open class TimeEditCommands @Autowired constructor(executor: TimeExecutor,
-												   val config: TinboConfig) :
-		EditableCommands<TimeEntry, TimeData, DummyTime>(executor) {
+												   val config: TinboConfig,
+												   consoleReader: ConsoleReader) :
+		EditableCommands<TimeEntry, TimeData, DummyTime>(executor, consoleReader) {
 
 	override val id: String = "time"
 

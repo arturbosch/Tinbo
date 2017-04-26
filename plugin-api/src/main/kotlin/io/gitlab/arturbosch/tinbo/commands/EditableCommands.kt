@@ -9,22 +9,19 @@ import io.gitlab.arturbosch.tinbo.model.DummyEntry
 import io.gitlab.arturbosch.tinbo.model.Entry
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
 import jline.console.ConsoleReader
-import org.springframework.beans.factory.annotation.Autowired
 import java.util.HashSet
 
 /**
  * @author artur
  */
 abstract class EditableCommands<E : Entry, D : Data<E>, in T : DummyEntry>(
-		val executor: AbstractExecutor<E, D, T>) : Command, Editable {
+		val executor: AbstractExecutor<E, D, T>,
+		val console: ConsoleReader) : Command, Editable {
 
 	private val NEED_EDIT_MODE_TEXT = "Before adding or list entries exit edit mode with 'save' or 'cancel'."
 
 	protected var isListMode: Boolean = false
 	protected var isEditMode: Boolean = false
-
-	@Autowired
-	protected lateinit var console: ConsoleReader
 
 	protected fun withListMode(body: () -> String): String {
 		isListMode = true

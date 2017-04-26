@@ -8,6 +8,7 @@ import io.gitlab.arturbosch.tinbo.nullIfEmpty
 import io.gitlab.arturbosch.tinbo.orDefault
 import io.gitlab.arturbosch.tinbo.utils.DateTimeFormatters
 import io.gitlab.arturbosch.tinbo.utils.dateTimeFormatter
+import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
@@ -21,8 +22,9 @@ import java.time.format.DateTimeParseException
  */
 @Component
 open class TaskCommands @Autowired constructor(executor: TaskExecutor,
-											   val config: TinboConfig) :
-		EditableCommands<TaskEntry, TaskData, DummyTask>(executor) {
+											   val config: TinboConfig,
+											   consoleReader: ConsoleReader) : EditableCommands<TaskEntry, TaskData, DummyTask>(
+		executor, consoleReader) {
 
 	override val id: String = "task"
 

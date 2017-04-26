@@ -18,7 +18,7 @@ class TimePlugin : TiNBoPlugin {
 		val persister = TimePersister(tinboConfig)
 		val dataHolder = TimeDataHolder(persister, tinboConfig)
 		val executor = TimeExecutor(dataHolder, consoleReader, tinboConfig)
-		val financeCommands = TimeEditCommands(executor, tinboConfig)
+		val financeCommands = TimeEditCommands(executor, tinboConfig, consoleReader)
 		tinboContext.registerSingleton("TimeEditCommands", financeCommands)
 
 		val financeModeCommand = StartTimeModeCommand()

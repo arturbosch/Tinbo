@@ -10,6 +10,7 @@ import io.gitlab.arturbosch.tinbo.orThrow
 import io.gitlab.arturbosch.tinbo.orValue
 import io.gitlab.arturbosch.tinbo.utils.dateFormatter
 import io.gitlab.arturbosch.tinbo.utils.dateTimeFormatter
+import jline.console.ConsoleReader
 import org.joda.money.Money
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
@@ -26,8 +27,9 @@ import java.time.format.DateTimeParseException
  */
 @Component
 class FinanceCommands @Autowired constructor(val financeExecutor: FinanceExecutor,
-											 val configProvider: ConfigProvider) :
-		EditableCommands<FinanceEntry, FinanceData, DummyFinance>(financeExecutor), Summarizable {
+											 val configProvider: ConfigProvider,
+											 consoleReader: ConsoleReader) :
+		EditableCommands<FinanceEntry, FinanceData, DummyFinance>(financeExecutor, consoleReader), Summarizable {
 
 	override val id: String = "finance"
 	private val SUCCESS_MESSAGE = "Successfully added a finance entry."
