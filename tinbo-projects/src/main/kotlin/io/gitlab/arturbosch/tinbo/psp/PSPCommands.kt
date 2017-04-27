@@ -5,8 +5,8 @@ import io.gitlab.arturbosch.tinbo.api.Addable
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.api.Listable
 import io.gitlab.arturbosch.tinbo.config.ConfigDefaults.PROJECTS
+import io.gitlab.arturbosch.tinbo.config.EditablePromptProvider
 import io.gitlab.arturbosch.tinbo.config.ModeManager
-import io.gitlab.arturbosch.tinbo.providers.PromptProvider
 import io.gitlab.arturbosch.tinbo.utils.dateFormatter
 import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,7 +22,7 @@ import java.time.format.DateTimeParseException
  */
 @Component
 class PSPCommands @Autowired constructor(val console: ConsoleReader,
-										 val prompt: PromptProvider,
+										 val prompt: EditablePromptProvider,
 										 val currentProject: CurrentProject,
 										 val csvProjects: CSVProjects) : Command, Listable, Addable {
 

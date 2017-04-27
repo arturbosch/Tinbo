@@ -12,8 +12,12 @@ import org.springframework.stereotype.Component
  */
 @Component
 class SpringContext @Autowired constructor(val context: ApplicationContext,
-										   val helpers: List<PluginHelper>,
 										   val tinboConfig: TinboConfig) {
+
+	private val _helpers = lazy { context.getBeansOfType(PluginHelper::class.java).values }
+
+	@PluginSupport
+	fun pluginHelpers() = _helpers.value
 
 	@PluginSupport
 	fun registerBeanDefinition(name: String, bean: BeanDefinition) {

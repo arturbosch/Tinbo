@@ -1,7 +1,8 @@
-package io.gitlab.arturbosch.tinbo.plugins
+package io.gitlab.arturbosch.tinbo.psp
 
 import io.gitlab.arturbosch.tinbo.Project
-import io.gitlab.arturbosch.tinbo.psp.FileProjects
+import io.gitlab.arturbosch.tinbo.plugins.PluginHelper
+import io.gitlab.arturbosch.tinbo.plugins.PluginSupport
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

@@ -71,7 +71,7 @@ open class SharableCommands @Autowired constructor(val commandChooser: CommandCh
 
 		val commandsForCurrentMode = commandChooser.forCurrentMode()
 		if (commandsForCurrentMode is UnsupportedMarker || commandsForCurrentMode is NoopCommands) {
-			return "Changing category is not yet supported for this mode!"
+			return "Changing category is not supported for this mode!"
 		}
 
 		var oldName = old

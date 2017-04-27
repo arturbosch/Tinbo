@@ -111,7 +111,7 @@ class BurndownChart : TiNBoPlugin {
 	@Suppress("UNCHECKED_CAST")
 	private fun loadSummary(method: String): List<Project>? {
 		context()?.let {
-			it.helpers.find { it.javaClass.simpleName == "ProjectsPluginSupport" }?.let {
+			it.pluginHelpers().find { it.javaClass.simpleName == "ProjectsPluginSupport" }?.let {
 				val value = it.javaClass.getMethod(method).invoke(it)
 				return value as List<Project>
 			}

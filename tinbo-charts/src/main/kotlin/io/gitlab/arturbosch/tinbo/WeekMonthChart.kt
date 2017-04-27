@@ -51,7 +51,7 @@ class WeekMonthChart : TiNBoPlugin {
 
 	private fun loadSummary(method: String): WeekSummary? {
 		context()?.let {
-			it.helpers.find { it.javaClass.simpleName == "TimeSummaryPluginHelper" }?.let {
+			it.pluginHelpers().find { it.javaClass.simpleName == "TimeSummaryPluginHelper" }?.let {
 				return it.javaClass.getMethod(method).invoke(it) as WeekSummary
 			}
 		}

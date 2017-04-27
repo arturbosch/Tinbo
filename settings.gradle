@@ -7,4 +7,5 @@ include 'tinbo-finance'
 include 'tinbo-time'
 include 'tinbo-notes'
 include 'tinbo-tasks'
+include 'tinbo-projects'
 

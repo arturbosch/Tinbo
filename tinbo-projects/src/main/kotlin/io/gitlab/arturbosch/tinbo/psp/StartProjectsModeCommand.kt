@@ -1,9 +1,8 @@
-package io.gitlab.arturbosch.tinbo.commands
+package io.gitlab.arturbosch.tinbo.psp
 
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.config.ModeManager
 import io.gitlab.arturbosch.tinbo.config.TinboMode
-import io.gitlab.arturbosch.tinbo.psp.ProjectsMode
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Component
  * @author Artur Bosch
  */
 @Component
-open class ModeCommands : Command {
+class StartProjectsModeCommand : Command {
 
 	override val id: String = "start"
 
