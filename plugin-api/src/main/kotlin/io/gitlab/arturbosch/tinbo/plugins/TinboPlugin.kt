@@ -12,17 +12,17 @@ import io.gitlab.arturbosch.tinbo.api.Command
  *
  * @author Artur Bosch
  */
-interface TiNBoPlugin : Command {
+interface TinboPlugin : Command {
 	override val id: String
 		get() = "plugins"
 
 	fun context() = ContextAware.context
 
 	object ContextAware {
-		var context: SpringContext? = null
+		var context: TinboContext? = null
 	}
 
-	fun registerCommands(tinboContext: SpringContext): List<Command> {
+	fun registerCommands(tinboContext: TinboContext): List<Command> {
 		return emptyList()
 	}
 }

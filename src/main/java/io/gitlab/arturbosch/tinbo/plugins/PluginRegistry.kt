@@ -19,7 +19,7 @@ import javax.annotation.PostConstruct
  */
 @Component
 class PluginRegistry @Autowired constructor(val shell: JLineShellComponent,
-											val context: SpringContext) {
+											val context: TinboContext) {
 
 	private val LOGGER = LogManager.getLogger(javaClass)
 
@@ -50,20 +50,20 @@ class PluginRegistry @Autowired constructor(val shell: JLineShellComponent,
 
 	private fun loadJarPlugins(jarUrls: List<URL>) {
 		val successfulPlugins = ArrayList<String>()
-		val loader = URLClassLoader(jarUrls.toTypedArray(), TiNBoPlugin::class.java.classLoader)
-		ServiceLoader.load(TiNBoPlugin::class.java, loader)
+		val loader = URLClassLoader(jarUrls.toTypedArray(), TinboPlugin::class.java.classLoader)
+		ServiceLoader.load(TinboPlugin::class.java, loader)
 				.forEach {
 					registerPlugin(it)
 					successfulPlugins.add(it.javaClass.simpleName)
 				}
 
 		if (successfulPlugins.isNotEmpty()) {
-			TiNBoPlugin.ContextAware.context = context
+			TinboPlugin.ContextAware.context = context
 			printlnInfo("Successfully loaded plugins: ${successfulPlugins.joinToString(", ")}")
 		}
 	}
 
-	fun registerPlugin(plugin: TiNBoPlugin) {
+	fun registerPlugin(plugin: TinboPlugin) {
 		plugin.registerCommands(context).forEach { shell.simpleParser.add(it) }
 	}
 

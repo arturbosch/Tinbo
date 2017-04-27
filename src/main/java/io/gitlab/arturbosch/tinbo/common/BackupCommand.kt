@@ -4,7 +4,7 @@ import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.api.PersistableMarker
 import io.gitlab.arturbosch.tinbo.config.HomeFolder
 import io.gitlab.arturbosch.tinbo.config.TinboConfig
-import io.gitlab.arturbosch.tinbo.plugins.SpringContext
+import io.gitlab.arturbosch.tinbo.plugins.TinboContext
 import io.gitlab.arturbosch.tinbo.utils.HttpClient
 import io.gitlab.arturbosch.tinbo.utils.dateTimeFormatter
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
@@ -27,14 +27,14 @@ import java.util.zip.ZipOutputStream
  * @author Artur Bosch
  */
 @Component
-class BackupCommand @Autowired constructor(val springContext: SpringContext,
+class BackupCommand @Autowired constructor(val tinboContext: TinboContext,
 										   val config: TinboConfig) : Command {
 	override val id: String = "share"
 
 	private val logger = LogManager.getLogger(javaClass)
 
 	private var _persisters = lazy {
-		springContext.context
+		tinboContext.context
 				.getBeansOfType(PersistableMarker::class.java)
 				.values.toList()
 	}

@@ -15,13 +15,13 @@ import java.io.IOException;
 /**
  * Copied and refactored from "https://github.com/jeffellin/springshellwithboot".
  */
-public class BootShim {
+public class BootShell {
 
 	private static final StopWatch sw = new StopWatch("Spring Shell");
 	private static CommandLine commandLine;
 	private final ConfigurableApplicationContext ctx;
 
-	public BootShim(String[] args, ConfigurableApplicationContext context) {
+	public BootShell(String[] args, ConfigurableApplicationContext context) {
 		this.ctx = context;
 
 		try {

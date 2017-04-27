@@ -2,7 +2,7 @@ package io.gitlab.arturbosch.tinbo.charts
 
 import io.gitlab.arturbosch.tinbo.Project
 import io.gitlab.arturbosch.tinbo.api.Command
-import io.gitlab.arturbosch.tinbo.plugins.TiNBoPlugin.ContextAware.context
+import io.gitlab.arturbosch.tinbo.plugins.TinboPlugin.ContextAware.context
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.JFreeChart
 import org.jfree.chart.renderer.category.LineAndShapeRenderer

@@ -16,14 +16,14 @@ import java.util.logging.Logger
  * @author artur
  */
 @SpringBootApplication
-open class TiNBo {
+open class Tinbo {
 
 	companion object {
 
 		@JvmStatic fun main(args: Array<String>) {
-			val ctx = SpringApplication.run(TiNBo::class.java)
+			val ctx = SpringApplication.run(Tinbo::class.java)
 			try {
-				val bootStrap = io.gitlab.arturbosch.tinbo.BootShim(args, ctx)
+				val bootStrap = BootShell(args, ctx)
 				bootStrap.run()
 			} catch (e: RuntimeException) {
 				throw e

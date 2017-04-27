@@ -3,8 +3,8 @@ package io.gitlab.arturbosch.tinbo.lloc
 import io.gitlab.arturbosch.loc.core.LOC
 import io.gitlab.arturbosch.loc.languages.LanguageStrategyFactory
 import io.gitlab.arturbosch.tinbo.api.Command
-import io.gitlab.arturbosch.tinbo.plugins.SpringContext
-import io.gitlab.arturbosch.tinbo.plugins.TiNBoPlugin
+import io.gitlab.arturbosch.tinbo.plugins.TinboContext
+import io.gitlab.arturbosch.tinbo.plugins.TinboPlugin
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import java.nio.file.Files
@@ -17,9 +17,9 @@ import java.util.stream.Collectors
  *
  * @author Artur Bosch
  */
-class LLOCPlugin : TiNBoPlugin {
+class LLOCPlugin : TinboPlugin {
 
-	override fun registerCommands(tinboContext: SpringContext): List<Command> {
+	override fun registerCommands(tinboContext: TinboContext): List<Command> {
 		return listOf(this)
 	}
 

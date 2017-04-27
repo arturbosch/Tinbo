@@ -1,8 +1,8 @@
 package io.gitlab.arturbosch.tinbo.finance
 
 import io.gitlab.arturbosch.tinbo.api.Command
-import io.gitlab.arturbosch.tinbo.plugins.SpringContext
-import io.gitlab.arturbosch.tinbo.plugins.TiNBoPlugin
+import io.gitlab.arturbosch.tinbo.plugins.TinboContext
+import io.gitlab.arturbosch.tinbo.plugins.TinboPlugin
 import jline.console.ConsoleReader
 import org.springframework.stereotype.Component
 
@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component
  * @author Artur Bosch
  */
 @Component
-class FinancePlugin : TiNBoPlugin {
+class FinancePlugin : TinboPlugin {
 
-	override fun registerCommands(tinboContext: SpringContext): List<Command> {
+	override fun registerCommands(tinboContext: TinboContext): List<Command> {
 		val consoleReader = tinboContext.beanOf<ConsoleReader>()
 		val tinboConfig = tinboContext.tinboConfig
 		val configProvider = ConfigProvider(tinboConfig)

@@ -6,7 +6,7 @@ import io.gitlab.arturbosch.tinbo.api.Editable
 import io.gitlab.arturbosch.tinbo.api.Listable
 import io.gitlab.arturbosch.tinbo.api.Summarizable
 import io.gitlab.arturbosch.tinbo.config.ModeManager
-import io.gitlab.arturbosch.tinbo.plugins.SpringContext
+import io.gitlab.arturbosch.tinbo.plugins.TinboContext
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class CommandChooser @Autowired constructor(springContext: SpringContext,
+class CommandChooser @Autowired constructor(tinboContext: TinboContext,
 											val noopCommands: NoopCommands) {
 
 	private var _commands = lazy {
-		springContext.context
+		tinboContext.context
 				.getBeansOfType(Command::class.java)
 				.values.toList()
 	}
