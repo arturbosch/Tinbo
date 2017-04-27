@@ -1,8 +1,6 @@
 package io.gitlab.arturbosch.tinbo;
 
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.shell.CommandLine;
 import org.springframework.shell.ShellException;
 import org.springframework.shell.SimpleShellCommandLineOptions;
@@ -29,10 +27,6 @@ public class BootShell {
 		} catch (IOException e) {
 			throw new ShellException(e.getMessage(), e);
 		}
-
-		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner((BeanDefinitionRegistry) this.ctx);
-		scanner.scan("org.springframework.shell.converters", "org.springframework.shell.plugin.support");
-
 	}
 
 	public ExitShellRequest run() {
