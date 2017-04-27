@@ -1,6 +1,6 @@
-package io.gitlab.arturbosch.tinbo
+package io.gitlab.arturbosch.tinbo.ascii
 
-import io.gitlab.arturbosch.tinbo.plugins.TiNBoPlugin
+import io.gitlab.arturbosch.tinbo.api.Command
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import java.awt.Color
@@ -14,17 +14,21 @@ import javax.imageio.ImageIO
 /**
  * @author Artur Bosch
  */
-class Ascii : TiNBoPlugin {
+class Ascii : Command {
 
-	@CliCommand("plugin ascii", help = "")
-	fun run(@CliOption(key = arrayOf("")) path: String?): String {
+	override val id: String = "plugins"
+
+	@CliCommand("plugin ascii", help = "Converts an given image to ascii art.")
+	fun run(@CliOption(key = arrayOf("", "path")) path: String?,
+			@CliOption(key = arrayOf("invert"), unspecifiedDefaultValue = "false",
+					specifiedDefaultValue = "true") invert: Boolean): String {
 		return path?.let {
 			val path1 = Paths.get(path)
 			if (Files.notExists(path1)) return "Specified path does not exist!"
 			if (!isImage(path1)) return "Given path points not to an image (jpg or png)."
 			val image = ImageIO.read(path1.toFile())
 			val resizeImage = resizeImage(image, 76, 0)
-			return ASCII().convert(resizeImage)
+			return ASCII(invert).convert(resizeImage)
 		} ?: "Provided path does not exist"
 	}
 
@@ -55,15 +59,13 @@ class Ascii : TiNBoPlugin {
 		fun convert(image: BufferedImage): String {
 			val sb = StringBuilder((image.width + 1) * image.height)
 			for (y in 0..image.height - 1) {
-				if (sb.length != 0) sb.append("\n")
-				for (x in 0..image.width - 1) {
-					val pixelColor = Color(image.getRGB(x, y))
-					val gValue = pixelColor.red.toDouble() * 0.30 +
-							pixelColor.blue.toDouble() * 0.59 +
-							pixelColor.green.toDouble() * 0.11
-					val s = if (negative) returnStrNeg(gValue) else returnStrPos(gValue)
-					sb.append(s)
-				}
+				if (sb.isNotEmpty()) sb.append("\n")
+				(0..image.width - 1)
+						.asSequence()
+						.map { Color(image.getRGB(it, y)) }
+						.map { it.red.toDouble() * 0.30 + it.blue.toDouble() * 0.59 + it.green.toDouble() * 0.11 }
+						.map { if (negative) returnStrNeg(it) else returnStrPos(it) }
+						.forEach { sb.append(it) }
 			}
 			return sb.toString()
 		}
