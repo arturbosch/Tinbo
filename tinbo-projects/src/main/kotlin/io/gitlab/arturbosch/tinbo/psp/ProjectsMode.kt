@@ -8,6 +8,6 @@ import io.gitlab.arturbosch.tinbo.config.TinboMode
 object ProjectsMode : TinboMode {
 	override val id: String = "projects"
 	override val helpIds: Array<String> = arrayOf(id, "share", "mode")
-	override val editAllowed: Boolean = false
+	override val editAllowed: Boolean = true
 	override val isSummarizable: Boolean = false
 }

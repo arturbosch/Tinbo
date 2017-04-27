@@ -15,7 +15,7 @@ import java.nio.file.Path
 @Component
 class FileProjects(val projectsPath: Path = HomeFolder.getDirectory(PROJECTS)) {
 
-	private val yml = ".yml"
+	private val yml = "yml"
 
 	init {
 		Assert.isTrue(Files.exists(projectsPath))
