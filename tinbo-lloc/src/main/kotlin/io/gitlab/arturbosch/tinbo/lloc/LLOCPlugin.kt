@@ -2,6 +2,8 @@ package io.gitlab.arturbosch.tinbo.lloc
 
 import io.gitlab.arturbosch.loc.core.LOC
 import io.gitlab.arturbosch.loc.languages.LanguageStrategyFactory
+import io.gitlab.arturbosch.tinbo.api.Command
+import io.gitlab.arturbosch.tinbo.plugins.SpringContext
 import io.gitlab.arturbosch.tinbo.plugins.TiNBoPlugin
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
@@ -15,7 +17,11 @@ import java.util.stream.Collectors
  *
  * @author Artur Bosch
  */
-class LLOC : TiNBoPlugin {
+class LLOCPlugin : TiNBoPlugin {
+
+	override fun registerCommands(tinboContext: SpringContext): List<Command> {
+		return listOf(this)
+	}
 
 	private val languages = LanguageStrategyFactory.languages
 			.map { LanguageStrategyFactory.getInstance(it) }
@@ -25,10 +31,10 @@ class LLOC : TiNBoPlugin {
 	fun run(@CliOption(key = arrayOf("")) path: String?): String {
 		return path?.let {
 
-			val path1 = Paths.get(path)
-			if (Files.notExists(path1)) return "Specified path does not exist!"
+			val project = Paths.get(path)
+			if (Files.notExists(project)) return "Specified path does not exist!"
 
-			val languageLocPairs = Files.walk(path1)
+			val languageLocPairs = Files.walk(project)
 					.filter { Files.isRegularFile(it) }
 					.map { path ->
 						val strategy = languages.find {
