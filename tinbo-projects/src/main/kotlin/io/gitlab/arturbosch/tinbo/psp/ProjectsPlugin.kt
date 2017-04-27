@@ -29,7 +29,9 @@ class ProjectsPlugin : TiNBoPlugin {
 		val projectsModeCommand = StartProjectsModeCommand()
 		tinboContext.registerSingleton("StartProjectsModeCommand", projectsModeCommand)
 
-		return listOf(projectCommands, projectsModeCommand)
+		val projectsPluginSupport = ProjectsPluginSupport(fileProjects)
+		tinboContext.registerSingleton("ProjectsPluginSupport", projectsPluginSupport)
+		return listOf(projectCommands, projectsModeCommand, pspCommands)
 	}
 
 }

@@ -25,7 +25,7 @@ class TimePlugin : TiNBoPlugin {
 		tinboContext.registerSingleton("StartTimeModeCommand", financeModeCommand)
 
 		val summaryExecutor = WeekSummaryExecutor(dataHolder)
-		val timeSummaryPluginHelper = TimeSummaryPluginHelper(dataHolder)
+		val timeSummaryPluginHelper = TimeSummaryPluginSupport(dataHolder)
 		val timeSummaryCommands = TimeSummaryCommands(summaryExecutor, timeSummaryPluginHelper)
 		tinboContext.registerSingleton("TimeSummaryCommands", timeSummaryCommands)
 
@@ -33,6 +33,8 @@ class TimePlugin : TiNBoPlugin {
 		tinboContext.registerSingleton("TimerCommands", timerCommands)
 
 		tinboContext.registerSingleton("TimePersister", persister)
+		val timeSummaryPluginSupport = TimeSummaryPluginSupport(dataHolder)
+		tinboContext.registerSingleton("TimeSummaryPluginSupport", timeSummaryPluginSupport)
 		return listOf(financeCommands, financeModeCommand, timerCommands, timeSummaryCommands)
 	}
 

@@ -16,7 +16,7 @@ import java.time.LocalDate
  */
 @Component
 open class TimeSummaryCommands @Autowired constructor(val summaryExecutor: WeekSummaryExecutor,
-													  val timeSummaryPluginHelper: TimeSummaryPluginHelper) :
+													  val timeSummaryPluginSupport: TimeSummaryPluginSupport) :
 		Summarizable, Command {
 
 	override val id: String = "time"
@@ -37,24 +37,24 @@ open class TimeSummaryCommands @Autowired constructor(val summaryExecutor: WeekS
 	@CliCommand("day", help = "Summarizes current days activities.")
 	fun daySummary(): String {
 		val now = LocalDate.now()
-		val summaryString = monthSummaryAsString { timeSummaryPluginHelper.day(now) }
-		val summaryLastString = monthSummaryAsString { timeSummaryPluginHelper.day(now.minusDays(1)) }
+		val summaryString = monthSummaryAsString { timeSummaryPluginSupport.day(now) }
+		val summaryLastString = monthSummaryAsString { timeSummaryPluginSupport.day(now.minusDays(1)) }
 		return summaryLastString + "\n\n" + summaryString
 	}
 
 	@CliCommand("week", help = "Summarizes last and this week's time spending on categories.")
 	fun weekSummary(): String {
 		val now = LocalDate.now()
-		val summaryString = monthSummaryAsString { timeSummaryPluginHelper.week(now) }
-		val summaryLastString = monthSummaryAsString { timeSummaryPluginHelper.week(now.minusDays(7)) }
+		val summaryString = monthSummaryAsString { timeSummaryPluginSupport.week(now) }
+		val summaryLastString = monthSummaryAsString { timeSummaryPluginSupport.week(now.minusDays(7)) }
 		return summaryLastString + "\n\n" + summaryString
 	}
 
 	@CliCommand("month", help = "Summarizes last and this month's time spending on categories.")
 	fun monthSummary(): String {
 		val now = LocalDate.now()
-		val summaryString = monthSummaryAsString { timeSummaryPluginHelper.month(now) }
-		val summaryLastString = monthSummaryAsString { timeSummaryPluginHelper.month(now.minusMonths(1)) }
+		val summaryString = monthSummaryAsString { timeSummaryPluginSupport.month(now) }
+		val summaryLastString = monthSummaryAsString { timeSummaryPluginSupport.month(now.minusMonths(1)) }
 		return summaryLastString + "\n\n" + summaryString
 	}
 
