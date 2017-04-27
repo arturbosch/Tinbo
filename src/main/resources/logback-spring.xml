@@ -2,7 +2,7 @@
 <configuration debug="false">
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>${user.home}/TiNBo/tinbo.log</file>
+        <file>${user.home}/Tinbo/tinbo.log</file>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
         </layout>
