@@ -12,9 +12,7 @@ import io.gitlab.arturbosch.tinbo.api.Command
  *
  * @author Artur Bosch
  */
-interface TinboPlugin : Command {
-	override val id: String
-		get() = "plugins"
+interface TinboPlugin {
 
 	fun context() = ContextAware.context ?: throw IllegalStateException("Usage of TinboContext requesting while context is unset ?!")
 
@@ -22,7 +20,5 @@ interface TinboPlugin : Command {
 		var context: TinboContext? = null
 	}
 
-	fun registerCommands(tinboContext: TinboContext): List<Command> {
-		return emptyList()
-	}
+	fun registerCommands(tinboContext: TinboContext): List<Command>
 }

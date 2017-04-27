@@ -17,7 +17,9 @@ import java.util.stream.Collectors
  *
  * @author Artur Bosch
  */
-class LLOCPlugin : TinboPlugin {
+class LLOCPlugin : TinboPlugin, Command {
+
+	override val id: String = "plugins"
 
 	override fun registerCommands(tinboContext: TinboContext): List<Command> {
 		return listOf(this)
