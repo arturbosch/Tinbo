@@ -30,7 +30,7 @@ group 'io.gitlab.arturbosch.tinbo'
 version '1.0.RC1'
 
 jar {
-	baseName = 'TiNBo'
+	baseName = 'Tinbo'
 	version = project.version
 }
 

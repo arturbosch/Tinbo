@@ -14,7 +14,7 @@ object HomeFolder {
 	const val PLUGINS: String = "plugins"
 	const val BACKUP: String = "backup"
 
-	private val mainDir = "TiNBo"
+	private val mainDir = "Tinbo"
 	private val homeDir = System.getProperty("user.home") + File.separator + mainDir
 	private val homePath = Paths.get(homeDir)
 

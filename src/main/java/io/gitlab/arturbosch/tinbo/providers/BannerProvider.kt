@@ -19,11 +19,11 @@ open class BannerProvider : DefaultBannerProvider() {
 	}
 
 	override fun getVersion(): String {
-		return "TiNBo v1.0.RC1"
+		return "Tinbo v1.0.RC1"
 	}
 
 	override fun getWelcomeMessage(): String {
-		return "Welcome to TiNBo. Use 'help' to view all commands!"
+		return "Welcome to Tinbo. Use 'help' to view all commands!"
 	}
 
 	override fun getProviderName(): String {
