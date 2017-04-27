@@ -1,0 +1,19 @@
+notifications:
+  interval: '15'
+timers:
+  last-used: Data
+notes:
+  last-used: Notes
+tasks:
+  last-used: Tasks
+finance:
+  last-used: Finance
+defaults:
+  category-name: Main
+  currency: EUR
+  city: Berlin
+  listAmount: 20
+remote-backup:
+  name: backup
+  server: http://localhost:8088
+  credentials: name:password
