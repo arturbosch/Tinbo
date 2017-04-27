@@ -7,6 +7,7 @@ import io.gitlab.arturbosch.tinbo.config.TinboMode
  */
 object TasksMode : TinboMode {
 	override val id: String = "task"
+	override val helpIds: Array<String> = arrayOf(id, "edit", "share", "mode")
 	override val editAllowed: Boolean = true
 	override val isSummarizable: Boolean = false
 }

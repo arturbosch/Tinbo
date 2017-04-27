@@ -7,12 +7,15 @@ import org.springframework.stereotype.Component
  */
 interface TinboMode {
 	val id: String
+	val helpIds: Array<String>
+		get() = arrayOf(id)
 	val editAllowed: Boolean get() = false
 	val isSummarizable: Boolean get() = false
 
 	companion object {
 		val START = object : TinboMode {
 			override val id: String = "tinbo"
+			override val helpIds: Array<String> = arrayOf(id, "start", "help", "plugins")
 			override val editAllowed: Boolean = false
 		}
 	}

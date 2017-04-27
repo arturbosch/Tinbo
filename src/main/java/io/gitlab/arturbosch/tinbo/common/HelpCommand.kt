@@ -1,6 +1,7 @@
 package io.gitlab.arturbosch.tinbo.common
 
 import io.gitlab.arturbosch.tinbo.api.Command
+import io.gitlab.arturbosch.tinbo.config.ModeManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationContext
 import org.springframework.shell.core.JLineShellComponent
@@ -25,51 +26,14 @@ class HelpCommand @Autowired constructor(val ctx: ApplicationContext) : Command 
 		val shell = ctx.getBean("shell", JLineShellComponent::class.java)
 		val parser = shell.simpleParser
 
-//		val commands: List<Command> = parser.commandMarkers
-//				.filter { it is Command }
-//				.map { it as Command }
-//
-//		val currentModeCommands = when (ModeManager.current) {
-//			TinboMode.START -> commands.filter {
-//				when (it.id) {
-//					"start", "help" -> true
-//					else -> false
-//				}
-//			}
-//			TimeMode -> commands.filter {
-//				when (it.id) {
-//					"time", "edit", "share", "mode", "sum" -> true
-//					else -> false
-//				}
-//			}
-//			NotesMode -> commands.filter {
-//				when (it.id) {
-//					"note", "edit", "share", "mode" -> true
-//					else -> false
-//				}
-//			}
-//			TasksMode -> commands.filter {
-//				when (it.id) {
-//					"task", "edit", "share", "mode" -> true
-//					else -> false
-//				}
-//			}
-//			FinanceMode -> commands.filter {
-//				when (it.id) {
-//					"finance", "edit", "share", "mode", "sum" -> true
-//					else -> false
-//				}
-//			}
-//			ProjectsMode -> commands.filter {
-//				when (it.id) {
-//					"psp", "share", "mode" -> true
-//					else -> false
-//				}
-//			}
-//			else -> emptyList()
-//		}
+		val helpIds = ModeManager.current.helpIds
 
-		return HelpParser(parser.commandMarkers.map { it as Command }).obtainHelp(buffer)
+		val allowedCommands = parser.commandMarkers
+				.filter { it is Command }
+				.map { it as Command }
+				.filter { it.id in helpIds }
+
+		return HelpParser(allowedCommands).obtainHelp(buffer)
 	}
 
 }

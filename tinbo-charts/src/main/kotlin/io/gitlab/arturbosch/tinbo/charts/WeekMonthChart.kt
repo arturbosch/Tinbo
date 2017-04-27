@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
 @Component
 class WeekMonthChart : Command {
 
-	override val id: String = "charts"
+	override val id: String = "plugins"
 
 	@CliCommand("charts day", help = "Generates a chart illustrates time spent in current day.")
 	fun day() {

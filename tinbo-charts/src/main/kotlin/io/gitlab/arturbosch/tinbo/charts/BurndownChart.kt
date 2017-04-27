@@ -23,9 +23,9 @@ import java.time.Period
 @Component
 class BurndownChart : Command {
 
-	override val id: String = "charts"
+	override val id: String = "plugins"
 
-	@CliCommand("charts burndown")
+	@CliCommand("charts burndown", help = "Choose a project to generate a burndown chart based on psp units.")
 	fun burndown(@CliOption(key = arrayOf("")) name: String?) {
 		loadSummary("projects")?.find { project ->
 			name?.let { project.name.startsWith(name) } ?: false

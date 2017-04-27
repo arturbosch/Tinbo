@@ -7,6 +7,7 @@ import io.gitlab.arturbosch.tinbo.config.TinboMode
  */
 object FinanceMode : TinboMode {
 	override val id: String = "finance"
+	override val helpIds: Array<String> = arrayOf(id, "edit", "share", "mode", "sum")
 	override val editAllowed: Boolean = true
 	override val isSummarizable: Boolean = true
 }
