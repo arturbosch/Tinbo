@@ -4,7 +4,6 @@ import io.gitlab.arturbosch.tinbo.Project
 import io.gitlab.arturbosch.tinbo.api.Addable
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.api.Listable
-import io.gitlab.arturbosch.tinbo.config.ConfigDefaults.PROJECTS
 import io.gitlab.arturbosch.tinbo.config.EditablePromptProvider
 import io.gitlab.arturbosch.tinbo.config.ModeManager
 import io.gitlab.arturbosch.tinbo.utils.dateFormatter
@@ -37,9 +36,9 @@ class PSPCommands @Autowired constructor(val console: ConsoleReader,
 	}
 
 	@CliAvailabilityIndicator("showAll", "show-project", "new-project", "open-project", "close-project")
-	fun available() = ModeManager.isCurrentMode(ProjectsMode)
+	fun available() = ModeManager.isCurrentMode(PSPMode) || ModeManager.isCurrentMode(ProjectsMode)
 
-	@CliCommand("show-project")
+	@CliCommand("show-project", help = "Summarizes the specified project.")
 	fun showProject(@CliOption(key = arrayOf(""), help = "Name the project must start with.") name: String?): String {
 		return name?.let { currentProject.showProject(it) } ?: "Specify a project by its name!"
 	}
@@ -69,6 +68,7 @@ class PSPCommands @Autowired constructor(val console: ConsoleReader,
 		return name?.let {
 			if (!currentProject.projectWithNameExists(name)) return wrong
 			val realName = currentProject.enter(name)
+			ModeManager.current = PSPMode
 			prompt.promptText = realName
 			return "Opening project $realName..."
 		} ?: wrong
@@ -90,7 +90,7 @@ class PSPCommands @Autowired constructor(val console: ConsoleReader,
 
 			val date = end?.let { LocalDate.parse(end, dateFormatter) } ?: LocalDate.now()
 			currentProject.closeProject(name!!, date)
-			prompt.promptText = PROJECTS
+			ModeManager.current = ProjectsMode
 			return "Closed $name project"
 
 		} catch (e: DateTimeParseException) {

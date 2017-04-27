@@ -7,7 +7,7 @@ import io.gitlab.arturbosch.tinbo.config.TinboMode
  */
 object PSPMode : TinboMode {
 	override val id: String = "psp"
-	override val helpIds: Array<String> = arrayOf(id, "share", "mode")
+	override val helpIds: Array<String> = arrayOf(id, "projects", "share", "mode")
 	override val editAllowed: Boolean = false
 	override val isSummarizable: Boolean = false
 }
