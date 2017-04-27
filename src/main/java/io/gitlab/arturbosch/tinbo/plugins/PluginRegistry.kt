@@ -30,7 +30,6 @@ class PluginRegistry @Autowired constructor(val shell: JLineShellComponent,
 			CompletableFuture.runAsync(Runnable {
 				val pluginsPath = HomeFolder.getDirectory(HomeFolder.PLUGINS)
 				val pluginFiles = pluginsPath.toFile().listFiles()
-
 				if (pluginFiles.isNotEmpty()) {
 					val jarUrls = pluginFiles
 							.filter { it.name.endsWith(".jar") }
