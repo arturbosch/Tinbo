@@ -1,4 +1,4 @@
-package io.gitlab.arturbosch.tinbo
+package io.gitlab.arturbosch.tinbo.charts
 
 import java.time.LocalDate
 

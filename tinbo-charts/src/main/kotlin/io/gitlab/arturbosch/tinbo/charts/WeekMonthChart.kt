@@ -1,15 +1,21 @@
-package io.gitlab.arturbosch.tinbo
+package io.gitlab.arturbosch.tinbo.charts
 
-import io.gitlab.arturbosch.tinbo.plugins.TiNBoPlugin
+import io.gitlab.arturbosch.tinbo.WeekSummary
+import io.gitlab.arturbosch.tinbo.api.Command
+import io.gitlab.arturbosch.tinbo.plugins.TiNBoPlugin.ContextAware.context
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.title.TextTitle
 import org.jfree.data.general.DefaultPieDataset
 import org.springframework.shell.core.annotation.CliCommand
+import org.springframework.stereotype.Component
 
 /**
  * @author Artur Bosch
  */
-class WeekMonthChart : TiNBoPlugin {
+@Component
+class WeekMonthChart : Command {
+
+	override val id: String = "charts"
 
 	@CliCommand("charts day", help = "Generates a chart illustrates time spent in current day.")
 	fun day() {
@@ -50,8 +56,8 @@ class WeekMonthChart : TiNBoPlugin {
 	}
 
 	private fun loadSummary(method: String): WeekSummary? {
-		context()?.let {
-			it.pluginHelpers().find { it.javaClass.simpleName == "TimeSummaryPluginHelper" }?.let {
+		context?.let {
+			it.pluginHelpers().find { it.javaClass.simpleName == "TimeSummaryPluginSupport" }?.let {
 				return it.javaClass.getMethod(method).invoke(it) as WeekSummary
 			}
 		}

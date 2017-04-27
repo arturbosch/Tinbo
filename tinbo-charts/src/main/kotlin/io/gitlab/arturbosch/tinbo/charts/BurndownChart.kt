@@ -1,6 +1,8 @@
-package io.gitlab.arturbosch.tinbo
+package io.gitlab.arturbosch.tinbo.charts
 
-import io.gitlab.arturbosch.tinbo.plugins.TiNBoPlugin
+import io.gitlab.arturbosch.tinbo.Project
+import io.gitlab.arturbosch.tinbo.api.Command
+import io.gitlab.arturbosch.tinbo.plugins.TiNBoPlugin.ContextAware.context
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.JFreeChart
 import org.jfree.chart.renderer.category.LineAndShapeRenderer
@@ -8,6 +10,7 @@ import org.jfree.chart.title.TextTitle
 import org.jfree.data.category.DefaultCategoryDataset
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
+import org.springframework.stereotype.Component
 import java.awt.BasicStroke
 import java.awt.Color
 import java.awt.Font
@@ -17,7 +20,10 @@ import java.time.Period
 /**
  * @author Artur Bosch
  */
-class BurndownChart : TiNBoPlugin {
+@Component
+class BurndownChart : Command {
+
+	override val id: String = "charts"
 
 	@CliCommand("charts burndown")
 	fun burndown(@CliOption(key = arrayOf("")) name: String?) {
@@ -110,7 +116,7 @@ class BurndownChart : TiNBoPlugin {
 
 	@Suppress("UNCHECKED_CAST")
 	private fun loadSummary(method: String): List<Project>? {
-		context()?.let {
+		context?.let {
 			it.pluginHelpers().find { it.javaClass.simpleName == "ProjectsPluginSupport" }?.let {
 				val value = it.javaClass.getMethod(method).invoke(it)
 				return value as List<Project>

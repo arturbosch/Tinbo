@@ -1,2 +1,1 @@
-io.gitlab.arturbosch.tinbo.BurndownChart
-io.gitlab.arturbosch.tinbo.WeekMonthChart
+io.gitlab.arturbosch.tinbo.charts.ChartsPlugin
