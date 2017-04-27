@@ -16,7 +16,7 @@ interface TinboPlugin : Command {
 	override val id: String
 		get() = "plugins"
 
-	fun context() = ContextAware.context
+	fun context() = ContextAware.context ?: throw IllegalStateException("Usage of TinboContext requesting while context is unset ?!")
 
 	object ContextAware {
 		var context: TinboContext? = null

@@ -7,4 +7,5 @@ include 'tinbo-time'
 include 'tinbo-notes'
 include 'tinbo-tasks'
 include 'tinbo-projects'
+include 'tinbo-weather'
 

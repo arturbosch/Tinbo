@@ -8,4 +8,5 @@ cp $PWD/tinbo-projects/build/libs/tinbo-projects.jar ~/Tinbo/plugins/tinbo-proje
 cp $PWD/tinbo-ascii/build/libs/tinbo-ascii.jar ~/Tinbo/plugins/tinbo-ascii.jar
 cp $PWD/tinbo-charts/build/libs/tinbo-charts.jar ~/Tinbo/plugins/tinbo-charts.jar
 cp $PWD/tinbo-lloc/build/libs/tinbo-lloc.jar ~/Tinbo/plugins/tinbo-lloc.jar
+cp $PWD/tinbo-weather/build/libs/tinbo-weather.jar ~/Tinbo/plugins/tinbo-weather.jar
 echo "Copied plugins into tinbo directory."
