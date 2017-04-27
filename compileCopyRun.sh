@@ -9,3 +9,4 @@ cp $PWD/tinbo-ascii/build/libs/tinbo-ascii.jar ~/Tinbo/plugins/tinbo-ascii.jar
 cp $PWD/tinbo-charts/build/libs/tinbo-charts.jar ~/Tinbo/plugins/tinbo-charts.jar
 cp $PWD/tinbo-lloc/build/libs/tinbo-lloc.jar ~/Tinbo/plugins/tinbo-lloc.jar
 echo "Copied plugins into tinbo directory."
+java -jar -Djava.awt.headless=false build/libs/Tinbo-1.0.RC1.jar
