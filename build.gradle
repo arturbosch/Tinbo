@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.4.1.RELEASE'
+		springBootVersion = '1.5.2.RELEASE'
 		springShellVersion = '1.2.0.RELEASE'
 
 		sourceCompatibility = 1.8
@@ -11,40 +11,66 @@ buildscript {
 		mavenLocal()
 	}
 	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
 	}
 }
 
-plugins {
-	id 'com.github.ben-manes.versions' version '0.13.0'
-//	id "com.github.hierynomus.license" version "0.13.1"
-}
+subprojects {
+	group 'io.gitlab.arturbosch.tinbo'
 
-apply plugin: 'kotlin'
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'spring-boot'
+	apply plugin: 'kotlin'
+	apply plugin: 'maven-publish'
 
-group 'io.gitlab.arturbosch.tinbo'
-version '1.0.RC1'
+	def projectName = it.name
+	if (projectName != "tinbo-plugin-api" && projectName != "tinbo-platform") {
+		dependencies {
+			compileOnly project(":tinbo-plugin-api")
+			testCompile project(":tinbo-plugin-api")
+		}
+	}
 
-jar {
-	baseName = 'Tinbo'
-	version = project.version
-}
+	repositories {
+		mavenCentral()
+		mavenLocal()
+		maven { url "http://dl.bintray.com/arturbosch/code-analysis" }
+		maven { url "http://dl.bintray.com/arturbosch/generic" }
+	}
 
-repositories {
-	mavenCentral()
-	mavenLocal()
-	maven {
-		url "http://dl.bintray.com/arturbosch/code-analysis"
+
+	dependencies {
+		compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+		testCompile "junit:junit:4.12"
+		testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+		testCompile "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+	}
+
+	publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				from components.java
+			}
+		}
+	}
+
+	sourceSets {
+		main.java.srcDirs += 'src/main/kotlin'
 	}
 }
 
 configurations {
 	detekt
 	smartsmells
+}
+
+dependencies {
+	detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.M8'
+	detekt 'io.gitlab.arturbosch.detekt:detekt-formatting:1.0.0.M8'
+	smartsmells 'io.gitlab.arturbosch.smartsmells:SmartSmells:1.0.0.RC3'
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '4.0'
 }
 
 task detekt {
@@ -69,32 +95,4 @@ task smartsmells(type: JavaExec) {
 	def output = "$project.projectDir/smartsmells.xml"
 	def params = ['-i', input, '-o', output, '-f', ".*/test/.*", "-fs"]
 	args(params)
-}
-
-dependencies {
-	compile project(":plugin-api")
-	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-	compile 'org.springframework.boot:spring-boot-starter'
-	compile "org.springframework.shell:spring-shell:$springShellVersion"
-
-	testCompile 'org.springframework.boot:spring-boot-starter-test'
-
-	detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.M8'
-	detekt 'io.gitlab.arturbosch.detekt:detekt-formatting:1.0.0.M8'
-	smartsmells 'io.gitlab.arturbosch.smartsmells:SmartSmells:1.0.0.RC3'
-}
-
-eclipse {
-	classpath {
-		containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
-		containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
-	}
-}
-
-task wrapper(type: Wrapper) {
-	gradleVersion = '3.1'
-}
-
-sourceSets {
-	main.java.srcDirs += 'src/main/kotlin'
 }

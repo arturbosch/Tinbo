@@ -1,0 +1,5 @@
+dependencies {
+	compile "org.joda:joda-money:0.11"
+	compile "org.springframework.boot:spring-boot-starter:$springBootVersion"
+	compile "org.springframework.shell:spring-shell:$springShellVersion"
+}

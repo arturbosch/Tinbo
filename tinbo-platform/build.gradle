@@ -1,0 +1,30 @@
+plugins {
+	id 'com.github.ben-manes.versions' version '0.13.0'
+//	id "com.github.hierynomus.license" version "0.13.1"
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'spring-boot'
+
+version '1.0.RC1'
+
+jar {
+	baseName = 'Tinbo'
+	version = project.version
+}
+
+eclipse {
+	classpath {
+		containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+		containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
+	}
+}
+
+dependencies {
+	compile project(":tinbo-plugin-api")
+	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+	compile 'org.springframework.boot:spring-boot-starter'
+	compile "org.springframework.shell:spring-shell:$springShellVersion"
+	testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
