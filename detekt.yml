@@ -1,24 +1,29 @@
-autoCorrect: false
+autoCorrect: true
 
 build:
-  warningThreshold: 30
-  failThreshold: 70
+  warningThreshold: 1
+  failThreshold: 1
   weights:
-    code-smell: 2
+    complexity: 2
 
 potential-bugs:
   active: true
+  DuplicateCaseInWhenExpression:
+    active: true
+  EqualsWithHashCodeExist:
+    active: true
+  ExplicitGarbageCollectionCall:
+    active: true
+  LateinitUsage:
+    active: false
 
 exceptions:
   active: true
 
-comments:
+empty-blocks:
   active: true
 
-empty:
-  active: true
-
-code-smell:
+complexity:
   active: true
   LongMethod:
     threshold: 20
@@ -28,13 +33,24 @@ code-smell:
     threshold: 150
   ComplexMethod:
     threshold: 10
+  TooManyFunctions:
+    threshold: 10
+  ComplexCondition:
+    threshold: 3
+
+code-smell:
+  active: true
+  FeatureEnvy:
+    threshold: 0.5
+    weight: 0.45
+    base: 0.5
 
 formatting:
   active: true
   useTabs: true
   Indentation:
     active: false
-    autoCorrect: false
+    indentSize: 4
   ConsecutiveBlankLines:
     active: true
     autoCorrect: true
@@ -62,14 +78,38 @@ formatting:
   UnusedImports:
     active: true
     autoCorrect: true
+  OptionalSemicolon:
+    active: true
+    autoCorrect: true
+  OptionalUnit:
+    active: true
+    autoCorrect: true
+  ExpressionBodySyntax:
+    active: false
+    autoCorrect: false
+  ExpressionBodySyntaxLineBreaks:
+    active: false
+    autoCorrect: false
+  OptionalReturnKeyword:
+    active: true
+    autoCorrect: false
 
 style:
   active: true
   WildcardImport:
-  NoElseInWhenExpression:
-  OptionalSemicolon:
-  OptionalUnit:
+    active: true
+  MaxLineLength:
+    active: true
+    maxLineLength: 120
+    excludePackageStatements: false
+    excludeImportStatements: false
   NamingConventionViolation:
+    active: true
+    variablePattern: '^(_)?[a-z$][a-zA-Z$0-9]*$'
+    constantPattern: '^([A-Z_]*|serialVersionUID)$'
+    methodPattern: '^[a-z$][a-zA-Z$0-9]*$'
+    classPattern: '[A-Z$][a-zA-Z$]*'
+    enumEntryPattern: '^[A-Z$][a-zA-Z_$]*$'
 
 comments:
   active: true
@@ -77,7 +117,16 @@ comments:
     active: true
   CommentOverPrivateProperty:
     active: true
-  NoDocOverPublicClass:
+  UndocumentedPublicClass:
     active: false
-  NoDocOverPublicMethod:
+  UndocumentedPublicFunction:
     active: false
+
+# *experimental feature*
+# Migration rules can be defined in the same config file or a new one
+migration:
+  active: true
+  imports:
+    # your.package.Class: new.package.or.Class
+    # for example:
+    # io.gitlab.arturbosch.detekt.api.Rule: io.gitlab.arturbosch.detekt.rule.Rule

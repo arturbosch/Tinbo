@@ -33,7 +33,6 @@ subprojects {
 	repositories {
 		mavenCentral()
 		mavenLocal()
-		maven { url "http://dl.bintray.com/arturbosch/code-analysis" }
 		maven { url "http://dl.bintray.com/arturbosch/generic" }
 	}
 
@@ -63,14 +62,17 @@ configurations {
 	smartsmells
 }
 
-dependencies {
-	detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.M8'
-	detekt 'io.gitlab.arturbosch.detekt:detekt-formatting:1.0.0.M8'
-	smartsmells 'io.gitlab.arturbosch.smartsmells:SmartSmells:1.0.0.RC3'
+
+repositories {
+	mavenCentral()
+	mavenLocal()
+	maven { url "http://dl.bintray.com/arturbosch/code-analysis" }
 }
 
-task wrapper(type: Wrapper) {
-	gradleVersion = '4.0'
+dependencies {
+	detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.M12.3'
+	detekt 'io.gitlab.arturbosch.detekt:detekt-formatting:1.0.0.M12.3'
+	smartsmells 'io.gitlab.arturbosch.smartsmells:SmartSmells:1.0.0.RC7'
 }
 
 task detekt {
@@ -82,7 +84,8 @@ task detekt {
 			def config = "$project.projectDir/detekt.yml"
 			def filters = ".*test.*"
 			def rulesets = ""
-			def params = ['-p', input, '-c', config, '-f', filters, '-r', rulesets]
+			def params = ['-p', input, '-c', config, '-f', filters, '-r', rulesets,
+						  "--baseline", "$project.projectDir/reports/baseline.xml"]
 			args(params)
 		}
 	}

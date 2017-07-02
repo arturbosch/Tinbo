@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <Blacklist timestamp="1498993205881"></Blacklist>
+  <Whitelist timestamp="1498993205881">
+    <ID>TooManyFunctions:CurrentProject.kt$CurrentProject</ID>
+    <ID>LongParameterList:TaskEntry.kt$TaskEntry$(message: String?, description: String?, location: String?, category: String?, startTime: LocalDateTime?, endTime: LocalDateTime?)</ID>
+    <ID>LongParameterList:TaskCommands.kt$TaskCommands$(@CliOption(key = arrayOf("message", "msg", "m"), mandatory = true, help = "Summary of the task.", specifiedDefaultValue = "", unspecifiedDefaultValue = "") message: String, @CliOption(key = arrayOf("category", "c", ""), help = "Category for the task", specifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME, unspecifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME) category: String, @CliOption(key = arrayOf("location", "loc", "l"), help = "Specify a location for this task.", specifiedDefaultValue = "", unspecifiedDefaultValue = "") location: String, @CliOption(key = arrayOf("description", "des", "d"), help = "Specify a description for this task.", specifiedDefaultValue = "", unspecifiedDefaultValue = "") description: String, @CliOption(key = arrayOf("start", "s"), help = "Specify a end time for this task. Format: yyyy-MM-dd HH:mm", specifiedDefaultValue = "", unspecifiedDefaultValue = "") startTime: String, @CliOption(key = arrayOf("end", "e"), help = "Specify a start time for this task. Format: yyyy-MM-dd HH:mm", specifiedDefaultValue = "", unspecifiedDefaultValue = "") endTime: String)</ID>
+    <ID>LongParameterList:TaskCommands.kt$TaskCommands$(@CliOption(key = arrayOf("index", "i"), mandatory = true, help = "Index of the task to edit.") index: Int, @CliOption(key = arrayOf("message", "msg", "m"), help = "Summary of the task.") message: String?, @CliOption(key = arrayOf("category", "c", ""), help = "Category for the task") category: String?, @CliOption(key = arrayOf("location", "loc", "l"), help = "Specify a location for this task.") location: String?, @CliOption(key = arrayOf("description", "des", "d"), help = "Specify a description for this task.") description: String?, @CliOption(key = arrayOf("start", "s"), unspecifiedDefaultValue = "", specifiedDefaultValue = "", help = "Specify a end time for this task. Format: yyyy-MM-dd HH:mm") startTime: String, @CliOption(key = arrayOf("end", "e"), unspecifiedDefaultValue = "", specifiedDefaultValue = "", help = "Specify a start time for this task. Format: yyyy-MM-dd HH:mm") endTime: String)</ID>
+    <ID>TooManyFunctions:TimerCommands.kt$TimerCommands : Command</ID>
+    <ID>LongParameterList:TimerExt.kt$(timerMode: TimerMode? = null, category: String? = null, message: String? = null, startDateTime: LocalDateTime? = null, stopDateTime: LocalDateTime? = null, currentPauseTime: LocalDateTime? = null, pauseTimes: MutableList&lt;Pair&lt;LocalDateTime, Long&gt;&gt;? = null)</ID>
+    <ID>LongParameterList:TimeEditCommands.kt$TimeEditCommands$(@CliOption(key = arrayOf("hours", "h"), specifiedDefaultValue = "0", unspecifiedDefaultValue = "0", help = "Duration in hours.") hours: Long, @CliOption(key = arrayOf("minutes", "m", "mins"), specifiedDefaultValue = "0", unspecifiedDefaultValue = "0", help = "Duration in minutes.") mins: Long, @CliOption(key = arrayOf("seconds", "s", "mins"), specifiedDefaultValue = "0", unspecifiedDefaultValue = "0", help = "Duration in seconds.") seconds: Long, @CliOption(key = arrayOf("category", "c", ""), unspecifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME, specifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME, help = "Category of the time entry.") name: String, @CliOption(key = arrayOf("message", "msg"), unspecifiedDefaultValue = "", specifiedDefaultValue = "", help = "Note for this tracking.", mandatory = true) message: String, @CliOption(key = arrayOf("date"), help = "Specify a date for this time entry. Format: yyyy-MM-dd", specifiedDefaultValue = "", unspecifiedDefaultValue = "") date: String)</ID>
+    <ID>LongParameterList:TimeEditCommands.kt$TimeEditCommands$(@CliOption(key = arrayOf("", "i", "index"), mandatory = true, help = "Index of the task to edit.") index: Int, @CliOption(key = arrayOf("hours", "h"), help = "Duration in hours.") hours: Long?, @CliOption(key = arrayOf("minutes", "m", "mins"), help = "Duration in minutes.") mins: Long?, @CliOption(key = arrayOf("seconds", "s", "mins"), help = "Duration in seconds.") seconds: Long?, @CliOption(key = arrayOf("category", "cat", "c"), help = "Category of the time entry.") name: String?, @CliOption(key = arrayOf("message", "msg"), help = "Note for this tracking.") message: String?, @CliOption(key = arrayOf("date"), specifiedDefaultValue = "", unspecifiedDefaultValue = "", help = "Specify a date for this time entry. Format: yyyy-MM-dd") dateFormat: String)</ID>
+    <ID>TooManyFunctions:TimeExecutor.kt$TimeExecutor : AbstractExecutor</ID>
+    <ID>LongParameterList:TimeEntry.kt$TimeEntry$(category: String?, message: String?, hours: Long?, minutes: Long?, seconds: Long?, date: LocalDate?)</ID>
+    <ID>TooManyFunctions:EditableCommands.kt$EditableCommands&lt;E : Entry, D : Data&lt;E&gt;, in T : DummyEntry&gt; : CommandEditable</ID>
+    <ID>TooManyFunctions:AbstractExecutor.kt$AbstractExecutor&lt;E : Entry, D : Data&lt;E&gt;, in T : DummyEntry&gt; : CSVAwareExecutor</ID>
+    <ID>TooManyFunctions:Junk.kt$io.gitlab.arturbosch.tinbo.Junk.kt</ID>
+    <ID>CatchException:PSPCommands.kt$PSPCommands$e: Exception</ID>
+    <ID>CatchRuntimeException:PluginRegistry.kt$PluginRegistry$e: RuntimeException</ID>
+    <ID>CatchRuntimeException:Tinbo.kt$Tinbo.Companion$e: RuntimeException</ID>
+    <ID>NamingConventionViolation:CSVTasks.kt$CSVTasks$override val TABLE_HEADER: String = "No.;" + dummy.csvHeader()</ID>
+    <ID>NamingConventionViolation:CSVProjects.kt$CSVProjects$override val TABLE_HEADER: String = "No.;" + dummy.csvHeader()</ID>
+    <ID>NamingConventionViolation:TaskExecutor.kt$TaskExecutor$override val TABLE_HEADER: String get() = "No.;Category;Message;Location;Start;End;Description"</ID>
+    <ID>NamingConventionViolation:TaskCommands.kt$TaskCommands$private val SUCCESS_MESSAGE = "Successfully added a task."</ID>
+    <ID>NamingConventionViolation:TaskDataHolder.kt$TaskDataHolder$override val last_used_data: String get() = config.getKey(ConfigDefaults.TASKS) .getOrElse(ConfigDefaults.LAST_USED, { Defaults.TASKS_NAME })</ID>
+    <ID>NamingConventionViolation:FinanceData.kt$FinanceDataHolder$override val last_used_data: String get() = config.getKey(ConfigDefaults.FINANCE) .getOrElse(ConfigDefaults.LAST_USED, { Defaults.FINANCE_NAME })</ID>
+    <ID>MaxLineLength:FinanceCommands.kt$io.gitlab.arturbosch.tinbo.finance.FinanceCommands.kt</ID>
+    <ID>MaxLineLength:FinanceCommands.kt$io.gitlab.arturbosch.tinbo.finance.FinanceCommands.kt</ID>
+    <ID>NamingConventionViolation:FinanceCommands.kt$FinanceCommands$private val SUCCESS_MESSAGE = "Successfully added a finance entry."</ID>
+    <ID>NamingConventionViolation:FinanceExecutor.kt$FinanceExecutor$override val TABLE_HEADER: String get() = "No.;Month;Category;Notice;Spend;Time"</ID>
+    <ID>NamingConventionViolation:NoteCommands.kt$NoteCommands$private val SUCCESS_MESSAGE = "Successfully added a note."</ID>
+    <ID>NamingConventionViolation:NoteExecutor.kt$NoteExecutor$override val TABLE_HEADER: String get() = "No.;Message"</ID>
+    <ID>NamingConventionViolation:NoteDataHolder.kt$NoteDataHolder$override val last_used_data: String get() = config.getKey(ConfigDefaults.NOTES) .getOrElse(ConfigDefaults.LAST_USED, { Defaults.NOTES_NAME })</ID>
+    <ID>MaxLineLength:BurndownChart.kt$io.gitlab.arturbosch.tinbo.charts.BurndownChart.kt</ID>
+    <ID>MaxLineLength:BurndownChart.kt$io.gitlab.arturbosch.tinbo.charts.BurndownChart.kt</ID>
+    <ID>MaxLineLength:BurndownChart.kt$io.gitlab.arturbosch.tinbo.charts.BurndownChart.kt</ID>
+    <ID>MaxLineLength:TimerCommands.kt$io.gitlab.arturbosch.tinbo.time.TimerCommands.kt</ID>
+    <ID>NamingConventionViolation:TimeEditCommands.kt$TimeEditCommands$private val SUCCESS_MESSAGE = "Successfully added a time entry."</ID>
+    <ID>NamingConventionViolation:TimeDataHolder.kt$TimeDataHolder$override val last_used_data: String get() = config.getKey(ConfigDefaults.TIMERS) .getOrElse(ConfigDefaults.LAST_USED, { Defaults.TIME_NAME })</ID>
+    <ID>MaxLineLength:TimerMode.kt$io.gitlab.arturbosch.tinbo.time.TimerMode.kt</ID>
+    <ID>NamingConventionViolation:TimeExecutor.kt$TimeExecutor$override val TABLE_HEADER: String get() = "No.;Category;Date;HH:MM:SS;Notice"</ID>
+    <ID>MaxLineLength:Timer.kt$io.gitlab.arturbosch.tinbo.time.Timer.kt</ID>
+    <ID>MaxLineLength:Timer.kt$io.gitlab.arturbosch.tinbo.time.Timer.kt</ID>
+    <ID>MaxLineLength:Timer.kt$io.gitlab.arturbosch.tinbo.time.Timer.kt</ID>
+    <ID>NamingConventionViolation:WeekSummaryExecutor.kt$WeekSummaryExecutor$override val TABLE_HEADER: String get() = "No.;Category;Time"</ID>
+    <ID>MaxLineLength:SharableCommands.kt$io.gitlab.arturbosch.tinbo.commands.SharableCommands.kt</ID>
+    <ID>NamingConventionViolation:SharableCommands.kt$SharableCommands$private val SAVE_OR_CANCEL_CHANGES = " (Remember to 'save' or 'cancel' to apply changes!)"</ID>
+    <ID>NamingConventionViolation:PluginRegistry.kt$PluginRegistry$private val LOGGER = LogManager.getLogger(javaClass)</ID>
+    <ID>NamingConventionViolation:EditableCommands.kt$EditableCommands$private val NEED_EDIT_MODE_TEXT = "Before adding or list entries exit edit mode with 'save' or 'cancel'."</ID>
+    <ID>MaxLineLength:TinboPlugin.kt$io.gitlab.arturbosch.tinbo.plugins.TinboPlugin.kt</ID>
+    <ID>MaxLineLength:Notification.kt$io.gitlab.arturbosch.tinbo.config.Notification.kt</ID>
+    <ID>NamingConventionViolation:CSVAwareExecutor.kt$CSVAwareExecutor$protected abstract val TABLE_HEADER: String</ID>
+    <ID>NamingConventionViolation:AbstractDataHolder.kt$AbstractDataHolder$protected abstract val last_used_data: String</ID>
+    <ID>MaxLineLength:AbstractPersister.kt$io.gitlab.arturbosch.tinbo.model.AbstractPersister.kt</ID>
+    <ID>NamingConventionViolation:AbstractExecutor.kt$AbstractExecutor$private val NEW_LINE = "\n"</ID>
+  </Whitelist>
+</SmellBaseline>
