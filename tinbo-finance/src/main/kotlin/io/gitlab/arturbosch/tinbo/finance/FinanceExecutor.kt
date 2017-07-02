@@ -30,11 +30,11 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder,
 	}
 
 	fun sumCategories(categories: List<String>): String {
-		val currentMonth = LocalDate.now().month
+		val (currentMonth, currentYear) = LocalDate.now().run { month to year }
 		var summariesReturnString = ""
 
 		val beforeLastMonth = currentMonth.minus(2)
-		summaryForMonth(categories, beforeLastMonth).ifNotEmpty {
+		summaryForMonth(categories, beforeLastMonth, currentYear).ifNotEmpty {
 			val financeSequence = this.asSequence()
 			val summaryStringList = financeSequence.toSummaryStringList()
 			summariesReturnString += tableAsString(summaryStringList, "No.;Category;Spent") +
@@ -42,14 +42,14 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder,
 		}
 
 		val lastMonth = currentMonth.minus(1)
-		summaryForMonth(categories, lastMonth).ifNotEmpty {
+		summaryForMonth(categories, lastMonth, currentYear).ifNotEmpty {
 			val financeSequence = this.asSequence()
 			val summaryStringList = financeSequence.toSummaryStringList()
 			summariesReturnString += tableAsString(summaryStringList, "No.;Category;Spent") +
 					"\n\nTotal sum: ${financeSequence.sum()} for month $lastMonth" + "\n\n"
 		}
 
-		val summaryCurrent = summaryForMonth(categories, currentMonth).asSequence()
+		val summaryCurrent = summaryForMonth(categories, currentMonth, currentYear).asSequence()
 		summariesReturnString += tableAsString(summaryCurrent.toSummaryStringList(), "No.;Category;Spent")
 		return summariesReturnString + "\n\nTotal sum: ${summaryCurrent.sum()} for month $currentMonth"
 	}
@@ -57,15 +57,17 @@ class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder,
 	private fun Sequence<FinanceEntry>.sum() = this.map { it.moneyValue }
 			.fold(Money.zero(configProvider.currencyUnit), Money::plus)
 
-	private fun summaryForMonth(categories: List<String>, currentMonth: Month): List<FinanceEntry> {
+	private fun summaryForMonth(categories: List<String>, currentMonth: Month, currentYear: Int): List<FinanceEntry> {
 		return if (categories.isNotEmpty()) {
 			dataHolder.getEntries().asSequence()
 					.filter { it.month == currentMonth }
+					.filter { it.dateTime.year == currentYear }
 					.filter { categories.contains(it.category) }
 					.toList()
 		} else {
 			dataHolder.getEntries().asSequence()
 					.filter { it.month == currentMonth }
+					.filter { it.dateTime.year == currentYear }
 					.toList()
 		}
 	}
