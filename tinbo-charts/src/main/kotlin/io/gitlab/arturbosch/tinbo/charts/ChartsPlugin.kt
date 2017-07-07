@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component
 @Component
 class ChartsPlugin : TinboPlugin {
 
+	override val version: String = "1.0.0"
+
 	override fun registerCommands(tinboContext: TinboContext): List<Command> {
 		return listOf(BurndownChart(), WeekMonthChart())
 	}

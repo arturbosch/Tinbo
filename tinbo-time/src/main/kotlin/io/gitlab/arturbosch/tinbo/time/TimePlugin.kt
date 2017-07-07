@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component
 @Component
 class TimePlugin : TinboPlugin {
 
+	override val version: String = "1.0.0"
+
 	override fun registerCommands(tinboContext: TinboContext): List<Command> {
 		val consoleReader = tinboContext.beanOf<ConsoleReader>()
 		val tinboConfig = tinboContext.tinboConfig
