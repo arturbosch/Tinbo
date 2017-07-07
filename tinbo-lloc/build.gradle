@@ -5,5 +5,5 @@ jar {
 }
 
 dependencies {
-	compile 'io.gitlab.arturbosch:lloc:1.4'
+	compile 'io.gitlab.arturbosch:lloc:1.5'
 }
