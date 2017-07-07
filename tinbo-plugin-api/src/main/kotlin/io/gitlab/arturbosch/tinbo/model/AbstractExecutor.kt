@@ -57,7 +57,14 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
 	}
 
 	fun editEntry(index: Int, dummy: T) {
-		entriesInMemory = entriesInMemory.replaceAt(index, newEntry(index, dummy))
+		entriesInMemory = when {
+			entriesInMemory.isNotEmpty() && index < 0 -> {
+				val lastIndex = entriesInMemory.lastIndex
+				entriesInMemory.replaceAt(lastIndex, newEntry(lastIndex, dummy))
+			}
+			else -> entriesInMemory.replaceAt(index, newEntry(index, dummy))
+		}
+
 	}
 
 	protected abstract fun newEntry(index: Int, dummy: T): E
@@ -81,7 +88,7 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
 	}
 
 	fun indexExists(index: Int): Boolean {
-		return index >= 0 && index < entriesInMemory.size
+		return index < 0 || index >= 0 && index < entriesInMemory.size
 	}
 
 	/**
