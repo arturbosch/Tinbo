@@ -47,7 +47,7 @@ open class TimeDataHolder @Autowired constructor(persister: TimePersister,
 		return "${hours.toTimeString()}:${realMinutes.toTimeString()}:${realSeconds.toTimeString()}"
 	}
 
-	private fun divAndMod(value: Long) = value.div(60) to value.mod(60)
+	private fun divAndMod(value: Long) = value.div(60) to value.rem(60)
 
 	fun createFilteredSummaries(by: List<String>): List<String> {
 		val entries = getEntries().filter { by.contains(it.category.toLowerCase()) }

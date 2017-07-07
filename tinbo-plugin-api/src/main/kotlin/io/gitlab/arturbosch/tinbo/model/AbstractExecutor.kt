@@ -65,8 +65,7 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
 	fun deleteEntries(indices: Set<Int>) {
 		entriesInMemory = when {
 			isSpecialCaseToDeleteLast(indices) -> entriesInMemory.dropLast(1)
-			else -> entriesInMemory.filterIndexed {
-				index, entry ->
+			else -> entriesInMemory.filterIndexed { index, _ ->
 				indices.contains(index).not()
 			}
 		}

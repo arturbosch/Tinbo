@@ -48,7 +48,7 @@ object HomeFolder {
 
 	fun getDirectory(subPathInTinboDir: String): Path {
 		val newDir = get().resolve(subPathInTinboDir)
-		return checkAndCreate(newDir, { newDir -> Files.createDirectories(newDir) })
+		return checkAndCreate(newDir, { dir -> Files.createDirectories(dir) })
 	}
 
 }

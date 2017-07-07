@@ -46,11 +46,13 @@ class Timer(val timerMode: TimerMode = TimerMode.INVALID,
 		val (pauseHours, pauseMins, pauseSecs) = getPauseTriple()
 
 		val timeString =
-				"Elapsed time: ${diffHours.toTimeString()}:${diffMins.toTimeString()}:${diffSecs.toTimeString()} (${category.orValue("Main")})"
+				"Elapsed time: ${diffHours.toTimeString()}:${diffMins.toTimeString()}:${diffSecs.toTimeString()} " +
+						"(${category.orValue("Main")})"
 
 		val returnString = when {
 			pauseSecs == 0L && pauseMins == 0L && pauseHours == 0L -> timeString
-			else -> timeString + " with pause time: ${pauseHours.toTimeString()}:${pauseMins.toTimeString()}:${pauseSecs.toTimeString()} "
+			else -> timeString + " with pause time: " +
+					"${pauseHours.toTimeString()}:${pauseMins.toTimeString()}:${pauseSecs.toTimeString()} "
 		}
 
 		return returnString
@@ -58,18 +60,19 @@ class Timer(val timerMode: TimerMode = TimerMode.INVALID,
 
 	fun getPauseTriple(): Triple<Long, Long, Long> {
 		val pauseSeconds = pauseTimes.map { it.second }.sum()
-		val diffSeconds = pauseSeconds.mod(60)
+		val diffSeconds = pauseSeconds.rem(60)
 		val pauseMinutes = pauseSeconds.div(60)
-		val diffMinutes = pauseMinutes.mod(60)
+		val diffMinutes = pauseMinutes.rem(60)
 		val pauseHours = pauseMinutes.div(60)
-		return Triple(pauseHours, diffMinutes, diffSeconds) + getTimeTriple(currentPauseTime ?: LocalDateTime.now())
+		return Triple(pauseHours, diffMinutes, diffSeconds) +
+				getTimeTriple(currentPauseTime ?: LocalDateTime.now())
 	}
 
 	fun getTimeTriple(time: LocalDateTime = startDateTime): Triple<Long, Long, Long> {
 		val now = LocalDateTime.now()
-		val diffSecs = Duration.between(time, now).seconds.mod(60)
-		val diffMins = Duration.between(time, now).toMinutes().mod(60)
-		val diffHours = Duration.between(time, now).toHours().mod(60)
+		val diffSecs = Duration.between(time, now).seconds.rem(60)
+		val diffMins = Duration.between(time, now).toMinutes().rem(60)
+		val diffHours = Duration.between(time, now).toHours().rem(60)
 		return Triple(diffHours, diffMins, diffSecs)
 	}
 
@@ -86,13 +89,15 @@ class Timer(val timerMode: TimerMode = TimerMode.INVALID,
 
 	fun isPauseTime(mins: Long): Boolean {
 		val now = LocalDateTime.now()
-		val diffSecs = Duration.between(startDateTime, now).seconds.mod(60)
-		val diffMins = Duration.between(startDateTime, now).toMinutes().mod(60)
-		return diffMins.mod(mins) == 0L && diffSecs == 0L && diffMins + diffSecs != 0L
+		val diffSecs = Duration.between(startDateTime, now).seconds.rem(60)
+		val diffMins = Duration.between(startDateTime, now).toMinutes().rem(60)
+		return diffMins.rem(mins) == 0L && diffSecs == 0L && diffMins + diffSecs != 0L
 	}
 
 	override fun toString(): String {
-		return "Timer(timeMode=$timerMode, category='$category', message='$message', startDateTime=$startDateTime, stopDateTime=$stopDateTime, currentPauseTime=$currentPauseTime, pauseTimes=$pauseTimes)"
+		return "Timer(timeMode=$timerMode, category='$category'," +
+				" message='$message', startDateTime=$startDateTime, stopDateTime=$stopDateTime, " +
+				"currentPauseTime=$currentPauseTime, pauseTimes=$pauseTimes)"
 	}
 
 }

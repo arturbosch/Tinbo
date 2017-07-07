@@ -13,17 +13,21 @@ fun Timer.copy(timerMode: TimerMode? = null,
 			   stopDateTime: LocalDateTime? = null,
 			   currentPauseTime: LocalDateTime? = null,
 			   pauseTimes: MutableList<Pair<LocalDateTime, Long>>? = null): Timer {
-	return Timer(timerMode ?: this.timerMode, category ?: this.category, message ?: this.message,
-			startDateTime ?: this.startDateTime, stopDateTime ?: this.stopDateTime,
-			currentPauseTime ?: this.currentPauseTime, pauseTimes ?: this.pauseTimes)
+	return Timer(timerMode ?: this.timerMode,
+			category ?: this.category,
+			message ?: this.message,
+			startDateTime ?: this.startDateTime,
+			stopDateTime ?: this.stopDateTime,
+			currentPauseTime ?: this.currentPauseTime,
+			pauseTimes ?: this.pauseTimes)
 }
 
 infix operator fun Triple<Long, Long, Long>.plus(other: Triple<Long, Long, Long>): Triple<Long, Long, Long> {
 	val seconds = this.third + other.third
-	val realSeconds = seconds.mod(60)
+	val realSeconds = seconds.rem(60)
 	val carryMinutes = seconds.div(60)
 	val minutes = this.second + other.second + carryMinutes
-	val realMinutes = minutes.mod(60)
+	val realMinutes = minutes.rem(60)
 	val carryHours = minutes.div(60)
 	val hours = this.first + other.first + carryHours
 	return Triple(hours, realMinutes, realSeconds)

@@ -18,7 +18,7 @@ class FileProjects(val projectsPath: Path = HomeFolder.getDirectory(PROJECTS)) {
 	private val yml = "yml"
 
 	init {
-		Assert.isTrue(Files.exists(projectsPath))
+		Assert.isTrue(Files.exists(projectsPath), "The path to .quide/projects must exist!")
 	}
 
 	private var _projects: MutableList<Project> by lazyData {
