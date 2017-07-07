@@ -4,10 +4,13 @@ import org.springframework.shell.core.CommandMarker
 
 /**
  * All command providers must implement this interface.
- * The id property is used to decide if this commands are printed in the help command.
  *
  * @author Artur Bosch
  */
 interface Command : CommandMarker {
+	/**
+	 * The id is used to decide which commands are printed when using 'help'. This depends on your entered 'mode',
+	 * so basically the id must be equals to one of the 'helpId's' of a mode.
+	 */
 	val id: String
 }

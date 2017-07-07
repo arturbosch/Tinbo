@@ -63,6 +63,7 @@ class PluginRegistry @Autowired constructor(val shell: JLineShellComponent,
 	}
 
 	fun registerPlugin(plugin: TinboPlugin) {
+		context.registerSingleton(plugin.javaClass.name, plugin)
 		plugin.registerCommands(context).forEach { shell.simpleParser.add(it) }
 	}
 

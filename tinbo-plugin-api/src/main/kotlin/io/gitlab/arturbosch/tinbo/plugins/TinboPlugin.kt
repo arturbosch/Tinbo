@@ -14,7 +14,11 @@ import io.gitlab.arturbosch.tinbo.api.Command
  */
 interface TinboPlugin {
 
-	fun context() = ContextAware.context ?: throw IllegalStateException("Usage of TinboContext requesting while context is unset ?!")
+	val name: String get() = javaClass.simpleName
+	val version: String get() = "unspecified"
+
+	fun context() = ContextAware.context ?:
+			throw IllegalStateException("Usage of TinboContext requesting while context is unset ?!")
 
 	object ContextAware {
 		var context: TinboContext? = null
