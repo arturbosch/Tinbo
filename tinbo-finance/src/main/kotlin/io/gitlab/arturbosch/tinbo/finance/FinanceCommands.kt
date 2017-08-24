@@ -26,8 +26,8 @@ import java.time.format.DateTimeParseException
  * @author artur
  */
 @Component
-class FinanceCommands @Autowired constructor(val financeExecutor: FinanceExecutor,
-											 val configProvider: ConfigProvider,
+class FinanceCommands @Autowired constructor(private val financeExecutor: FinanceExecutor,
+											 private val configProvider: ConfigProvider,
 											 consoleReader: ConsoleReader) :
 		EditableCommands<FinanceEntry, FinanceData, DummyFinance>(financeExecutor, consoleReader), Summarizable {
 
@@ -79,7 +79,7 @@ class FinanceCommands @Autowired constructor(val financeExecutor: FinanceExecuto
 		}
 	}
 
-	fun withValidDate(year: Int, lastYear: Boolean, block: (LocalDate) -> String): String {
+	private fun withValidDate(year: Int, lastYear: Boolean, block: (LocalDate) -> String): String {
 		val now = LocalDate.now()
 		if (year != -1 && (year < 2000 || year > now.year + 20)) {
 			return "Entered date must be not too far in the past (> 2000) or in the future ( < now + 20)!"

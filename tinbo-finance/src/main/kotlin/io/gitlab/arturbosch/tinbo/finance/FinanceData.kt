@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 class FinanceDataHolder @Autowired constructor(persister: FinancePersister,
-											   val config: TinboConfig) :
+											   private val config: TinboConfig) :
 		AbstractDataHolder<FinanceEntry, FinanceData>(persister) {
 
 	override val last_used_data: String

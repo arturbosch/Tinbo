@@ -16,8 +16,8 @@ import java.time.Month
  */
 
 @Component
-class FinanceExecutor @Autowired constructor(val dataHolder: FinanceDataHolder,
-											 val configProvider: ConfigProvider,
+class FinanceExecutor @Autowired constructor(private val dataHolder: FinanceDataHolder,
+											 private val configProvider: ConfigProvider,
 											 tinboConfig: TinboConfig) :
 		AbstractExecutor<FinanceEntry, FinanceData, DummyFinance>(dataHolder, tinboConfig) {
 
