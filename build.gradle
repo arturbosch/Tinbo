@@ -16,6 +16,10 @@ buildscript {
 	}
 }
 
+plugins {
+	id "org.sonarqube" version "2.5"
+}
+
 subprojects {
 	group 'io.gitlab.arturbosch.tinbo'
 
@@ -61,45 +65,7 @@ subprojects {
 	}
 }
 
-configurations {
-	detekt
-	smartsmells
-}
-
-
 repositories {
 	mavenCentral()
 	mavenLocal()
-	maven { url "http://dl.bintray.com/arturbosch/code-analysis" }
-}
-
-dependencies {
-	detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.M12.3'
-	detekt 'io.gitlab.arturbosch.detekt:detekt-formatting:1.0.0.M12.3'
-	smartsmells 'io.gitlab.arturbosch.smartsmells:SmartSmells:1.0.0.RC7'
-}
-
-task detekt {
-	doLast {
-		javaexec {
-			main = "io.gitlab.arturbosch.detekt.cli.Main"
-			classpath = configurations.detekt
-			def input = "$project.projectDir.absolutePath"
-			def config = "$project.projectDir/detekt.yml"
-			def filters = ".*test.*"
-			def rulesets = ""
-			def params = ['-p', input, '-c', config, '-f', filters, '-r', rulesets,
-						  "--baseline", "$project.projectDir/reports/baseline.xml"]
-			args(params)
-		}
-	}
-}
-
-task smartsmells(type: JavaExec) {
-	main = "io.gitlab.arturbosch.smartsmells.Main"
-	classpath = configurations.smartsmells
-	def input = "$project.projectDir.absolutePath"
-	def output = "$project.projectDir/smartsmells.xml"
-	def params = ['-i', input, '-o', output, '-f', ".*/test/.*", "-fs"]
-	args(params)
 }
