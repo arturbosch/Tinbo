@@ -2,7 +2,6 @@ package io.gitlab.arturbosch.tinbo.commands
 
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.config.ModeManager
-import io.gitlab.arturbosch.tinbo.config.TinboConfig
 import io.gitlab.arturbosch.tinbo.config.TinboMode
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
@@ -14,8 +13,7 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-open class TinboCommands @Autowired constructor(val bannerProvider: BannerProvider,
-												val config: TinboConfig) : Command {
+open class TinboCommands @Autowired constructor(private val bannerProvider: BannerProvider) : Command {
 
 	override val id: String = "start"
 

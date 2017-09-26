@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
  * @author Artur Bosch
  */
 @Component
-class AddCommand @Autowired constructor(val commandChooser: CommandChooser) : Command {
+class AddCommand @Autowired constructor(private val commandChooser: CommandChooser) : Command {
 
 	override val id: String = "share"
 

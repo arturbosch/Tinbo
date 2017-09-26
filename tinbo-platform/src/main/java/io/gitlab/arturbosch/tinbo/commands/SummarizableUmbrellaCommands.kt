@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-open class SummarizableUmbrellaCommands @Autowired constructor(val commandChooser: CommandChooser) : Command {
+open class SummarizableUmbrellaCommands @Autowired constructor(private val commandChooser: CommandChooser) : Command {
 
 	override val id: String = "sum"
 
@@ -28,8 +28,8 @@ open class SummarizableUmbrellaCommands @Autowired constructor(val commandChoose
 			specifiedDefaultValue = "") categories: String): String {
 
 		val filters =
-				if (categories.isEmpty()) listOf<String>()
-				else categories.split(Regex("[,;. ]+")).map { it.trim().toLowerCase() }
+				if (categories.isEmpty()) listOf()
+				else categories.split(Regex("[,; ]+")).map { it.trim().toLowerCase() }
 
 		return commandChooser.forSummarizableMode().sum(filters)
 	}

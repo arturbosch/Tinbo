@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
  * @author Artur Bosch
  */
 @Component
-class ListCommand @Autowired constructor(val commandChooser: CommandChooser) : Command {
+class ListCommand @Autowired constructor(private val commandChooser: CommandChooser) : Command {
 
 	override val id: String = "share"
 

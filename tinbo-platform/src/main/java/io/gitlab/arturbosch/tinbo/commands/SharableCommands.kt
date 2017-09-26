@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-open class SharableCommands @Autowired constructor(val commandChooser: CommandChooser,
-												   val consoleReader: ConsoleReader) : Command {
+open class SharableCommands @Autowired constructor(private val commandChooser: CommandChooser,
+												   private val consoleReader: ConsoleReader) : Command {
 
 	override val id: String = "edit"
 
@@ -42,8 +42,6 @@ open class SharableCommands @Autowired constructor(val commandChooser: CommandCh
 			specifiedDefaultValue = "", unspecifiedDefaultValue = "") name: String): String {
 		return commandChooser.forCurrentMode().save(name)
 	}
-
-	private val SAVE_OR_CANCEL_CHANGES = " (Remember to 'save' or 'cancel' to apply changes!)"
 
 	@CliCommand("edit", help = "Edits entry with specified index.")
 	fun edit(@CliOption(key = arrayOf("", "i", "index"), mandatory = true,
@@ -93,5 +91,9 @@ open class SharableCommands @Autowired constructor(val commandChooser: CommandCh
 	@CliCommand("data", help = "prints all available data sets")
 	fun data(): String {
 		return commandChooser.forCurrentMode().data()
+	}
+
+	companion object {
+		private const val SAVE_OR_CANCEL_CHANGES = " (Remember to 'save' or 'cancel' to apply changes!)"
 	}
 }

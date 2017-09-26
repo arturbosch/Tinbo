@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 class CommandChooser @Autowired constructor(tinboContext: TinboContext,
-											val noopCommands: NoopCommands) {
+											private val noopCommands: NoopCommands) {
 
 	private var _commands = lazy {
 		tinboContext.context
