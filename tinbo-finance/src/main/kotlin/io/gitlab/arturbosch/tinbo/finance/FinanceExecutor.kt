@@ -62,7 +62,7 @@ class FinanceExecutor @Autowired constructor(private val dataHolder: FinanceData
 			dataHolder.getEntries().asSequence()
 					.filter { it.month == currentMonth }
 					.filter { it.dateTime.year == currentYear }
-					.filter { categories.contains(it.category) }
+					.filter { categories.contains(it.category.toLowerCase()) }
 					.toList()
 		} else {
 			dataHolder.getEntries().asSequence()
