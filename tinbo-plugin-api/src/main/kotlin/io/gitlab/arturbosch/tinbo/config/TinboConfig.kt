@@ -26,12 +26,10 @@ class TinboConfig(val path: Path = HomeFolder.getOrCreateDefaultConfig()) {
 	}
 
 	fun getKey(key: String): Map<String, String> {
-		return values.getOrElse(key, { HashMap<String, String>() })
+		return values.getOrElse(key, { HashMap() })
 	}
 
-	fun getKeySafe(key: String): Map<String, Any> {
-		return values.getOrElse(key, { HashMap<String, Any>() })
-	}
+	fun getKeySafe(key: String): Map<String, Any> = values.getOrElse(key, { HashMap<String, Any>() })
 
 	fun writeLastUsed(property: String, value: String) {
 		val oldMap = values[property]
@@ -61,10 +59,7 @@ class TinboConfig(val path: Path = HomeFolder.getOrCreateDefaultConfig()) {
 				.orDefault(Defaults.MAIN_CATEGORY_NAME)
 	}
 
-	fun getCity(): String {
-		return getKey(ConfigDefaults.DEFAULTS)[ConfigDefaults.CITY]
-				.orDefault("-1")
-	}
+	fun getCity(): String = getKey(ConfigDefaults.DEFAULTS)[ConfigDefaults.CITY].orDefault("-1")
 
 	fun getListAmount(): Int {
 		val amount = getKeySafe(ConfigDefaults.DEFAULTS)[ConfigDefaults.LIST_AMOUNT].toString()

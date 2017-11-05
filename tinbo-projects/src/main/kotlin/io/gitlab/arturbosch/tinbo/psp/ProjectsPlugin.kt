@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component
  * @author Artur Bosch
  */
 @Component
-class ProjectsPlugin : TinboPlugin {
+class ProjectsPlugin : TinboPlugin() {
 
-	override val version: String = "1.0.0"
+	override fun version(): String = "1.0.0"
 
 	override fun registerCommands(tinboContext: TinboContext): List<Command> {
 		val consoleReader = tinboContext.beanOf<ConsoleReader>()

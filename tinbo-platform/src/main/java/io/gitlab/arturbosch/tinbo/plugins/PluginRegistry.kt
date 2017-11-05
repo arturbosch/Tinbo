@@ -18,13 +18,14 @@ import javax.annotation.PostConstruct
  * @author artur
  */
 @Component
-class PluginRegistry @Autowired constructor(val shell: JLineShellComponent,
-											val context: TinboContext) {
+class PluginRegistry @Autowired constructor(private val shell: JLineShellComponent,
+											private val context: TinboContext) {
 
 	private val LOGGER = LogManager.getLogger(javaClass)
 
 	@PostConstruct
 	fun postConstruct() {
+		ContextAware.context = context
 		val executor = Executors.newSingleThreadExecutor()
 		try {
 			CompletableFuture.runAsync(Runnable {
@@ -50,19 +51,17 @@ class PluginRegistry @Autowired constructor(val shell: JLineShellComponent,
 	private fun loadJarPlugins(jarUrls: List<URL>) {
 		val successfulPlugins = ArrayList<String>()
 		val loader = URLClassLoader(jarUrls.toTypedArray(), TinboPlugin::class.java.classLoader)
-		ServiceLoader.load(TinboPlugin::class.java, loader)
-				.forEach {
-					registerPlugin(it)
-					successfulPlugins.add(it.javaClass.simpleName)
-				}
+		ServiceLoader.load(TinboPlugin::class.java, loader).forEach {
+			registerPlugin(it)
+			successfulPlugins.add(it.name())
+		}
 
 		if (successfulPlugins.isNotEmpty()) {
-			TinboPlugin.ContextAware.context = context
 			printlnInfo("Successfully loaded plugins: ${successfulPlugins.joinToString(", ")}")
 		}
 	}
 
-	fun registerPlugin(plugin: TinboPlugin) {
+	private fun registerPlugin(plugin: TinboPlugin) {
 		context.registerSingleton(plugin.javaClass.name, plugin)
 		plugin.registerCommands(context).forEach { shell.simpleParser.add(it) }
 	}

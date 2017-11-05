@@ -7,6 +7,8 @@ package io.gitlab.arturbosch.tinbo.plugins
  * All plugin helpers get loaded into the {@see SpringContext} class through spring autowiring
  * and can be used through a {@see TinboPlugin}'s context() method.
  *
+ *
+ *
  * @author Artur Bosch
  */
 interface PluginHelper

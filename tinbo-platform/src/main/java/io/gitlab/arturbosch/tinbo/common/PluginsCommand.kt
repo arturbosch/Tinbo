@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
  * @author Artur Bosch
  */
 @Component
-class PluginsCommand(val context: TinboContext) : Command {
+class PluginsCommand(private val context: TinboContext) : Command {
 
 	override val id: String = "plugins"
 	private val csv = CSVTablePrinter()
@@ -26,7 +26,7 @@ class PluginsCommand(val context: TinboContext) : Command {
 	@CliCommand("plugins", help = "Lists all used plugins with their specified versions.")
 	fun plugins(): String {
 		val entries = context.beansOf<TinboPlugin>().values
-				.map { "${it.name};${it.version}" }
+				.map { "${it.name()};${it.version()}" }
 				.plusElementAtBeginning("Name;Version")
 		return csv.asTable(entries).joinToString("\n")
 	}

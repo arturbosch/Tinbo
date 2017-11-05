@@ -10,9 +10,11 @@ import org.springframework.stereotype.Component
  * @author Artur Bosch
  */
 @Component
-class FinancePlugin : TinboPlugin {
+class FinancePlugin : TinboPlugin() {
 
-	override val version: String = "1.0.1"
+	override fun version(): String {
+		return "1.0.3"
+	}
 
 	override fun registerCommands(tinboContext: TinboContext): List<Command> {
 		val consoleReader = tinboContext.beanOf<ConsoleReader>()

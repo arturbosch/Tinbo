@@ -14,9 +14,9 @@ import org.springframework.stereotype.Component
  * @author Artur Bosch
  */
 @Component
-class WeatherPlugin : TinboPlugin, Command {
+class WeatherPlugin : TinboPlugin(), Command {
 
-	override val version: String = "1.0.0"
+	override fun version(): String = "1.0.0"
 	override val id: String = "start"
 
 	override fun registerCommands(tinboContext: TinboContext): List<Command> {
@@ -40,10 +40,10 @@ class WeatherPlugin : TinboPlugin, Command {
 			cityName = context().tinboConfig.getCity()
 		}
 
-		if (cityName.matches(Regex("[a-zA-Z]+"))) {
-			return Weather.curl(cityName)
+		return if (cityName.matches(Regex("[a-zA-Z]+"))) {
+			Weather.curl(cityName)
 		} else {
-			return "The given city name must consist of only letters."
+			"The given city name must consist of only letters."
 		}
 	}
 

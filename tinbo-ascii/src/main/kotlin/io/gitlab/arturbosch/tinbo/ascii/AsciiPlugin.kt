@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component
  * @author Artur Bosch
  */
 @Component
-class AsciiPlugin : TinboPlugin {
+class AsciiPlugin : TinboPlugin() {
 
-	override val version: String = "1.0.0"
+	override fun version(): String = "1.0.0"
 
 	override fun registerCommands(tinboContext: TinboContext): List<Command> {
 		return listOf(Ascii())

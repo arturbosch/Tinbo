@@ -2,7 +2,7 @@ package io.gitlab.arturbosch.tinbo.charts
 
 import io.gitlab.arturbosch.tinbo.WeekSummary
 import io.gitlab.arturbosch.tinbo.api.Command
-import io.gitlab.arturbosch.tinbo.plugins.TinboPlugin.ContextAware.context
+import io.gitlab.arturbosch.tinbo.plugins.ContextAware.context
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.title.TextTitle
 import org.jfree.data.general.DefaultPieDataset
@@ -56,12 +56,11 @@ class WeekMonthChart : Command {
 	}
 
 	private fun loadSummary(method: String): WeekSummary? {
-		context?.let {
+		context.let {
 			it.pluginHelpers().find { it.javaClass.simpleName == "TimeSummaryPluginSupport" }?.let {
 				return it.javaClass.getMethod(method).invoke(it) as WeekSummary
 			}
-		}
-		return null
+		} ?: return null
 	}
 
 }

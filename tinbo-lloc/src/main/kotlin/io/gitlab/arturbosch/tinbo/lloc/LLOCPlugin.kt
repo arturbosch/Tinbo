@@ -16,9 +16,9 @@ import java.util.HashMap
  *
  * @author Artur Bosch
  */
-class LLOCPlugin : TinboPlugin, Command {
+class LLOCPlugin : TinboPlugin(), Command {
 
-	override val version: String = "1.0.1"
+	override fun version(): String = "1.0.1"
 	override val id: String = "plugins"
 
 	override fun registerCommands(tinboContext: TinboContext): List<Command> {
