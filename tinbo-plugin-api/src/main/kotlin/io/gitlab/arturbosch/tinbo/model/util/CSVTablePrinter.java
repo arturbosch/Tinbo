@@ -14,9 +14,17 @@ import java.util.stream.IntStream;
  */
 public class CSVTablePrinter {
 
-	public List<String> asTable(List<String> lines) {
-		if (lines.isEmpty())
+	public String asTableString(List<String> lines) {
+		if (lines.isEmpty()) {
 			throw new IllegalArgumentException("No csv data.");
+		}
+		return asTable(lines).stream().collect(Collectors.joining("\n"));
+	}
+
+	public List<String> asTable(List<String> lines) {
+		if (lines.isEmpty()) {
+			throw new IllegalArgumentException("No csv data.");
+		}
 
 		List<String> table = new ArrayList<>();
 
