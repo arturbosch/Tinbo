@@ -31,12 +31,14 @@ class TinboContext @Autowired constructor(val context: ApplicationContext,
 	}
 
 	@PluginSupport
-	inline fun <reified T : Any> beanOf(): T {
-		return context.getBean(T::class.java)
-	}
+	fun <T> beanOf(clazz: Class<T>): T = context.getBean(clazz)
 
 	@PluginSupport
-	inline fun <reified T : Any> beansOf(): MutableMap<String, T> {
-		return context.getBeansOfType(T::class.java)
-	}
+	inline fun <reified T : Any> beanOf(): T = beanOf(T::class.java)
+
+	@PluginSupport
+	fun <T> beansOf(clazz: Class<T>): MutableMap<String, T> = context.getBeansOfType(clazz)
+
+	@PluginSupport
+	inline fun <reified T : Any> beansOf(): MutableMap<String, T> = beansOf(T::class.java)
 }
