@@ -31,6 +31,13 @@ class TinboContext @Autowired constructor(val context: ApplicationContext,
 	}
 
 	@PluginSupport
+	fun registerSingletons(objects: List<Any>) {
+		for (obj in objects) {
+			registerSingleton(obj::class.java.simpleName, obj)
+		}
+	}
+
+	@PluginSupport
 	fun <T> beanOf(clazz: Class<T>): T = context.getBean(clazz)
 
 	@PluginSupport
