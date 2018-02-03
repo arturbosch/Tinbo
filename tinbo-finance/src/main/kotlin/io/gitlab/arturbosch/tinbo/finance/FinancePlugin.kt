@@ -12,9 +12,7 @@ import org.springframework.stereotype.Component
 @Component
 class FinancePlugin : TinboPlugin() {
 
-	override fun version(): String {
-		return "1.0.3"
-	}
+	override fun version(): String = "1.0.4"
 
 	override fun registerCommands(tinboContext: TinboContext): List<Command> {
 		val consoleReader = tinboContext.beanOf<ConsoleReader>()
@@ -32,7 +30,9 @@ class FinancePlugin : TinboPlugin() {
 		val listAllSums = ListAllSums(executor, dataHolder, configProvider)
 		tinboContext.registerSingleton("ListAllSums", listAllSums)
 		tinboContext.registerSingleton("FinancePersister", persister)
-		return listOf(financeCommands, financeModeCommand, listAllSums)
+		val subscriptionsCommand = SubscriptionsCommand(executor, configProvider)
+		tinboContext.registerSingleton("SubscriptionsCommand", subscriptionsCommand)
+		return listOf(financeCommands, financeModeCommand, listAllSums, subscriptionsCommand)
 	}
 
 }

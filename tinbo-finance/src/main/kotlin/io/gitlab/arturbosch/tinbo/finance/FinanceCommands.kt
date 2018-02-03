@@ -31,7 +31,7 @@ class FinanceCommands @Autowired constructor(private val financeExecutor: Financ
 											 consoleReader: ConsoleReader) :
 		EditableCommands<FinanceEntry, FinanceData, DummyFinance>(financeExecutor, consoleReader), Summarizable {
 
-	override val id: String = "finance"
+	override val id: String = FinanceMode.id
 	private val SUCCESS_MESSAGE = "Successfully added a finance entry."
 
 	@CliAvailabilityIndicator("year", "mean", "deviation", "loadFinance")

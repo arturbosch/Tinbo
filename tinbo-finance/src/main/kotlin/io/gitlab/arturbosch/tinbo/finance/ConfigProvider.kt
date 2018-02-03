@@ -18,4 +18,6 @@ class ConfigProvider @Autowired constructor(config: TinboConfig) {
 
 	val categoryName = config.getCategoryName()
 
+	@Suppress("UNCHECKED_CAST")
+	val subscriptions by lazy { config.getKeySafe(FinanceMode.id)["subscriptions"] as? List<String> }
 }
