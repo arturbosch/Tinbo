@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.finance
 
-import io.gitlab.arturbosch.tinbo.api.Command
-import io.gitlab.arturbosch.tinbo.config.ModeManager
+import io.gitlab.arturbosch.tinbo.api.marker.Command
+import io.gitlab.arturbosch.tinbo.api.config.ModeManager
 import org.joda.money.Money
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator

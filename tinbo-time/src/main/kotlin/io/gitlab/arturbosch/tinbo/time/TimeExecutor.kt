@@ -1,11 +1,11 @@
 package io.gitlab.arturbosch.tinbo.time
 
-import io.gitlab.arturbosch.tinbo.config.Notification
-import io.gitlab.arturbosch.tinbo.config.TinboConfig
-import io.gitlab.arturbosch.tinbo.model.AbstractExecutor
-import io.gitlab.arturbosch.tinbo.orValue
-import io.gitlab.arturbosch.tinbo.utils.printInfo
-import io.gitlab.arturbosch.tinbo.utils.printlnInfo
+import io.gitlab.arturbosch.tinbo.api.config.Notification
+import io.gitlab.arturbosch.tinbo.api.config.TinboConfig
+import io.gitlab.arturbosch.tinbo.api.model.AbstractExecutor
+import io.gitlab.arturbosch.tinbo.api.orValue
+import io.gitlab.arturbosch.tinbo.api.utils.printInfo
+import io.gitlab.arturbosch.tinbo.api.utils.printlnInfo
 import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component

@@ -1,11 +1,11 @@
 package io.gitlab.arturbosch.tinbo.finance
 
-import io.gitlab.arturbosch.tinbo.config.ConfigDefaults
-import io.gitlab.arturbosch.tinbo.config.Defaults
-import io.gitlab.arturbosch.tinbo.config.HomeFolder
-import io.gitlab.arturbosch.tinbo.config.TinboConfig
-import io.gitlab.arturbosch.tinbo.model.AbstractDataHolder
-import io.gitlab.arturbosch.tinbo.model.AbstractPersister
+import io.gitlab.arturbosch.tinbo.api.config.ConfigDefaults
+import io.gitlab.arturbosch.tinbo.api.config.Defaults
+import io.gitlab.arturbosch.tinbo.api.config.HomeFolder
+import io.gitlab.arturbosch.tinbo.api.config.TinboConfig
+import io.gitlab.arturbosch.tinbo.api.model.AbstractDataHolder
+import io.gitlab.arturbosch.tinbo.api.model.AbstractPersister
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

@@ -1,13 +1,13 @@
 package io.gitlab.arturbosch.tinbo.common
 
-import io.gitlab.arturbosch.tinbo.api.Command
-import io.gitlab.arturbosch.tinbo.api.PersistableMarker
-import io.gitlab.arturbosch.tinbo.config.HomeFolder
-import io.gitlab.arturbosch.tinbo.config.TinboConfig
-import io.gitlab.arturbosch.tinbo.plugins.TinboContext
+import io.gitlab.arturbosch.tinbo.api.marker.Command
+import io.gitlab.arturbosch.tinbo.api.marker.PersistableMarker
+import io.gitlab.arturbosch.tinbo.api.config.HomeFolder
+import io.gitlab.arturbosch.tinbo.api.config.TinboConfig
+import io.gitlab.arturbosch.tinbo.api.plugins.TinboContext
 import io.gitlab.arturbosch.tinbo.utils.HttpClient
-import io.gitlab.arturbosch.tinbo.utils.dateTimeFormatter
-import io.gitlab.arturbosch.tinbo.utils.printlnInfo
+import io.gitlab.arturbosch.tinbo.api.utils.dateTimeFormatter
+import io.gitlab.arturbosch.tinbo.api.utils.printlnInfo
 import org.apache.log4j.LogManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliCommand

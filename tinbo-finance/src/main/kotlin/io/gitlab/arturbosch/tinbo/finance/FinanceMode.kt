@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.finance
 
-import io.gitlab.arturbosch.tinbo.config.TinboMode
+import io.gitlab.arturbosch.tinbo.api.config.TinboMode
 
 /**
  * @author Artur Bosch

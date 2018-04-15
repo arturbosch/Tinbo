@@ -1,10 +1,10 @@
 package io.gitlab.arturbosch.tinbo.psp
 
 import com.google.common.eventbus.Subscribe
-import io.gitlab.arturbosch.tinbo.Project
-import io.gitlab.arturbosch.tinbo.Task
-import io.gitlab.arturbosch.tinbo.asHourString
-import io.gitlab.arturbosch.tinbo.registerForEventBus
+import io.gitlab.arturbosch.tinbo.api.model.Project
+import io.gitlab.arturbosch.tinbo.api.model.Task
+import io.gitlab.arturbosch.tinbo.api.model.asHourString
+import io.gitlab.arturbosch.tinbo.api.registerForEventBus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.time.LocalDate

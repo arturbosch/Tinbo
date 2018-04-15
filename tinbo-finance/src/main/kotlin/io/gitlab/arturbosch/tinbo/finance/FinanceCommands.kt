@@ -1,15 +1,15 @@
 package io.gitlab.arturbosch.tinbo.finance
 
-import io.gitlab.arturbosch.tinbo.api.Summarizable
-import io.gitlab.arturbosch.tinbo.commands.EditableCommands
-import io.gitlab.arturbosch.tinbo.config.Defaults
-import io.gitlab.arturbosch.tinbo.config.ModeManager
-import io.gitlab.arturbosch.tinbo.nullIfEmpty
-import io.gitlab.arturbosch.tinbo.orDefaultMonth
-import io.gitlab.arturbosch.tinbo.orThrow
-import io.gitlab.arturbosch.tinbo.orValue
-import io.gitlab.arturbosch.tinbo.utils.dateFormatter
-import io.gitlab.arturbosch.tinbo.utils.dateTimeFormatter
+import io.gitlab.arturbosch.tinbo.api.marker.Summarizable
+import io.gitlab.arturbosch.tinbo.api.commands.EditableCommands
+import io.gitlab.arturbosch.tinbo.api.config.Defaults
+import io.gitlab.arturbosch.tinbo.api.config.ModeManager
+import io.gitlab.arturbosch.tinbo.api.nullIfEmpty
+import io.gitlab.arturbosch.tinbo.api.orDefaultMonth
+import io.gitlab.arturbosch.tinbo.api.orThrow
+import io.gitlab.arturbosch.tinbo.api.orValue
+import io.gitlab.arturbosch.tinbo.api.utils.dateFormatter
+import io.gitlab.arturbosch.tinbo.api.utils.dateTimeFormatter
 import jline.console.ConsoleReader
 import org.joda.money.Money
 import org.springframework.beans.factory.annotation.Autowired

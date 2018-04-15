@@ -1,12 +1,12 @@
 package io.gitlab.arturbosch.tinbo.psp
 
-import io.gitlab.arturbosch.tinbo.Project
-import io.gitlab.arturbosch.tinbo.api.Addable
-import io.gitlab.arturbosch.tinbo.api.Command
-import io.gitlab.arturbosch.tinbo.api.Listable
-import io.gitlab.arturbosch.tinbo.config.EditablePromptProvider
-import io.gitlab.arturbosch.tinbo.config.ModeManager
-import io.gitlab.arturbosch.tinbo.utils.dateFormatter
+import io.gitlab.arturbosch.tinbo.api.model.Project
+import io.gitlab.arturbosch.tinbo.api.marker.Addable
+import io.gitlab.arturbosch.tinbo.api.marker.Command
+import io.gitlab.arturbosch.tinbo.api.marker.Listable
+import io.gitlab.arturbosch.tinbo.api.config.EditablePromptProvider
+import io.gitlab.arturbosch.tinbo.api.config.ModeManager
+import io.gitlab.arturbosch.tinbo.api.utils.dateFormatter
 import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator

@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.psp
 
-import io.gitlab.arturbosch.tinbo.api.Command
-import io.gitlab.arturbosch.tinbo.config.EditablePromptProvider
-import io.gitlab.arturbosch.tinbo.plugins.TinboContext
-import io.gitlab.arturbosch.tinbo.plugins.TinboPlugin
+import io.gitlab.arturbosch.tinbo.api.marker.Command
+import io.gitlab.arturbosch.tinbo.api.config.EditablePromptProvider
+import io.gitlab.arturbosch.tinbo.api.plugins.TinboContext
+import io.gitlab.arturbosch.tinbo.api.plugins.TinboPlugin
 import jline.console.ConsoleReader
 import org.springframework.stereotype.Component
 

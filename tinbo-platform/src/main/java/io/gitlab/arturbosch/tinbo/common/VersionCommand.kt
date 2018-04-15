@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.common
 
-import io.gitlab.arturbosch.tinbo.api.Command
+import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.providers.BannerProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliCommand

@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.psp
 
-import io.gitlab.arturbosch.tinbo.config.ModeListener
-import io.gitlab.arturbosch.tinbo.config.ModeManager
-import io.gitlab.arturbosch.tinbo.config.TinboMode
-import io.gitlab.arturbosch.tinbo.publish
+import io.gitlab.arturbosch.tinbo.api.config.ModeListener
+import io.gitlab.arturbosch.tinbo.api.config.ModeManager
+import io.gitlab.arturbosch.tinbo.api.config.TinboMode
+import io.gitlab.arturbosch.tinbo.api.publish
 
 /**
  * @author Artur Bosch

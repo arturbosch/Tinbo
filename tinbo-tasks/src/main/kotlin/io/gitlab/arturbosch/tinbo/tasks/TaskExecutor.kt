@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.tasks
 
-import io.gitlab.arturbosch.tinbo.config.TinboConfig
-import io.gitlab.arturbosch.tinbo.model.AbstractExecutor
+import io.gitlab.arturbosch.tinbo.api.config.TinboConfig
+import io.gitlab.arturbosch.tinbo.api.model.AbstractExecutor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

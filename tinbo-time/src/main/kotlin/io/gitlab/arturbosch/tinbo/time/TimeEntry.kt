@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.time
 
-import io.gitlab.arturbosch.tinbo.model.Entry
-import io.gitlab.arturbosch.tinbo.spaceIfEmpty
-import io.gitlab.arturbosch.tinbo.toTimeString
-import io.gitlab.arturbosch.tinbo.utils.dateFormatter
+import io.gitlab.arturbosch.tinbo.api.model.Entry
+import io.gitlab.arturbosch.tinbo.api.spaceIfEmpty
+import io.gitlab.arturbosch.tinbo.api.toTimeString
+import io.gitlab.arturbosch.tinbo.api.utils.dateFormatter
 import java.time.LocalDate
 
 /**

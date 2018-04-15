@@ -1,12 +1,12 @@
 package io.gitlab.arturbosch.tinbo.common
 
-import io.gitlab.arturbosch.tinbo.api.Command
-import io.gitlab.arturbosch.tinbo.config.ModeManager
-import io.gitlab.arturbosch.tinbo.config.TinboMode
-import io.gitlab.arturbosch.tinbo.model.util.CSVTablePrinter
-import io.gitlab.arturbosch.tinbo.plugins.TinboContext
-import io.gitlab.arturbosch.tinbo.plugins.TinboPlugin
-import io.gitlab.arturbosch.tinbo.plusElementAtBeginning
+import io.gitlab.arturbosch.tinbo.api.marker.Command
+import io.gitlab.arturbosch.tinbo.api.config.ModeManager
+import io.gitlab.arturbosch.tinbo.api.config.TinboMode
+import io.gitlab.arturbosch.tinbo.api.model.util.CSVTablePrinter
+import io.gitlab.arturbosch.tinbo.api.plugins.TinboContext
+import io.gitlab.arturbosch.tinbo.api.plugins.TinboPlugin
+import io.gitlab.arturbosch.tinbo.api.plusElementAtBeginning
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.stereotype.Component

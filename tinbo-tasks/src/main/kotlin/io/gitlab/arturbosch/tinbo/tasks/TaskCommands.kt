@@ -1,13 +1,13 @@
 package io.gitlab.arturbosch.tinbo.tasks
 
-import io.gitlab.arturbosch.tinbo.commands.EditableCommands
-import io.gitlab.arturbosch.tinbo.config.Defaults
-import io.gitlab.arturbosch.tinbo.config.ModeManager
-import io.gitlab.arturbosch.tinbo.config.TinboConfig
-import io.gitlab.arturbosch.tinbo.nullIfEmpty
-import io.gitlab.arturbosch.tinbo.orDefault
-import io.gitlab.arturbosch.tinbo.utils.DateTimeFormatters
-import io.gitlab.arturbosch.tinbo.utils.dateTimeFormatter
+import io.gitlab.arturbosch.tinbo.api.commands.EditableCommands
+import io.gitlab.arturbosch.tinbo.api.config.Defaults
+import io.gitlab.arturbosch.tinbo.api.config.ModeManager
+import io.gitlab.arturbosch.tinbo.api.config.TinboConfig
+import io.gitlab.arturbosch.tinbo.api.nullIfEmpty
+import io.gitlab.arturbosch.tinbo.api.orDefault
+import io.gitlab.arturbosch.tinbo.api.utils.DateTimeFormatters
+import io.gitlab.arturbosch.tinbo.api.utils.dateTimeFormatter
 import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator

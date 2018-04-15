@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.finance
 
-import io.gitlab.arturbosch.tinbo.config.TinboConfig
-import io.gitlab.arturbosch.tinbo.ifNotEmpty
-import io.gitlab.arturbosch.tinbo.model.AbstractExecutor
-import io.gitlab.arturbosch.tinbo.utils.printlnInfo
+import io.gitlab.arturbosch.tinbo.api.config.TinboConfig
+import io.gitlab.arturbosch.tinbo.api.ifNotEmpty
+import io.gitlab.arturbosch.tinbo.api.model.AbstractExecutor
+import io.gitlab.arturbosch.tinbo.api.utils.printlnInfo
 import org.joda.money.Money
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component

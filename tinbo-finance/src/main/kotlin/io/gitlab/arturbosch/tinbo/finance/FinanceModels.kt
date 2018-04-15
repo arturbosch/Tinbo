@@ -1,11 +1,11 @@
 package io.gitlab.arturbosch.tinbo.finance
 
-import io.gitlab.arturbosch.tinbo.config.Defaults
-import io.gitlab.arturbosch.tinbo.model.Data
-import io.gitlab.arturbosch.tinbo.model.DummyEntry
-import io.gitlab.arturbosch.tinbo.model.Entry
-import io.gitlab.arturbosch.tinbo.spaceIfEmpty
-import io.gitlab.arturbosch.tinbo.utils.dateTimeFormatter
+import io.gitlab.arturbosch.tinbo.api.config.Defaults
+import io.gitlab.arturbosch.tinbo.api.model.Data
+import io.gitlab.arturbosch.tinbo.api.model.DummyEntry
+import io.gitlab.arturbosch.tinbo.api.model.Entry
+import io.gitlab.arturbosch.tinbo.api.spaceIfEmpty
+import io.gitlab.arturbosch.tinbo.api.utils.dateTimeFormatter
 import org.joda.money.CurrencyUnit
 import org.joda.money.Money
 import java.time.LocalDateTime

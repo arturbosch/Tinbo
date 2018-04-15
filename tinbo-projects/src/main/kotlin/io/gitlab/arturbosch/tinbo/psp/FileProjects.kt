@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.psp
 
-import io.gitlab.arturbosch.tinbo.Project
-import io.gitlab.arturbosch.tinbo.config.ConfigDefaults.PROJECTS
-import io.gitlab.arturbosch.tinbo.config.HomeFolder
-import io.gitlab.arturbosch.tinbo.model.util.lazyData
+import io.gitlab.arturbosch.tinbo.api.model.Project
+import io.gitlab.arturbosch.tinbo.api.config.ConfigDefaults.PROJECTS
+import io.gitlab.arturbosch.tinbo.api.config.HomeFolder
+import io.gitlab.arturbosch.tinbo.api.model.util.lazyData
 import org.springframework.stereotype.Component
 import org.springframework.util.Assert
 import java.nio.file.Files

@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.psp
 
-import io.gitlab.arturbosch.tinbo.Task
-import io.gitlab.arturbosch.tinbo.model.CSVAwareExecutor
+import io.gitlab.arturbosch.tinbo.api.model.Task
+import io.gitlab.arturbosch.tinbo.api.model.CSVAwareExecutor
 import org.springframework.stereotype.Component
 
 /**

@@ -48,10 +48,10 @@
     <ID>NamingConventionViolation:PluginRegistry.kt$PluginRegistry$private val LOGGER = LogManager.getLogger(javaClass)</ID>
     <ID>NamingConventionViolation:EditableCommands.kt$EditableCommands$private val NEED_EDIT_MODE_TEXT = "Before adding or list entries exit edit mode with 'save' or 'cancel'."</ID>
     <ID>MaxLineLength:TinboPlugin.kt$io.gitlab.arturbosch.tinbo.plugins.TinboPlugin.kt</ID>
-    <ID>MaxLineLength:Notification.kt$io.gitlab.arturbosch.tinbo.config.Notification.kt</ID>
+    <ID>MaxLineLength:Notification.kt$io.gitlab.arturbosch.tinbo.api.Notification.kt</ID>
     <ID>NamingConventionViolation:CSVAwareExecutor.kt$CSVAwareExecutor$protected abstract val TABLE_HEADER: String</ID>
     <ID>NamingConventionViolation:AbstractDataHolder.kt$AbstractDataHolder$protected abstract val last_used_data: String</ID>
-    <ID>MaxLineLength:AbstractPersister.kt$io.gitlab.arturbosch.tinbo.model.AbstractPersister.kt</ID>
+    <ID>MaxLineLength:AbstractPersister.kt$io.gitlab.arturbosch.tinbo.api.AbstractPersister.kt</ID>
     <ID>NamingConventionViolation:AbstractExecutor.kt$AbstractExecutor$private val NEW_LINE = "\n"</ID>
   </Whitelist>
 </SmellBaseline>

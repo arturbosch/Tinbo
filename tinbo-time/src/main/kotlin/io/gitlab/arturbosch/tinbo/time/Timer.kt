@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.time
 
-import io.gitlab.arturbosch.tinbo.orValue
-import io.gitlab.arturbosch.tinbo.toTimeString
+import io.gitlab.arturbosch.tinbo.api.orValue
+import io.gitlab.arturbosch.tinbo.api.toTimeString
 import java.time.Duration
 import java.time.LocalDateTime
 import java.util.ArrayList

@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.config
 
 import com.google.common.io.Resources
-import io.gitlab.arturbosch.tinbo.config.TinboConfig
+import io.gitlab.arturbosch.tinbo.api.config.TinboConfig
 import org.junit.After
 import org.junit.Test
 import java.nio.file.Files

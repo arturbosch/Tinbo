@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.psp
 
-import io.gitlab.arturbosch.tinbo.Project
+import io.gitlab.arturbosch.tinbo.api.model.Project
 import org.yaml.snakeyaml.Yaml
 
 /**

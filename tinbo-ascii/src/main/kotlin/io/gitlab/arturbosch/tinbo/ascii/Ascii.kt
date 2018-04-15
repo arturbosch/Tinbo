@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.ascii
 
-import io.gitlab.arturbosch.tinbo.api.Command
+import io.gitlab.arturbosch.tinbo.api.marker.Command
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import java.awt.Color

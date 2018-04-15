@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.time
 
-import io.gitlab.arturbosch.tinbo.WeekEntry
-import io.gitlab.arturbosch.tinbo.WeekSummary
-import io.gitlab.arturbosch.tinbo.plugins.PluginHelper
-import io.gitlab.arturbosch.tinbo.plugins.PluginSupport
+import io.gitlab.arturbosch.tinbo.api.model.WeekEntry
+import io.gitlab.arturbosch.tinbo.api.model.WeekSummary
+import io.gitlab.arturbosch.tinbo.api.plugins.PluginHelper
+import io.gitlab.arturbosch.tinbo.api.plugins.PluginSupport
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.time.LocalDate

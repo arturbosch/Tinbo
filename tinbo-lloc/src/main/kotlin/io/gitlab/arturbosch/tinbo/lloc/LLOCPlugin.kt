@@ -3,9 +3,9 @@ package io.gitlab.arturbosch.tinbo.lloc
 import io.gitlab.arturbosch.loc.core.LOC
 import io.gitlab.arturbosch.loc.languages.Language
 import io.gitlab.arturbosch.loc.languages.LanguageStrategyFactory
-import io.gitlab.arturbosch.tinbo.api.Command
-import io.gitlab.arturbosch.tinbo.plugins.TinboContext
-import io.gitlab.arturbosch.tinbo.plugins.TinboPlugin
+import io.gitlab.arturbosch.tinbo.api.marker.Command
+import io.gitlab.arturbosch.tinbo.api.plugins.TinboContext
+import io.gitlab.arturbosch.tinbo.api.plugins.TinboPlugin
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import java.io.File

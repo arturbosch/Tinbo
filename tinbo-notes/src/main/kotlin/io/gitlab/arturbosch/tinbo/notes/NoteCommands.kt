@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.notes
 
-import io.gitlab.arturbosch.tinbo.api.UnsupportedMarker
-import io.gitlab.arturbosch.tinbo.commands.EditableCommands
-import io.gitlab.arturbosch.tinbo.config.ModeManager
-import io.gitlab.arturbosch.tinbo.nullIfEmpty
+import io.gitlab.arturbosch.tinbo.api.marker.UnsupportedMarker
+import io.gitlab.arturbosch.tinbo.api.commands.EditableCommands
+import io.gitlab.arturbosch.tinbo.api.config.ModeManager
+import io.gitlab.arturbosch.tinbo.api.nullIfEmpty
 import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator

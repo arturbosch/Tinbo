@@ -1,6 +1,7 @@
 package io.gitlab.arturbosch.tinbo.model
 
-import io.gitlab.arturbosch.tinbo.model.util.CSVDataExchange
+import io.gitlab.arturbosch.tinbo.api.model.Entry
+import io.gitlab.arturbosch.tinbo.api.model.util.CSVDataExchange
 import org.junit.Test
 
 /**

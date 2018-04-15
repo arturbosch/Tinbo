@@ -1,8 +1,8 @@
 package io.gitlab.arturbosch.tinbo.tasks
 
-import io.gitlab.arturbosch.tinbo.model.Entry
-import io.gitlab.arturbosch.tinbo.spaceIfEmpty
-import io.gitlab.arturbosch.tinbo.utils.dateTimeFormatter
+import io.gitlab.arturbosch.tinbo.api.model.Entry
+import io.gitlab.arturbosch.tinbo.api.spaceIfEmpty
+import io.gitlab.arturbosch.tinbo.api.utils.dateTimeFormatter
 import java.time.LocalDateTime
 import java.util.Objects
 

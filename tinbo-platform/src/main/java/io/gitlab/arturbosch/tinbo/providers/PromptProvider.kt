@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.providers
 
-import io.gitlab.arturbosch.tinbo.config.EditablePromptProvider
+import io.gitlab.arturbosch.tinbo.api.config.EditablePromptProvider
 import org.jline.utils.AttributedString
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
