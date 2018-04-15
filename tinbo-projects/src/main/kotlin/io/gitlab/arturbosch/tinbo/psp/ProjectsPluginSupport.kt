@@ -14,5 +14,4 @@ class ProjectsPluginSupport @Autowired constructor(private val fileProjects: Fil
 
 	@PluginSupport
 	fun projects(): List<Project> = fileProjects.projects
-
 }

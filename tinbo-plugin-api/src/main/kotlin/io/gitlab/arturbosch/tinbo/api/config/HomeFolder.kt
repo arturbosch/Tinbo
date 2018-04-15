@@ -10,11 +10,11 @@ import java.nio.file.Paths
  */
 object HomeFolder {
 
-	const val CONFIG_NAME = "config.yaml"
+	private const val CONFIG_NAME = "config.yaml"
 	const val PLUGINS: String = "plugins"
 	const val BACKUP: String = "backup"
 
-	private val mainDir = "Tinbo"
+	private const val mainDir = "Tinbo"
 	private val homeDir = System.getProperty("user.home") + File.separator + mainDir
 	private val homePath = Paths.get(homeDir)
 

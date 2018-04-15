@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.time
 
-import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.api.config.ModeManager
+import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.api.utils.printlnInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
@@ -30,7 +30,7 @@ open class TimerCommands @Autowired constructor(private val executor: TimeExecut
 		return ModeManager.isCurrentMode(TimeMode) && executor.inProgress()
 	}
 
-	@CliCommand(value = "start", help = "Starts the timer and waits for you to type 'stop' to finish it if no arguments are specified.")
+	@CliCommand(value = ["start"], help = "Starts the timer and waits for you to type 'stop' to finish it if no arguments are specified.")
 	fun startTimer(@CliOption(key = ["minutes", "m", "mins"], specifiedDefaultValue = "0",
 			unspecifiedDefaultValue = "0", help = "Duration of timer in minutes.") mins: Int,
 				   @CliOption(key = ["seconds", "s", "mins"], specifiedDefaultValue = "0",
@@ -66,12 +66,12 @@ open class TimerCommands @Autowired constructor(private val executor: TimeExecut
 		return !(mins >= 0 && seconds >= 0 && seconds < 60)
 	}
 
-	@CliCommand(value = "bg", help = "Sends current timer to background")
+	@CliCommand(value = ["bg"], help = "Sends current timer to background")
 	fun sendToBackground() {
 		sendToMode(true)
 	}
 
-	@CliCommand(value = "fg", help = "Sends current timer to foreground")
+	@CliCommand(value = ["fg"], help = "Sends current timer to foreground")
 	fun sendToForeground() {
 		sendToMode(false)
 	}
@@ -82,7 +82,7 @@ open class TimerCommands @Autowired constructor(private val executor: TimeExecut
 		}
 	}
 
-	@CliCommand(value = "stop", help = "Stops the timer.")
+	@CliCommand(value = ["stop"], help = "Stops the timer.")
 	fun stopTimer(@CliOption(key = ["name", "n"],
 			unspecifiedDefaultValue = "",
 			specifiedDefaultValue = "",
@@ -94,17 +94,17 @@ open class TimerCommands @Autowired constructor(private val executor: TimeExecut
 		executor.stop(name, message)
 	}
 
-	@CliCommand(value = "q", help = "Stops the timer.")
+	@CliCommand(value = ["q"], help = "Stops the timer.")
 	fun stopTimerWithQ() {
 		executor.stop()
 	}
 
-	@CliCommand(value = "show", help = "Shows the current running timer. Useful when in background mode.")
+	@CliCommand(value = ["show"], help = "Shows the current running timer. Useful when in background mode.")
 	fun showCurrentTimer(): String {
 		return executor.showTimer()
 	}
 
-	@CliCommand("p", "pause", help = "Starts/Stops the pause timer.")
+	@CliCommand(value = ["p", "pause"], help = "Starts/Stops the pause timer.")
 	fun startPause() {
 		if (executor.inProgress()) {
 			if (executor.isPause()) {

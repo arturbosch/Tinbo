@@ -16,7 +16,7 @@ import java.util.List;
  */
 public abstract class TinboPlugin {
 
-	String UNSPECIFIED = "unspecified";
+	final String UNSPECIFIED = "unspecified";
 
 	public String name() {
 		return getClass().getSimpleName();

@@ -48,7 +48,7 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor,
 		}
 	}
 
-	@CliCommand(value = "task", help = "Adds a new task.")
+	@CliCommand(value = ["task"], help = "Adds a new task.")
 	fun addTask(@CliOption(key = ["message", "msg", "m"], mandatory = true, help = "Summary of the task.",
 			specifiedDefaultValue = "", unspecifiedDefaultValue = "") message: String,
 				@CliOption(key = ["category", "c", ""], help = "Category for the task",

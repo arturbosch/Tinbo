@@ -1,6 +1,7 @@
 package io.gitlab.arturbosch.tinbo.api.model.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,8 +62,8 @@ public class CSVTablePrinter {
 	}
 
 	private String formatHeaderSeparator(int[] columnSizes) {
-		return IntStream.range(0, columnSizes.length)
-				.mapToObj(i -> separators(columnSizes[i]))
+		return Arrays.stream(columnSizes)
+				.mapToObj(this::separators)
 				.map(value -> value + "+")
 				.collect(Collectors.joining());
 	}
@@ -111,7 +112,7 @@ public class CSVTablePrinter {
 	private int getMaxSize(List<String> list) {
 		return list.stream()
 				.max(Comparator.comparingInt(String::length))
-				.orElseGet(() -> "")
+				.orElse("")
 				.length();
 	}
 

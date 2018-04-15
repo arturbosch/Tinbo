@@ -13,10 +13,10 @@ class UnspecifyProjectModeListener : ModeListener {
 	override fun change(mode: TinboMode) {
 		val old = ModeManager.current
 		if (old == ProjectsMode && mode != ProjectsMode) {
-			publish(UnspecifyProject)
+			publish(UnspecifyProject())
 		}
 	}
 
 }
 
-object UnspecifyProject
+class UnspecifyProject

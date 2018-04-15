@@ -36,7 +36,7 @@ data class Project(var name: String = "",
 	}
 }
 
-fun String.orSpace(): String = if (this.isNullOrEmpty()) " " else this
+fun String.orSpace(): String = if (this.isEmpty()) " " else this
 val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 fun Int.asHourString(): String {
 	return "${this / 60}h${this % 60}m"

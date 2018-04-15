@@ -32,7 +32,7 @@ object DateTimeFormatters {
 		}
 	}
 
-	fun parseDateTimeOrNull(date: String): LocalDateTime? {
+	private fun parseDateTimeOrNull(date: String): LocalDateTime? {
 		return try {
 			LocalDateTime.parse(date, dateTimeFormatter)
 		} catch (e: DateTimeParseException) {

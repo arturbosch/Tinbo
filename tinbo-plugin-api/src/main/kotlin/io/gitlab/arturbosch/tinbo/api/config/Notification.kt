@@ -10,7 +10,7 @@ object Notification {
 
 	private val logger = LogManager.getLogger(javaClass)
 
-	private val NOTIFY_SEND_ERROR = "Could not execute 'notify-send', install it to get notifications about finished timers."
+	private const val NOTIFY_SEND_ERROR = "Could not execute 'notify-send', install it to get notifications about finished timers."
 
 	fun notify(header: String, message: String) {
 		try {

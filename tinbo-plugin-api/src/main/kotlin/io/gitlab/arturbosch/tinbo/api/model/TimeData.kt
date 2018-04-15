@@ -5,7 +5,7 @@ import java.time.LocalDate
 /**
  * @author Artur Bosch
  */
-data class WeekSummary(val range: Pair<LocalDate, LocalDate>, val entries: List<WeekEntry>) {
+data class WeekSummary(private val range: Pair<LocalDate, LocalDate>, val entries: List<WeekEntry>) {
 
 	fun asDateRangeString(): String = "${range.first} - ${range.second}"
 
