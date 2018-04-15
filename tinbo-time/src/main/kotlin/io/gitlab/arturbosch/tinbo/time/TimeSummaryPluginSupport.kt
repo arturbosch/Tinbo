@@ -15,7 +15,7 @@ import java.time.LocalDate
  * @author Artur Bosch
  */
 @Component
-class TimeSummaryPluginSupport @Autowired constructor(val timeDataHolder: TimeDataHolder) : PluginHelper {
+class TimeSummaryPluginSupport @Autowired constructor(private val timeDataHolder: TimeDataHolder) : PluginHelper {
 
 	@PluginSupport
 	fun day(): WeekSummary {

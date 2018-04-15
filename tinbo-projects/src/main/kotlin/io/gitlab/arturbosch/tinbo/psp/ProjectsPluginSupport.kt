@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
  * @author Artur Bosch
  */
 @Component
-class ProjectsPluginSupport @Autowired constructor(val fileProjects: FileProjects) : PluginHelper {
+class ProjectsPluginSupport @Autowired constructor(private val fileProjects: FileProjects) : PluginHelper {
 
 	@PluginSupport
 	fun projects(): List<Project> = fileProjects.projects

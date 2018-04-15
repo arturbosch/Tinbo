@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.finance
 
-import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.api.config.ModeManager
+import io.gitlab.arturbosch.tinbo.api.marker.Command
 import org.joda.money.Money
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
@@ -26,7 +26,7 @@ class ListAllSums @Autowired constructor(private val executor: FinanceExecutor,
 	}
 
 	@CliCommand("sumAll", help = "Sums all monthly expenses for a category and displays them in a table.")
-	fun loadTasks(@CliOption(key = arrayOf("", "category"), mandatory = true) category: String?): String {
+	fun loadTasks(@CliOption(key = ["", "category"], mandatory = true) category: String?): String {
 		if (category == null || category.isEmpty()) return "Enter a category, to list all expenses for all months."
 
 		val entries = dataHolder.getEntriesFilteredBy(category)

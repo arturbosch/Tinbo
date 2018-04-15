@@ -1,5 +1,6 @@
 package io.gitlab.arturbosch.tinbo.tasks
 
+import io.gitlab.arturbosch.tinbo.api.TinboTerminal
 import io.gitlab.arturbosch.tinbo.api.commands.EditableCommands
 import io.gitlab.arturbosch.tinbo.api.config.Defaults
 import io.gitlab.arturbosch.tinbo.api.config.ModeManager
@@ -8,7 +9,6 @@ import io.gitlab.arturbosch.tinbo.api.nullIfEmpty
 import io.gitlab.arturbosch.tinbo.api.orDefault
 import io.gitlab.arturbosch.tinbo.api.utils.DateTimeFormatters
 import io.gitlab.arturbosch.tinbo.api.utils.dateTimeFormatter
-import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
@@ -22,13 +22,13 @@ import java.time.format.DateTimeParseException
  */
 @Component
 open class TaskCommands @Autowired constructor(executor: TaskExecutor,
-											   val config: TinboConfig,
-											   consoleReader: ConsoleReader) : EditableCommands<TaskEntry, TaskData, DummyTask>(
-		executor, consoleReader) {
+											   private val config: TinboConfig,
+											   terminal: TinboTerminal) :
+		EditableCommands<TaskEntry, TaskData, DummyTask>(executor, terminal) {
 
 	override val id: String = "task"
 
-	private val SUCCESS_MESSAGE = "Successfully added a task."
+	private val successMessage = "Successfully added a task."
 
 	@CliAvailabilityIndicator("task", "loadTasks", "editTasks")
 	fun isAvailable(): Boolean {
@@ -49,18 +49,18 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor,
 	}
 
 	@CliCommand(value = "task", help = "Adds a new task.")
-	fun addTask(@CliOption(key = arrayOf("message", "msg", "m"), mandatory = true, help = "Summary of the task.",
+	fun addTask(@CliOption(key = ["message", "msg", "m"], mandatory = true, help = "Summary of the task.",
 			specifiedDefaultValue = "", unspecifiedDefaultValue = "") message: String,
-				@CliOption(key = arrayOf("category", "c", ""), help = "Category for the task",
+				@CliOption(key = ["category", "c", ""], help = "Category for the task",
 						specifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME,
 						unspecifiedDefaultValue = Defaults.MAIN_CATEGORY_NAME) category: String,
-				@CliOption(key = arrayOf("location", "loc", "l"), help = "Specify a location for this task.",
+				@CliOption(key = ["location", "loc", "l"], help = "Specify a location for this task.",
 						specifiedDefaultValue = "", unspecifiedDefaultValue = "") location: String,
-				@CliOption(key = arrayOf("description", "des", "d"), help = "Specify a description for this task.",
+				@CliOption(key = ["description", "des", "d"], help = "Specify a description for this task.",
 						specifiedDefaultValue = "", unspecifiedDefaultValue = "") description: String,
-				@CliOption(key = arrayOf("start", "s"), help = "Specify a end time for this task. Format: yyyy-MM-dd HH:mm",
+				@CliOption(key = ["start", "s"], help = "Specify a end time for this task. Format: yyyy-MM-dd HH:mm",
 						specifiedDefaultValue = "", unspecifiedDefaultValue = "") startTime: String,
-				@CliOption(key = arrayOf("end", "e"), help = "Specify a start time for this task. Format: yyyy-MM-dd HH:mm",
+				@CliOption(key = ["end", "e"], help = "Specify a start time for this task. Format: yyyy-MM-dd HH:mm",
 						specifiedDefaultValue = "", unspecifiedDefaultValue = "") endTime: String): String {
 
 		return whileNotInEditMode {
@@ -71,32 +71,32 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor,
 					val formattedStartTime = pair.first
 					val formattedEndTime = pair.second
 					executor.addEntry(TaskEntry(message, description, location, category, formattedStartTime, formattedEndTime))
-					SUCCESS_MESSAGE
+					successMessage
 				} catch (e: DateTimeParseException) {
 					"Could not parse date, use format: yyyy-MM-dd HH:mm"
 				}
 			} else {
 				executor.addEntry(TaskEntry(message, description, location, category))
-				SUCCESS_MESSAGE
+				successMessage
 			}
 
 		}
 	}
 
 	@CliCommand("editTask", "editTasks", help = "Edits the task entry with given index")
-	fun editTask(@CliOption(key = arrayOf("index", "i"), mandatory = true,
+	fun editTask(@CliOption(key = ["index", "i"], mandatory = true,
 			help = "Index of the task to edit.") index: Int,
-				 @CliOption(key = arrayOf("message", "msg", "m"),
+				 @CliOption(key = ["message", "msg", "m"],
 						 help = "Summary of the task.") message: String?,
-				 @CliOption(key = arrayOf("category", "c", ""),
+				 @CliOption(key = ["category", "c", ""],
 						 help = "Category for the task") category: String?,
-				 @CliOption(key = arrayOf("location", "loc", "l"),
+				 @CliOption(key = ["location", "loc", "l"],
 						 help = "Specify a location for this task.") location: String?,
-				 @CliOption(key = arrayOf("description", "des", "d"),
+				 @CliOption(key = ["description", "des", "d"],
 						 help = "Specify a description for this task.") description: String?,
-				 @CliOption(key = arrayOf("start", "s"), unspecifiedDefaultValue = "", specifiedDefaultValue = "",
+				 @CliOption(key = ["start", "s"], unspecifiedDefaultValue = "", specifiedDefaultValue = "",
 						 help = "Specify a end time for this task. Format: yyyy-MM-dd HH:mm") startTime: String,
-				 @CliOption(key = arrayOf("end", "e"), unspecifiedDefaultValue = "", specifiedDefaultValue = "",
+				 @CliOption(key = ["end", "e"], unspecifiedDefaultValue = "", specifiedDefaultValue = "",
 						 help = "Specify a start time for this task. Format: yyyy-MM-dd HH:mm") endTime: String): String {
 
 		return withinListMode {
@@ -117,8 +117,8 @@ open class TaskCommands @Autowired constructor(executor: TaskExecutor,
 				val message = console.readLine("Enter a message (leave empty if unchanged): ").nullIfEmpty()
 				val location = console.readLine("Enter a location (leave empty if unchanged): ").nullIfEmpty()
 				val description = console.readLine("Enter a description (leave empty if unchanged): ").nullIfEmpty()
-				val startTime = console.readLine("Enter a start time (yyyy-MM-dd HH:mm) (leave empty if unchanged): ").orEmpty()
-				val endTime = console.readLine("Enter a end time (yyyy-MM-dd HH:mm) (leave empty if unchanged): ").orEmpty()
+				val startTime = console.readLine("Enter a start time (yyyy-MM-dd HH:mm) (leave empty if unchanged): ")
+				val endTime = console.readLine("Enter a end time (yyyy-MM-dd HH:mm) (leave empty if unchanged): ")
 
 				val pair = DateTimeFormatters.parseDateTimeOrDefault(endTime, startTime)
 				executor.editEntry(i, DummyTask(message, category, location, description, pair.first, pair.second))

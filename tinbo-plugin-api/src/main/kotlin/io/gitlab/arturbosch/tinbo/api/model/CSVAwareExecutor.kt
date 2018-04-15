@@ -9,10 +9,10 @@ import io.gitlab.arturbosch.tinbo.api.withIndexedColumn
  */
 abstract class CSVAwareExecutor {
 
-	protected abstract val TABLE_HEADER: String
+	protected abstract val tableHeader: String
 	protected val csv = CSVTablePrinter()
 
-	fun tableAsString(summaries: List<String>, header: String = TABLE_HEADER): String {
+	fun tableAsString(summaries: List<String>, header: String = tableHeader): String {
 		return csv.asTable(
 				summaries.withIndexedColumn()
 						.plusElementAtBeginning(header)

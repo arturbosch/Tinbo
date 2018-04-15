@@ -15,8 +15,6 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
 
 	protected var entriesInMemory: List<E> = listOf()
 
-	private val NEW_LINE = "\n"
-
 	fun addEntry(entry: E) {
 		dataHolder.persistEntry(entry)
 		cancel()
@@ -46,9 +44,9 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
 			entryTableData = entryTableData.takeLast(amount)
 		}
 
-		entryTableData = entryTableData.plusElementAtBeginning(TABLE_HEADER)
+		entryTableData = entryTableData.plusElementAtBeginning(tableHeader)
 
-		return csv.asTable(entryTableData).joinToString(NEW_LINE)
+		return csv.asTable(entryTableData).joinToString("\n")
 	}
 
 	fun listDataFilteredBy(filter: String, all: Boolean): String {

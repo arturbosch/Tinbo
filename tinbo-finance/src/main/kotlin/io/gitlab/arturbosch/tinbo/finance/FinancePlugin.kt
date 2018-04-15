@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.finance
 
+import io.gitlab.arturbosch.tinbo.api.TinboTerminal
 import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboContext
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboPlugin
-import jline.console.ConsoleReader
 import org.springframework.stereotype.Component
 
 /**
@@ -14,24 +14,24 @@ class FinancePlugin : TinboPlugin() {
 
 	override fun version(): String = "1.0.4"
 
-	override fun registerCommands(tinboContext: TinboContext): List<Command> {
-		val consoleReader = tinboContext.beanOf<ConsoleReader>()
-		val tinboConfig = tinboContext.tinboConfig
+	override fun registerCommands(tinbo: TinboContext): List<Command> {
+		val terminal = tinbo.beanOf<TinboTerminal>()
+		val tinboConfig = tinbo.tinboConfig
 		val configProvider = ConfigProvider(tinboConfig)
 		val persister = FinancePersister(tinboConfig)
 		val dataHolder = FinanceDataHolder(persister, tinboConfig)
 		val executor = FinanceExecutor(dataHolder, configProvider, tinboConfig)
-		val financeCommands = FinanceCommands(executor, configProvider, consoleReader)
-		tinboContext.registerSingleton("FinanceCommands", financeCommands)
+		val financeCommands = FinanceCommands(executor, configProvider, terminal)
+		tinbo.registerSingleton(financeCommands)
 
 		val financeModeCommand = StartFinanceModeCommand()
-		tinboContext.registerSingleton("StartFinanceModeCommand", financeModeCommand)
+		tinbo.registerSingleton(financeModeCommand)
 
 		val listAllSums = ListAllSums(executor, dataHolder, configProvider)
-		tinboContext.registerSingleton("ListAllSums", listAllSums)
-		tinboContext.registerSingleton("FinancePersister", persister)
+		tinbo.registerSingleton(listAllSums)
+		tinbo.registerSingleton(persister)
 		val subscriptionsCommand = SubscriptionsCommand(executor, configProvider)
-		tinboContext.registerSingleton("SubscriptionsCommand", subscriptionsCommand)
+		tinbo.registerSingleton(subscriptionsCommand)
 		return listOf(financeCommands, financeModeCommand, listAllSums, subscriptionsCommand)
 	}
 

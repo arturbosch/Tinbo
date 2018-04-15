@@ -9,9 +9,9 @@ import java.util.stream.Collectors
  */
 abstract class AbstractDataHolder<E : Entry, D : Data<E>>(val persister: AbstractPersister<E, D>) {
 
-	protected abstract val last_used_data: String
+	protected abstract val lastUsedData: String
 
-	var data: D by lazyData { persister.restore(last_used_data) }
+	var data: D by lazyData { persister.restore(lastUsedData) }
 
 	fun loadData(name: String) {
 		data = persister.restore(name)

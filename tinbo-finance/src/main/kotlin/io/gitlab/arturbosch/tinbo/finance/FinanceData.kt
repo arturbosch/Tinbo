@@ -17,7 +17,7 @@ class FinanceDataHolder @Autowired constructor(persister: FinancePersister,
 											   private val config: TinboConfig) :
 		AbstractDataHolder<FinanceEntry, FinanceData>(persister) {
 
-	override val last_used_data: String
+	override val lastUsedData: String
 		get() = config.getKey(ConfigDefaults.FINANCE)
 				.getOrElse(ConfigDefaults.LAST_USED, { Defaults.FINANCE_NAME })
 

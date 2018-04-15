@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.tasks
 
+import io.gitlab.arturbosch.tinbo.api.TinboTerminal
 import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboContext
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboPlugin
-import jline.console.ConsoleReader
 import org.springframework.stereotype.Component
 
 /**
@@ -14,19 +14,19 @@ class TasksPlugin : TinboPlugin() {
 
 	override fun version(): String = "1.0.0"
 
-	override fun registerCommands(tinboContext: TinboContext): List<Command> {
-		val consoleReader = tinboContext.beanOf<ConsoleReader>()
-		val tinboConfig = tinboContext.tinboConfig
+	override fun registerCommands(tinbo: TinboContext): List<Command> {
+		val terminal = tinbo.beanOf<TinboTerminal>()
+		val tinboConfig = tinbo.tinboConfig
 		val persister = TaskPersister(tinboConfig)
 		val dataHolder = TaskDataHolder(persister, tinboConfig)
 		val executor = TaskExecutor(dataHolder, tinboConfig)
-		val taskCommands = TaskCommands(executor, tinboConfig, consoleReader)
-		tinboContext.registerSingleton("TaskCommands", taskCommands)
+		val taskCommands = TaskCommands(executor, tinboConfig, terminal)
+		tinbo.registerSingleton(taskCommands)
 
 		val taskModeCommand = StartTaskModeCommand()
-		tinboContext.registerSingleton("StartTaskModeCommand", taskModeCommand)
+		tinbo.registerSingleton(taskModeCommand)
 
-		tinboContext.registerSingleton("TasksPersister", persister)
+		tinbo.registerSingleton(persister)
 		return listOf(taskCommands, taskModeCommand)
 	}
 

@@ -1,8 +1,8 @@
 package io.gitlab.arturbosch.tinbo.common
 
-import io.gitlab.arturbosch.tinbo.api.marker.Command
-import io.gitlab.arturbosch.tinbo.api.config.ModeManager
 import io.gitlab.arturbosch.tinbo.PluginRegistry
+import io.gitlab.arturbosch.tinbo.api.config.ModeManager
+import io.gitlab.arturbosch.tinbo.api.marker.Command
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
@@ -26,7 +26,7 @@ class HelpCommand @Autowired constructor(
 
 		val helpIds = ModeManager.current.helpIds
 
-		val allowedCommands = registry.shellCommands
+		val allowedCommands = registry.commands
 				.filter { it.id in helpIds }
 
 		return HelpParser(allowedCommands).obtainHelp(buffer)

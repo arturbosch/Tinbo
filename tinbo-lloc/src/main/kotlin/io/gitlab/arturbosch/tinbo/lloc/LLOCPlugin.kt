@@ -8,6 +8,7 @@ import io.gitlab.arturbosch.tinbo.api.plugins.TinboContext
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboPlugin
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
+import org.springframework.stereotype.Component
 import java.io.File
 import java.util.HashMap
 
@@ -16,12 +17,14 @@ import java.util.HashMap
  *
  * @author Artur Bosch
  */
+@Component
 class LLOCPlugin : TinboPlugin(), Command {
 
 	override fun version(): String = "1.0.1"
 	override val id: String = "plugins"
 
-	override fun registerCommands(tinboContext: TinboContext): List<Command> {
+	override fun registerCommands(tinbo: TinboContext): List<Command> {
+		tinbo.registerSingleton(this)
 		return listOf(this)
 	}
 

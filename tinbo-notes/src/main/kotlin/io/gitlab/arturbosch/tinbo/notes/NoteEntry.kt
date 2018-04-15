@@ -6,7 +6,7 @@ import io.gitlab.arturbosch.tinbo.api.spaceIfEmpty
 /**
  * @author artur
  */
-class NoteEntry(val message: String = "") : Entry() {
+class NoteEntry(private val message: String = "") : Entry() {
 
 	override fun compareTo(other: Entry): Int {
 		return 1

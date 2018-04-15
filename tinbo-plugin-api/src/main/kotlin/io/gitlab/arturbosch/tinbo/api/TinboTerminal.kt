@@ -1,7 +1,6 @@
 package io.gitlab.arturbosch.tinbo.api
 
 import org.jline.reader.LineReader
-import org.jline.terminal.Terminal
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Component
@@ -10,8 +9,7 @@ import org.springframework.stereotype.Component
  * @author Artur Bosch
  */
 @Component
-class TinboTerminal @Autowired @Lazy constructor(private val reader: LineReader,
-												 private val writer: Terminal) {
+class TinboTerminal @Autowired @Lazy constructor(private val reader: LineReader) {
 
 	@JvmOverloads
 	fun readLine(prompt: String? = null,
@@ -22,7 +20,7 @@ class TinboTerminal @Autowired @Lazy constructor(private val reader: LineReader,
 	}
 
 	fun write(content: String) {
-		writer.writer().println(content)
-		writer.writer().flush()
+		reader.terminal.writer().println(content)
+		reader.terminal.writer().flush()
 	}
 }

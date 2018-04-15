@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.charts
 
-import io.gitlab.arturbosch.tinbo.api.model.WeekSummary
 import io.gitlab.arturbosch.tinbo.api.marker.Command
+import io.gitlab.arturbosch.tinbo.api.model.WeekSummary
 import io.gitlab.arturbosch.tinbo.api.plugins.ContextAware.context
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.title.TextTitle
@@ -57,7 +57,7 @@ class WeekMonthChart : Command {
 
 	private fun loadSummary(method: String): WeekSummary? {
 		context.let {
-			it.pluginHelpers().find { it.javaClass.simpleName == "TimeSummaryPluginSupport" }?.let {
+			it.helpers.find { it.javaClass.simpleName == "TimeSummaryPluginSupport" }?.let {
 				return it.javaClass.getMethod(method).invoke(it) as WeekSummary
 			}
 		} ?: return null

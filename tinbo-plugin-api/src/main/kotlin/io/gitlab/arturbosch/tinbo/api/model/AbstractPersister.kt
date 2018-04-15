@@ -1,8 +1,8 @@
 package io.gitlab.arturbosch.tinbo.api.model
 
-import io.gitlab.arturbosch.tinbo.api.marker.PersistableMarker
 import io.gitlab.arturbosch.tinbo.api.config.HomeFolder
 import io.gitlab.arturbosch.tinbo.api.config.TinboConfig
+import io.gitlab.arturbosch.tinbo.api.marker.PersistableMarker
 import io.gitlab.arturbosch.tinbo.api.model.util.CSVDataExchange
 import java.nio.file.Files
 import java.nio.file.Path

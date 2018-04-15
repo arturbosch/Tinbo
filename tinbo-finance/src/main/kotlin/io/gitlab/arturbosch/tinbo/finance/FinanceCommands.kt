@@ -1,16 +1,16 @@
 package io.gitlab.arturbosch.tinbo.finance
 
-import io.gitlab.arturbosch.tinbo.api.marker.Summarizable
+import io.gitlab.arturbosch.tinbo.api.TinboTerminal
 import io.gitlab.arturbosch.tinbo.api.commands.EditableCommands
 import io.gitlab.arturbosch.tinbo.api.config.Defaults
 import io.gitlab.arturbosch.tinbo.api.config.ModeManager
+import io.gitlab.arturbosch.tinbo.api.marker.Summarizable
 import io.gitlab.arturbosch.tinbo.api.nullIfEmpty
 import io.gitlab.arturbosch.tinbo.api.orDefaultMonth
 import io.gitlab.arturbosch.tinbo.api.orThrow
 import io.gitlab.arturbosch.tinbo.api.orValue
 import io.gitlab.arturbosch.tinbo.api.utils.dateFormatter
 import io.gitlab.arturbosch.tinbo.api.utils.dateTimeFormatter
-import jline.console.ConsoleReader
 import org.joda.money.Money
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
@@ -28,11 +28,11 @@ import java.time.format.DateTimeParseException
 @Component
 class FinanceCommands @Autowired constructor(private val financeExecutor: FinanceExecutor,
 											 private val configProvider: ConfigProvider,
-											 consoleReader: ConsoleReader) :
-		EditableCommands<FinanceEntry, FinanceData, DummyFinance>(financeExecutor, consoleReader), Summarizable {
+											 terminal: TinboTerminal) :
+		EditableCommands<FinanceEntry, FinanceData, DummyFinance>(financeExecutor, terminal), Summarizable {
 
 	override val id: String = FinanceMode.id
-	private val SUCCESS_MESSAGE = "Successfully added a finance entry."
+	private val successMessage = "Successfully added a finance entry."
 
 	@CliAvailabilityIndicator("year", "mean", "deviation", "loadFinance")
 	fun isAvailable(): Boolean {
@@ -40,16 +40,16 @@ class FinanceCommands @Autowired constructor(private val financeExecutor: Financ
 	}
 
 	@CliCommand("loadFinance", help = "Loads/Creates an other data set. Finance data sets are stored under ~/tinbo/finance/*.")
-	fun loadTasks(@CliOption(key = arrayOf("", "name"), mandatory = true,
+	fun loadTasks(@CliOption(key = ["", "name"], mandatory = true,
 			specifiedDefaultValue = Defaults.FINANCE_NAME,
 			unspecifiedDefaultValue = Defaults.FINANCE_NAME) name: String) {
 		executor.loadData(name)
 	}
 
 	@CliCommand("year", "yearSummary", help = "Sums up the year by providing expenditure per month.")
-	fun yearSummary(@CliOption(key = arrayOf("last"), mandatory = false,
+	fun yearSummary(@CliOption(key = ["last"], mandatory = false,
 			specifiedDefaultValue = "true", unspecifiedDefaultValue = "false") lastYear: Boolean,
-					@CliOption(key = arrayOf(""), mandatory = false,
+					@CliOption(key = [""], mandatory = false,
 							specifiedDefaultValue = "-1", unspecifiedDefaultValue = "-1") year: Int): String {
 
 		return withValidDate(year, lastYear) {
@@ -58,9 +58,9 @@ class FinanceCommands @Autowired constructor(private val financeExecutor: Financ
 	}
 
 	@CliCommand("mean", help = "Provides the mean expenditure per month for current or specified year.")
-	fun means(@CliOption(key = arrayOf("last"), mandatory = false,
+	fun means(@CliOption(key = ["last"], mandatory = false,
 			specifiedDefaultValue = "true", unspecifiedDefaultValue = "false") lastYear: Boolean,
-			  @CliOption(key = arrayOf(""), mandatory = false,
+			  @CliOption(key = [""], mandatory = false,
 					  specifiedDefaultValue = "-1", unspecifiedDefaultValue = "-1") year: Int): String {
 
 		return withValidDate(year, lastYear) {
@@ -69,9 +69,9 @@ class FinanceCommands @Autowired constructor(private val financeExecutor: Financ
 	}
 
 	@CliCommand("deviation", help = "Provides the expenditure deviation per month for current or specified year.")
-	fun deviation(@CliOption(key = arrayOf("last"), mandatory = false,
+	fun deviation(@CliOption(key = ["last"], mandatory = false,
 			specifiedDefaultValue = "true", unspecifiedDefaultValue = "false") lastYear: Boolean,
-				  @CliOption(key = arrayOf(""), mandatory = false,
+				  @CliOption(key = [""], mandatory = false,
 						  specifiedDefaultValue = "-1", unspecifiedDefaultValue = "-1") year: Int): String {
 
 		return withValidDate(year, lastYear) {
@@ -95,13 +95,13 @@ class FinanceCommands @Autowired constructor(private val financeExecutor: Financ
 		return whileNotInEditMode {
 			val month = Month.of(console.readLine("Enter a month as number from 1-12 (empty if this month): ").orDefaultMonth())
 			val category = console.readLine("Enter a category: ").orValue(configProvider.categoryName)
-			val message = console.readLine("Enter a message: ").orEmpty()
+			val message = console.readLine("Enter a message: ")
 			val money = Money.of(configProvider.currencyUnit, console.readLine("Enter a money value: ").orThrow().toDouble())
 			val dateString = console.readLine("Enter a end time (yyyy-MM-dd HH:mm): ")
 			val dateTime = parseDateTime(dateString)
 
 			executor.addEntry(FinanceEntry(month, category, message, money, dateTime))
-			SUCCESS_MESSAGE
+			successMessage
 		}
 	}
 
@@ -122,13 +122,13 @@ class FinanceCommands @Autowired constructor(private val financeExecutor: Financ
 			val i = index - 1
 			enterEditModeWithIndex(i) {
 				val monthString = console.readLine("Enter a month as number from 1-12 (empty if this month) (leave empty if unchanged): ")
-				val month = if (monthString.isNullOrEmpty()) null else Month.of(monthString.orDefaultMonth())
+				val month = if (monthString.isEmpty()) null else Month.of(monthString.orDefaultMonth())
 				val category = console.readLine("Enter a category (leave empty if unchanged): ").nullIfEmpty()
 				val message = console.readLine("Enter a message (leave empty if unchanged): ").nullIfEmpty()
 				val moneyString = console.readLine("Enter a money value (leave empty if unchanged): ")
-				val money = if (moneyString.isNullOrEmpty()) null else Money.of(configProvider.currencyUnit, moneyString.toDouble())
+				val money = if (moneyString.isEmpty()) null else Money.of(configProvider.currencyUnit, moneyString.toDouble())
 				val dateString = console.readLine("Enter a end time (yyyy-MM-dd HH:mm) (leave empty if unchanged): ")
-				val dateTime = if (dateString.isNullOrEmpty()) null else LocalDateTime.parse(dateString, dateTimeFormatter)
+				val dateTime = if (dateString.isEmpty()) null else LocalDateTime.parse(dateString, dateTimeFormatter)
 				executor.editEntry(i, DummyFinance(category, message, month, money, dateTime))
 				"Successfully edited a finance entry."
 			}

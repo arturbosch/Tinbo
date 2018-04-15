@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component
  */
 @Component
 open class NoteDataHolder @Autowired constructor(persister: NotePersister,
-												 val config: TinboConfig) :
+												 private val config: TinboConfig) :
 		AbstractDataHolder<NoteEntry, NoteData>(persister) {
 
-	override val last_used_data: String
+	override val lastUsedData: String
 		get() = config.getKey(ConfigDefaults.NOTES)
 				.getOrElse(ConfigDefaults.LAST_USED, { Defaults.NOTES_NAME })
 

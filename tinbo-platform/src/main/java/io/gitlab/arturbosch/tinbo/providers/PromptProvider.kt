@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 @Order(org.springframework.core.Ordered.HIGHEST_PRECEDENCE)
-open class PromptProvider : EditablePromptProvider {
+class PromptProvider : EditablePromptProvider {
 
 	override var promptText = "tinbo"
 

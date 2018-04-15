@@ -1,8 +1,8 @@
 package io.gitlab.arturbosch.tinbo
 
-import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.api.TinboTerminal
 import io.gitlab.arturbosch.tinbo.api.config.HomeFolder
+import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.api.plugins.ContextAware
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboContext
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboPlugin
@@ -23,14 +23,22 @@ class PluginRegistry @Autowired constructor(
 		private val context: TinboContext,
 		private val console: TinboTerminal) : MethodTargetRegistrar {
 
-	val shellCommands = ArrayList<Command>()
+	val plugins: List<TinboPlugin> get() = registeredPlugins
+	val commands: List<Command> get() = shellCommands
+
+	private val shellCommands = ArrayList<Command>()
 	private val registeredPlugins = ArrayList<TinboPlugin>()
 	private val log = LogManager.getLogger(javaClass)
 
 	override fun register(registry: ConfigurableCommandRegistry) {
 		val plugins = loadPlugins()
 		for (plugin in plugins) {
-			shellCommands.addAll(plugin.registerCommands(context))
+			for (command in plugin.registerCommands(context)) {
+				if (!context.hasBean(command)) {
+					context.registerSingleton(command)
+				}
+				shellCommands.add(command)
+			}
 		}
 		if (plugins.isNotEmpty()) {
 			console.write("Successfully loaded plugins: ${plugins.joinToString(", ")}")

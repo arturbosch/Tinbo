@@ -7,7 +7,7 @@ import java.time.LocalDate
  *
  * @author Artur Bosch
  */
-class DateChartFormat(val date: LocalDate) : Comparable<DateChartFormat> {
+class DateChartFormat(private val date: LocalDate) : Comparable<DateChartFormat> {
 	override fun compareTo(other: DateChartFormat): Int {
 		return date.compareTo(other.date)
 	}

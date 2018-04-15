@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 class CSVProjects @Autowired constructor(private val fileProjects: FileProjects) : CSVAwareExecutor() {
 
 	private val dummy = Project()
-	override val TABLE_HEADER: String = "No.;" + dummy.csvHeader()
+	override val tableHeader: String = "No.;" + dummy.csvHeader()
 
 	fun convert(): String {
 		val sums = fileProjects.projects.map { it.asCSV() }

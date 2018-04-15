@@ -61,24 +61,25 @@ dependencies {
 
 ```kotlin
 @Component
-class NotesPlugin : TinboPlugin {
+class NotesPlugin : TinboPlugin() {
 
-	override fun registerCommands(tinboContext: TinboContext): List<Command> {
-		val consoleReader = tinboContext.beanOf<ConsoleReader>()
-		val tinboConfig = tinboContext.tinboConfig
+	override fun version(): String = "1.0.0"
+
+	override fun registerCommands(tinbo: TinboContext): List<Command> {
+		val console = tinbo.beanOf<TinboTerminal>()
+		val tinboConfig = tinbo.tinboConfig
 		val persister = NotePersister(tinboConfig)
 		val dataHolder = NoteDataHolder(persister, tinboConfig)
 		val executor = NoteExecutor(dataHolder, tinboConfig)
-		val noteCommands = NoteCommands(executor, consoleReader)
-		tinboContext.registerSingleton("NoteCommands", noteCommands)
+		val noteCommands = NoteCommands(executor, console)
+		tinbo.registerSingleton("NoteCommands", noteCommands)
 
 		val notesModeCommand = StartNotesModeCommand()
-		tinboContext.registerSingleton("StartNoteModeCommand", notesModeCommand)
+		tinbo.registerSingleton("StartNoteModeCommand", notesModeCommand)
 
-		tinboContext.registerSingleton("NotesPersister", persister)
+		tinbo.registerSingleton("NotesPersister", persister)
 		return listOf(noteCommands, notesModeCommand)
 	}
-
 }
 ```
 

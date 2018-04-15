@@ -13,7 +13,7 @@ open class NoteExecutor @Autowired constructor(noteDataHolder: NoteDataHolder,
 											   tinboConfig: TinboConfig) :
 		AbstractExecutor<NoteEntry, NoteData, DummyNote>(noteDataHolder, tinboConfig) {
 
-	override val TABLE_HEADER: String
+	override val tableHeader: String
 		get() = "No.;Message"
 
 	override fun newEntry(index: Int, dummy: DummyNote): NoteEntry {

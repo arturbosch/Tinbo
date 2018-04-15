@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture
  * @author artur
  */
 @Component
-open class TimerCommands @Autowired constructor(val executor: TimeExecutor) : Command {
+open class TimerCommands @Autowired constructor(private val executor: TimeExecutor) : Command {
 
 	override val id: String = "time"
 
@@ -31,15 +31,15 @@ open class TimerCommands @Autowired constructor(val executor: TimeExecutor) : Co
 	}
 
 	@CliCommand(value = "start", help = "Starts the timer and waits for you to type 'stop' to finish it if no arguments are specified.")
-	fun startTimer(@CliOption(key = arrayOf("minutes", "m", "mins"), specifiedDefaultValue = "0",
+	fun startTimer(@CliOption(key = ["minutes", "m", "mins"], specifiedDefaultValue = "0",
 			unspecifiedDefaultValue = "0", help = "Duration of timer in minutes.") mins: Int,
-				   @CliOption(key = arrayOf("seconds", "s", "mins"), specifiedDefaultValue = "0",
+				   @CliOption(key = ["seconds", "s", "mins"], specifiedDefaultValue = "0",
 						   unspecifiedDefaultValue = "0", help = "Duration of timer in seconds.") seconds: Int,
-				   @CliOption(key = arrayOf("background", "bg"), unspecifiedDefaultValue = "false",
+				   @CliOption(key = ["background", "bg"], unspecifiedDefaultValue = "false",
 						   specifiedDefaultValue = "true", help = "If the timer should be started in background.") bg: Boolean,
-				   @CliOption(key = arrayOf("category", "c", ""), unspecifiedDefaultValue = "",
+				   @CliOption(key = ["category", "c", ""], unspecifiedDefaultValue = "",
 						   specifiedDefaultValue = "", help = "Category in which the time should be saved.") name: String,
-				   @CliOption(key = arrayOf("message", "msg"), unspecifiedDefaultValue = "",
+				   @CliOption(key = ["message", "msg"], unspecifiedDefaultValue = "",
 						   specifiedDefaultValue = "", help = "Note for this tracking.") message: String) {
 
 		if (inputsAreInvalid(mins, seconds)) {
@@ -58,8 +58,8 @@ open class TimerCommands @Autowired constructor(val executor: TimeExecutor) : Co
 	}
 
 	private fun specifyTimerMode(bg: Boolean): TimerMode {
-		if (bg) return TimerMode.BACKGROUND
-		else return TimerMode.DEFAULT
+		return if (bg) TimerMode.BACKGROUND
+		else TimerMode.DEFAULT
 	}
 
 	private fun inputsAreInvalid(mins: Int, seconds: Int): Boolean {
@@ -83,11 +83,11 @@ open class TimerCommands @Autowired constructor(val executor: TimeExecutor) : Co
 	}
 
 	@CliCommand(value = "stop", help = "Stops the timer.")
-	fun stopTimer(@CliOption(key = arrayOf("name", "n"),
+	fun stopTimer(@CliOption(key = ["name", "n"],
 			unspecifiedDefaultValue = "",
 			specifiedDefaultValue = "",
 			help = "Category in which the time should be saved.") name: String,
-				  @CliOption(key = arrayOf("message", "msg"),
+				  @CliOption(key = ["message", "msg"],
 						  unspecifiedDefaultValue = "",
 						  specifiedDefaultValue = "",
 						  help = "Note for this tracking.") message: String) {

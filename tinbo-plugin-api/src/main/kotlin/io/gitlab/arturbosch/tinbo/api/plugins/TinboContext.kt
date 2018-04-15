@@ -3,7 +3,6 @@ package io.gitlab.arturbosch.tinbo.api.plugins
 import io.gitlab.arturbosch.tinbo.api.config.TinboConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.BeanDefinition
-import org.springframework.context.ApplicationContext
 import org.springframework.context.support.GenericApplicationContext
 import org.springframework.stereotype.Component
 
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Component
  * @author Artur Bosch
  */
 @Component
-class TinboContext @Autowired constructor(val context: ApplicationContext,
+class TinboContext @Autowired constructor(val context: GenericApplicationContext,
 										  val tinboConfig: TinboConfig) {
 	@PluginSupport
 	val helpers by lazy { context.getBeansOfType(PluginHelper::class.java).values }
@@ -22,21 +21,32 @@ class TinboContext @Autowired constructor(val context: ApplicationContext,
 
 	@PluginSupport
 	fun registerBeanDefinition(name: String, bean: BeanDefinition) {
-		(context as GenericApplicationContext).defaultListableBeanFactory
-				.registerBeanDefinition(name, bean)
+		context.defaultListableBeanFactory.registerBeanDefinition(name, bean)
 	}
 
 	@PluginSupport
+	fun registerSingleton(obj: Any) {
+		context.beanFactory.registerSingleton(obj.javaClass.name, obj)
+	}
+
+	@PluginSupport
+	@Deprecated("Do not provide a bean name on your own.", ReplaceWith("registerSingleton(obj)"))
 	fun registerSingleton(name: String, obj: Any) {
-		(context as GenericApplicationContext).beanFactory.registerSingleton(name, obj)
+		context.beanFactory.registerSingleton(name, obj)
 	}
 
 	@PluginSupport
 	fun registerSingletons(objects: List<Any>) {
 		for (obj in objects) {
-			registerSingleton(obj::class.java.simpleName, obj)
+			registerSingleton(obj)
 		}
 	}
+
+	@PluginSupport
+	fun hasBean(any: Any): Boolean = context.containsBean(any.javaClass.name)
+
+	@PluginSupport
+	fun hasBean(name: String): Boolean = context.containsBean(name)
 
 	@PluginSupport
 	fun <T> beanOf(clazz: Class<T>): T = context.getBean(clazz)

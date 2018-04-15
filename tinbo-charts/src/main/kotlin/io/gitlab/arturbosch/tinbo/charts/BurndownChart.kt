@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.charts
 
-import io.gitlab.arturbosch.tinbo.api.model.Project
 import io.gitlab.arturbosch.tinbo.api.marker.Command
+import io.gitlab.arturbosch.tinbo.api.model.Project
 import io.gitlab.arturbosch.tinbo.api.plugins.ContextAware.context
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.JFreeChart
@@ -26,7 +26,7 @@ class BurndownChart : Command {
 	override val id: String = "plugins"
 
 	@CliCommand("charts burndown", help = "Choose a project to generate a burndown chart based on psp units.")
-	fun burndown(@CliOption(key = arrayOf("")) name: String?) {
+	fun burndown(@CliOption(key = [""]) name: String?) {
 		loadSummary("projects")?.find { project ->
 			name?.let { project.name.startsWith(name) } ?: false
 		}?.let { project ->
@@ -117,7 +117,7 @@ class BurndownChart : Command {
 	@Suppress("UNCHECKED_CAST")
 	private fun loadSummary(method: String): List<Project>? {
 		context.let {
-			it.pluginHelpers().find { it.javaClass.simpleName == "ProjectsPluginSupport" }?.let {
+			it.helpers.find { it.javaClass.simpleName == "ProjectsPluginSupport" }?.let {
 				val value = it.javaClass.getMethod(method).invoke(it)
 				return value as List<Project>
 			}

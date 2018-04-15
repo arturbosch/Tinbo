@@ -15,8 +15,8 @@ import java.time.LocalDate
  * @author artur
  */
 @Component
-open class TimeSummaryCommands @Autowired constructor(val summaryExecutor: WeekSummaryExecutor,
-													  val timeSummaryPluginSupport: TimeSummaryPluginSupport) :
+open class TimeSummaryCommands @Autowired constructor(private val summaryExecutor: WeekSummaryExecutor,
+													  private val timeSummaryPluginSupport: TimeSummaryPluginSupport) :
 		Summarizable, Command {
 
 	override val id: String = "time"
@@ -27,10 +27,10 @@ open class TimeSummaryCommands @Autowired constructor(val summaryExecutor: WeekS
 	}
 
 	override fun sum(categories: List<String>): String {
-		if (categories.isEmpty()) {
-			return summaryExecutor.sumAllCategories()
+		return if (categories.isEmpty()) {
+			summaryExecutor.sumAllCategories()
 		} else {
-			return summaryExecutor.sumForCategories(categories)
+			summaryExecutor.sumForCategories(categories)
 		}
 	}
 

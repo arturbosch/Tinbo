@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component
  */
 @Component
 open class TimeDataHolder @Autowired constructor(persister: TimePersister,
-												 val config: TinboConfig) :
+												 private val config: TinboConfig) :
 		AbstractDataHolder<TimeEntry, TimeData>(persister) {
 
-	override val last_used_data: String
+	override val lastUsedData: String
 		get() = config.getKey(ConfigDefaults.TIMERS)
 				.getOrElse(ConfigDefaults.LAST_USED, { Defaults.TIME_NAME })
 
@@ -32,12 +32,12 @@ open class TimeDataHolder @Autowired constructor(persister: TimePersister,
 		return summariesInternal(getEntries())
 	}
 
-	fun summariesInternal(entries: List<TimeEntry>): List<String> {
+	private fun summariesInternal(entries: List<TimeEntry>): List<String> {
 		val categoryToTimeString = entries.groupBy { it.category }.mapValues { sumTimesAsString(it.value) }
 		return categoryToTimeString.map { it.key + ";" + it.value }
 	}
 
-	fun sumTimesAsString(value: List<TimeEntry>): String {
+	private fun sumTimesAsString(value: List<TimeEntry>): String {
 		val seconds = value.map { it.seconds }.sum()
 		val (extraMinutes, realSeconds) = divAndMod(seconds)
 		val minutes = value.map { it.minutes }.sum().plus(extraMinutes)

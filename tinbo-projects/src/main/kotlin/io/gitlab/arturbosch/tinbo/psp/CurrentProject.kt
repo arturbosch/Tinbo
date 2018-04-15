@@ -25,7 +25,7 @@ class CurrentProject @Autowired constructor(private val csvTasks: CSVTasks,
 		unspecify()
 	}
 
-	val unspecified = Project("undef")
+	private val unspecified = Project("undef")
 	private var project: Project = unspecified
 
 	private fun findByName(name: String) = fileProjects.projects.find {
@@ -42,7 +42,7 @@ class CurrentProject @Autowired constructor(private val csvTasks: CSVTasks,
 
 	fun isSpecified(): Boolean = project != unspecified
 
-	fun unspecify() {
+	private fun unspecify() {
 		project = unspecified
 	}
 

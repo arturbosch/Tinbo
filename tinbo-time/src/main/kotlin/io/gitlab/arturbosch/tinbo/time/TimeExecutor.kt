@@ -1,12 +1,12 @@
 package io.gitlab.arturbosch.tinbo.time
 
+import io.gitlab.arturbosch.tinbo.api.TinboTerminal
 import io.gitlab.arturbosch.tinbo.api.config.Notification
 import io.gitlab.arturbosch.tinbo.api.config.TinboConfig
 import io.gitlab.arturbosch.tinbo.api.model.AbstractExecutor
 import io.gitlab.arturbosch.tinbo.api.orValue
 import io.gitlab.arturbosch.tinbo.api.utils.printInfo
 import io.gitlab.arturbosch.tinbo.api.utils.printlnInfo
-import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
@@ -16,11 +16,11 @@ import java.time.LocalDateTime
  */
 @Component
 open class TimeExecutor @Autowired constructor(timeDataHolder: TimeDataHolder,
-											   val consoleReader: ConsoleReader,
-											   val config: TinboConfig) :
+											   private val terminal: TinboTerminal,
+											   private val config: TinboConfig) :
 		AbstractExecutor<TimeEntry, TimeData, DummyTime>(timeDataHolder, config) {
 
-	override val TABLE_HEADER: String
+	override val tableHeader: String
 		get() = "No.;Category;Date;HH:MM:SS;Notice"
 
 	override fun newEntry(index: Int, dummy: DummyTime): TimeEntry {
@@ -56,10 +56,10 @@ open class TimeExecutor @Autowired constructor(timeDataHolder: TimeDataHolder,
 			running = false
 			changeCategoryAndMessageIfNotEmpty(name, message)
 			val category = if (currentTimer.category.isEmpty()) {
-				consoleReader.readLine("Enter a category name: ").orValue(config.getCategoryName())
+				terminal.readLine("Enter a category name: ").orValue(config.getCategoryName())
 			} else currentTimer.category
 			val description = if (currentTimer.message.isEmpty()) {
-				consoleReader.readLine("Enter a description: ").orValue("")
+				terminal.readLine("Enter a description: ").orValue("")
 			} else currentTimer.message
 			currentTimer = currentTimer.copy(category = category, message = description)
 			saveAndResetCurrentTimer()
@@ -94,8 +94,8 @@ open class TimeExecutor @Autowired constructor(timeDataHolder: TimeDataHolder,
 	}
 
 	fun showTimer(): String {
-		if (inProgress()) return currentTimer.toTimeString()
-		else return "No current timer is running"
+		return if (inProgress()) currentTimer.toTimeString()
+		else "No current timer is running"
 	}
 
 	fun changeTimeMode(mode: TimerMode) {

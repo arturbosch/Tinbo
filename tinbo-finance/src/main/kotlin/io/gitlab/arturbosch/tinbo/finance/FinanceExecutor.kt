@@ -21,7 +21,7 @@ class FinanceExecutor @Autowired constructor(private val dataHolder: FinanceData
 											 tinboConfig: TinboConfig) :
 		AbstractExecutor<FinanceEntry, FinanceData, DummyFinance>(dataHolder, tinboConfig) {
 
-	override val TABLE_HEADER: String
+	override val tableHeader: String
 		get() = "No.;Month;Category;Notice;Spend;Time"
 
 	override fun newEntry(index: Int, dummy: DummyFinance): FinanceEntry {

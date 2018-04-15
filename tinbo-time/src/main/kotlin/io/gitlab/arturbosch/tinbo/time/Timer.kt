@@ -49,13 +49,11 @@ class Timer(val timerMode: TimerMode = TimerMode.INVALID,
 				"Elapsed time: ${diffHours.toTimeString()}:${diffMins.toTimeString()}:${diffSecs.toTimeString()} " +
 						"(${category.orValue("Main")})"
 
-		val returnString = when {
+		return when {
 			pauseSecs == 0L && pauseMins == 0L && pauseHours == 0L -> timeString
 			else -> timeString + " with pause time: " +
 					"${pauseHours.toTimeString()}:${pauseMins.toTimeString()}:${pauseSecs.toTimeString()} "
 		}
-
-		return returnString
 	}
 
 	fun getPauseTriple(): Triple<Long, Long, Long> {

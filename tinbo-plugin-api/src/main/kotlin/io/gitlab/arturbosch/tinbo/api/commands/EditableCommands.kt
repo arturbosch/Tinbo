@@ -1,24 +1,25 @@
 package io.gitlab.arturbosch.tinbo.api.commands
 
+import io.gitlab.arturbosch.tinbo.api.TinboTerminal
+import io.gitlab.arturbosch.tinbo.api.config.ModeManager
 import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.api.marker.Editable
-import io.gitlab.arturbosch.tinbo.api.config.ModeManager
 import io.gitlab.arturbosch.tinbo.api.model.AbstractExecutor
 import io.gitlab.arturbosch.tinbo.api.model.Data
 import io.gitlab.arturbosch.tinbo.api.model.DummyEntry
 import io.gitlab.arturbosch.tinbo.api.model.Entry
 import io.gitlab.arturbosch.tinbo.api.utils.printlnInfo
-import jline.console.ConsoleReader
 import java.util.HashSet
 
 /**
  * @author artur
  */
+@Suppress("MemberVisibilityCanBePrivate")
 abstract class EditableCommands<E : Entry, D : Data<E>, in T : DummyEntry>(
 		val executor: AbstractExecutor<E, D, T>,
-		val console: ConsoleReader) : Command, Editable {
+		val console: TinboTerminal) : Command, Editable {
 
-	private val NEED_EDIT_MODE_TEXT = "Before adding or list entries exit edit mode with 'save' or 'cancel'."
+	private val needEditModeText = "Before adding or list entries exit edit mode with 'save' or 'cancel'."
 
 	protected var isListMode: Boolean = false
 	protected var isEditMode: Boolean = false
@@ -29,39 +30,39 @@ abstract class EditableCommands<E : Entry, D : Data<E>, in T : DummyEntry>(
 	}
 
 	protected fun withinListMode(body: () -> String): String {
-		if (isListMode) {
-			return body.invoke()
+		return if (isListMode) {
+			body.invoke()
 		} else {
-			return "Before editing entries you have to 'list' them to get indices to work on."
+			"Before editing entries you have to 'list' them to get indices to work on."
 		}
 	}
 
 	protected fun enterEditModeWithIndex(index: Int, body: () -> String): String {
-		if (executor.indexExists(index)) {
+		return if (executor.indexExists(index)) {
 			ModeManager.isBackCommandBlocked = true
 			isEditMode = true
-			return body.invoke()
+			body.invoke()
 		} else {
-			return "This index doesn't exist"
+			"This index doesn't exist"
 		}
 	}
 
 	protected fun withinEditMode(command: String, body: () -> String): String {
-		if (isEditMode) {
+		return if (isEditMode) {
 			ModeManager.isBackCommandBlocked = false
 			isEditMode = false
 			isListMode = false
-			return body.invoke()
+			body.invoke()
 		} else {
-			return "You need to be in edit mode to use $command."
+			"You need to be in edit mode to use $command."
 		}
 	}
 
 	protected fun whileNotInEditMode(body: () -> String): String {
-		if (isEditMode) {
-			return NEED_EDIT_MODE_TEXT
+		return if (isEditMode) {
+			needEditModeText
 		} else {
-			return body.invoke()
+			body.invoke()
 		}
 	}
 

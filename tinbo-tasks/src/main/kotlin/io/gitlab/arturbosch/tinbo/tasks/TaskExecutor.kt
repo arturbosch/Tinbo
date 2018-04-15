@@ -13,7 +13,7 @@ open class TaskExecutor @Autowired constructor(taskDataHolder: TaskDataHolder,
 											   tinboConfig: TinboConfig) :
 		AbstractExecutor<TaskEntry, TaskData, DummyTask>(taskDataHolder, tinboConfig) {
 
-	override val TABLE_HEADER: String
+	override val tableHeader: String
 		get() = "No.;Category;Message;Location;Start;End;Description"
 
 	override fun newEntry(index: Int, dummy: DummyTask): TaskEntry {

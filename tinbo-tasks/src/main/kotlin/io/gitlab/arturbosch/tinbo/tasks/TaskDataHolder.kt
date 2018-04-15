@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component
  */
 @Component
 open class TaskDataHolder @Autowired constructor(persister: TaskPersister,
-												 val config: TinboConfig) :
+												 private val config: TinboConfig) :
 		AbstractDataHolder<TaskEntry, TaskData>(persister) {
 
-	override val last_used_data: String
+	override val lastUsedData: String
 		get() = config.getKey(ConfigDefaults.TASKS)
 				.getOrElse(ConfigDefaults.LAST_USED, { Defaults.TASKS_NAME })
 

@@ -13,7 +13,7 @@ import java.nio.file.Path
  * @author Artur Bosch
  */
 @Component
-class FileProjects(val projectsPath: Path = HomeFolder.getDirectory(PROJECTS)) {
+class FileProjects(private val projectsPath: Path = HomeFolder.getDirectory(PROJECTS)) {
 
 	private val yml = "yml"
 

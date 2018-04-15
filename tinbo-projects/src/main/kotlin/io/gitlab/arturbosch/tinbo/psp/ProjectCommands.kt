@@ -1,13 +1,13 @@
 package io.gitlab.arturbosch.tinbo.psp
 
-import io.gitlab.arturbosch.tinbo.api.model.Task
-import io.gitlab.arturbosch.tinbo.api.model.Time
+import io.gitlab.arturbosch.tinbo.api.TinboTerminal
 import io.gitlab.arturbosch.tinbo.api.marker.Addable
 import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.api.marker.Listable
+import io.gitlab.arturbosch.tinbo.api.model.Task
+import io.gitlab.arturbosch.tinbo.api.model.Time
 import io.gitlab.arturbosch.tinbo.api.orThrow
 import io.gitlab.arturbosch.tinbo.api.utils.dateFormatter
-import jline.console.ConsoleReader
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
@@ -19,8 +19,8 @@ import java.time.LocalDate
  * @author Artur Bosch
  */
 @Component
-class ProjectCommands @Autowired constructor(val console: ConsoleReader,
-											 val currentProject: CurrentProject) : Command, Listable, Addable {
+class ProjectCommands @Autowired constructor(private val console: TinboTerminal,
+											 private val currentProject: CurrentProject) : Command, Listable, Addable {
 	override val id: String = "psp"
 
 	override fun list(categoryName: String, all: Boolean): String = currentProject.showTasks()
@@ -50,9 +50,9 @@ class ProjectCommands @Autowired constructor(val console: ConsoleReader,
 	private fun printMessageOfException(e: Exception) = e.message ?: throw e
 
 	@CliCommand("close-task", "finish", help = "Marks task with given starting name as finish.")
-	fun finishTask(@CliOption(key = arrayOf("")) name: String?,
-				   @CliOption(key = arrayOf("time")) minutes: Int?,
-				   @CliOption(key = arrayOf("units")) units: Int?): String {
+	fun finishTask(@CliOption(key = [""]) name: String?,
+				   @CliOption(key = ["time"]) minutes: Int?,
+				   @CliOption(key = ["units"]) units: Int?): String {
 		val wrong = "There was no task starting with given characters!"
 		return name?.let {
 			if (minutes == null || units == null) return "Actual time and currencyUnit values must be specified!"

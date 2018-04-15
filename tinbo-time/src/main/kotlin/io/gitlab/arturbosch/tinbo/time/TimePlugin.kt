@@ -1,9 +1,9 @@
 package io.gitlab.arturbosch.tinbo.time
 
+import io.gitlab.arturbosch.tinbo.api.TinboTerminal
 import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboContext
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboPlugin
-import jline.console.ConsoleReader
 import org.springframework.stereotype.Component
 
 /**
@@ -14,29 +14,29 @@ class TimePlugin : TinboPlugin() {
 
 	override fun version(): String = "1.0.0"
 
-	override fun registerCommands(tinboContext: TinboContext): List<Command> {
-		val consoleReader = tinboContext.beanOf<ConsoleReader>()
-		val tinboConfig = tinboContext.tinboConfig
+	override fun registerCommands(tinbo: TinboContext): List<Command> {
+		val terminal = tinbo.beanOf<TinboTerminal>()
+		val tinboConfig = tinbo.tinboConfig
 		val persister = TimePersister(tinboConfig)
 		val dataHolder = TimeDataHolder(persister, tinboConfig)
-		val executor = TimeExecutor(dataHolder, consoleReader, tinboConfig)
-		val financeCommands = TimeEditCommands(executor, tinboConfig, consoleReader)
-		tinboContext.registerSingleton("TimeEditCommands", financeCommands)
+		val executor = TimeExecutor(dataHolder, terminal, tinboConfig)
+		val financeCommands = TimeEditCommands(executor, tinboConfig, terminal)
+		tinbo.registerSingleton(financeCommands)
 
 		val financeModeCommand = StartTimeModeCommand()
-		tinboContext.registerSingleton("StartTimeModeCommand", financeModeCommand)
+		tinbo.registerSingleton(financeModeCommand)
 
 		val summaryExecutor = WeekSummaryExecutor(dataHolder)
 		val timeSummaryPluginHelper = TimeSummaryPluginSupport(dataHolder)
 		val timeSummaryCommands = TimeSummaryCommands(summaryExecutor, timeSummaryPluginHelper)
-		tinboContext.registerSingleton("TimeSummaryCommands", timeSummaryCommands)
+		tinbo.registerSingleton(timeSummaryCommands)
 
 		val timerCommands = TimerCommands(executor)
-		tinboContext.registerSingleton("TimerCommands", timerCommands)
+		tinbo.registerSingleton(timerCommands)
 
-		tinboContext.registerSingleton("TimePersister", persister)
+		tinbo.registerSingleton(persister)
 		val timeSummaryPluginSupport = TimeSummaryPluginSupport(dataHolder)
-		tinboContext.registerSingleton("TimeSummaryPluginSupport", timeSummaryPluginSupport)
+		tinbo.registerSingleton(timeSummaryPluginSupport)
 		return listOf(financeCommands, financeModeCommand, timerCommands, timeSummaryCommands)
 	}
 

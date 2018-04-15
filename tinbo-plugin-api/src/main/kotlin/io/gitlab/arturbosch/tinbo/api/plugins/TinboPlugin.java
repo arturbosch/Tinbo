@@ -30,7 +30,7 @@ public abstract class TinboPlugin {
 		return ContextAware.INSTANCE.getContext();
 	}
 
-	public abstract List<Command> registerCommands(TinboContext tinboContext);
+	public abstract List<Command> registerCommands(TinboContext tinbo);
 
 	@Override
 	public String toString() {

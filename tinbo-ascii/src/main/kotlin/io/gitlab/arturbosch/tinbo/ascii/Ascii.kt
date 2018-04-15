@@ -19,8 +19,8 @@ class Ascii : Command {
 	override val id: String = "plugins"
 
 	@CliCommand("plugin ascii", help = "Converts an given image to ascii art.")
-	fun run(@CliOption(key = arrayOf("", "path")) path: String?,
-			@CliOption(key = arrayOf("invert"), unspecifiedDefaultValue = "false",
+	fun run(@CliOption(key = ["", "path"]) path: String?,
+			@CliOption(key = ["invert"], unspecifiedDefaultValue = "false",
 					specifiedDefaultValue = "true") invert: Boolean): String {
 		return path?.let {
 			val path1 = Paths.get(path)
@@ -54,13 +54,13 @@ class Ascii : Command {
 		return resized
 	}
 
-	class ASCII(val negative: Boolean = false) {
+	class ASCII(private val negative: Boolean = false) {
 
 		fun convert(image: BufferedImage): String {
 			val sb = StringBuilder((image.width + 1) * image.height)
-			for (y in 0..image.height - 1) {
+			for (y in 0 until image.height) {
 				if (sb.isNotEmpty()) sb.append("\n")
-				(0..image.width - 1)
+				(0 until image.width)
 						.asSequence()
 						.map { Color(image.getRGB(it, y)) }
 						.map { it.red.toDouble() * 0.30 + it.blue.toDouble() * 0.59 + it.green.toDouble() * 0.11 }
