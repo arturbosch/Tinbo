@@ -1,7 +1,7 @@
 package io.gitlab.arturbosch.tinbo.providers
 
 import com.google.common.io.Resources
-import io.gitlab.arturbosch.tinbo.TinboTerminal
+import io.gitlab.arturbosch.tinbo.api.TinboTerminal
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener
 import org.springframework.core.env.Environment

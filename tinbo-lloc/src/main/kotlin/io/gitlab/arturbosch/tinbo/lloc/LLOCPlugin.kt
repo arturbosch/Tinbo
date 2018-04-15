@@ -29,7 +29,7 @@ class LLOCPlugin : TinboPlugin(), Command {
 	private val nullStrategy = Language.UNSUPPORTED.strategy
 
 	@CliCommand("plugin lloc", help = "Runs lloc over specified project path and return the logical lines of code.")
-	fun run(@CliOption(key = arrayOf("")) path: String?) = path?.let {
+	fun run(@CliOption(key = [""]) path: String?) = path?.let {
 
 		val project = File(path)
 		if (!project.exists()) return "Specified path does not exist!"

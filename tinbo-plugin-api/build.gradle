@@ -2,6 +2,9 @@ version = tinboPluginApiVersion
 
 dependencies {
 	compile "org.joda:joda-money:0.11"
-	compile 'org.springframework.shell:spring-shell-starter:2.0.0.RELEASE'
-	compile 'org.springframework.shell:spring-shell:1.2.0.RELEASE'
+	compile "org.springframework.shell:spring-shell-starter:$springShell2Version"
+	compile("org.springframework.shell:spring-shell:$springShell1Version") {
+		exclude group: "org.springframework.boot"
+		exclude group: "org.springframework"
+	}
 }

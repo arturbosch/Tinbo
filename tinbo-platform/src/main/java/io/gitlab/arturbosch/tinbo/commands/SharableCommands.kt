@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.commands
 
-import io.gitlab.arturbosch.tinbo.TinboTerminal
+import io.gitlab.arturbosch.tinbo.api.TinboTerminal
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.api.UnsupportedMarker
 import io.gitlab.arturbosch.tinbo.config.Defaults

@@ -9,11 +9,6 @@ apply plugin: 'org.springframework.boot'
 
 version = tinboPlatformVersion
 
-jar {
-	baseName = 'Tinbo'
-	version = project.version
-}
-
 eclipse {
 	classpath {
 		containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
@@ -25,6 +20,9 @@ dependencies {
 	compile project(":tinbo-plugin-api")
 	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 	compile "org.springframework.shell:spring-shell-starter:$springShell2Version"
-	compile "org.springframework.shell:spring-shell:$springShell1Version"
+	compile("org.springframework.shell:spring-shell:$springShell1Version") {
+		exclude group: "org.springframework.boot"
+		exclude group: "org.springframework"
+	}
 	testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
 }
