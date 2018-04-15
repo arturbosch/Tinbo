@@ -21,7 +21,8 @@ class BackCommand : Command {
 		return !ModeManager.isCurrentMode(TinboMode.START)
 	}
 
-	@CliCommand("back", "..", help = "Exits current mode and enters start mode where you have access to all other modes.")
+	@CliCommand("back", "..",
+			help = "Exits current mode and enters start mode where you have access to all other modes.")
 	fun startMode() {
 		if (ModeManager.isBackCommandBlocked) {
 			printlnInfo("Can't change mode when editing... use save or cancel.")

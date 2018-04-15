@@ -10,10 +10,10 @@ import org.springframework.shell.plugin.BannerProvider
 import org.springframework.stereotype.Component
 
 /**
- * @author artur
+ * @author Artur Bosch
  */
 @Component
-open class TinboCommands @Autowired constructor(private val bannerProvider: BannerProvider) : Command {
+class TinboCommands @Autowired constructor(private val bannerProvider: BannerProvider) : Command {
 
 	override val id: String = "start"
 

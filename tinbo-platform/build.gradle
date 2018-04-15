@@ -24,7 +24,7 @@ eclipse {
 dependencies {
 	compile project(":tinbo-plugin-api")
 	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-	compile 'org.springframework.boot:spring-boot-starter'
-	compile "org.springframework.shell:spring-shell:$springShellVersion"
-	testCompile 'org.springframework.boot:spring-boot-starter-test'
+	compile "org.springframework.shell:spring-shell-starter:$springShell2Version"
+	compile "org.springframework.shell:spring-shell:$springShell1Version"
+	testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
 }

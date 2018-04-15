@@ -1,6 +1,6 @@
 package io.gitlab.arturbosch.tinbo.config
 
-import org.springframework.shell.plugin.PromptProvider
+import org.springframework.shell.jline.PromptProvider
 
 /**
  * @author Artur Bosch

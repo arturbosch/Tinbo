@@ -6,10 +6,11 @@ import io.gitlab.arturbosch.tinbo.api.Summarizable
 import org.springframework.stereotype.Component
 
 /**
- * @author artur
+ * @author Artur Bosch
  */
 @Component
 open class NoopCommands(override val id: String = "noop") : Editable, Summarizable, Command {
+
 	override fun load(name: String): String = ""
 	override fun edit(index: Int): String = ""
 	override fun sum(categories: List<String>): String = ""

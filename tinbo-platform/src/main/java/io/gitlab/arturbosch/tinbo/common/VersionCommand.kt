@@ -10,11 +10,12 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class VersionCommand @Autowired constructor(val provider: BannerProvider) : Command {
+class VersionCommand @Autowired constructor(
+		private val provider: BannerProvider) : Command {
 
 	override val id: String = "share"
 
-	@CliCommand(value = *arrayOf("version"), help = "Shows current Tinbo version.")
+	@CliCommand(value = ["version"], help = "Shows current Tinbo version.")
 	fun version(): String {
 		return provider.version
 	}

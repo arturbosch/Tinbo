@@ -24,12 +24,12 @@ class ListCommand @Autowired constructor(private val commandChooser: CommandChoo
 	@CliCommand("ls", "list", help = "Lists all entries.")
 	fun list(
 			@CliOption(
-					key = arrayOf("category", "c", ""),
+					key = ["category", "c", ""],
 					unspecifiedDefaultValue = "",
 					specifiedDefaultValue = "",
 					help = "Name to filter only for this specific category.") categoryName: String,
 			@CliOption(
-					key = arrayOf("all"),
+					key = ["all"],
 					help = "Should all entries be printed?",
 					unspecifiedDefaultValue = "false",
 					specifiedDefaultValue = "true") all: Boolean): String {

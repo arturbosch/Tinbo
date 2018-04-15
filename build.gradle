@@ -1,7 +1,7 @@
 buildscript {
 	ext {
-		springBootVersion = '1.5.2.RELEASE'
-		springShellVersion = '1.2.0.RELEASE'
+		springBootVersion = "$springBootVersion"
+		springShellVersion = "$springShell2Version"
 
 		sourceCompatibility = 1.8
 		targetCompatibility = 1.8
@@ -17,7 +17,7 @@ buildscript {
 }
 
 plugins {
-	id "org.sonarqube" version "2.5"
+	id "org.sonarqube" version "2.6.2"
 }
 
 subprojects {

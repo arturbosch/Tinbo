@@ -31,4 +31,9 @@ public abstract class TinboPlugin {
 	}
 
 	public abstract List<Command> registerCommands(TinboContext tinboContext);
+
+	@Override
+	public String toString() {
+		return name();
+	}
 }

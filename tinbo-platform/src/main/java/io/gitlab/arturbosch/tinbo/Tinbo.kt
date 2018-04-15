@@ -4,13 +4,15 @@ import io.gitlab.arturbosch.tinbo.config.ModeListener
 import io.gitlab.arturbosch.tinbo.config.ModeManager
 import io.gitlab.arturbosch.tinbo.config.TinboMode
 import io.gitlab.arturbosch.tinbo.providers.PromptProvider
+import org.jline.reader.LineReader
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
-import org.springframework.shell.support.logging.HandlerUtils
+import org.springframework.shell.result.DefaultResultHandler
+import org.springframework.stereotype.Component
 import java.util.ServiceLoader
-import java.util.logging.Logger
 
 /**
  * @author artur
@@ -18,28 +20,10 @@ import java.util.logging.Logger
 @SpringBootApplication
 open class Tinbo {
 
-	companion object {
-
-		@JvmStatic fun main(args: Array<String>) {
-			val ctx = SpringApplication.run(Tinbo::class.java)
-			try {
-				val bootStrap = BootShell(args, ctx)
-				bootStrap.run()
-			} catch (e: RuntimeException) {
-				throw e
-			} finally {
-				HandlerUtils.flushAllHandlers(Logger.getLogger(""))
-			}
-		}
-
-	}
-
 	@Bean
-	open fun register(prompt: PromptProvider): CommandLineRunner {
+	open fun registerModeListeners(prompt: PromptProvider): CommandLineRunner {
 		return CommandLineRunner {
-			ServiceLoader.load(ModeListener::class.java).forEach {
-				ModeManager.register(it)
-			}
+			ServiceLoader.load(ModeListener::class.java).forEach { ModeManager.register(it) }
 			ModeManager.register(object : ModeListener {
 				override fun change(mode: TinboMode) {
 					prompt.promptText = mode.id
@@ -47,5 +31,24 @@ open class Tinbo {
 			})
 		}
 	}
+}
 
+@Component
+class TinboTerminal @Autowired constructor(private val reader: LineReader,
+										   private val writer: DefaultResultHandler) {
+
+	fun readLine(prompt: String? = null,
+				 rightPrompt: String? = null,
+				 mask: Char? = null,
+				 buffer: String? = null): String {
+		return reader.readLine(prompt, rightPrompt, mask, buffer) ?: ""
+	}
+
+	fun write(content: String) {
+		writer.handleResult(content)
+	}
+}
+
+fun main(args: Array<String>) {
+	SpringApplication.run(Tinbo::class.java, *args)
 }

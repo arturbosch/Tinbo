@@ -1,74 +1,63 @@
 package io.gitlab.arturbosch.tinbo.plugins
 
+import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.config.HomeFolder
 import io.gitlab.arturbosch.tinbo.utils.printlnInfo
 import org.apache.log4j.LogManager
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.shell.core.JLineShellComponent
+import org.springframework.shell.MethodTarget
 import org.springframework.stereotype.Component
-import java.net.URL
 import java.net.URLClassLoader
 import java.util.ArrayList
 import java.util.ServiceLoader
-import java.util.concurrent.CompletableFuture
-import java.util.concurrent.Executors
+import java.util.TreeMap
 import javax.annotation.PostConstruct
 
 /**
- * @author artur
+ * @author Artur Bosch
  */
 @Component
-class PluginRegistry @Autowired constructor(private val shell: JLineShellComponent,
-											private val context: TinboContext) {
+class PluginRegistry @Autowired constructor(
+		private val context: TinboContext) {
 
-	private val LOGGER = LogManager.getLogger(javaClass)
+	val shellCommands = ArrayList<Command>()
+	private val successfulPlugins = ArrayList<TinboPlugin>()
+	private val log = LogManager.getLogger(javaClass)
+	private val commands = TreeMap<String, MethodTarget>()
 
 	@PostConstruct
-	fun postConstruct() {
-		ContextAware.context = context
-		val executor = Executors.newSingleThreadExecutor()
-		try {
-			CompletableFuture.runAsync(Runnable {
-				val pluginsPath = HomeFolder.getDirectory(HomeFolder.PLUGINS)
-				val pluginFiles = pluginsPath.toFile().listFiles()
-				if (pluginFiles.isNotEmpty()) {
-					val jarUrls = pluginFiles
-							.filter { it.name.endsWith(".jar") }
-							.map { it.toURI().toURL() }
-					loadJarPlugins(jarUrls)
-				}
-			}, executor).exceptionally {
-				logError(it, it.message ?: ""); null
-			}
-
-		} catch (e: RuntimeException) {
-			val message = "Could not load plugins: ${e.message}"
-			logError(e, message)
+	private fun loadPlugins() {
+		val plugins = loadPluginCommands()
+		for (plugin in plugins) {
+			context.registerSingleton(plugin.javaClass.name, plugin)
 		}
-		executor.shutdown()
+		notifyLoaded()
 	}
 
-	private fun loadJarPlugins(jarUrls: List<URL>) {
-		val successfulPlugins = ArrayList<String>()
-		val loader = URLClassLoader(jarUrls.toTypedArray(), TinboPlugin::class.java.classLoader)
-		ServiceLoader.load(TinboPlugin::class.java, loader).forEach {
-			registerPlugin(it)
-			successfulPlugins.add(it.name())
-		}
-
+	private fun notifyLoaded() {
 		if (successfulPlugins.isNotEmpty()) {
 			printlnInfo("Successfully loaded plugins: ${successfulPlugins.joinToString(", ")}")
 		}
 	}
 
-	private fun registerPlugin(plugin: TinboPlugin) {
-		context.registerSingleton(plugin.javaClass.name, plugin)
-		plugin.registerCommands(context).forEach { shell.simpleParser.add(it) }
+	private fun loadPluginCommands(): List<TinboPlugin> {
+		ContextAware.context = context
+		try {
+			val pluginsPath = HomeFolder.getDirectory(HomeFolder.PLUGINS)
+			val pluginFiles = pluginsPath.toFile().listFiles()
+			if (pluginFiles.isNotEmpty()) {
+				val jarUrls = pluginFiles
+						.filter { it.name.endsWith(".jar") }
+						.map { it.toURI().toURL() }
+				val loader = URLClassLoader(jarUrls.toTypedArray(), TinboPlugin::class.java.classLoader)
+				return ServiceLoader.load(TinboPlugin::class.java, loader).toList().apply {
+					successfulPlugins.addAll(this)
+				}
+			}
+		} catch (e: RuntimeException) {
+			printlnInfo("Could not load plugins: ${e.message}")
+			log.error("Could not load plugins: ${e.message}", e)
+		}
+		return emptyList()
 	}
-
-	private fun logError(e: Throwable, message: String) {
-		printlnInfo(message)
-		LOGGER.error(message, e)
-	}
-
 }

@@ -25,10 +25,15 @@ class PluginsCommand(private val context: TinboContext) : Command {
 
 	@CliCommand("plugins", help = "Lists all used plugins with their specified versions.")
 	fun plugins(): String {
-		val entries = context.beansOf<TinboPlugin>().values
-				.map { "${it.name()};${it.version()}" }
-				.plusElementAtBeginning("Name;Version")
-		return csv.asTable(entries).joinToString("\n")
+		val plugins = context.beansOf<TinboPlugin>().values
+		return if (plugins.isEmpty()) {
+			"No plugins registered."
+		} else {
+			val entries = plugins
+					.map { "${it.name()};${it.version()}" }
+					.plusElementAtBeginning("Name;Version")
+			return csv.asTable(entries).joinToString("\n")
+		}
 	}
 
 }

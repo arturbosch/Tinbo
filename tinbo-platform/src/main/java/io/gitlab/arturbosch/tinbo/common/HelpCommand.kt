@@ -2,9 +2,8 @@ package io.gitlab.arturbosch.tinbo.common
 
 import io.gitlab.arturbosch.tinbo.api.Command
 import io.gitlab.arturbosch.tinbo.config.ModeManager
+import io.gitlab.arturbosch.tinbo.plugins.PluginRegistry
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.ApplicationContext
-import org.springframework.shell.core.JLineShellComponent
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
@@ -13,24 +12,21 @@ import org.springframework.stereotype.Component
  * @author artur
  */
 @Component
-class HelpCommand @Autowired constructor(val ctx: ApplicationContext) : Command {
+class HelpCommand @Autowired constructor(
+		private val registry: PluginRegistry) : Command {
 
 	override val id: String = "share"
 
-	@CliCommand(value = "help", help = "List all commands usage")
+	@CliCommand(value = ["helpme"], help = "List all commands usage")
 	fun obtainHelp(
-			@CliOption(key = arrayOf("", "command"), optionContext = "disable-string-converter availableCommands",
+			@CliOption(
+					key = ["", "command"],
 					help = "Command name to provide help for")
 			buffer: String?): String {
 
-		val shell = ctx.getBean("shell", JLineShellComponent::class.java)
-		val parser = shell.simpleParser
-
 		val helpIds = ModeManager.current.helpIds
 
-		val allowedCommands = parser.commandMarkers
-				.filter { it is Command }
-				.map { it as Command }
+		val allowedCommands = registry.shellCommands
 				.filter { it.id in helpIds }
 
 		return HelpParser(allowedCommands).obtainHelp(buffer)

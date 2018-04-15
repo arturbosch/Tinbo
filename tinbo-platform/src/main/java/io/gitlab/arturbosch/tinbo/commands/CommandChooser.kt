@@ -11,41 +11,39 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
- * @author artur
+ * @author Artur Bosch
  */
 @Component
 class CommandChooser @Autowired constructor(tinboContext: TinboContext,
 											private val noopCommands: NoopCommands) {
 
-	private var _commands = lazy {
+	private val commands by lazy {
 		tinboContext.context
 				.getBeansOfType(Command::class.java)
-				.values.toList()
+				.values
 	}
-
-	private fun commands(): List<Command> = _commands.value
 
 	fun forCurrentMode(): Editable {
 		val currentModeId = ModeManager.current.id
-		return commands().filterIsInstance<Editable>()
+		return commands.filterIsInstance<Editable>()
 				.find { (it as Command).id == currentModeId } ?: noopCommands
 	}
 
 	fun forListableMode(): Listable {
 		val currentModeId = ModeManager.current.id
-		return commands().filterIsInstance<Listable>()
+		return commands.filterIsInstance<Listable>()
 				.find { (it as Command).id == currentModeId } ?: noopCommands
 	}
 
 	fun forAddableMode(): Addable {
 		val currentModeId = ModeManager.current.id
-		return commands().filterIsInstance<Addable>()
+		return commands.filterIsInstance<Addable>()
 				.find { (it as Command).id == currentModeId } ?: noopCommands
 	}
 
 	fun forSummarizableMode(): Summarizable {
 		val currentModeId = ModeManager.current.id
-		return commands().filterIsInstance<Summarizable>()
+		return commands.filterIsInstance<Summarizable>()
 				.find { (it as Command).id == currentModeId } ?: noopCommands
 	}
 

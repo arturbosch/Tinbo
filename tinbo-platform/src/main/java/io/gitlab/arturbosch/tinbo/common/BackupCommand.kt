@@ -27,8 +27,10 @@ import java.util.zip.ZipOutputStream
  * @author Artur Bosch
  */
 @Component
-class BackupCommand @Autowired constructor(val tinboContext: TinboContext,
-										   val config: TinboConfig) : Command {
+class BackupCommand @Autowired constructor(
+		private val tinboContext: TinboContext,
+		private val config: TinboConfig) : Command {
+
 	override val id: String = "share"
 
 	private val logger = LogManager.getLogger(javaClass)
@@ -70,7 +72,7 @@ class BackupCommand @Autowired constructor(val tinboContext: TinboContext,
 	}
 
 	@CliCommand("backup remote", help = "Uploads all data sets to your specified TiNBo server.")
-	fun backupRemote(@CliOption(key = arrayOf("", "url"),
+	fun backupRemote(@CliOption(key = ["", "url"],
 			specifiedDefaultValue = "",
 			unspecifiedDefaultValue = "") url: String) {
 
@@ -81,11 +83,10 @@ class BackupCommand @Autowired constructor(val tinboContext: TinboContext,
 				dateTimeFormatter.format(LocalDateTime.now())
 		val backupServer =
 				if (url.isEmpty()) {
-					config["server"] ?:
-							throw BackUpServerError("No server url specified in tinbo config!")
+					config["server"] ?: throw BackUpServerError("No server url specified in tinbo config!")
 				} else url
-		val backupCredentials = config["credentials"] ?:
-				throw BackUpServerError("No credentials specified in tinbo config!")
+		val backupCredentials = config["credentials"]
+				?: throw BackUpServerError("No credentials specified in tinbo config!")
 
 		val zippedBackup = zipBackup(backupName)
 		uploadZip(backupCredentials, backupServer, zippedBackup)
@@ -96,7 +97,7 @@ class BackupCommand @Autowired constructor(val tinboContext: TinboContext,
 		val encoded = "Basic " + Base64.getEncoder()
 				.encode(backupCredentials.toByteArray())
 				.toString(Charsets.ISO_8859_1)
-		val url = backupServer + "/backup"
+		val url = "$backupServer/backup"
 		val headers = mapOf("Authorization" to encoded)
 		try {
 			val response = HttpClient(url, "UTF-8", headers)

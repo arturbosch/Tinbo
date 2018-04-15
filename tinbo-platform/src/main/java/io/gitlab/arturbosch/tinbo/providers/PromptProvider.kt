@@ -1,6 +1,7 @@
 package io.gitlab.arturbosch.tinbo.providers
 
 import io.gitlab.arturbosch.tinbo.config.EditablePromptProvider
+import org.jline.utils.AttributedString
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 
@@ -13,12 +14,7 @@ open class PromptProvider : EditablePromptProvider {
 
 	override var promptText = "tinbo"
 
-	override fun getProviderName(): String {
-		return "TinboPromptProvider"
+	override fun getPrompt(): AttributedString {
+		return AttributedString("$promptText>")
 	}
-
-	override fun getPrompt(): String {
-		return "$promptText>"
-	}
-
 }

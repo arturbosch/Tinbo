@@ -9,10 +9,10 @@ import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
 
 /**
- * @author artur
+ * @author Artur Bosch
  */
 @Component
-open class SummarizableUmbrellaCommands @Autowired constructor(private val commandChooser: CommandChooser) : Command {
+class SummarizableUmbrellaCommands @Autowired constructor(private val commandChooser: CommandChooser) : Command {
 
 	override val id: String = "sum"
 
@@ -21,8 +21,8 @@ open class SummarizableUmbrellaCommands @Autowired constructor(private val comma
 		return ModeManager.isSumAllowed()
 	}
 
-	@CliCommand(value = "sum", help = "Sums up entries of all or specified categories.")
-	fun sumCategories(@CliOption(key = arrayOf("", "categories"),
+	@CliCommand(value = ["sum"], help = "Sums up entries of all or specified categories.")
+	fun sumCategories(@CliOption(key = ["", "categories"],
 			help = "Specify categories to show sum for. Default: for all.",
 			unspecifiedDefaultValue = "",
 			specifiedDefaultValue = "") categories: String): String {
