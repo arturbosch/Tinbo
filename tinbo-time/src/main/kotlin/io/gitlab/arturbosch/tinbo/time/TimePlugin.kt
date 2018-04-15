@@ -16,7 +16,7 @@ class TimePlugin : TinboPlugin() {
 
 	override fun registerCommands(tinbo: TinboContext): List<Command> {
 		val terminal = tinbo.beanOf<TinboTerminal>()
-		val tinboConfig = tinbo.tinboConfig
+		val tinboConfig = tinbo.config
 		val persister = TimePersister(tinboConfig)
 		val dataHolder = TimeDataHolder(persister, tinboConfig)
 		val executor = TimeExecutor(dataHolder, terminal, tinboConfig)

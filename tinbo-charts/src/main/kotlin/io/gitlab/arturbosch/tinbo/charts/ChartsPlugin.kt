@@ -14,6 +14,6 @@ class ChartsPlugin : TinboPlugin() {
 	override fun version(): String = "1.0.0"
 
 	override fun registerCommands(tinbo: TinboContext): List<Command> {
-		return listOf(BurndownChart(), WeekMonthChart())
+		return listOf(BurndownChart(tinbo), WeekMonthChart(tinbo))
 	}
 }

@@ -16,7 +16,7 @@ class NotesPlugin : TinboPlugin() {
 
 	override fun registerCommands(tinbo: TinboContext): List<Command> {
 		val console = tinbo.beanOf<TinboTerminal>()
-		val tinboConfig = tinbo.tinboConfig
+		val tinboConfig = tinbo.config
 		val persister = NotePersister(tinboConfig)
 		val dataHolder = NoteDataHolder(persister, tinboConfig)
 		val executor = NoteExecutor(dataHolder, tinboConfig)

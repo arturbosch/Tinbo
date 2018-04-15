@@ -2,7 +2,7 @@ package io.gitlab.arturbosch.tinbo.charts
 
 import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.api.model.WeekSummary
-import io.gitlab.arturbosch.tinbo.api.plugins.ContextAware.context
+import io.gitlab.arturbosch.tinbo.api.plugins.TinboContext
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.title.TextTitle
 import org.jfree.data.general.DefaultPieDataset
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
  * @author Artur Bosch
  */
 @Component
-class WeekMonthChart : Command {
+class WeekMonthChart(private val tinbo: TinboContext) : Command {
 
 	override val id: String = "plugins"
 
@@ -56,11 +56,12 @@ class WeekMonthChart : Command {
 	}
 
 	private fun loadSummary(method: String): WeekSummary? {
-		context.let {
+		tinbo.also {
 			it.helpers.find { it.javaClass.simpleName == "TimeSummaryPluginSupport" }?.let {
 				return it.javaClass.getMethod(method).invoke(it) as WeekSummary
 			}
-		} ?: return null
+		}
+		return null
 	}
 
 }

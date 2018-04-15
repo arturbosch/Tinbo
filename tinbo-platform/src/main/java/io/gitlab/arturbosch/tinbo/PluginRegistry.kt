@@ -3,7 +3,6 @@ package io.gitlab.arturbosch.tinbo
 import io.gitlab.arturbosch.tinbo.api.TinboTerminal
 import io.gitlab.arturbosch.tinbo.api.config.HomeFolder
 import io.gitlab.arturbosch.tinbo.api.marker.Command
-import io.gitlab.arturbosch.tinbo.api.plugins.ContextAware
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboContext
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboPlugin
 import org.apache.log4j.LogManager
@@ -46,7 +45,6 @@ class PluginRegistry @Autowired constructor(
 	}
 
 	private fun loadPlugins(): List<TinboPlugin> {
-		ContextAware.context = context
 		try {
 			val pluginsPath = HomeFolder.getDirectory(HomeFolder.PLUGINS)
 			val pluginFiles = pluginsPath.toFile().listFiles()

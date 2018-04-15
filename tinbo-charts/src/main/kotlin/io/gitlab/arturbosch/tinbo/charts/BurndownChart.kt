@@ -2,7 +2,7 @@ package io.gitlab.arturbosch.tinbo.charts
 
 import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.api.model.Project
-import io.gitlab.arturbosch.tinbo.api.plugins.ContextAware.context
+import io.gitlab.arturbosch.tinbo.api.plugins.TinboContext
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.JFreeChart
 import org.jfree.chart.renderer.category.LineAndShapeRenderer
@@ -21,7 +21,7 @@ import java.time.Period
  * @author Artur Bosch
  */
 @Component
-class BurndownChart : Command {
+class BurndownChart(private val tinbo: TinboContext) : Command {
 
 	override val id: String = "plugins"
 
@@ -116,12 +116,13 @@ class BurndownChart : Command {
 
 	@Suppress("UNCHECKED_CAST")
 	private fun loadSummary(method: String): List<Project>? {
-		context.let {
+		tinbo.also {
 			it.helpers.find { it.javaClass.simpleName == "ProjectsPluginSupport" }?.let {
 				val value = it.javaClass.getMethod(method).invoke(it)
 				return value as List<Project>
 			}
-		} ?: return null
+		}
+		return null
 	}
 
 }

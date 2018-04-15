@@ -26,10 +26,6 @@ public abstract class TinboPlugin {
 		return UNSPECIFIED;
 	}
 
-	public TinboContext context() {
-		return ContextAware.INSTANCE.getContext();
-	}
-
 	public abstract List<Command> registerCommands(TinboContext tinbo);
 
 	@Override

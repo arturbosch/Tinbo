@@ -16,7 +16,7 @@ class FinancePlugin : TinboPlugin() {
 
 	override fun registerCommands(tinbo: TinboContext): List<Command> {
 		val terminal = tinbo.beanOf<TinboTerminal>()
-		val tinboConfig = tinbo.tinboConfig
+		val tinboConfig = tinbo.config
 		val configProvider = ConfigProvider(tinboConfig)
 		val persister = FinancePersister(tinboConfig)
 		val dataHolder = FinanceDataHolder(persister, tinboConfig)

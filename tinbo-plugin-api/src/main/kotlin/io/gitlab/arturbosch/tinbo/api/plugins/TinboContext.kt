@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 class TinboContext @Autowired constructor(val context: GenericApplicationContext,
-										  val tinboConfig: TinboConfig) {
+										  val config: TinboConfig) {
 	@PluginSupport
 	val helpers by lazy { context.getBeansOfType(PluginHelper::class.java).values }
 
