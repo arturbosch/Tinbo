@@ -1,7 +1,6 @@
 package io.gitlab.arturbosch.tinbo.psp
 
 import io.gitlab.arturbosch.tinbo.api.TinboTerminal
-import io.gitlab.arturbosch.tinbo.api.config.EditablePromptProvider
 import io.gitlab.arturbosch.tinbo.api.config.ModeManager
 import io.gitlab.arturbosch.tinbo.api.marker.Addable
 import io.gitlab.arturbosch.tinbo.api.marker.Command
@@ -21,7 +20,6 @@ import java.time.format.DateTimeParseException
  */
 @Component
 class PSPCommands @Autowired constructor(private val console: TinboTerminal,
-										 private val prompt: EditablePromptProvider,
 										 private val currentProject: CurrentProject,
 										 private val csvProjects: CSVProjects) : Command, Listable, Addable {
 
@@ -69,7 +67,7 @@ class PSPCommands @Autowired constructor(private val console: TinboTerminal,
 			if (!currentProject.projectWithNameExists(name)) return wrong
 			val realName = currentProject.enter(name)
 			ModeManager.current = PSPMode
-			prompt.promptText = realName
+			console.changePrompt(realName)
 			return "Opening project $realName..."
 		} ?: wrong
 	}

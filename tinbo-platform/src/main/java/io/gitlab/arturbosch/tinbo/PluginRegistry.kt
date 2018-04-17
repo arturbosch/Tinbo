@@ -2,6 +2,8 @@ package io.gitlab.arturbosch.tinbo
 
 import io.gitlab.arturbosch.tinbo.api.TinboTerminal
 import io.gitlab.arturbosch.tinbo.api.config.HomeFolder
+import io.gitlab.arturbosch.tinbo.api.config.ModeListener
+import io.gitlab.arturbosch.tinbo.api.config.ModeManager
 import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboContext
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboPlugin
@@ -53,6 +55,9 @@ class PluginRegistry @Autowired constructor(
 						.filter { it.name.endsWith(".jar") }
 						.map { it.toURI().toURL() }
 				val loader = URLClassLoader(jarUrls.toTypedArray(), TinboPlugin::class.java.classLoader)
+				ServiceLoader.load(ModeListener::class.java, loader).forEach {
+					ModeManager.register(it)
+				}
 				return ServiceLoader.load(TinboPlugin::class.java, loader).toList().apply {
 					registeredPlugins.addAll(this)
 				}

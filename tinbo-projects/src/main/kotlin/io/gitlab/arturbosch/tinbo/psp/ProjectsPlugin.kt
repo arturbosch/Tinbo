@@ -1,7 +1,6 @@
 package io.gitlab.arturbosch.tinbo.psp
 
 import io.gitlab.arturbosch.tinbo.api.TinboTerminal
-import io.gitlab.arturbosch.tinbo.api.config.EditablePromptProvider
 import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboContext
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboPlugin
@@ -23,9 +22,8 @@ class ProjectsPlugin : TinboPlugin() {
 		val projectCommands = ProjectCommands(terminal, currentProject)
 		tinbo.registerSingleton(projectCommands)
 
-		val promptProvider = tinbo.beanOf<EditablePromptProvider>()
 		val csvProjects = CSVProjects(fileProjects)
-		val pspCommands = PSPCommands(terminal, promptProvider, currentProject, csvProjects)
+		val pspCommands = PSPCommands(terminal, currentProject, csvProjects)
 		tinbo.registerSingleton(pspCommands)
 
 		val projectsModeCommand = StartProjectsModeCommand()
