@@ -5,5 +5,5 @@ jar {
 }
 
 dependencies {
-	compile group: 'org.jfree', name: 'jfreechart', version: '1.0.19'
+	compile "org.jfree:jfreechart:$jfreechartVersion"
 }
