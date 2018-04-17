@@ -59,7 +59,6 @@ class PluginRegistry @Autowired constructor(
 
 	private fun registerEventBusSubscriber() {
 		for (subscriber in context.beansOf<EventBusSubscriber>().values) {
-			console.write("$subscriber has subscribed")
 			TinboBus.register(subscriber)
 		}
 	}
