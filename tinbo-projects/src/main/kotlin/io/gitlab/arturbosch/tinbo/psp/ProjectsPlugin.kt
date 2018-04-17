@@ -19,6 +19,7 @@ class ProjectsPlugin : TinboPlugin() {
 		val fileProjects = FileProjects()
 		val csvTasks = CSVTasks()
 		val currentProject = CurrentProject(csvTasks, fileProjects)
+		tinbo.registerSingleton(currentProject)
 		val projectCommands = ProjectCommands(terminal, currentProject)
 		tinbo.registerSingleton(projectCommands)
 

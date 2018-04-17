@@ -3,7 +3,7 @@ package io.gitlab.arturbosch.tinbo.providers
 import com.google.common.eventbus.Subscribe
 import io.gitlab.arturbosch.tinbo.PromptChangeEvent
 import io.gitlab.arturbosch.tinbo.api.config.EditablePromptProvider
-import io.gitlab.arturbosch.tinbo.api.registerForEventBus
+import io.gitlab.arturbosch.tinbo.api.marker.EventBusSubscriber
 import org.jline.utils.AttributedString
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
@@ -13,11 +13,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 @Order(org.springframework.core.Ordered.HIGHEST_PRECEDENCE)
-class PromptProvider : EditablePromptProvider {
-
-	init {
-		registerForEventBus()
-	}
+class PromptProvider : EditablePromptProvider, EventBusSubscriber {
 
 	@Subscribe
 	fun handlePromptChange(event: PromptChangeEvent) {

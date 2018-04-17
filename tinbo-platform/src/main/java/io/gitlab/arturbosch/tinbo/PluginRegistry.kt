@@ -1,10 +1,12 @@
 package io.gitlab.arturbosch.tinbo
 
+import io.gitlab.arturbosch.tinbo.api.TinboBus
 import io.gitlab.arturbosch.tinbo.api.TinboTerminal
 import io.gitlab.arturbosch.tinbo.api.config.HomeFolder
 import io.gitlab.arturbosch.tinbo.api.config.ModeListener
 import io.gitlab.arturbosch.tinbo.api.config.ModeManager
 import io.gitlab.arturbosch.tinbo.api.marker.Command
+import io.gitlab.arturbosch.tinbo.api.marker.EventBusSubscriber
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboContext
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboPlugin
 import org.apache.log4j.LogManager
@@ -34,15 +36,31 @@ class PluginRegistry @Autowired constructor(
 	override fun register(registry: ConfigurableCommandRegistry) {
 		val plugins = loadPlugins()
 		for (plugin in plugins) {
-			for (command in plugin.registerCommands(context)) {
-				if (!context.hasBean(command)) {
-					context.registerSingleton(command)
-				}
-				shellCommands.add(command)
-			}
+			registerPlugin(plugin)
 		}
+		notifyPluginsLoaded(plugins)
+		registerEventBusSubscriber()
+	}
+
+	private fun registerPlugin(plugin: TinboPlugin) {
+		for (command in plugin.registerCommands(context)) {
+			if (!context.hasBean(command)) {
+				context.registerSingleton(command)
+			}
+			shellCommands.add(command)
+		}
+	}
+
+	private fun notifyPluginsLoaded(plugins: List<TinboPlugin>) {
 		if (plugins.isNotEmpty()) {
 			console.write("Successfully loaded plugins: ${plugins.joinToString(", ")}")
+		}
+	}
+
+	private fun registerEventBusSubscriber() {
+		for (subscriber in context.beansOf<EventBusSubscriber>().values) {
+			console.write("$subscriber has subscribed")
+			TinboBus.register(subscriber)
 		}
 	}
 

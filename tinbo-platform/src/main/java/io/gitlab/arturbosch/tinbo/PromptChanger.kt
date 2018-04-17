@@ -1,8 +1,8 @@
 package io.gitlab.arturbosch.tinbo
 
+import io.gitlab.arturbosch.tinbo.api.TinboBus
 import io.gitlab.arturbosch.tinbo.api.config.ModeListener
 import io.gitlab.arturbosch.tinbo.api.config.TinboMode
-import io.gitlab.arturbosch.tinbo.api.publish
 import org.springframework.stereotype.Component
 
 /**
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 @Component
 class PromptChanger : ModeListener {
 	override fun change(mode: TinboMode) {
-		publish(PromptChangeEvent(mode.id))
+		TinboBus.publish(PromptChangeEvent(mode.id))
 	}
 }
 

@@ -1,10 +1,10 @@
 package io.gitlab.arturbosch.tinbo.psp
 
 import com.google.common.eventbus.Subscribe
+import io.gitlab.arturbosch.tinbo.api.marker.EventBusSubscriber
 import io.gitlab.arturbosch.tinbo.api.model.Project
 import io.gitlab.arturbosch.tinbo.api.model.Task
 import io.gitlab.arturbosch.tinbo.api.model.asHourString
-import io.gitlab.arturbosch.tinbo.api.registerForEventBus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.time.LocalDate
@@ -14,11 +14,7 @@ import java.time.LocalDate
  */
 @Component
 class CurrentProject @Autowired constructor(private val csvTasks: CSVTasks,
-											private val fileProjects: FileProjects) {
-
-	init {
-		registerForEventBus()
-	}
+											private val fileProjects: FileProjects) : EventBusSubscriber {
 
 	@Subscribe
 	fun handleUnspecifyEvent(event: UnspecifyProject) {
@@ -88,5 +84,4 @@ class CurrentProject @Autowired constructor(private val csvTasks: CSVTasks,
 		}
 		unspecify()
 	}
-
 }
