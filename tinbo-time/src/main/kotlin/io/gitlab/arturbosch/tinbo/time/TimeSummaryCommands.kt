@@ -1,9 +1,10 @@
 package io.gitlab.arturbosch.tinbo.time
 
-import io.gitlab.arturbosch.tinbo.api.model.WeekSummary
+import io.gitlab.arturbosch.tinbo.api.config.ModeManager
 import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.api.marker.Summarizable
-import io.gitlab.arturbosch.tinbo.api.config.ModeManager
+import io.gitlab.arturbosch.tinbo.api.model.WeekEntry
+import io.gitlab.arturbosch.tinbo.api.model.WeekSummary
 import io.gitlab.arturbosch.tinbo.api.toTimeString
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
@@ -39,7 +40,16 @@ open class TimeSummaryCommands @Autowired constructor(private val summaryExecuto
 		val now = LocalDate.now()
 		val summaryString = monthSummaryAsString { timeSummaryPluginSupport.day(now) }
 		val summaryLastString = monthSummaryAsString { timeSummaryPluginSupport.day(now.minusDays(1)) }
-		return summaryLastString + "\n\n" + summaryString
+		return summaryLastString + "\n\n" + summaryString +
+				"\nMean time spent per day: ${formatTime(meanWorkPerDay(), true)}"
+	}
+
+	private fun meanWorkPerDay(): Pair<Int, Int> {
+		val now = LocalDate.now()
+		val workForLastSevenDaysInMinutes = (1..7).fold(0) { acc, i ->
+			acc + timeSummaryPluginSupport.day(now.minusDays(i.toLong())).totalMinutes()
+		} / 7
+		return WeekEntry("Day", workForLastSevenDaysInMinutes).asHourMinutes()
 	}
 
 	@CliCommand("week", help = "Summarizes last and this week's time spending on categories.")
@@ -47,7 +57,16 @@ open class TimeSummaryCommands @Autowired constructor(private val summaryExecuto
 		val now = LocalDate.now()
 		val summaryString = monthSummaryAsString { timeSummaryPluginSupport.week(now) }
 		val summaryLastString = monthSummaryAsString { timeSummaryPluginSupport.week(now.minusDays(7)) }
-		return summaryLastString + "\n\n" + summaryString
+		return summaryLastString + "\n\n" + summaryString +
+				"\nMean time spent per week: ${formatTime(meanWorkPerWeek(), true)}"
+	}
+
+	private fun meanWorkPerWeek(): Pair<Int, Int> {
+		val now = LocalDate.now()
+		val workForLastSevenWeeksInMinutes = (1..7).fold(0) { acc, i ->
+			acc + timeSummaryPluginSupport.week(now.minusDays((i * 7).toLong())).totalMinutes()
+		} / 7
+		return WeekEntry("Week", workForLastSevenWeeksInMinutes).asHourMinutes()
 	}
 
 	@CliCommand("month", help = "Summarizes last and this month's time spending on categories.")
@@ -55,7 +74,16 @@ open class TimeSummaryCommands @Autowired constructor(private val summaryExecuto
 		val now = LocalDate.now()
 		val summaryString = monthSummaryAsString { timeSummaryPluginSupport.month(now) }
 		val summaryLastString = monthSummaryAsString { timeSummaryPluginSupport.month(now.minusMonths(1)) }
-		return summaryLastString + "\n\n" + summaryString
+		return summaryLastString + "\n\n" + summaryString +
+				"\nMean time spent per month: ${formatTime(meanWorkPerMonth(), true)}"
+	}
+
+	private fun meanWorkPerMonth(): Pair<Int, Int> {
+		val now = LocalDate.now()
+		val workForLastSevenMonthsInMinutes = (1..7).fold(0) { acc, i ->
+			acc + timeSummaryPluginSupport.month(now.minusMonths(i.toLong())).totalMinutes()
+		} / 7
+		return WeekEntry("Month", workForLastSevenMonthsInMinutes).asHourMinutes()
 	}
 
 	private fun monthSummaryAsString(now: () -> WeekSummary): String {
