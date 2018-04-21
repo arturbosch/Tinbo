@@ -1,3 +1,7 @@
+plugins {
+	id("com.jfrog.bintray") version "1.8.0"
+}
+
 version = tinboPluginApiVersion
 
 dependencies {
@@ -6,5 +10,35 @@ dependencies {
 	compile("org.springframework.shell:spring-shell:$springShell1Version") {
 		exclude group: "org.springframework.boot"
 		exclude group: "org.springframework"
+	}
+}
+
+publishing {
+	publications {
+		TinboPublication(MavenPublication) {
+			from components.java
+			groupId project.group
+			artifactId project.name
+			version project.version
+		}
+	}
+}
+
+bintray {
+	user = System.getenv("BINTRAY_USER") ?: ""
+	key = System.getenv("BINTRAY_API_KEY") ?: ""
+	publications = ["TinboPublication"]
+
+	pkg {
+		repo = 'generic'
+		name = 'Tinbo'
+		userOrg = 'arturbosch'
+		licenses = ['Apache-2.0']
+		vcsUrl = "https://github.com/arturbosch/Tinbo"
+
+		version {
+			name = project.version
+			released = new Date()
+		}
 	}
 }
