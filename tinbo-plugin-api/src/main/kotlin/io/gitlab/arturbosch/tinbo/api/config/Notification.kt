@@ -1,24 +1,32 @@
 package io.gitlab.arturbosch.tinbo.api.config
 
-import org.apache.log4j.LogManager
 import java.io.IOException
+import java.io.UncheckedIOException
 
 /**
  * @author artur
  */
 object Notification {
 
-	private val logger = LogManager.getLogger(javaClass)
-
-	private const val NOTIFY_SEND_ERROR = "Could not execute 'notify-send', install it to get notifications about finished timers."
+	private const val NOTIFY_SEND_ERROR =
+			"Could not execute 'notify-send', install 'libnotify' to get notifications about finished timers."
+	private const val MSG_ERROR = "Could not send notification via msg.exe."
 
 	fun notify(header: String, message: String) {
-		try {
-			ProcessBuilder("notify-send", header, message, "--icon=dialog-information").start()
-		} catch (e: IOException) {
-			println(NOTIFY_SEND_ERROR)
-			logger.error(NOTIFY_SEND_ERROR, e)
+		if (System.getProperty("os.name").contains("Windows")) {
+			try {
+				ProcessBuilder("msg", "*", "$header - $message").start()
+			} catch (e: IOException) {
+				println(MSG_ERROR)
+				throw UncheckedIOException(e)
+			}
+		} else {
+			try {
+				ProcessBuilder("notify-send", header, message, "--icon=dialog-information").start()
+			} catch (e: IOException) {
+				println(NOTIFY_SEND_ERROR)
+				throw UncheckedIOException(e)
+			}
 		}
 	}
-
 }
