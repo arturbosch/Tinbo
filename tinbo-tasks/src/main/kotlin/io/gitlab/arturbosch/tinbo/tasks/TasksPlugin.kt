@@ -14,6 +14,8 @@ class TasksPlugin : TinboPlugin() {
 
 	override fun version(): String = "1.0.0"
 
+	override fun providesMode() = TasksMode
+
 	override fun registerCommands(tinbo: TinboContext): List<Command> {
 		val terminal = tinbo.beanOf<TinboTerminal>()
 		val tinboConfig = tinbo.config

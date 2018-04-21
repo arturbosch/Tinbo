@@ -14,6 +14,8 @@ class ProjectsPlugin : TinboPlugin() {
 
 	override fun version(): String = "1.0.0"
 
+	override fun providesMode() = ProjectsMode
+
 	override fun registerCommands(tinbo: TinboContext): List<Command> {
 		val terminal = tinbo.beanOf<TinboTerminal>()
 		val fileProjects = FileProjects()

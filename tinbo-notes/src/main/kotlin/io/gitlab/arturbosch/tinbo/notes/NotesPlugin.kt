@@ -14,6 +14,8 @@ class NotesPlugin : TinboPlugin() {
 
 	override fun version(): String = "1.0.0"
 
+	override fun providesMode() = NotesMode
+
 	override fun registerCommands(tinbo: TinboContext): List<Command> {
 		val console = tinbo.beanOf<TinboTerminal>()
 		val tinboConfig = tinbo.config

@@ -14,6 +14,8 @@ class FinancePlugin : TinboPlugin() {
 
 	override fun version(): String = "1.0.4"
 
+	override fun providesMode() = FinanceMode
+
 	override fun registerCommands(tinbo: TinboContext): List<Command> {
 		val terminal = tinbo.beanOf<TinboTerminal>()
 		val tinboConfig = tinbo.config

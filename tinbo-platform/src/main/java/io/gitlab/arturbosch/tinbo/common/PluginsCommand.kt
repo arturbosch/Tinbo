@@ -29,8 +29,8 @@ class PluginsCommand(private val registry: PluginRegistry) : Command {
 			"No plugins registered."
 		} else {
 			val entries = plugins
-					.map { "${it.name()};${it.version()}" }
-					.plusElementAtBeginning("Name;Version")
+					.map { "${it.name()};${it.version()};${it.providesMode()?.id ?: " "}" }
+					.plusElementAtBeginning("Name;Version;Introduces Mode")
 			return csv.asTable(entries).joinToString("\n")
 		}
 	}

@@ -1,6 +1,8 @@
 package io.gitlab.arturbosch.tinbo.api.plugins;
 
+import io.gitlab.arturbosch.tinbo.api.config.TinboMode;
 import io.gitlab.arturbosch.tinbo.api.marker.Command;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -16,7 +18,7 @@ import java.util.List;
  */
 public abstract class TinboPlugin {
 
-	final String UNSPECIFIED = "unspecified";
+	static final String UNSPECIFIED = "unspecified";
 
 	public String name() {
 		return getClass().getSimpleName();
@@ -24,6 +26,11 @@ public abstract class TinboPlugin {
 
 	public String version() {
 		return UNSPECIFIED;
+	}
+
+	@Nullable
+	public TinboMode providesMode() {
+		return null;
 	}
 
 	public abstract List<Command> registerCommands(TinboContext tinbo);

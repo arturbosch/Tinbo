@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component
 class WeatherPlugin : TinboPlugin(), Command {
 
 	override fun version(): String = "1.0.0"
+
 	override val id: String = "start"
 
 	override fun registerCommands(tinbo: TinboContext): List<Command> {
