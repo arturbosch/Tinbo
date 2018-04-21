@@ -128,7 +128,7 @@ class FinanceCommands @Autowired constructor(private val financeExecutor: Financ
 				val moneyString = console.readLine("Enter a money value (leave empty if unchanged): ")
 				val money = if (moneyString.isEmpty()) null else Money.of(configProvider.currencyUnit, moneyString.toDouble())
 				val dateString = console.readLine("Enter a end time (yyyy-MM-dd HH:mm) (leave empty if unchanged): ")
-				val dateTime = if (dateString.isEmpty()) null else LocalDateTime.parse(dateString, dateTimeFormatter)
+				val dateTime = parseDateTime(dateString)
 				executor.editEntry(i, DummyFinance(category, message, month, money, dateTime))
 				"Successfully edited a finance entry."
 			}
