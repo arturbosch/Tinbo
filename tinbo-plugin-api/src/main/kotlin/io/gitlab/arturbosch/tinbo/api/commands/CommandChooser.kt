@@ -1,11 +1,12 @@
 package io.gitlab.arturbosch.tinbo.api.commands
 
+import io.gitlab.arturbosch.tinbo.api.config.ModeManager
 import io.gitlab.arturbosch.tinbo.api.marker.Addable
 import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.api.marker.Editable
 import io.gitlab.arturbosch.tinbo.api.marker.Listable
 import io.gitlab.arturbosch.tinbo.api.marker.Summarizable
-import io.gitlab.arturbosch.tinbo.api.config.ModeManager
+import io.gitlab.arturbosch.tinbo.api.plugins.PluginSupport
 import io.gitlab.arturbosch.tinbo.api.plugins.TinboContext
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -15,36 +16,26 @@ import org.springframework.stereotype.Component
  */
 @Component
 class CommandChooser @Autowired constructor(tinboContext: TinboContext,
-											private val noopCommands: NoopCommands) {
+											val noopCommands: NoopCommands) {
 
-	private val commands by lazy {
+	val commands by lazy {
 		tinboContext.context
 				.getBeansOfType(Command::class.java)
 				.values
 	}
 
-	fun forCurrentMode(): Editable {
-		val currentModeId = ModeManager.current.id
-		return commands.filterIsInstance<Editable>()
-				.find { (it as Command).id == currentModeId } ?: noopCommands
-	}
+	fun forCurrentMode(): Editable = forModeWithInterface()
 
-	fun forListableMode(): Listable {
-		val currentModeId = ModeManager.current.id
-		return commands.filterIsInstance<Listable>()
-				.find { (it as Command).id == currentModeId } ?: noopCommands
-	}
+	fun forListableMode(): Listable = forModeWithInterface()
 
-	fun forAddableMode(): Addable {
-		val currentModeId = ModeManager.current.id
-		return commands.filterIsInstance<Addable>()
-				.find { (it as Command).id == currentModeId } ?: noopCommands
-	}
+	fun forAddableMode(): Addable = forModeWithInterface()
 
-	fun forSummarizableMode(): Summarizable {
+	fun forSummarizableMode(): Summarizable = forModeWithInterface()
+	
+	@PluginSupport
+	inline fun <reified T> forModeWithInterface(): T {
 		val currentModeId = ModeManager.current.id
-		return commands.filterIsInstance<Summarizable>()
-				.find { (it as Command).id == currentModeId } ?: noopCommands
+		return commands.filterIsInstance<T>()
+				.find { (it as Command).id == currentModeId } ?: noopCommands as T
 	}
-
 }

@@ -1,10 +1,15 @@
 package io.gitlab.arturbosch.tinbo.api.commands
 
 import io.gitlab.arturbosch.tinbo.api.TinboTerminal
-import io.gitlab.arturbosch.tinbo.api.marker.Command
-import io.gitlab.arturbosch.tinbo.api.marker.UnsupportedMarker
 import io.gitlab.arturbosch.tinbo.api.config.Defaults
 import io.gitlab.arturbosch.tinbo.api.config.ModeManager
+import io.gitlab.arturbosch.tinbo.api.marker.Cancelable
+import io.gitlab.arturbosch.tinbo.api.marker.Command
+import io.gitlab.arturbosch.tinbo.api.marker.Datable
+import io.gitlab.arturbosch.tinbo.api.marker.Deletable
+import io.gitlab.arturbosch.tinbo.api.marker.Loadable
+import io.gitlab.arturbosch.tinbo.api.marker.Saveable
+import io.gitlab.arturbosch.tinbo.api.marker.UnsupportedMarker
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator
 import org.springframework.shell.core.annotation.CliCommand
@@ -29,18 +34,18 @@ class SharableCommands @Autowired constructor(private val commandChooser: Comman
 	fun load(@CliOption(key = ["name", ""], mandatory = true,
 			specifiedDefaultValue = Defaults.NOTES_NAME,
 			unspecifiedDefaultValue = Defaults.NOTES_NAME) name: String): String {
-		return commandChooser.forCurrentMode().load(name)
+		return commandChooser.forModeWithInterface<Loadable>().load(name)
 	}
 
 	@CliCommand("cancel", help = "Cancels edit mode.")
 	fun cancel(): String {
-		return commandChooser.forCurrentMode().cancel()
+		return commandChooser.forModeWithInterface<Cancelable>().cancel()
 	}
 
 	@CliCommand("save", help = "Saves current editing if list command was used.")
 	fun save(@CliOption(key = ["name", "n"], help = "Saves notes under a new data set (also a new filename).",
 			specifiedDefaultValue = "", unspecifiedDefaultValue = "") name: String): String {
-		return commandChooser.forCurrentMode().save(name)
+		return commandChooser.forModeWithInterface<Saveable>().save(name)
 	}
 
 	@CliCommand("edit", help = "Edits entry with specified index.")
@@ -53,12 +58,12 @@ class SharableCommands @Autowired constructor(private val commandChooser: Comman
 	fun delete(@CliOption(key = ["indices", "index", "i"], mandatory = true,
 			help = "Indices pattern, allowed are numbers with space in between or intervals like 1-5 e.g. '1 2 3-5 6'.")
 			   indexPattern: String): String {
-		return commandChooser.forCurrentMode().delete(indexPattern) + SAVE_OR_CANCEL_CHANGES
+		return commandChooser.forModeWithInterface<Deletable>().delete(indexPattern) + SAVE_OR_CANCEL_CHANGES
 	}
 
 	@CliCommand("last", help = "Deletes the last entry from storage.")
 	fun delete(): String {
-		return commandChooser.forCurrentMode().delete("-1") + SAVE_OR_CANCEL_CHANGES
+		return commandChooser.forModeWithInterface<Deletable>().delete("-1") + SAVE_OR_CANCEL_CHANGES
 	}
 
 	@CliCommand("changeCategory", help = "Changes a categories name with the side effect that all entries of this category get updated.")
@@ -90,7 +95,7 @@ class SharableCommands @Autowired constructor(private val commandChooser: Comman
 
 	@CliCommand("data", help = "prints all available data sets")
 	fun data(): String {
-		return commandChooser.forCurrentMode().data()
+		return commandChooser.forModeWithInterface<Datable>().data()
 	}
 
 	companion object {
