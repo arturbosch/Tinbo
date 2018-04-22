@@ -31,6 +31,10 @@ class TinboConfig(val path: Path = HomeFolder.getOrCreateDefaultConfig()) {
 
 	fun getKeySafe(key: String): Map<String, Any> = values.getOrElse(key, { HashMap<String, Any>() })
 
+	fun put(key: String, properties: Map<String, String>) {
+		values = values.plus(key to properties)
+	}
+
 	fun writeLastUsed(property: String, value: String) {
 		val oldMap = values[property]
 		if (oldMap != null) {
@@ -42,9 +46,10 @@ class TinboConfig(val path: Path = HomeFolder.getOrCreateDefaultConfig()) {
 		}
 	}
 
-	fun writeToFile(): Boolean {
+	@JvmOverloads
+	fun writeToFile(file: Path? = null): Boolean {
 		val dumpAsMap = Yaml().dumpAsMap(values)
-		return Files.write(path, dumpAsMap.toByteArray(), StandardOpenOption.CREATE).run {
+		return Files.write(file ?: path, dumpAsMap.toByteArray(), StandardOpenOption.CREATE).run {
 			Files.exists(this)
 		}
 	}
@@ -66,4 +71,7 @@ class TinboConfig(val path: Path = HomeFolder.getOrCreateDefaultConfig()) {
 		return amount.toIntOrDefault { Defaults.LIST_ENTRIES }
 	}
 
+	override fun toString(): String {
+		return "TinboConfig(values=$values)"
+	}
 }

@@ -12,14 +12,11 @@ import java.nio.file.Paths
  */
 class TinboConfigTest {
 
-	private val path = Paths.get("test")
+	private val path = Files.createTempFile("tinbo", "config")
 
-	private val config: TinboConfig
-		get() {
-			val tinboConfig = TinboConfig(
-					Paths.get(Resources.getResource("default-config.yaml").file))
-			return tinboConfig
-		}
+	private val config: TinboConfig =
+			TinboConfig(Paths.get(
+					Resources.getResource("default-config.yaml").toURI()))
 
 	@After
 	fun tearDown() {
@@ -28,8 +25,14 @@ class TinboConfigTest {
 
 	@Test
 	fun writeConfig() {
-		val write = config.writeToFile()
+		val write = config.writeToFile(path)
 		assert(write)
+	}
+
+	@Test
+	fun putValues() {
+		config.put("kanbin", mapOf("lastUsed" to "test"))
+		assert(config.getKey("kanbin").containsValue("test"))
 	}
 
 	@Test
