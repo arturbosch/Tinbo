@@ -4,6 +4,7 @@ import io.gitlab.arturbosch.tinbo.api.TinboTerminal
 import io.gitlab.arturbosch.tinbo.api.config.Defaults
 import io.gitlab.arturbosch.tinbo.api.config.ModeManager
 import io.gitlab.arturbosch.tinbo.api.marker.Cancelable
+import io.gitlab.arturbosch.tinbo.api.marker.Categorizable
 import io.gitlab.arturbosch.tinbo.api.marker.Command
 import io.gitlab.arturbosch.tinbo.api.marker.Datable
 import io.gitlab.arturbosch.tinbo.api.marker.Deletable
@@ -92,6 +93,9 @@ class SharableCommands @Autowired constructor(private val commandChooser: Comman
 
 		return commandsForCurrentMode.changeCategory(oldName, newName)
 	}
+
+	@CliCommand("categories", help = "Lists all used/available categories.")
+	fun categories() = commandChooser.forModeWithInterface<Categorizable>().categories()
 
 	@CliCommand("data", help = "prints all available data sets")
 	fun data(): String {

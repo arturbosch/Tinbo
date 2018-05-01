@@ -29,6 +29,8 @@ class FinanceExecutor @Autowired constructor(private val dataHolder: FinanceData
 		return entry.copy(dummy.month, dummy.category, dummy.message, dummy.moneyValue, dummy.dateTime)
 	}
 
+	override fun categoryNames() = entriesInMemory.groupBy { it.category }.keys
+
 	fun sumCategories(categories: List<String>): String {
 		val (currentMonth, currentYear) = LocalDate.now().run { month to year }
 		var summariesReturnString = ""

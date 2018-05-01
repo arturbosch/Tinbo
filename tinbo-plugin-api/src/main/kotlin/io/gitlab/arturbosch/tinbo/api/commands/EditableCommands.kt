@@ -121,6 +121,8 @@ abstract class EditableCommands<E : Entry, D : Data<E>, in T : DummyEntry>(
 		}
 	}
 
+	override fun categories(): String = executor.categoryNames().joinToString()
+
 	override fun data(): String {
 		return "Available data sets: " + executor.getAllDataNames().joinToString()
 	}

@@ -22,4 +22,5 @@ open class TaskExecutor @Autowired constructor(taskDataHolder: TaskDataHolder,
 				dummy.category, dummy.startTime, dummy.endTime)
 	}
 
+	override fun categoryNames() = entriesInMemory.groupBy { it.category }.keys
 }

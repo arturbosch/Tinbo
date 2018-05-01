@@ -117,4 +117,5 @@ open class TimeExecutor @Autowired constructor(timeDataHolder: TimeDataHolder,
 		return currentTimer.currentPauseTime != null
 	}
 
+	override fun categoryNames() = entriesInMemory.groupBy { it.category }.keys
 }

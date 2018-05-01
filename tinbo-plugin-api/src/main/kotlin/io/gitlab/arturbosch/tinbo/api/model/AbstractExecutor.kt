@@ -101,6 +101,8 @@ abstract class AbstractExecutor<E : Entry, D : Data<E>, in T : DummyEntry>(
 		dataHolder.changeCategory(oldName, newName)
 	}
 
+	open fun categoryNames() = setOf<String>()
+
 	fun getAllDataNames(): List<String> {
 		return dataHolder.getDataNames()
 	}
