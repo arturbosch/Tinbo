@@ -11,13 +11,15 @@ import org.springframework.stereotype.Component
  * @author Artur Bosch
  */
 @Component
-class ConfigProvider @Autowired constructor(config: TinboConfig) {
+class ConfigProvider @Autowired constructor(private val config: TinboConfig) {
 
-	val currencyUnit: CurrencyUnit = CurrencyUnit.of(
-			config.getKey(ConfigDefaults.DEFAULTS)[ConfigDefaults.CURRENCY].orDefault("EUR"))
+	val currencyUnit: CurrencyUnit
+		get() = CurrencyUnit.of(
+				config.getKey(ConfigDefaults.DEFAULTS)[ConfigDefaults.CURRENCY].orDefault("EUR"))
 
-	val categoryName = config.getCategoryName()
+	val categoryName get() = config.getCategoryName()
 
 	@Suppress("UNCHECKED_CAST")
-	val subscriptions by lazy { config.getKeySafe(FinanceMode.id)["subscriptions"] as? List<String> }
+	val subscriptions
+		get() = config.getKeySafe(FinanceMode.id)["subscriptions"] as? List<String>
 }

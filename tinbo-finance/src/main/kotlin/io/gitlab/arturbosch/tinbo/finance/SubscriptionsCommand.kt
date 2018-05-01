@@ -30,7 +30,8 @@ class SubscriptionsCommand @Autowired constructor(private val executor: FinanceE
 			val (category, message, money) = subscription.split(",")
 			val now = LocalDateTime.now()
 			executor.addEntry(
-					FinanceEntry(now.month, category, message, Money.of(currency, money.toDouble()), now))
+					FinanceEntry(now.month, category, message,
+							Money.of(currency, money.toDouble()), now))
 		}
 	}
 }

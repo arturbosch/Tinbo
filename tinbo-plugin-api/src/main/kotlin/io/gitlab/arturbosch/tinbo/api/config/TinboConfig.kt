@@ -16,9 +16,13 @@ import java.util.HashMap
 @Component
 class TinboConfig(val path: Path = HomeFolder.getOrCreateDefaultConfig()) {
 
-	private var values: Map<String, Map<String, String>>
+	private var values: Map<String, Map<String, String>> = emptyMap()
 
 	init {
+		reloadConfigFile()
+	}
+
+	fun reloadConfigFile() {
 		values = Files.newBufferedReader(path).use {
 			@Suppress("UNCHECKED_CAST")
 			Yaml().loadAs(it, Map::class.java) as Map<String, Map<String, String>>
@@ -71,7 +75,5 @@ class TinboConfig(val path: Path = HomeFolder.getOrCreateDefaultConfig()) {
 		return amount.toIntOrDefault { Defaults.LIST_ENTRIES }
 	}
 
-	override fun toString(): String {
-		return "TinboConfig(values=$values)"
-	}
+	override fun toString() = "TinboConfig(values=$values)"
 }
