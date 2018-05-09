@@ -46,10 +46,11 @@ open class TimeSummaryCommands @Autowired constructor(private val summaryExecuto
 
 	private fun meanWorkPerDay(): Pair<Int, Int> {
 		val now = LocalDate.now()
-		val workForLastSevenDaysInMinutes = (1..7)
+		val daySummaries = (1..7)
 				.map { timeSummaryPluginSupport.day(now.minusDays(it.toLong())).totalMinutes() }
 				.filter { it > 0 }
-				.fold(0) { acc, i -> acc + i } / 7
+		val workForLastSevenDaysInMinutes = daySummaries
+				.fold(0) { acc, i -> acc + i } / daySummaries.size
 		return WeekEntry("Day", workForLastSevenDaysInMinutes).asHourMinutes()
 	}
 
@@ -64,10 +65,11 @@ open class TimeSummaryCommands @Autowired constructor(private val summaryExecuto
 
 	private fun meanWorkPerWeek(): Pair<Int, Int> {
 		val now = LocalDate.now()
-		val workForLastSevenWeeksInMinutes = (1..7)
+		val weekSummaries = (1..7)
 				.map { timeSummaryPluginSupport.week(now.minusDays((it * 7).toLong())).totalMinutes() }
 				.filter { it > 0 }
-				.fold(0) { acc, i -> acc + i } / 7
+		val workForLastSevenWeeksInMinutes = weekSummaries
+				.fold(0) { acc, i -> acc + i } / weekSummaries.size
 		return WeekEntry("Week", workForLastSevenWeeksInMinutes).asHourMinutes()
 	}
 
@@ -82,10 +84,11 @@ open class TimeSummaryCommands @Autowired constructor(private val summaryExecuto
 
 	private fun meanWorkPerMonth(): Pair<Int, Int> {
 		val now = LocalDate.now()
-		val workForLastSevenMonthsInMinutes = (1..7)
+		val monthSummaries = (1..7)
 				.map { timeSummaryPluginSupport.month(now.minusMonths(it.toLong())).totalMinutes() }
 				.filter { it > 0 }
-				.fold(0) { acc, i -> acc + i } / 7
+		val workForLastSevenMonthsInMinutes = monthSummaries
+				.fold(0) { acc, i -> acc + i } / monthSummaries.size
 		return WeekEntry("Month", workForLastSevenMonthsInMinutes).asHourMinutes()
 	}
 
