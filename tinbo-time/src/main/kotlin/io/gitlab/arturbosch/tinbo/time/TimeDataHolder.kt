@@ -4,7 +4,6 @@ import io.gitlab.arturbosch.tinbo.api.config.ConfigDefaults
 import io.gitlab.arturbosch.tinbo.api.config.Defaults
 import io.gitlab.arturbosch.tinbo.api.config.TinboConfig
 import io.gitlab.arturbosch.tinbo.api.model.AbstractDataHolder
-import io.gitlab.arturbosch.tinbo.api.toTimeString
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -26,32 +25,6 @@ open class TimeDataHolder @Autowired constructor(persister: TimePersister,
 
 	override fun getEntriesFilteredBy(filter: String): List<TimeEntry> {
 		return getEntries().filter { it.category == filter }
-	}
-
-	fun createSummaries(): List<String> {
-		return summariesInternal(getEntries())
-	}
-
-	private fun summariesInternal(entries: List<TimeEntry>): List<String> {
-		val categoryToTimeString = entries.groupBy { it.category }.mapValues { sumTimesAsString(it.value) }
-		return categoryToTimeString.map { it.key + ";" + it.value }
-	}
-
-	private fun sumTimesAsString(value: List<TimeEntry>): String {
-		val seconds = value.map { it.seconds }.sum()
-		val (extraMinutes, realSeconds) = divAndMod(seconds)
-		val minutes = value.map { it.minutes }.sum().plus(extraMinutes)
-		val (extraHours, realMinutes) = divAndMod(minutes)
-		val hours = value.map { it.hours }.sum().plus(extraHours)
-
-		return "${hours.toTimeString()}:${realMinutes.toTimeString()}:${realSeconds.toTimeString()}"
-	}
-
-	private fun divAndMod(value: Long) = value.div(60) to value.rem(60)
-
-	fun createFilteredSummaries(by: List<String>): List<String> {
-		val entries = getEntries().filter { by.contains(it.category.toLowerCase()) }
-		return summariesInternal(entries)
 	}
 
 	override fun changeCategory(oldName: String, newName: String) {

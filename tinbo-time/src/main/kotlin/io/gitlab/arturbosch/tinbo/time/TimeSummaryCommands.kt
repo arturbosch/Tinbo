@@ -31,7 +31,7 @@ open class TimeSummaryCommands @Autowired constructor(private val summaryExecuto
 		return if (categories.isEmpty()) {
 			summaryExecutor.sumAllCategories()
 		} else {
-			summaryExecutor.sumForCategories(categories)
+			summaryExecutor.sumForCategories(categories.toHashSet())
 		}
 	}
 
