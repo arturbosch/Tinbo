@@ -78,7 +78,12 @@ class FinanceExecutor @Autowired constructor(private val dataHolder: FinanceData
 		printlnInfo("Summary for year: ${date.year}")
 		val entries = dataHolder.getEntries().asSequence()
 				.filter { byYear(date, it) }
-		return tableAsString(entries.toSummaryStringList { it.month }, "No.;Month;Spent")
+		val total = entries.map { it.moneyValue }.reduce(Money::plus)
+		val totalMonths = entries.groupBy { it.month }.keys.size
+		return tableAsString(entries.toSummaryStringList { it.month },
+				"No.;Month;Spent") +
+				"\n\nTotal money spent: $total" +
+				"\nMean money spent: ${total.dividedBy(totalMonths.toLong(), RoundingMode.UP)}"
 	}
 
 	fun yearSummaryMean(date: LocalDate): String {
