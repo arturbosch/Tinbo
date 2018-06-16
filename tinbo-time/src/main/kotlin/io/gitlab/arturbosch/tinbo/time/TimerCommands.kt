@@ -30,6 +30,26 @@ open class TimerCommands @Autowired constructor(private val executor: TimeExecut
 		return ModeManager.isCurrentMode(TimeMode) && executor.inProgress()
 	}
 
+	@CliCommand(value = ["continue"], help = "Restarts an unexpected exited timer.")
+	fun continueTimer() {
+
+		if (isTimerRunning()) {
+			printlnInfo("Already a timer in progress.")
+			return
+		}
+
+		val timer = ExitedTimers.find()
+		if (timer != null) {
+			if (!executor.inProgress()) {
+				CompletableFuture.runAsync {
+					executor.startPrintingTime(timer)
+				}
+			} else {
+				printlnInfo("Already a timer in progress.")
+			}
+		}
+	}
+
 	@CliCommand(value = ["start"], help = "Starts the timer and waits for you to type 'stop' to finish it if no arguments are specified.")
 	fun startTimer(@CliOption(key = ["minutes", "m", "mins"], specifiedDefaultValue = "0",
 			unspecifiedDefaultValue = "0", help = "Duration of timer in minutes.") mins: Int,
@@ -50,7 +70,9 @@ open class TimerCommands @Autowired constructor(private val executor: TimeExecut
 		if (!executor.inProgress()) {
 			val mode = specifyTimerMode(bg)
 			CompletableFuture.runAsync {
-				executor.startPrintingTime(Timer(mode, name, message, stopDateTime = Timer.calcStopTime(mins, seconds)))
+				val timer = Timer(mode, name, message, stopDateTime = Timer.calcStopTime(mins, seconds))
+				ExitedTimers.init(timer)
+				executor.startPrintingTime(timer)
 			}
 		} else {
 			printlnInfo("Other timer already in process. Stop the timer before starting a new one.")

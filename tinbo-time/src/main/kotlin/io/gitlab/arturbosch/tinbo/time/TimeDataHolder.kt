@@ -17,7 +17,7 @@ open class TimeDataHolder @Autowired constructor(persister: TimePersister,
 
 	override val lastUsedData: String
 		get() = config.getKey(ConfigDefaults.TIMERS)
-				.getOrElse(ConfigDefaults.LAST_USED, { Defaults.TIME_NAME })
+				.getOrElse(ConfigDefaults.LAST_USED) { Defaults.TIME_NAME }
 
 	override fun newData(name: String, entriesInMemory: List<TimeEntry>): TimeData {
 		return TimeData(name, entriesInMemory)

@@ -33,7 +33,7 @@ object HomeFolder {
 	}
 
 	fun getFile(filePath: Path): Path {
-		return checkAndCreate(filePath, { newFile -> Files.createFile(newFile) })
+		return checkAndCreate(filePath) { newFile -> Files.createFile(newFile) }
 	}
 
 	fun getFileResolved(subPathInTinboDir: String): Path {
@@ -48,7 +48,7 @@ object HomeFolder {
 
 	fun getDirectory(subPathInTinboDir: String): Path {
 		val newDir = get().resolve(subPathInTinboDir)
-		return checkAndCreate(newDir, { dir -> Files.createDirectories(dir) })
+		return checkAndCreate(newDir) { dir -> Files.createDirectories(dir) }
 	}
 
 }

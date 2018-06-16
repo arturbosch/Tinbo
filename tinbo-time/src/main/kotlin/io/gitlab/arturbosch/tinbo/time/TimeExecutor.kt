@@ -1,6 +1,7 @@
 package io.gitlab.arturbosch.tinbo.time
 
 import io.gitlab.arturbosch.tinbo.api.TinboTerminal
+import io.gitlab.arturbosch.tinbo.api.config.HomeFolder
 import io.gitlab.arturbosch.tinbo.api.config.Notification
 import io.gitlab.arturbosch.tinbo.api.config.TinboConfig
 import io.gitlab.arturbosch.tinbo.api.model.AbstractExecutor
@@ -9,6 +10,7 @@ import io.gitlab.arturbosch.tinbo.api.utils.printInfo
 import io.gitlab.arturbosch.tinbo.api.utils.printlnInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.nio.file.Files
 import java.time.LocalDateTime
 
 /**
@@ -81,6 +83,7 @@ open class TimeExecutor @Autowired constructor(timeDataHolder: TimeDataHolder,
 		notify("Finished")
 		createNewTimeEntry()
 		currentTimer = Timer.INVALID
+		ExitedTimers.clear()
 	}
 
 	private fun createNewTimeEntry() {
