@@ -27,11 +27,11 @@ open class TimeSummaryCommands @Autowired constructor(private val summaryExecuto
 		return ModeManager.isCurrentMode(TimeMode)
 	}
 
-	override fun sum(categories: List<String>): String {
+	override fun sum(categories: Set<String>, categoryFilters: Set<String>): String {
 		return if (categories.isEmpty()) {
-			summaryExecutor.sumAllCategories()
+			summaryExecutor.sumAllCategories(categoryFilters)
 		} else {
-			summaryExecutor.sumForCategories(categories.toHashSet())
+			summaryExecutor.sumForCategories(categories, categoryFilters)
 		}
 	}
 

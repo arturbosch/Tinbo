@@ -17,14 +17,17 @@ open class WeekSummaryExecutor @Autowired constructor(private val timeDataHolder
 
 	fun asTable(summaries: List<String>): String = tableAsString(summaries, tableHeader)
 
-	fun sumAllCategories(): String {
-		val (summaries, total) = summariesInternal(timeDataHolder.getEntries())
+	fun sumAllCategories(categoryFilters: Set<String>): String {
+		val entries = timeDataHolder.getEntries()
+				.filter { it.category !in categoryFilters }
+		val (summaries, total) = summariesInternal(entries)
 		return asTable(summaries) + "\n\n Total time: $total"
 	}
 
-	fun sumForCategories(filters: Set<String>): String {
+	fun sumForCategories(filters: Set<String>, categoryFilters: Set<String>): String {
 		val entries = timeDataHolder.getEntries()
 				.filter { filters.contains(it.category.toLowerCase()) }
+				.filter { it.category.toLowerCase() !in categoryFilters }
 		val (summaries, total) = summariesInternal(entries)
 		return asTable(summaries) + "\n\n Total time: $total"
 	}

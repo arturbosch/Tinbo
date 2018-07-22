@@ -15,10 +15,10 @@ fun Sequence<FinanceEntry>.toSummaryStringList(): List<String> {
 
 inline fun <K> Sequence<FinanceEntry>.toSummaryStringList(
 		keySelector: (FinanceEntry) -> K): List<String> {
-	return this.toSummaryStringList(keySelector, {
+	return this.toSummaryStringList(keySelector) {
 		it.value.map { it.moneyValue }
 				.reduce(Money::plus)
-	})
+	}
 }
 
 inline fun <K, V> Sequence<FinanceEntry>.toSummaryStringList(

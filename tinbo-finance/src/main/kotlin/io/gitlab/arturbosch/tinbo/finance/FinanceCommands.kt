@@ -89,7 +89,8 @@ class FinanceCommands @Autowired constructor(private val financeExecutor: Financ
 		return block.invoke(date)
 	}
 
-	override fun sum(categories: List<String>): String = financeExecutor.sumCategories(categories)
+	override fun sum(categories: Set<String>, categoryFilters: Set<String>): String =
+			financeExecutor.sumCategories(categories, categoryFilters)
 
 	override fun add(): String {
 		return whileNotInEditMode {
